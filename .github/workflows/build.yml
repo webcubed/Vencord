@@ -32,18 +32,12 @@ jobs:
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
-            - name: Build web
-              run: pnpm buildWeb --standalone
-
             - name: Build
-              run: pnpm build --standalone
+              run: pnpm build
 
             - name: Generate plugin list
               run: pnpm generatePluginJson dist/plugins.json dist/plugin-readmes.json
 
-            - name: Clean up obsolete files
-              run: |
-                  rm -rf dist/*-unpacked dist/monaco Vencord.user.css vencordDesktopRenderer.css vencordDesktopRenderer.css.map
             - name: Upload Artifact
               uses: actions/upload-artifact@v4
               with:
