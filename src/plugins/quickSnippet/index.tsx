@@ -5,7 +5,6 @@
  */
 import { definePluginSettings } from "@api/Settings";
 import "./style.css";
-import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
 import { Button, ButtonLooks, useState, MessageStore } from "@webpack/common";
 import { wreq } from "@webpack";
@@ -37,10 +36,10 @@ function trimCodeBlocks(str: string) {
     let output = "";
     while (index < str.length) {
         const char = str[index];
-        if (char === '`') {
-            let match = wreq(428595).default.RULES.codeBlock.match(str.slice(index));
+        if (char === "`") {
+            const match = wreq(428595).default.RULES.codeBlock.match(str.slice(index));
             if (match) {
-                index = index + (match[0].length);
+                index += (match[0].length);
             }
         } else {
             output += char;
@@ -74,7 +73,7 @@ function AppendButton(props: { code: CodeBlock; context: Context; }) {
 export default definePlugin({
     name: "QuickSnippet",
     description: "append css snippets quickly to quickCss with one click!",
-    authors: [Devs.iamme],
+    authors: [],
     settings: settings,
     patches: [
         {
