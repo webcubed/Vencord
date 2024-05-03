@@ -6,14 +6,14 @@
 import { definePluginSettings } from "@api/Settings";
 import "./style.css";
 import { Devs } from "@utils/constants";
-import { getCurrentChannel } from "@utils/discord";
 import definePlugin, { OptionType } from "@utils/types";
 import { Button, ButtonLooks, useState, MessageStore } from "@webpack/common";
+import { wreq } from "@webpack";
 
 const settings = definePluginSettings({
     whitelistChannels: {
         type: OptionType.STRING,
-        description: "list of channel IDs to ignore",
+        description: "list of channel IDs to whitelist",
         default: "1032200195582197831, 1028106818368589824"
     },
     descriptions: {
@@ -28,23 +28,41 @@ interface CodeBlock {
     content: string;
 }
 interface Context {
-    channelId: string;
-    messageId: string;
+    channelId: string | undefined;
+    messageId: string | undefined;
 }
 
 function trimCodeBlocks(str: string) {
-    return str.replace(/(```[\n\W\w\s\t\d\D\B\b]+```)/g, '').trim();
+    let index = 0;
+    let output = "";
+    while (index < str.length) {
+        const char = str[index];
+        if (char === '`') {
+            let match = wreq(428595).default.RULES.codeBlock.match(str.slice(index));
+            if (match) {
+                index = index + (match[0].length);
+            }
+        } else {
+            output += char;
+        }
+        index++;
+    }
+    return output.trim();
 }
+
 function AppendButton(props: { code: CodeBlock; context: Context; }) {
     const { code, context } = props;
-    if (code.lang.toLowerCase() !== "css" || !settings.store.whitelistChannels.includes(context.channelId)) return null;
+    if (code.lang.toLowerCase() !== "css" || !settings.store.whitelistChannels.includes(context.channelId || "undefined")) return null;
     const [appended, setAppended] = useState(false);
 
     return <Button
         look={ButtonLooks.INVERTED}
         onClick={() => {
-            const message = MessageStore.getMessage(context.channelId, context.messageId);
-            const trimedMessage = trimCodeBlocks(message.content);
+            let trimedMessage = "";
+            if (context.channelId && context.messageId) {
+                const message = MessageStore.getMessage(context.channelId, context.messageId);
+                trimedMessage = trimCodeBlocks(message.content);
+            }
             const description = trimedMessage && settings.store.descriptions ? `/* \n${trimedMessage}\n */\n` : "";
             VencordNative.quickCss.get().then(r => VencordNative.quickCss.set(r + "\n\n" + description + code.content));
             setAppended(true);
