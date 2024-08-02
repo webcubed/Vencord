@@ -42,7 +42,7 @@ const commonOptions = {
     define: {
         IS_WEB: true,
         IS_EXTENSION: false,
-        IS_STANDALONE: true,
+        IS_STANDALONE: false,
         IS_DEV,
         IS_REPORTER,
         IS_DISCORD_DESKTOP: false,
