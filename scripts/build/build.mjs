@@ -21,7 +21,7 @@ import esbuild from "esbuild";
 import { readdir } from "fs/promises";
 import { join } from "path";
 
-import { BUILD_TIMESTAMP, commonOpts, exists, globPlugins, IS_DEV, IS_REPORTER, IS_STANDALONE, IS_UPDATER_DISABLED, resolvePluginName, VERSION, watch } from "./common.mjs";
+import { BUILD_TIMESTAMP, commonOpts, exists, globPlugins, IS_DEV, IS_REPORTER, IS_STANDALONE, IS_UPDATER_DISABLED, resolvePluginName, VERSION, commonRendererPlugins, watch } from "./common.mjs";
 
 const defines = {
     IS_STANDALONE,
@@ -103,94 +103,107 @@ const globNativesPlugin = {
 };
 
 await Promise.all([
-  // Discord Desktop main & renderer & preload
-  esbuild.build({
-    ...nodeCommonOpts,
-    entryPoints: ["src/main/index.ts"],
-    outfile: "dist/patcher.js",
-    footer: { js: "//# sourceURL=VencordPatcher\n" + sourceMapFooter("patcher") },
-    sourcemap,
-    define: {
-      ...defines,
-      IS_DISCORD_DESKTOP: true,
-      IS_VESKTOP: false,
-    },
-    plugins: [...nodeCommonOpts.plugins, globNativesPlugin],
-  }),
-  esbuild.build({
-    ...commonOpts,
-    entryPoints: ["src/Vencord.ts"],
-    outfile: "dist/renderer.js",
-    format: "iife",
-    target: ["esnext"],
-    footer: { js: "//# sourceURL=VencordRenderer\n" + sourceMapFooter("renderer") },
-    globalName: "Vencord",
-    sourcemap,
-    plugins: [globPlugins("discordDesktop"), ...commonOpts.plugins],
-    define: {
-      ...defines,
-      IS_DISCORD_DESKTOP: true,
-      IS_VESKTOP: false,
-    },
-  }),
-  esbuild.build({
-    ...nodeCommonOpts,
-    entryPoints: ["src/preload.ts"],
-    outfile: "dist/preload.js",
-    footer: { js: "//# sourceURL=VencordPreload\n" + sourceMapFooter("preload") },
-    sourcemap,
-    define: {
-      ...defines,
-      IS_DISCORD_DESKTOP: true,
-      IS_VESKTOP: false,
-    },
-  }),
+    // Discord Desktop main & renderer & preload
+    esbuild.build({
+        ...nodeCommonOpts,
+        entryPoints: ["src/main/index.ts"],
+        outfile: "dist/patcher.js",
+        footer: { js: "//# sourceURL=VencordPatcher\n" + sourceMapFooter("patcher") },
+        sourcemap,
+        define: {
+            ...defines,
+            IS_DISCORD_DESKTOP: true,
+            IS_VESKTOP: false
+        },
+        plugins: [
+            ...nodeCommonOpts.plugins,
+            globNativesPlugin
+        ]
+    }),
+    esbuild.build({
+        ...commonOpts,
+        entryPoints: ["src/Vencord.ts"],
+        outfile: "dist/renderer.js",
+        format: "iife",
+        target: ["esnext"],
+        footer: { js: "//# sourceURL=VencordRenderer\n" + sourceMapFooter("renderer") },
+        globalName: "Vencord",
+        sourcemap,
+        plugins: [
+            globPlugins("discordDesktop"),
+            ...commonRendererPlugins
+        ],
+        define: {
+            ...defines,
+            IS_DISCORD_DESKTOP: true,
+            IS_VESKTOP: false
+        }
+    }),
+    esbuild.build({
+        ...nodeCommonOpts,
+        entryPoints: ["src/preload.ts"],
+        outfile: "dist/preload.js",
+        footer: { js: "//# sourceURL=VencordPreload\n" + sourceMapFooter("preload") },
+        sourcemap,
+        define: {
+            ...defines,
+            IS_DISCORD_DESKTOP: true,
+            IS_VESKTOP: false
+        }
+    }),
 
-  // Vencord Desktop main & renderer & preload
-  esbuild.build({
-    ...nodeCommonOpts,
-    entryPoints: ["src/main/index.ts"],
-    outfile: "dist/vencordDesktopMain.js",
-    footer: { js: "//# sourceURL=VencordDesktopMain\n" + sourceMapFooter("vencordDesktopMain") },
-    sourcemap,
-    define: {
-      ...defines,
-      IS_DISCORD_DESKTOP: false,
-      IS_VESKTOP: true,
-    },
-    plugins: [...nodeCommonOpts.plugins, globNativesPlugin],
-  }),
-  esbuild.build({
-    ...commonOpts,
-    entryPoints: ["src/Vencord.ts"],
-    outfile: "dist/vencordDesktopRenderer.js",
-    format: "iife",
-    target: ["esnext"],
-    footer: { js: "//# sourceURL=VencordDesktopRenderer\n" + sourceMapFooter("vencordDesktopRenderer") },
-    globalName: "Vencord",
-    sourcemap,
-    plugins: [globPlugins("vencordDesktop"), ...commonOpts.plugins],
-    define: {
-      ...defines,
-      IS_DISCORD_DESKTOP: false,
-      IS_VESKTOP: true,
-    },
-  }),
-  esbuild.build({
-    ...nodeCommonOpts,
-    entryPoints: ["src/preload.ts"],
-    outfile: "dist/vencordDesktopPreload.js",
-    footer: { js: "//# sourceURL=VencordPreload\n" + sourceMapFooter("vencordDesktopPreload") },
-    sourcemap,
-    define: {
-      ...defines,
-      IS_DISCORD_DESKTOP: false,
-      IS_VESKTOP: true,
-    },
-  }),
-]).catch((err) => {
-  console.error("Build failed");
-  console.error(err.message);
-  // make ci fail
-  if (!commonOpts.watch) process.exitCode = 1;
+    // Vencord Desktop main & renderer & preload
+    esbuild.build({
+        ...nodeCommonOpts,
+        entryPoints: ["src/main/index.ts"],
+        outfile: "dist/vencordDesktopMain.js",
+        footer: { js: "//# sourceURL=VencordDesktopMain\n" + sourceMapFooter("vencordDesktopMain") },
+        sourcemap,
+        define: {
+            ...defines,
+            IS_DISCORD_DESKTOP: false,
+            IS_VESKTOP: true
+        },
+        plugins: [
+            ...nodeCommonOpts.plugins,
+            globNativesPlugin
+        ]
+    }),
+    esbuild.build({
+        ...commonOpts,
+        entryPoints: ["src/Vencord.ts"],
+        outfile: "dist/vencordDesktopRenderer.js",
+        format: "iife",
+        target: ["esnext"],
+        footer: { js: "//# sourceURL=VencordDesktopRenderer\n" + sourceMapFooter("vencordDesktopRenderer") },
+        globalName: "Vencord",
+        sourcemap,
+        plugins: [
+            globPlugins("vencordDesktop"),
+            ...commonRendererPlugins
+        ],
+        define: {
+            ...defines,
+            IS_DISCORD_DESKTOP: false,
+            IS_VESKTOP: true
+        }
+    }),
+    esbuild.build({
+        ...nodeCommonOpts,
+        entryPoints: ["src/preload.ts"],
+        outfile: "dist/vencordDesktopPreload.js",
+        footer: { js: "//# sourceURL=VencordPreload\n" + sourceMapFooter("vencordDesktopPreload") },
+        sourcemap,
+        define: {
+            ...defines,
+            IS_DISCORD_DESKTOP: false,
+            IS_VESKTOP: true
+        }
+    }),
+]).catch(err => {
+    console.error("Build failed");
+    console.error(err.message);
+    // make ci fail
+    if (!commonOpts.watch)
+        process.exitCode = 1;
 });
