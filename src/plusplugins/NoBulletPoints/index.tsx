@@ -9,7 +9,7 @@ import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
 export default definePlugin({
     name: "NoBulletPoints",
-    description: "Stops you from typing markdown bullet points (stinky)",
+    description: "Stops you from typing markdown bullet points (stinky) | Restart or reload your Discord client after disabling!",
     authors: [Devs.Samwich],
     dependencies: ["MessageEventsAPI"],
     start() {
