@@ -62,8 +62,13 @@ const settings = definePluginSettings({
 
 export default definePlugin({
     name: "betterAutomod",
-    authors: [Devs.iamme],
-    description: "echo automod logs in the automoded channel and make it possible to test your automod rules",
+    authors: [
+        {
+            name: "i am me",
+            id: 984392761929256980n,
+        },
+    ],
+    description: "Echo automod logs in the channel the moderation took place and make it possible to test your automod rules",
     settings: settings,
     settingsAboutComponent: settingsAboutComponent,
     patches: [

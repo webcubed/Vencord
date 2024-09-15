@@ -5,12 +5,12 @@
  */
 
 import { CheckedTextInput } from "@components/CheckedTextInput";
+import { Margins } from "@utils/margins";
 import { ModalContent, ModalHeader, ModalRoot, openModalLazy } from "@utils/modal";
 import { Forms, GuildStore, PermissionsBits, PermissionStore, React, Tooltip, UserStore } from "@webpack/common";
 import { Role } from "discord-types/general";
 
 import { createRole } from "./api";
-
 
 const getFontSize = (s: string) => {
     // [18, 18, 16, 16, 14, 12, 10]
@@ -30,17 +30,18 @@ function getGuildCandidates() {
 }
 
 
-function CloneModal({ role }: { role: Role; }) {
+function CloneModal({ role, icon }: { role: Role; icon?: string | null; }) {
     const [isCloning, setIsCloning] = React.useState(false);
     const [name, setName] = React.useState(role.name);
 
     const [x, invalidateMemo] = React.useReducer(x => x + 1, 0);
 
     const guilds = React.useMemo(() => getGuildCandidates(), [role.id, x]);
+    const warningText: string = icon ? "warning: the icon won't be cloned in unsupported servers" : "";
 
     return (
         <>
-            <Forms.FormTitle>Custom Name</Forms.FormTitle>
+            <Forms.FormTitle className={Margins.top20}>Custom Name</Forms.FormTitle>
             <CheckedTextInput
                 value={name}
                 onChange={v => {
@@ -49,9 +50,15 @@ function CloneModal({ role }: { role: Role; }) {
                 }}
                 validate={v =>
                     (v.length > 1 && v.length < 100)
-                    || "Name must be between 1 and 100 characters and only contain alphanumeric characters"
+                    || "Name must be between 1 and 100 characters"
                 }
             />
+            <p
+                style={{ display: warningText ? "block" : "none" }}
+                className="vc-rd-role-icon-warning-text"
+            >
+                {warningText}
+            </p>
             <div style={{
                 display: "flex",
                 flexWrap: "wrap",
@@ -82,7 +89,7 @@ function CloneModal({ role }: { role: Role; }) {
                                 }}
                                 onClick={isCloning ? void 0 : async () => {
                                     setIsCloning(true);
-                                    await createRole(g, role);
+                                    await createRole(g, role, icon);
                                     setIsCloning(false);
                                 }}
                             >
@@ -120,16 +127,24 @@ function CloneModal({ role }: { role: Role; }) {
     );
 }
 
-export function openModal(role: Role) {
+export function openModal(role: Role, url?: string | null) {
     return openModalLazy(async () => {
         return modalProps => (<ModalRoot {...modalProps}>
             <ModalHeader>
+                {url ? <img
+                    role="role-presentation"
+                    aria-hidden
+                    src={url}
+                    alt=""
+                    height={24}
+                    width={24}
+                    style={{ marginRight: "0.5em" }}
+                /> : null}
                 <Forms.FormText>Clone Role</Forms.FormText>
             </ModalHeader>
             <ModalContent>
-                <CloneModal role={role} />
+                <CloneModal role={role} icon={url} />
             </ModalContent>
         </ModalRoot>);
     });
-
 }
