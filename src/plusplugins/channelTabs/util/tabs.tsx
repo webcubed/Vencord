@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { DataStore } from "@api/index";
 import { classNameFactory } from "@api/Styles";
@@ -111,6 +111,19 @@ export function closeTabsToTheRight(id: number) {
     replaceArray(openTabs, ...tabsToTheLeft);
 
     if (!tabsToTheLeft.some(v => v.id === currentlyOpenTab)) moveToTab(openTabs.at(-1)!.id);
+    else update();
+}
+
+export function closeTabsToTheLeft(id: number) {
+    const i = openTabs.findIndex(v => v.id === id);
+    if (i === -1) return logger.error("Couldn't find channel tab with ID " + id, openTabs);
+
+    const tabsToTheLeft = openTabs.filter((_, ind) => ind < i);
+    closedTabs.push(...tabsToTheLeft.reverse());
+    const tabsToTheRight = openTabs.filter((_, ind) => ind >= i);
+    replaceArray(openTabs, ...tabsToTheRight);
+
+    if (!tabsToTheRight.some(v => v.id === currentlyOpenTab)) moveToTab(openTabs[0].id);
     else update();
 }
 

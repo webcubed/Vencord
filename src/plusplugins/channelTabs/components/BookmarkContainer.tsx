@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { classNameFactory } from "@api/Styles";
 import { classes } from "@utils/misc";
@@ -32,7 +32,7 @@ function BookmarkIcon({ bookmark }: { bookmark: Bookmark | BookmarkFolder; }) {
         <svg
             height={16}
             width={16}
-            viewBox="0 0 24 24"f
+            viewBox="0 0 24 24"
         >
             <FolderIcon fill={bookmark.iconColor} />
         </svg>

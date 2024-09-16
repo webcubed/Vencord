@@ -387,7 +387,7 @@ function getSoundURL(settingKey: string) {
 
 export default definePlugin({
     name: "CustomSounds",
-    description: "Replace Discord sounds with custom ones",
+    description: "Replace Discord's sounds with custom ones",
     authors: [Devs.ScattrdBlade],
     settings,
     patches: Object.keys(soundFileMapping).flatMap(settingKey =>
