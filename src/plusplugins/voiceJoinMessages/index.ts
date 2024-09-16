@@ -5,15 +5,15 @@
  */
 
 import { definePluginSettings } from "@api/Settings";
-import { Devs } from "@utils/constants";
+import { Devs, EquicordDevs } from "@utils/constants";
 import { humanFriendlyJoin } from "@utils/text";
 import definePlugin, { OptionType } from "@utils/types";
-import { findByPropsLazy } from "@webpack";
+import { findByCodeLazy, findByPropsLazy } from "@webpack";
 import { ChannelStore, FluxDispatcher, MessageActions, MessageStore, RelationshipStore, SelectedChannelStore, UserStore } from "@webpack/common";
 import { Message, User } from "discord-types/general";
 
-const MessageCreator = findByPropsLazy("createBotMessage");
-const SortedVoiceStateStore = findByPropsLazy("getVoiceStatesForChannel");
+const createBotMessage = findByCodeLazy('username:"Clyde"');
+const SortedVoiceStateStore = findByPropsLazy("getVoiceStatesForChannel", "getCurrentClientVoiceChannelId");
 
 const settings = definePluginSettings({
     friendDirectMessages: {
@@ -28,7 +28,7 @@ const settings = definePluginSettings({
     },
     friendDirectMessagesShowMemberCount: {
         type: OptionType.BOOLEAN,
-        description: "Show the count of other members in the voice channel when recieving a DM notification of your friend joining a voice channel",
+        description: "Show the count of other members in the voice channel when receiving a DM notification of your friend joining a voice channel",
         default: false
     },
     friendDirectMessagesSelf: {
@@ -69,7 +69,7 @@ function getMessageFlags() {
 
 function sendVoiceStatusMessage(channelId: string, content: string, userId: string): Message | null {
     if (!channelId) return null;
-    const message: Message = MessageCreator.createBotMessage({ channelId, content, embeds: [] });
+    const message: Message = createBotMessage({ channelId, content, embeds: [] });
     message.flags = getMessageFlags();
     message.author = UserStore.getUser(userId);
     // If we try to send a message into an unloaded channel, the client-sided messages get overwritten when the channel gets loaded
@@ -105,13 +105,12 @@ let clientOldChannelId: string | undefined;
 export default definePlugin({
     name: "VoiceJoinMessages",
     description: "Receive client-side ephemeral messages when your friends join voice channels",
-    authors: [Devs.Sqaaakoi],
+    authors: [Devs.Sqaaakoi, EquicordDevs.thororen],
     settings,
     flux: {
         VOICE_STATE_UPDATES({ voiceStates }: { voiceStates: VoiceState[]; }) {
-            if (!voiceStates) return;
             const clientUserId = UserStore.getCurrentUser().id;
-            voiceStates.forEach(state => {
+            for (const state of voiceStates) {
                 // mmmm hacky workaround
                 const { userId, channelId } = state;
                 let { oldChannelId } = state;
@@ -128,8 +127,12 @@ export default definePlugin({
                     const selfInChannel = SelectedChannelStore.getVoiceChannelId() === channelId;
                     let memberListContent = "";
                     if (settings.store.friendDirectMessagesShowMembers || settings.store.friendDirectMessagesShowMemberCount) {
-                        const sortedVoiceStates: [{ user: { id: string; }; }] = SortedVoiceStateStore.getVoiceStatesForChannel(ChannelStore.getChannel(channelId));
-                        const otherMembers = sortedVoiceStates.filter(s => s.user.id !== userId);
+                        const voiceState = SortedVoiceStateStore.getVoiceStatesForChannel(channelId);
+                        const sortedVoiceStates: User[] = Object.values(voiceState as { [key: string]: VoiceState; })
+                            .filter((voiceState: VoiceState) => { voiceState.user && voiceState.user.id !== userId; })
+                            .map((voiceState: VoiceState) => voiceState.user);
+                        console.log(sortedVoiceStates);
+                        const otherMembers = sortedVoiceStates.filter(s => s.id !== userId);
                         const otherMembersCount = otherMembers.length;
                         if (otherMembersCount <= 0) {
                             memberListContent += ", nobody else is in the voice channel";
@@ -138,13 +141,13 @@ export default definePlugin({
                         }
                         if (settings.store.friendDirectMessagesShowMembers && otherMembersCount > 0) {
                             memberListContent += settings.store.friendDirectMessagesShowMemberCount ? ", " : " with ";
-                            memberListContent += humanFriendlyJoin(otherMembers.map(s => `<@${s.user.id}>`));
+                            memberListContent += humanFriendlyJoin(otherMembers.map(s => `<@${s.id}>`));
                         }
                     }
                     const dmChannelId = ChannelStore.getDMFromUserId(userId);
                     if (dmChannelId && (selfInChannel ? settings.store.friendDirectMessagesSelf : true)) sendVoiceStatusMessage(dmChannelId, `has joined voice channel <#${channelId}>${memberListContent}`, userId);
                 }
-            });
+            }
         },
     },
 });

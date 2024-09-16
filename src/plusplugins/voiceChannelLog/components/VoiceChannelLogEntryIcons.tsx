@@ -4,14 +4,12 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { classNameFactory } from "@api/Styles";
 import { classes } from "@utils/misc";
 import { React } from "@webpack/common";
 import { Channel } from "discord-types/general";
 
-import { VoiceChannelLogEntry } from "./logs";
-
-const cl = classNameFactory("vc-voice-channel-log-entry-icon-");
+import { cl } from "..";
+import { VoiceChannelLogEntry } from "../logs";
 
 export default function Icon({ logEntry, channel, className }: { logEntry: VoiceChannelLogEntry; channel: Channel; className: string; }) {
     // Taken from /assets/7378a83d74ce97d83380.svg

@@ -4,19 +4,20 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { addContextMenuPatch, findGroupChildrenByChildId, NavContextMenuPatchCallback, removeContextMenuPatch } from "@api/ContextMenu";
+import { findGroupChildrenByChildId, NavContextMenuPatchCallback } from "@api/ContextMenu";
 import { definePluginSettings } from "@api/Settings";
-import { Devs } from "@utils/constants";
+import { classNameFactory } from "@api/Styles";
+import { Devs, EquicordDevs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
-import { findByPropsLazy } from "@webpack";
+import { findByCodeLazy } from "@webpack";
 import { FluxDispatcher, Menu, MessageActions, MessageStore, RelationshipStore, SelectedChannelStore, UserStore } from "@webpack/common";
-import { Channel, Message, User } from "discord-types/general";
+import { Message, User } from "discord-types/general";
 
+import { openVoiceChannelLog } from "./components/VoiceChannelLogModal";
 import { addLogEntry } from "./logs";
-import { openVoiceChannelLog } from "./VoiceChannelLogModal";
 
-const MessageCreator = findByPropsLazy("createBotMessage");
-const SortedVoiceStateStore = findByPropsLazy("getVoiceStatesForChannel");
+export const cl = classNameFactory("vc-voice-channel-log-");
+const createBotMessage = findByCodeLazy('username:"Clyde"');
 
 const settings = definePluginSettings({
     mode: {
@@ -66,7 +67,7 @@ function getMessageFlags(selfInChannel: boolean) {
 
 function sendVoiceStatusMessage(channelId: string, content: string, userId: string, selfInChannel: boolean): Message | null {
     if (!channelId) return null;
-    const message: Message = MessageCreator.createBotMessage({ channelId, content, embeds: [] });
+    const message: Message = createBotMessage({ channelId, content, embeds: [] });
     message.flags = getMessageFlags(selfInChannel);
     message.author = UserStore.getUser(userId);
     // If we try to send a message into an unloaded channel, the client-sided messages get overwritten when the channel gets loaded
@@ -85,24 +86,15 @@ function sendVoiceStatusMessage(channelId: string, content: string, userId: stri
     return message;
 }
 
-interface ChannelContextProps {
-    channel: Channel;
-}
-
-const UserContextMenuPatch: NavContextMenuPatchCallback = (children, { channel }: ChannelContextProps) => () => {
-    if (!channel) return;
-
-    const group = findGroupChildrenByChildId("hide-voice-names", children);
-    const injectIndex = group?.findIndex(i => i?.props?.id === "hide-voice-names");
-    if (!injectIndex || !group) return;
-
-    group.splice(injectIndex, 0, (
+const patchChannelContextMenu: NavContextMenuPatchCallback = (children, { channel }) => {
+    const group = findGroupChildrenByChildId("mark-channel-read", children) ?? children;
+    group.push(
         <Menu.MenuItem
             id="vc-view-voice-channel-logs"
             label="View Channel Logs"
             action={() => { openVoiceChannelLog(channel); }}
         />
-    ));
+    );
 };
 
 // Blatantly stolen from VcNarrator plugin
@@ -115,11 +107,13 @@ let clientOldChannelId: string | undefined;
 export default definePlugin({
     name: "VoiceChannelLog",
     description: "Log who joins and leaves voice channels",
-    authors: [Devs.Sqaaakoi],
+    authors: [Devs.Sqaaakoi, EquicordDevs.thororen],
+    contextMenus: {
+        "channel-context": patchChannelContextMenu
+    },
     settings,
     flux: {
         VOICE_STATE_UPDATES({ voiceStates }: { voiceStates: VoiceState[]; }) {
-            if (!voiceStates) return;
             const clientUserId = UserStore.getCurrentUser().id;
             voiceStates.forEach(state => {
                 // mmmm hacky workaround
@@ -159,12 +153,5 @@ export default definePlugin({
 
             });
         },
-    },
-    start() {
-        addContextMenuPatch("channel-context", UserContextMenuPatch);
-    },
-
-    stop() {
-        removeContextMenuPatch("channel-context", UserContextMenuPatch);
-    },
+    }
 });
