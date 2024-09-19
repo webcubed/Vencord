@@ -16,9 +16,7 @@ import openQrModal from "./ui/modals/QrModal";
 
 export default definePlugin({
     name: "LoginWithQR",
-    description:
-        "Allows you to login to another device by scanning a login QR code, just like on mobile!",
-    // replace with EquicordDevs.nexpid when merged to Equicord
+    description: "Allows you to login to another device by scanning a login QR code, just like on mobile!",
     authors: [
         {
             name: "Nexpid",
@@ -73,8 +71,8 @@ export default definePlugin({
         {
             find: "Messages.MULTI_ACCOUNT_MENU_LABEL",
             replacement: {
-                // Insert our own MenuItem before the Switch Account button
-                match: /children:\[(.{54}id:"switch-account")/,
+                // Insert our own MenuItem before the Switch Accounts button
+                match: /children:\[(.{0,54}id:"switch-accounts")/,
                 replace: "children:[$self.ScanQrMenuItem,$1",
             },
         },

@@ -134,7 +134,6 @@ export default definePlugin({
     name: "Encryptcord",
     description: "End-to-end encryption in Discord!",
     authors: [Devs.Inbestigator],
-    dependencies: ["CommandsAPI"],
     patches: [
         {
             find: "INTERACTION_APPLICATION_COMMAND_INVALID_VERSION",
