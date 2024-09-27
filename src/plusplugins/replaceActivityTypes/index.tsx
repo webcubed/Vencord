@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2023 your mom lol
+ * Copyright (c) 2024 your mom lol
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -48,14 +48,14 @@ const settings = definePluginSettings({
 
 export default definePlugin({
     name: "ReplaceActivityTypes",
-    description: "Replace the activity type (Playing) of any rich presence app (rats in my vencord?)",
+    description: "Replace the activity type (Playing) of any rich presence app",
     authors: [Devs.Nyako],
     patches: [
         // how has this patch not broken yet lol (i do not like fixing patches tho)
         {
-            find: '="LocalActivityStore",',
+            find: '"LocalActivityStore"',
             replacement: {
-                match: /LOCAL_ACTIVITY_UPDATE:function\((\i)\)\{/,
+                match: /\i\((\i)\)\{.{0,50}activity.{0,10}=\i;/,
                 replace: "$&$self.patchActivity($1.activity);",
             }
         }

@@ -2,15 +2,17 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { addPreSendListener, removePreSendListener } from "@api/MessageEvents";
+import { migratePluginSettings } from "@api/Settings";
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { ChannelStore, GuildMemberStore, SelectedChannelStore, SelectedGuildStore } from "@webpack/common";
 
+migratePluginSettings("AtSomeone", "atSomeone");
 export default definePlugin({
-    name: "atSomeone",
+    name: "AtSomeone",
     authors: [Devs.Joona],
     description: "Mention someone randomly",
     patches: [

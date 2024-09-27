@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import "./styles.css";
 
@@ -55,8 +55,8 @@ export default definePlugin({
             find: ".defaultRules.text,match:",
             group: true,
             replacement: {
-                // $)/)
-                match: /\$\)\/\)}/,
+                // $) don't match with a " after the )
+                match: /\$\)(?!")/,
                 // hsl(|rgb(|$&
                 replace: requiredFirstCharacters.join("|") + "|$&",
             },
