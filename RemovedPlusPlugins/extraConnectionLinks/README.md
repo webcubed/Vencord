@@ -9,7 +9,7 @@ Allows you to open more connections in browser!
 ## Platform Status
 ### Supported Platforms
 * Xbox
-* Roblox (currently broken)
+* Roblox
 * Epic Games
 ### Platforms that will never be supported
 * Riot Games (Nothing made by Riot Games to view profiles online)
