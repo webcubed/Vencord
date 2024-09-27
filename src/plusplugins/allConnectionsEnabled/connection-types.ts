@@ -2,9 +2,9 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Cooper/coopeeo, Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
-// This file is a type definition file for connection objects. (and so it does cool autocorrect things on ide's because i like)
+// This file is a type definition file for connection objects (and so it does cool auto-correct things on IDE's, because I like that).
 
 export interface Connection {
     type: string,

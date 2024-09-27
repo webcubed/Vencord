@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Cooper/coopeeo, Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import definePlugin from "@utils/types";
 import { Connection } from "./connection-types";
@@ -10,7 +10,7 @@ import { connect } from "http2";
 
 export default definePlugin({
     name: "AllConnectionsEnabled",
-    description: "Enables all connections.",
+    description: "Enables all connections",
     authors: [
         {
             name: "Cooper",

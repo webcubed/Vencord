@@ -2,11 +2,10 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Cooper/coopeeo, Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
-
 
 /**
  * All the connection types implemented into this plugin
@@ -18,21 +17,21 @@ enum connectionTypes {
 }
 
 /**
- * The uri to use.
+ * The URI to use.
  * There are also two variables that you can use, name and id.
- * The "name" is well the name of the account and the name is what shows up when viewing a connection on a discord profile.
- * The "id" is an identifier that normal users don't see, it will usually be an user id (, for example Roblox has user ids, and discord stores that user id in the id field of the connection).
+ * The "name" is what shows up when viewing a connection on a discord profile.
+ * The "id" is the identifier of the account connected, the type depends on the service connected.
  * @example [connectionTypes.Xbox]: "https://www.xbox.com/play/user/${name}",
  * @example [connectionTypes.Roblox]: "https://www.roblox.com/users/${id}/profile",
  */
-const uris = { // name (what shows up on connection on ui), id (an identifier thing)
+const uris = { // name (what shows up on connection on UI), id (an identifier thing)
     [connectionTypes.Roblox]: "https://www.roblox.com/users/${id}/profile",
     [connectionTypes.Xbox]: "https://www.xbox.com/play/user/${name}",
     [connectionTypes.Epic]: "https://store.epicgames.com/u/${id}",
 };
 
 /**
- * What discord has the service named as.
+ * What Discord has the service named as.
  * @example [connectionTypes.Epic]: "Epic Games",
  */
 const serviceNames = {
@@ -43,8 +42,13 @@ const serviceNames = {
 
 export default definePlugin({
     name: "ExtraConnectionLinks",
-    description: "Allows you to open more connections",
-    authors: [Devs.coopeeo],
+    description: "Allows you to open more connections in browser!",
+    authors: [
+        {
+            name: "Cooper",
+            id: 594864203102158859n
+        }
+    ],
     patches: Object.keys(connectionTypes)
         .filter(v => isNaN(Number(v)))
         .map(key => {
@@ -52,7 +56,7 @@ export default definePlugin({
             return {
                 find: "getPlatformUserUrl:",
                 replacement: {
-                    match: new RegExp(`(?<=${serviceNames[connectionTypeSelected]}",.*},.+)(?=},)`),
+                    match: new RegExp("(r"),
                     replace: `, getPlatformUserUrl:e=>{let {name, id} = e; return \`${uris[connectionTypeSelected]}\`;}`
                 }
             };

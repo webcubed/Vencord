@@ -11,4 +11,3 @@ As the contributor of this plugin, I have played a key role in its creation and 
 Writer: 973926908276400198 (@ordinary_binary) / https://github.com/AggelosAst 
 
 Contributor: 1093609255623475270 (@lua5.1) / https://github.com/lua5-1
-
