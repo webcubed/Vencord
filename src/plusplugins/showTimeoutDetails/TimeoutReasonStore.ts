@@ -2,13 +2,12 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { proxyLazy } from "@utils/lazy";
 import { findByPropsLazy } from "@webpack";
 import { Constants, Flux, FluxDispatcher, GuildMemberStore, PermissionsBits, PermissionStore, RestAPI, useStateFromStores } from "@webpack/common";
 
-import { settings } from ".";
 
 const AuditLogReasons: {
     MEMBER_UPDATE: number;
@@ -87,7 +86,7 @@ export const TimeoutReasonStore = proxyLazy(() => {
                     reason: entry.reason,
                     moderator: isAutomod ? undefined : entry.user_id,
                     automod: isAutomod,
-                    automodRuleName: isAutomod ? entry?.options.auto_moderation_rule_name : undefined,
+                    automodRuleName: isAutomod ? entry?.options?.auto_moderation_rule_name : undefined,
                     automodChannelId: isAutomod ? entry?.options?.channel_id : undefined,
                     expires: member?.communicationDisabledUntil,
                     loading: false
@@ -107,6 +106,5 @@ export const TimeoutReasonStore = proxyLazy(() => {
 });
 
 export const useTimeoutReason = (guildId: string, userId: string) => useStateFromStores([TimeoutReasonStore], () => {
-    if (settings.store.showReason) return TimeoutReasonStore.getReason(guildId, userId);
-    return NoTimeout;
+    return TimeoutReasonStore.getReason(guildId, userId);
 });
