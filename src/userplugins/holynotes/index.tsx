@@ -67,10 +67,9 @@ function ToolBarHeader() {
     );
 }
 
-
 export default definePlugin({
     name: "HolyNotes",
-    description: "Holy Notes allows you to save messages",
+    description: "Allows you to save messages",
     authors: [Devs.Wolfie],
     dependencies: ["MessagePopoverAPI", "ChatInputButtonAPI"],
 

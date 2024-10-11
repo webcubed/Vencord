@@ -10,9 +10,7 @@ import { Button, Clickable, Menu, Popout, React } from "@webpack/common";
 
 import { SvgOverFlowIcon } from "../icons/overFlowIcon";
 
-
-
-export function NoteBookTabs({ tabs, selectedTabId, onSelectTab }: { tabs: string[], selectedTabId: string, onSelectTab: (tab: string) => void }) {
+export function NoteBookTabs({ tabs, selectedTabId, onSelectTab }: { tabs: string[], selectedTabId: string, onSelectTab: (tab: string) => void; }) {
     const tabBarRef = React.useRef<HTMLDivElement>(null);
     const widthRef = React.useRef<number>(0);
     const tabWidthMapRef = React.useRef(new Map());
@@ -29,7 +27,6 @@ export function NoteBookTabs({ tabs, selectedTabId, onSelectTab }: { tabs: strin
 
         const totalWidth = tabBarRef.current.clientWidth;
         if (totalWidth !== widthRef.current) {
-
             // Thanks to daveyy1 for the help with this
             let width = 0;
             for (let i = 0; i < tabs.length; i++) {
@@ -42,13 +39,10 @@ export function NoteBookTabs({ tabs, selectedTabId, onSelectTab }: { tabs: strin
                 if (width > totalWidth) {
                     overflowed.push(tab);
                 }
-
             }
-
             setOverflowedTabs(overflowed);
         }
     }, [tabs, selectedTabId]);
-
 
     React.useEffect(() => {
         handleResize();
@@ -61,7 +55,7 @@ export function NoteBookTabs({ tabs, selectedTabId, onSelectTab }: { tabs: strin
         };
     }, [handleResize]);
 
-    const TabItem = React.forwardRef(function ({ id, selected, onClick, children }: { id: string, selected: boolean, onClick: () => void, children: React.ReactNode }, ref) {
+    const TabItem = React.forwardRef(function ({ id, selected, onClick, children }: { id: string, selected: boolean, onClick: () => void, children: React.ReactNode; }, ref) {
         return (
             <Clickable
                 className={classes("vc-notebook-tabbar-item", selected ? "vc-notebook-selected" : "")}
@@ -117,7 +111,7 @@ export function NoteBookTabs({ tabs, selectedTabId, onSelectTab }: { tabs: strin
                                     width: el ? el.getBoundingClientRect().width : width
                                 });
                             }}
-                            onClick={selectedTabId !== tab ? () => onSelectTab(tab) : () => {}}
+                            onClick={selectedTabId !== tab ? () => onSelectTab(tab) : () => { }}
                         >
                             {tab}
                         </TabItem>
@@ -142,7 +136,7 @@ export function NoteBookTabs({ tabs, selectedTabId, onSelectTab }: { tabs: strin
                             look={Button.Looks.BLANK}
                             onClick={() => setShow(v => !v)}
                         >
-                            <SvgOverFlowIcon className={classes(overflowIcon)} width={16} height={16}/>
+                            <SvgOverFlowIcon className={classes(overflowIcon)} width={16} height={16} />
                         </Button>
                     )}
                 </Popout>
@@ -163,8 +157,6 @@ export function CreateTabBar({ tabs, firstSelectedTab, onChangeTab }) {
     const [selectedTab, setSelectedTab] = React.useState(
         firstSelectedTab || (tabKeys.length > 0 ? tabKeys[0] : null)
     );
-
-
 
     const renderSelectedTab = React.useCallback(() => {
         const selectedTabId = tabKeys.find(tab => tab === selectedTab);

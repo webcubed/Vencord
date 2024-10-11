@@ -9,9 +9,9 @@ import { classes } from "@utils/misc";
 import { ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalProps, ModalRoot, ModalSize, openModal } from "@utils/modal";
 import { findByProps } from "@webpack";
 import { ContextMenuApi, Flex, FluxDispatcher, Menu, React, Text, TextInput } from "@webpack/common";
+
 import noteHandler from "../../noteHandler";
 import { HolyNotes } from "../../types";
-
 import HelpIcon from "../icons/HelpIcon";
 import Errors from "./Error";
 import HelpModal from "./HelpModal";
@@ -54,8 +54,6 @@ const renderNotebook = ({
 
     return filteredMessages.length > 0 ? filteredMessages : <Errors />;
 };
-
-
 
 export const NoteModal = (props: ModalProps & { onClose: () => void; }) => {
     const [sortType, setSortType] = React.useState(true);
