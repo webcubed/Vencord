@@ -20,11 +20,6 @@ const settings = definePluginSettings(
             type: OptionType.STRING,
             description: "Words that will not be capitalised",
             default: ""
-        },
-        correctWords: {
-            type: OptionType.BOOLEAN,
-            description: "If some shorthands should be corrected to their better forms- eg: \"ur\" to \"you're\"",
-            default: true
         }
     });
 
@@ -49,33 +44,14 @@ export default definePlugin({
 function textProcessing(input : string)
 {
     let text = input;
-    if(settings.store.correctWords) { text = formalWords(text); }
     text = cap(text);
     text = apostrophe(text);
     return text;
 }
 
-function formalWords(textInput : string)
-{
-    interface WordMap
-    {
-        [key: string]: string;
-    }
-
-    // idk anything else to put here lmao
-    const wordDictionary: WordMap = {
-        "ur": "youre",
-        "u": "you",
-        "r": "are",
-        "thx": "thanks"
-    };
-
-    return textInput.split(" ").map(word => wordDictionary[word] || word).join(" ");
-
-}
 function apostrophe(textInput: string): string
 {
-    const corrected = "wasn't, can't, don't, won't, isn't, aren't, haven't, hasn't, hadn't, doesn't, didn't, shouldn't, wouldn't, couldn't, i'm, you're, he's, she's, it's, they're, that's, who's, what's, there's, here's, how's, where's, when's, why's, let's, you'll, I'll, they'll, it'll, I've, you've, we've, they've, you'd, he'd, she'd, it'd, we'd, they'd, ya'll".toLowerCase();
+    const corrected = "wasn't, can't, don't, won't, isn't, aren't, haven't, hasn't, hadn't, doesn't, didn't, shouldn't, wouldn't, couldn't, i'm, you're, he's, she's, it's, they're, that's, who's, what's, there's, here's, how's, where's, when's, why's, let's, you'll, I'll, they'll, it'll, I've, you've, we've, they've, you'd, he'd, she'd, it'd, we'd, they'd, y'all".toLowerCase();
     const words: string[] = corrected.split(", ");
     const wordsInputted = textInput.split(" ");
 

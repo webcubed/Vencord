@@ -167,7 +167,7 @@ export default definePlugin({
         },
         // member list
         {
-            find: "this.props.isGuildEligibleForRecentlyOnline",
+            find: "._areActivitiesExperimentallyHidden=(",
             replacement: {
                 match: /new Date\(\i\):null;/,
                 replace: "$&if($self.shouldHideUser(this.props.user.id, this.props.channel.id)) return null; "
@@ -184,7 +184,7 @@ export default definePlugin({
         },
         // "1 blocked message"
         {
-            find: ".default.Messages.BLOCKED_MESSAGES_HIDE.format(",
+            find: "Messages.BLOCKED_MESSAGES_HIDE.format",
             replacement: {
                 match: /\i.memo\(function\(\i\){/,
                 replace: "$&return null;"
@@ -193,19 +193,11 @@ export default definePlugin({
         },
         // replies
         {
-            find: ".MessageTypes.GUILD_APPLICATION_PREMIUM_SUBSCRIPTION||",
+            find: ".GUILD_APPLICATION_PREMIUM_SUBSCRIPTION||",
             replacement: [
                 {
                     match: /let \i;let\{repliedAuthor:/,
-                    replace: `
-                        if(arguments[0] != null && arguments[0].referencedMessage.message != null)
-                        {
-                            if($self.shouldHideUser(arguments[0].referencedMessage.message.author.id, arguments[0].baseMessage.messageReference.channel_id))
-                            {
-                                return $self.hiddenReplyComponent();
-                            }
-                        }$&
-                    `
+                    replace: "if(arguments[0] != null && arguments[0].referencedMessage.message != null) { if($self.shouldHideUser(arguments[0].referencedMessage.message.author.id, arguments[0].baseMessage.messageReference.channel_id)) { return $self.hiddenReplyComponent(); } }$&"
                 }
             ]
         },
@@ -215,15 +207,34 @@ export default definePlugin({
             replacement: {
                 // horror but it works
                 match: /function\(\i,(\i),\i\){.*,\[\i,\i,\i\]\);/,
-                replace: `
-                    $&
-                        if($1.rawRecipients[0] != null)
-                        {
-                            if($1.rawRecipients[0].id != null)
-                            {
-                                if($self.shouldHideUser($1.rawRecipients[0].id)) return null;
-                            }  
-                        }`
+                replace: "$&if($1.rawRecipients[0] != null){if($1.rawRecipients[0].id != null){if($self.shouldHideUser($1.rawRecipients[0].id)) return null;}}"
+            }
+        },
+
+        //thank nick (644298972420374528) for these patches :3 
+
+        // filter relationships
+        {
+            find: "getFriendIDs(){",
+            replacement: {
+                match: /\i.FRIEND\)/,
+                replace: "$&.filter(id => !$self.shouldHideUser(id))"
+            }
+        },
+        //active now list
+        {
+            find: "getUserAffinitiesUserIds(){",
+            replacement: {
+                match: /return (\i.affinityUserIds)/,
+                replace: "return new Set(Array.from($1).filter(id => !$self.shouldHideUser(id)))"
+            }
+        },
+        // mutual friends list in user profile
+        {
+            find: "}getMutualFriends(",
+            replacement: {
+                match: /(getMutualFriends\(\i\){)return (\i[\i])/,
+                replace: "$1if($2 != undefined) return $2.filter(u => !$self.shouldHideUser(u.key))"
             }
         }
     ]

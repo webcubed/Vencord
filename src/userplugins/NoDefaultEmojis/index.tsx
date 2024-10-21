@@ -93,7 +93,7 @@ export default definePlugin({
     settings,
     patches: [
         {
-            find: "default.Messages.EMOJI_MATCHING",
+            find: ".Messages.EMOJI_MATCHING",
             replacement: {
                 match: /renderResults\(e\){/,
                 replace: "renderResults(e){ e.results.emojis = e.results.emojis.filter(emoji => !emoji.uniqueName || Vencord.Settings.plugins.NoDefaultEmojis.except.split(',\\ ').includes(emoji.uniqueName));"

@@ -114,15 +114,7 @@ async function createQuoteImage(avatarUrl: string, quoteOld: string, grayScale: 
     switch(settings.store.userIdentifier)
     {
         case userIDOptions.displayName:
-            const meow = recentmessage.author.globalName;
-            if(meow)
-            {
-                name = meow;
-            }
-            else
-            {
-                name = recentmessage.author.username;
-            }
+            name = recentmessage.author.globalName ?? recentmessage.author.username;
             break;
         case userIDOptions.userName:
             name = recentmessage.author.username;

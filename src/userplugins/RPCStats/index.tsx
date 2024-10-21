@@ -188,6 +188,13 @@ export default definePlugin({
     async start()
     {
         updateData();
+
+        setInterval(() => 
+        {
+            checkForNewDay();
+            updateData();
+        }, 1000);
+
     },
     settings,
     stop()
@@ -212,9 +219,6 @@ let lastCheckedDate: string = getCurrentDate();
 function checkForNewDay(): void {
     const currentDate = getCurrentDate();
     if (currentDate !== lastCheckedDate) {
-        updateData();
         lastCheckedDate = currentDate;
     }
 }
-
-setInterval(checkForNewDay, 1000);
