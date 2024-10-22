@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/sampathgujarathi/fakeProfile/assets/66912066/6e4d4059-13aa-40a4-abb1-31543322f64a" alt="Banner Project" width="550">
+  <img src="https://github.com/user-attachments/assets/9285180a-64d5-4111-9ae4-c2f199ad000e" alt="Banner Project" width="550">
 
   <h1><img src="https://i.imgur.com/iDlsg7L.png" alt="Lumi Logo" width="25"><strong>・fakeProfile</strong></h1>
   An <strong>all-in-one</strong></a> plugin to customize your Discord profile
@@ -11,6 +11,8 @@
   <img src="https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript"></a>
   <img src="https://img.shields.io/badge/CSS-239120?&style=for-the-badge&logo=css3&logoColor=white" alt="CSS"></a>
   <a href="https://discord.gg/ffmkewQ4R7"><img src="https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white" alt="Discord Server"></a>
+  <br>
+  <a href="https://github.com/gujarathisampath/fakeProfile/commits/main/"><img src="https://img.shields.io/github/last-commit/gujarathisampath/fakeProfile?&style=for-the-badge&color=FFFFFF&logoColor=D9E0EE&labelColor=42A5F5%22width=%22200"></a>
   <br>
   <h6><strong>Support For There Clients</strong></h6>
   <a href="https://github.com/pyoncord/Bunny"><img src="https://i.imgur.com/YjtQqBQ.png" alt="Pyoncord" width="50"></a>
@@ -35,7 +37,7 @@
 ## ❓What is fakeProfile?
 
 <div align="center">
-  <img src="https://github.com/sampathgujarathi/fakeProfile/blob/137947f167b631f6fdbd2ff07ba26e48016c5658/assets/profilepreview.png?raw=true" alt="Preview" width="500">
+  <img src="https://i.imgur.com/nSPGJkS.png" alt="Preview" width="500">
 </div>
 
 **fakeProfile** is a plugin for **Discord mod client** that supports all features related to nitro profile editing without need to use individual plugins to create a complete profile with features such as:
@@ -55,20 +57,20 @@
 
 ## 😍Compare plugins
 
-| Features        | **fakeProfile**  | **USRBG**          | **UserPFP**             | **GlobalBadges**   | **FakeProfileThemes** | **Decor**          |
-| --------------- | ---------------- | ------------------ | ----------------------- | ------------------ | --------------------- | ------------------ |
-| Custom Banner   | ✅ **Support**   | ✅ **Support**     | ❌ **Not Support**      | ❌ **Not Support** | ❌ **Not Support**    | ❌ **Not Support** |
-| Custom Avatar   | ✅ **Support**   | ❌ **Not Support** | ✅ **Support with CSS** | ❌ **Not Support** | ❌ **Not Support**    | ❌ **Not Support** |
-| Custom Badge    | ✅ **Support**   | ❌ **Not Support** | ❌ **Not Support**      | ✅ **Support**     | ❌ **Not Support**    | ❌ **Not Support** |
-| Profile Themes  | ✅ **3y3 Style** | ❌ **Not Support** | ❌ **Not Support**      | ❌ **Not Support** | ✅ **3y3 Style**      | ❌ **Not Support** |
-| Profile Effects | ✅ **Support**   | ❌ **Not Support** | ❌ **Not Support**      | ❌ **Not Support** | ❌ **Not Support**    | ❌ **Not Support** |
+| Features               | **fakeProfile**  | **USRBG**          | **UserPFP**             | **GlobalBadges**   | **FakeProfileThemes** | **Decor**          |
+| ---------------------- | ---------------- | ------------------ | ----------------------- | ------------------ | --------------------- | ------------------ |
+| Custom Banner          | ✅ **Support**   | ✅ **Support**     | ❌ **Not Support**      | ❌ **Not Support** | ❌ **Not Support**    | ❌ **Not Support** |
+| Custom Avatar          | ✅ **Support**   | ❌ **Not Support** | ✅ **Support with CSS** | ❌ **Not Support** | ❌ **Not Support**    | ❌ **Not Support** |
+| Custom Badge           | ✅ **Support**   | ❌ **Not Support** | ❌ **Not Support**      | ✅ **Support**     | ❌ **Not Support**    | ❌ **Not Support** |
+| Profile Themes         | ✅ **3y3 Style** | ❌ **Not Support** | ❌ **Not Support**      | ❌ **Not Support** | ✅ **3y3 Style**      | ❌ **Not Support** |
+| Profile Effects        | ✅ **Support**   | ❌ **Not Support** | ❌ **Not Support**      | ❌ **Not Support** | ❌ **Not Support**    | ❌ **Not Support** |
 | Custom Profile Effects | ✅ **Support**   | ❌ **Not Support** | ❌ **Not Support**      | ❌ **Not Support** | ❌ **Not Support**    | ❌ **Not Support** |
-| Decoration      | ✅ **Support**   | ❌ **Not Support** | ❌ **Not Support**      | ❌ **Not Support** | ❌ **Not Support**    | ✅ **Support**     |
+| Decoration             | ✅ **Support**   | ❌ **Not Support** | ❌ **Not Support**      | ❌ **Not Support** | ❌ **Not Support**    | ✅ **Support**     |
 
 ## ❓Tutorial about plugin
 
 > [!NOTE]
-> You must join our Discord server to request banners, avatars and badges. You can **[click here](https://discord.gg/ffmkewQ4R7)** and it will take you straight to our Discord server.
+> You must join Sampath's Discord server to request banners, avatars and badges. You can **[click here](https://discord.gg/ffmkewQ4R7)** and it will take you straight to their Discord server.
 
 ### 1. How to request banner?
 
@@ -91,10 +93,10 @@
 <summary>Click to read</summary>
 <br>
 
-- Go to [#command](https://discord.com/channels/1117373291095662623/1215640671457771540)
+- Go to [#command](https://imgur.com/dl6Qh4C)
 - Used `/profile avatar upload` command like image below:
 
- <img src="https://github.com/sampathgujarathi/fakeProfile/assets/66912066/cd39bd4c-7226-496e-b08e-1c1cd8f12e81" alt="profile avatar upload">
+ <img src="https://i.imgur.com/dl6Qh4C.png" alt="profile avatar upload">
 
 - All that's left for you is to wait until your request is approved in the [#fakeprofile-logs](https://discord.com/channels/1117373291095662623/1215640664373465129) and wait 2 mins or reload manually is done.
 </details>
@@ -134,11 +136,18 @@
 <details closed>
 <summary>Request custom badges</summary>
 <br>
+  
+- Upload your badge to Imgur
+- Copy URL of your future badge like this by right-click:
+  
+ <img src="https://github.com/ExtbhiteEAS/fakeProfile/blob/main/assets/ezgif-3-1a6f47df33.gif?raw=true" alt="How to get direcly image from Imgur">
 
 - Go to [#command](https://discord.com/channels/1117373291095662623/1215640671457771540)
 - Used command `/badges add` `Name` `Icon` like this:
 
  <img src="https://i.imgur.com/7tB0Zfz.png" alt="/badges add command">
+
+ > Where `icon` you need just place your copied URL from Imgur
 
 - Wait your request approved in [#fakeProfile-logs](https://discord.com/channels/1117373291095662623/1215640664373465129) and wait 2 mins or reload manually is done.
 </details>
@@ -235,7 +244,7 @@
 Thanks for all your support for this project.
 
 <p align="center">
-  <a href="https://github.com/sampathgujarathi/fakeProfile/graphs/contributors" style="pointer-events: none; cursor: default;"><img src="https://contrib.rocks/image?repo=sampathgujarathi/fakeProfile" alt="Contributors" width="200">
+  <a href="https://github.com/gujarathisampath/fakeProfile/graphs/contributors" style="pointer-events: none; cursor: default;"><img src="https://contrib.rocks/image?repo=gujarathisampath/fakeProfile" alt="Contributors" width="200">
   </a>
 </p>
 
@@ -244,8 +253,8 @@ Thanks for all your support for this project.
 If you feel loved or interested in this project, you can leave us a **star** and share this project with people who have the same needs as you. That will be a great motivation for us to continue developing this project to make it become even better. Thank you so much.
 
 <p align="center">
-  <a href="https://github.com/sampathgujarathi/fakeProfile" style="pointer-events: none; cursor: default;">
-    <img src="https://m3-markdown-badges.vercel.app/stars/2/2//sampathgujarathi/fakeProfile" alt="Leave us a star" width="200">
+  <a href="https://github.com/gujarathisampath/fakeProfile" style="pointer-events: none; cursor: default;">
+    <img src="https://m3-markdown-badges.vercel.app/stars/2/2//gujarathisampath/fakeProfile" alt="Leave us a star" width="200">
   </a>
 </p>
 
