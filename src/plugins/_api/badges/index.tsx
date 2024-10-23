@@ -20,7 +20,7 @@ import { _getBadges, BadgePosition, BadgeUserArgs, ProfileBadge } from "@api/Bad
 import DonateButton from "@components/DonateButton";
 import ErrorBoundary from "@components/ErrorBoundary";
 import { Flex } from "@components/Flex";
-import { Heart } from "@components/Heart";
+import { PlusIcon } from "@components/Icons";
 import { openContributorModal } from "@components/PluginSettings/ContributorModal";
 import { Devs } from "@utils/constants";
 import { Logger } from "@utils/Logger";
@@ -78,8 +78,9 @@ const PlusMaintainerBadge: ProfileBadge = {
 };
 
 let DonorBadges = {} as Record<string, Array<Record<"tooltip" | "badge", string>>>;
-let EquicordDonorBadges = {} as Record<string, Array<Record<"tooltip" | "badge", string>>>;
 let SuncordDonorBadges = {} as Record<string, Array<Record<"tooltip" | "badge", string>>>;
+let EquicordDonorBadges = {} as Record<string, Array<Record<"tooltip" | "badge", string>>>;
+let PlusCustomBadges = {} as Record<string, Array<Record<"tooltip" | "badge", string>>>;
 
 async function loadBadges(url: string, noCache = false) {
     const init = {} as RequestInit;
@@ -90,12 +91,14 @@ async function loadBadges(url: string, noCache = false) {
 
 async function loadAllBadges(noCache = false) {
     const vencordBadges = await loadBadges("https://badges.vencord.dev/badges.json", noCache);
-    const equicordBadges = await loadBadges("https://raw.githubusercontent.com/Equicord/Ignore/main/badges.json", noCache);
     const suncordBadges = await loadBadges("https://raw.githubusercontent.com/verticalsync/Suncord/main/src/assets/badges.json", noCache);
+    const equicordBadges = await loadBadges("https://raw.githubusercontent.com/Equicord/Ignore/main/badges.json", noCache);
+    const plusBadges = await loadBadges("https://jestinkt.nl/files/Vencord%2B%20Custom%20Badges.json", noCache);
 
     DonorBadges = vencordBadges;
-    EquicordDonorBadges = equicordBadges;
     SuncordDonorBadges = suncordBadges;
+    EquicordDonorBadges = equicordBadges;
+    PlusCustomBadges = plusBadges;
 }
 
 export default definePlugin({
@@ -241,6 +244,75 @@ export default definePlugin({
         }));
     },
 
+    getSuncordDonorBadges(userId: string) {
+        return SuncordDonorBadges[userId]?.map(badge => ({
+            image: badge.badge,
+            description: badge.tooltip,
+            position: BadgePosition.START,
+            props: {
+                style: {
+                    borderRadius: "50%",
+                    transform: "scale(0.9)" // The image is a bit too big compared to default badges
+                }
+            },
+            onClick() {
+                const modalKey = openModal(props => (
+                    <ErrorBoundary noop onError={() => {
+                        closeModal(modalKey);
+                        VencordNative.native.openExternal("https://github.com/sponsors/verticalsync");
+                    }}>
+                        <Modals.ModalRoot {...props}>
+                            <Modals.ModalHeader>
+                                <Flex style={{ width: "100%", justifyContent: "center" }}>
+                                    <Forms.FormTitle
+                                        tag="h2"
+                                        style={{
+                                            width: "100%",
+                                            textAlign: "center",
+                                            margin: 0
+                                        }}
+                                    >
+                                        <Heart />
+                                        Suncord Donor
+                                    </Forms.FormTitle>
+                                </Flex>
+                            </Modals.ModalHeader>
+                            <Modals.ModalContent>
+                                <Flex>
+                                    <img
+                                        role="presentation"
+                                        src="https://cdn.discordapp.com/emojis/1026533070955872337.png"
+                                        alt=""
+                                        style={{ margin: "auto" }}
+                                    />
+                                    <img
+                                        role="presentation"
+                                        src="https://cdn.discordapp.com/emojis/1026533090627174460.png"
+                                        alt=""
+                                        style={{ margin: "auto" }}
+                                    />
+                                </Flex>
+                                <div style={{ padding: "1em" }}>
+                                    <Forms.FormText>
+                                        This badge is a special perk for Suncord Donors
+                                    </Forms.FormText>
+                                    <Forms.FormText className={Margins.top20}>
+                                        Please consider supporting the development of Suncord by becoming a donor. It would mean a lot!
+                                    </Forms.FormText>
+                                </div>
+                            </Modals.ModalContent>
+                            <Modals.ModalFooter>
+                                <Flex style={{ width: "100%", justifyContent: "center" }}>
+                                    <DonateButton />
+                                </Flex>
+                            </Modals.ModalFooter>
+                        </Modals.ModalRoot>
+                    </ErrorBoundary>
+                ));
+            },
+        }));
+    },
+
     getEquicordDonorBadges(userId: string) {
         return EquicordDonorBadges[userId]?.map(badge => ({
             image: badge.badge,
@@ -311,8 +383,8 @@ export default definePlugin({
         }));
     },
 
-    getSuncordDonorBadges(userId: string) {
-        return SuncordDonorBadges[userId]?.map(badge => ({
+    getPlusCustomBadges(userId: string) {
+        return PlusCustomBadges[userId]?.map(badge => ({
             image: badge.badge,
             description: badge.tooltip,
             position: BadgePosition.START,
@@ -326,7 +398,7 @@ export default definePlugin({
                 const modalKey = openModal(props => (
                     <ErrorBoundary noop onError={() => {
                         closeModal(modalKey);
-                        VencordNative.native.openExternal("https://github.com/sponsors/verticalsync");
+                        VencordNative.native.openExternal("https://github.com/RobinRMC/VencordPlus");
                     }}>
                         <Modals.ModalRoot {...props}>
                             <Modals.ModalHeader>
@@ -339,40 +411,21 @@ export default definePlugin({
                                             margin: 0
                                         }}
                                     >
-                                        <Heart />
-                                        Suncord Donor
+                                        <PlusIcon />
+                                        Vencord+ Custom Badge
                                     </Forms.FormTitle>
                                 </Flex>
                             </Modals.ModalHeader>
                             <Modals.ModalContent>
-                                <Flex>
-                                    <img
-                                        role="presentation"
-                                        src="https://cdn.discordapp.com/emojis/1026533070955872337.png"
-                                        alt=""
-                                        style={{ margin: "auto" }}
-                                    />
-                                    <img
-                                        role="presentation"
-                                        src="https://cdn.discordapp.com/emojis/1026533090627174460.png"
-                                        alt=""
-                                        style={{ margin: "auto" }}
-                                    />
-                                </Flex>
                                 <div style={{ padding: "1em" }}>
                                     <Forms.FormText>
-                                        This badge is a special perk for Suncord Donors
+                                        This badge is a special perk exclusively given by RobinRMC
                                     </Forms.FormText>
                                     <Forms.FormText className={Margins.top20}>
-                                        Please consider supporting the development of Suncord by becoming a donor. It would mean a lot!
+                                        I don't know what else I should put here.
                                     </Forms.FormText>
                                 </div>
                             </Modals.ModalContent>
-                            <Modals.ModalFooter>
-                                <Flex style={{ width: "100%", justifyContent: "center" }}>
-                                    <DonateButton />
-                                </Flex>
-                            </Modals.ModalFooter>
                         </Modals.ModalRoot>
                     </ErrorBoundary>
                 ));
