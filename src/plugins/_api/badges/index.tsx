@@ -412,7 +412,7 @@ export default definePlugin({
                                             margin: 0
                                         }}
                                     >
-                                        <Heart />
+                                        <PlusIcon />
                                         Vencord+ Custom Badge
                                     </Forms.FormTitle>
                                 </Flex>
@@ -427,11 +427,6 @@ export default definePlugin({
                                     </Forms.FormText>
                                 </div>
                             </Modals.ModalContent>
-                            <Modals.ModalFooter>
-                                <Flex style={{ width: "100%", justifyContent: "center" }}>
-                                    <DonateButton />
-                                </Flex>
-                            </Modals.ModalFooter>
                         </Modals.ModalRoot>
                     </ErrorBoundary>
                 ));
