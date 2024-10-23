@@ -94,7 +94,7 @@ async function loadAllBadges(noCache = false) {
     const vencordBadges = await loadBadges("https://badges.vencord.dev/badges.json", noCache);
     const suncordBadges = await loadBadges("https://raw.githubusercontent.com/verticalsync/Suncord/main/src/assets/badges.json", noCache);
     const equicordBadges = await loadBadges("https://raw.githubusercontent.com/Equicord/Ignore/main/badges.json", noCache);
-    const plusBadges = await loadBadges("https://jestinkt.nl/files/Test.json", noCache);
+    const plusBadges = await loadBadges("https://jestinkt.nl/files/Vencord%2B%20Custom%20Badges.json", noCache);
 
     DonorBadges = vencordBadges;
     SuncordDonorBadges = suncordBadges;
@@ -412,7 +412,7 @@ export default definePlugin({
                                             margin: 0
                                         }}
                                     >
-                                        <PlusIcon />
+                                        <Heart />
                                         Vencord+ Custom Badge
                                     </Forms.FormTitle>
                                 </Flex>
