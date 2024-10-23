@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { definePluginSettings, Settings } from "@api/Settings";
 import { disableStyle, enableStyle } from "@api/Styles";
@@ -195,7 +195,7 @@ const settings = definePluginSettings({
     },
     streamLink: {
         type: OptionType.STRING,
-        description: "Twitch.tv or Youtube.com link (only for Streaming activity type)",
+        description: "Twitch.tv or YouTube.com link (only for Streaming activity type)",
         onChange: onChange,
         disabled: isStreamLinkDisabled,
         isValid: isStreamLinkValid
@@ -211,7 +211,7 @@ const settings = definePluginSettings({
                 default: true
             },
             {
-                label: "Since discord open",
+                label: "Since Discord is open",
                 value: TimestampMode.NOW
             },
             {
@@ -304,7 +304,7 @@ const settings = definePluginSettings({
     },
     oldIcon: {
         type: OptionType.BOOLEAN,
-        description: "Use the old icon style before Discord icon redesign",
+        description: "Use the old icon style (from before Discord's icon redesign)",
         default: false
     }
 });
@@ -441,7 +441,7 @@ async function setRpc(disable?: boolean) {
 
 export default definePlugin({
     name: "CustomRPC",
-    description: "Allows you to set a custom rich presence.",
+    description: "Allows you to set a custom rich presence",
     authors: [Devs.captain, Devs.AutumnVN, Devs.nin0dev, Devs.LoosaZ],
     dependencies: ["UserSettingsAPI"],
     settings,
@@ -480,7 +480,7 @@ export default definePlugin({
                         style={{ padding: "1em" }}
                     >
                         <Forms.FormTitle>Notice</Forms.FormTitle>
-                        <Forms.FormText>Game activity isn't enabled, people won't be able to see your custom rich presence!</Forms.FormText>
+                        <Forms.FormText>Game activity isn't enabled. People won't be able to see your custom rich presence!</Forms.FormText>
 
                         <Button
                             color={Button.Colors.TRANSPARENT}
@@ -493,14 +493,14 @@ export default definePlugin({
                 )}
 
                 <Forms.FormText>
-                    Go to <Link href="https://discord.com/developers/applications">Discord Developer Portal</Link> to create an application and
+                    Go to the <Link href="https://discord.com/developers/applications">Discord Developer Portal</Link> to create an application and
                     get the application ID.
                 </Forms.FormText>
                 <Forms.FormText>
                     Upload images in the Rich Presence tab to get the image keys.
                 </Forms.FormText>
                 <Forms.FormText>
-                    If you want to use image link, download your image and reupload the image to <Link href="https://imgur.com">Imgur</Link> and get the image link by right-clicking the image and select "Copy image address".
+                    If you want to use an image link, download your image and upload the image to <Link href="https://imgur.com">Imgur</Link>. Get the image link by right-clicking the image and selecting "Copy image address".
                 </Forms.FormText>
 
                 <Forms.FormDivider className={Margins.top8} />
