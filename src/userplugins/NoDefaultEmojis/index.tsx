@@ -2,15 +2,13 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
-import { NavContextMenuPatchCallback } from "@api/ContextMenu";
-import { findGroupChildrenByChildId } from "@api/ContextMenu";
+import { findGroupChildrenByChildId, NavContextMenuPatchCallback } from "@api/ContextMenu";
 import { definePluginSettings } from "@api/Settings";
-import { disableStyle,enableStyle } from "@api/Styles";
+import { disableStyle, enableStyle } from "@api/Styles";
 import { Devs } from "@utils/constants";
-import definePlugin from "@utils/types";
-import { OptionType } from "@utils/types";
+import definePlugin, { OptionType } from "@utils/types";
 import { Menu } from "@webpack/common";
 
 import style from "./style.css?managed";
@@ -24,6 +22,7 @@ const settings = definePluginSettings({
 });
 
 const expressionPickerPatch: NavContextMenuPatchCallback = (children, props: { target: HTMLElement; }) => () => {
+    // eslint-disable-next-line no-unsafe-optional-chaining
     const { id, type, name } = props?.target?.dataset;
     if (id) return;
 
@@ -36,7 +35,7 @@ const expressionPickerPatch: NavContextMenuPatchCallback = (children, props: { t
 const messageContextMenuPatch: NavContextMenuPatchCallback = (children, props) => () => {
 
     const { favoriteableName } = props ?? {};
-    if(!favoriteableName) { return; }
+    if (!favoriteableName) { return; }
     // WHY DID I DO IT THIS WAY
     const name = favoriteableName.split(":").join("");
     if (name == null) { return; }
@@ -48,8 +47,7 @@ const messageContextMenuPatch: NavContextMenuPatchCallback = (children, props) =
 };
 
 
-function buttonThingy(name)
-{
+function buttonThingy(name) {
     return (
         <Menu.MenuItem
             id="add-emoji-autofill"
@@ -60,25 +58,21 @@ function buttonThingy(name)
     );
 }
 
-function addEmojiToAutofill(name)
-{
+function addEmojiToAutofill(name) {
     const excepted = isEmojiExcepted(name);
-    if(excepted)
-    {
+    if (excepted) {
         // remove the emoji if its already in there
         // split up the exceptions by the seperator, filter out the emoji, then re join it.
         settings.store.except = settings.store.except.split(", ").filter(item => item !== name).join(", ");
     }
-    else
-    {
+    else {
         // add the emoji to the exceptions
-        settings.store.except = settings.store.except + (", " + name);
+        settings.store.except = settings.store.except += (", " + name);
     }
 
 }
 
-function isEmojiExcepted(name)
-{
+function isEmojiExcepted(name) {
     return settings.store.except.split(", ").includes(name);
 }
 
@@ -86,10 +80,7 @@ function isEmojiExcepted(name)
 export default definePlugin({
     name: "NoDefaultEmojis",
     description: "Stops default emojis showing in the autocomplete. (You can add exceptions)",
-    authors:
-    [
-        Devs.Samwich
-    ],
+    authors: [Devs.Samwich],
     settings,
     patches: [
         {
@@ -105,16 +96,10 @@ export default definePlugin({
         "expression-picker": expressionPickerPatch,
         "message": messageContextMenuPatch
     },
-    start()
-    {
+    start() {
         enableStyle(style);
     },
-    stop()
-    {
+    stop() {
         disableStyle(style);
     }
 });
-
-
-
-

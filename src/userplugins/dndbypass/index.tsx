@@ -1,12 +1,12 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2023 Vendicated and contributors
+ * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
-import { addContextMenuPatch, NavContextMenuPatchCallback, removeContextMenuPatch } from "@api/ContextMenu";
+import { NavContextMenuPatchCallback } from "@api/ContextMenu";
 import { DataStore } from "@api/index";
-import { Devs } from "@utils/constants";
+import { PlusDevs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { findStoreLazy } from "@webpack";
 import { Menu, showToast } from "@webpack/common";
@@ -19,8 +19,9 @@ export let userWhitelist: string[] = [];
 export const DATASTORE_KEY = "DnDBypass_whitelistedUsers";
 const SelfPresenceStore = findStoreLazy("SelfPresenceStore");
 
-const userPopoutPatch: NavContextMenuPatchCallback = (children, props: { user: User, onClose(): void; }) => () => {
+const userContextMenuPatch: NavContextMenuPatchCallback = (children, props: { user: User, onClose(): void; }) => {
     children.push(
+        <Menu.MenuSeparator />,
         <Menu.MenuItem
             label={userWhitelist.includes(props.user.id) ?
                 "Remove user from DND whitelist" : "Add user to DND whitelist"}
@@ -45,7 +46,7 @@ function whitelistUser(user: User) {
 export default definePlugin({
     name: "DnDBypass",
     description: "Bypass DND for specified users",
-    authors: [Devs.mantikafasi],
+    authors: [PlusDevs.mantikafasi],
 
     patches: [
         {
@@ -57,6 +58,7 @@ export default definePlugin({
         }
     ],
     settings,
+    contextMenus: { "user-context": userContextMenuPatch },
 
     shouldNotify(author: User) {
         console.log(author);
@@ -67,12 +69,9 @@ export default definePlugin({
     },
 
     async start() {
-        addContextMenuPatch("user-context", userPopoutPatch);
         userWhitelist = await DataStore.get(DATASTORE_KEY) ?? [];
     },
 
-    stop() {
-        removeContextMenuPatch("user-context", userPopoutPatch);
-    }
+    stop() { }
 
 });

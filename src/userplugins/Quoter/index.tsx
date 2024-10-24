@@ -1,20 +1,12 @@
-/*
- * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
-import { findGroupChildrenByChildId, NavContextMenuPatchCallback } from "@api/ContextMenu";
-import { definePluginSettings } from "@api/Settings";
+import { addContextMenuPatch, findGroupChildrenByChildId, NavContextMenuPatchCallback, removeContextMenuPatch } from "@api/ContextMenu";
 import { Devs } from "@utils/constants";
 import { getCurrentChannel } from "@utils/discord";
 import { ModalCloseButton, ModalContent, ModalHeader, ModalProps, ModalRoot, ModalSize, openModal } from "@utils/modal";
-import definePlugin, { OptionType } from "@utils/types";
-import { Button, Menu, Select, Switch, Text, TextInput, UploadHandler, useEffect, UserStore,useState } from "@webpack/common";
+import definePlugin from "@utils/types";
+import { Button, Menu, Switch, Text, UploadHandler, useEffect, useState, Select } from "@webpack/common";
 import { Message } from "discord-types/general";
-
 import { QuoteIcon } from "./components";
-import { canvasToBlob, fetchImageAsBlob,FixUpQuote, wrapText } from "./utils";
+import { wrapText, canvasToBlob, FixUpQuote, fetchImageAsBlob} from "./utils";
 
 enum ImageStyle
 {
@@ -25,7 +17,11 @@ const messagePatch: NavContextMenuPatchCallback = (children, { message }) => {
     recentmessage = message;
     if (!message.content) return;
 
-    const buttonElement =
+    const group = findGroupChildrenByChildId("copy-text", children);
+    if (!group) return;
+
+    group.splice(
+        group.findIndex(c => c?.props?.id === "copy-text") + 1, 0,
         <Menu.MenuItem
             id="vc-quote"
             label="Quote"
@@ -33,44 +29,13 @@ const messagePatch: NavContextMenuPatchCallback = (children, { message }) => {
             action={async () => {
                 openModal(props => <QuoteModal {...props} />);
             }}
-        />;
-
-    const group = findGroupChildrenByChildId("copy-text", children);
-    if (!group)
-    {
-        children.push(buttonElement);
-        return;
-    }
-
-    group.splice(
-        group.findIndex(c => c?.props?.id === "copy-text") + 1, 0, buttonElement
+        />
     );
 };
 
 let recentmessage: Message;
 let grayscale;
 let setStyle : ImageStyle = ImageStyle.inspirational;
-let customMessage : string = "";
-let isUserCustomCapable = false;
-
-enum userIDOptions
-{
-    displayName,
-    userName,
-    userId
-}
-const settings = definePluginSettings({
-    userIdentifier:
-    {
-        type: OptionType.SELECT,
-        description: "What the author's name should be displayed as",
-        options: [
-            { label: "Display Name", value: userIDOptions.displayName, default: true },
-            { label: "Username", value: userIDOptions.userName },
-            { label: "User ID", value: userIDOptions.userId }
-        ]
-    }
-});
 
 export default definePlugin({
     name: "Quoter",
@@ -78,8 +43,7 @@ export default definePlugin({
     authors: [Devs.Samwich],
     contextMenus: {
         "message": messagePatch
-    },
-    settings
+    }
 });
 
 function sizeUpgrade(url) {
@@ -88,43 +52,16 @@ function sizeUpgrade(url) {
     return u.toString();
 }
 
-const preparingSentence: string[] = [];
+let preparingSentence: string[] = [];
 const lines: string[] = [];
 
-async function createQuoteImage(avatarUrl: string, quoteOld: string, grayScale: boolean): Promise<Blob> {
-    let quote;
-
-    if(isUserCustomCapable && customMessage.length > 0)
-    {
-        quote = FixUpQuote(customMessage);
-    }
-    else
-    {
-        quote = FixUpQuote(quoteOld);
-    }
+async function createQuoteImage(avatarUrl: string, name: string, quoteOld: string, grayScale: boolean): Promise<Blob> {
+    const quote = FixUpQuote(quoteOld);
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
 
     if (!ctx) {
         throw new Error("Cant get 2d rendering context :(");
-    }
-
-    let name : string = "";
-
-    switch(settings.store.userIdentifier)
-    {
-        case userIDOptions.displayName:
-            name = recentmessage.author.globalName ?? recentmessage.author.username;
-            break;
-        case userIDOptions.userName:
-            name = recentmessage.author.username;
-            break;
-        case userIDOptions.userId:
-            name = recentmessage.author.id;
-            break;
-        default:
-            name = "MAN WTF HAPPENED";
-            break;
     }
 
     switch(setStyle)
@@ -196,29 +133,12 @@ function registerStyleChange(style)
     GeneratePreview();
 }
 
-async function setIsUserCustomCapable()
-{
-    const allowList : string[] = await fetch("https://raw.githubusercontent.com/cheesesamwich/Tobleronecord/main/src/quoterusers.json").then(e => e.json());
-    isUserCustomCapable = allowList.includes(UserStore.getCurrentUser().id);
-}
-
-
 function QuoteModal(props: ModalProps) {
-    setIsUserCustomCapable();
     const [gray, setGray] = useState(true);
     useEffect(() => {
         grayscale = gray;
         GeneratePreview();
     }, [gray]);
-
-    const safeContent = recentmessage && recentmessage.content ? recentmessage.content : "";
-
-    const [custom, setCustom] = useState(safeContent);
-    useEffect(() => {
-        customMessage = custom;
-        GeneratePreview();
-    }, [custom]);
-
     return (
         <ModalRoot {...props} size={ModalSize.MEDIUM}>
             <ModalHeader separator={false}>
@@ -230,18 +150,11 @@ function QuoteModal(props: ModalProps) {
             <ModalContent scrollbarType="none">
                 <img src={""} id={"quoterPreview"} style={{ borderRadius: "20px", width: "100%" }}></img>
                 <br></br><br></br>
-                {isUserCustomCapable &&
-                (
-                    <>
-                        <TextInput onChange={setCustom} value={custom} placeholder="Custom Message"></TextInput>
-                        <br/>
-                    </>
-                )}
                 <Switch value={gray} onChange={setGray}>Grayscale</Switch>
-                <Select look={1}
-                    options={Object.keys(ImageStyle).filter(key => isNaN(parseInt(key, 10))).map(key => ({ label: key.charAt(0).toUpperCase() + key.slice(1),
-                        value: ImageStyle[key as keyof typeof ImageStyle] }))}
-                    select={v => registerStyleChange(v)} isSelected={v => v == setStyle}
+                <Select look={1} 
+                    options={Object.keys(ImageStyle).filter(key => isNaN(parseInt(key, 10))).map(key => ({ label: key.charAt(0).toUpperCase() + key.slice(1), 
+                    value: ImageStyle[key as keyof typeof ImageStyle] }))} 
+                    select={v => registerStyleChange(v)} isSelected={v => v == setStyle} 
                     serialize={v => v}></Select>
                 <br/>
                 <Button color={Button.Colors.BRAND_NEW} size={Button.Sizes.SMALL} onClick={() => Export()} style={{ display: "inline-block", marginRight: "5px" }}>Export</Button>
@@ -253,7 +166,7 @@ function QuoteModal(props: ModalProps) {
 }
 
 async function SendInChat(onClose) {
-    const image = await createQuoteImage(sizeUpgrade(recentmessage.author.getAvatarURL()), recentmessage.content, grayscale);
+    const image = await createQuoteImage(sizeUpgrade(recentmessage.author.getAvatarURL()), recentmessage.author.username, recentmessage.content, grayscale);
     const preview = generateFileNamePreview(recentmessage.content);
     const imageName = `${preview} - ${recentmessage.author.username}`;
     const file = new File([image], `${imageName}.png`, { type: "image/png" });
@@ -262,7 +175,7 @@ async function SendInChat(onClose) {
 }
 
 async function Export() {
-    const image = await createQuoteImage(sizeUpgrade(recentmessage.author.getAvatarURL()), recentmessage.content, grayscale);
+    const image = await createQuoteImage(sizeUpgrade(recentmessage.author.getAvatarURL()), recentmessage.author.username, recentmessage.content, grayscale);
     const link = document.createElement("a");
     link.href = URL.createObjectURL(image);
     const preview = generateFileNamePreview(recentmessage.content);
@@ -274,26 +187,17 @@ async function Export() {
 }
 
 async function GeneratePreview() {
-    const image = await createQuoteImage(sizeUpgrade(recentmessage.author.getAvatarURL()), recentmessage.content, grayscale);
+    const image = await createQuoteImage(sizeUpgrade(recentmessage.author.getAvatarURL()), recentmessage.author.username, recentmessage.content, grayscale);
     document.getElementById("quoterPreview")?.setAttribute("src", URL.createObjectURL(image));
 }
 
 function generateFileNamePreview(message) {
-    let words;
-
-    if(isUserCustomCapable && customMessage.length)
-    {
-        words = customMessage.split(" ");
-    }
-    else
-    {
-        words = message.split(" ");
-    }
+    const words = message.split(" ");
     let preview;
     if (words.length >= 6) {
         preview = words.slice(0, 6).join(" ");
     } else {
-        preview = words.join(" ");
+        preview = words.slice(0, words.length).join(" ");
     }
     return preview;
 }

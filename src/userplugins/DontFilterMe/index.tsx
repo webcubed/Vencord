@@ -2,18 +2,17 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
-import { addPreSendListener, removePreSendListener, SendListener } from "@api/MessageEvents";
-import { definePluginSettings, Settings } from "@api/Settings";
+import { addPreSendListener } from "@api/MessageEvents";
 import { Devs } from "@utils/constants";
-import definePlugin, { OptionType } from "@utils/types";
-import { findByCode } from "@webpack";
+import definePlugin from "@utils/types";
 import { Alerts, ChannelStore, Forms } from "@webpack/common";
+
 import filterList from "./constants";
 
 function escapeRegex(string) {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function warningEmbedNotice(trigger) {
@@ -39,22 +38,20 @@ function warningEmbedNotice(trigger) {
 export default definePlugin({
     name: "DontFilterMe",
     description: "Warns you if your message contains a term in the automod preset list",
-    authors: [
-        Devs.Samwich
-    ],
+    authors: [Devs.Samwich],
     dependencies: ["MessageEventsAPI"],
     start() {
         this.preSend = addPreSendListener(async (channelId, messageObj, extra) => {
 
-            if(ChannelStore.getChannel(channelId.toString()).isDM()) return { cancel: false };
-            
+            if (ChannelStore.getChannel(channelId.toString()).isDM()) return { cancel: false };
+
             const escapedStrings = filterList.map(escapeRegex);
-            const regexString = escapedStrings.join('|');
-            const regex = new RegExp(`(${regexString})`, 'i');
+            const regexString = escapedStrings.join("|");
+            const regex = new RegExp(`(${regexString})`, "i");
 
             console.log(channelId);
 
-            let matches = regex.exec(messageObj.content)
+            const matches = regex.exec(messageObj.content);
             if (matches) {
                 if (!await warningEmbedNotice(matches[0])) {
                     return { cancel: true };

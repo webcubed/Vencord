@@ -2,11 +2,11 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
 import "./styles.css";
 
-import { addContextMenuPatch, NavContextMenuPatchCallback, removeContextMenuPatch } from "@api/ContextMenu";
+import { NavContextMenuPatchCallback } from "@api/ContextMenu";
 import { get, set } from "@api/DataStore";
 import { addAccessory, removeAccessory } from "@api/MessageAccessories";
 import { definePluginSettings } from "@api/Settings";
@@ -28,7 +28,7 @@ let hiddenMessages = new Map<string, {
     channel_id: string;
 }>();
 
-const patchMessageContextMenu: NavContextMenuPatchCallback = (children, { message }) => () => {
+const patchMessageContextMenu: NavContextMenuPatchCallback = (children, { message }) => {
     const { deleted, id, channel_id } = message;
     if (deleted || message.state !== "SENT") return;
 
@@ -66,13 +66,11 @@ const buildCss = () => {
             position: relative;
             background: var(--brand-experiment-05a);
         }
-
         :is(${elements}):not(.messagelogger-deleted) > div:hover {
             background: var(--brand-experiment-10a);
         }
-
         :is(${elements}):not(.messagelogger-deleted) > div:before {
-            background: var(--brand-experiment);
+            background: var(--brand-500);
             content: "";
             position: absolute;
             display: block;
@@ -82,16 +80,13 @@ const buildCss = () => {
             pointer-events: none;
             width: 2px;
         }
-
         :is(${elements}) [id^='message-accessories'] > *:not(.vc-hide-message-accessory),
-        :is(${elements}) [id^='message-content'] > * {
+        :is(${elements}) [id^='message-content']:not([class^='repliedTextContent']) > * {
             display: none !important;
         }
-
         :is(${elements}) [id^='message-content']:empty {
             display: block !important;
         }
-
         :is(${elements}) [class^='contents'] [id^='message-content']:after {
             content: "Hidden content";
         }
@@ -135,7 +130,12 @@ export default definePlugin({
     name: "HideMessage",
     description: "Adds a context menu option to hide messages",
     authors: [Devs.Hanzy],
+    dependencies: ["MessageAccessoriesAPI", "MessagePopoverAPI"],
     settings,
+
+    contextMenus: {
+        "message": patchMessageContextMenu
+    },
 
     async start() {
         style = document.createElement("style");
@@ -151,14 +151,12 @@ export default definePlugin({
             if (hiddenMessages.has(message.id) && settings.store.showNotice) return <HideMessageAccessory id={message.id} />;
             return null;
         });
-        addContextMenuPatch("message", patchMessageContextMenu);
     },
 
     async stop() {
         for (const id of hiddenMessages.keys()) revealMessage(id);
 
         removeAccessory("vc-hide-message");
-        removeContextMenuPatch("message", patchMessageContextMenu);
 
         style.remove();
         hiddenMessages.clear();

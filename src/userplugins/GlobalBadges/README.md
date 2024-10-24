@@ -1,3 +1,3 @@
 ## GlobalBadges
 
-Adds global badges from other client mods
+Adds badges from other client mods

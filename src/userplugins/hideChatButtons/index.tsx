@@ -9,7 +9,7 @@ import { definePluginSettings } from "@api/Settings";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType, StartAt } from "@utils/types";
 import { useMemo, useState } from "@webpack/common";
-import { MouseEventHandler, ReactNode } from "react";
+import { MouseEventHandler } from "react";
 
 let hidechatbuttonsopen: boolean | undefined;
 
@@ -52,8 +52,18 @@ function HideToggleButton(props: { open: boolean | undefined, onClick: MouseEven
         </svg>
     </ChatBarButton>);
 }
-function buttonsInner(buttons: ReactNode[]) {
+interface ButtonReactNode {
+    props?: {
+        disabled?: boolean;
+    };
+}
+
+function buttonsInner(buttons: ButtonReactNode[]) {
+    if (buttons.every(x => x.props?.disabled === true)) {
+        return null;
+    }
     const [open, setOpen] = useState(hidechatbuttonsopen);
+
     useMemo(() => {
         console.log("useMemo: changing open", open);
         hidechatbuttonsopen = open;
@@ -65,12 +75,7 @@ function buttonsInner(buttons: ReactNode[]) {
             flexWrap: "nowrap",
             overflowX: "auto"
         }}>
-            {open && buttons.map((button, _) => (
-                // console.log(button, index),
-                <>
-                    {button}
-                </>
-            ))}
+            {open ? buttons.map(b => <>{b}</>) : null}
             <HideToggleButton onClick={() => setOpen(!open)} open={open}></HideToggleButton>
         </div>
     );
@@ -80,13 +85,18 @@ function buttonsInner(buttons: ReactNode[]) {
 
 
 export default definePlugin({
-    name: "HideChatButtons",
+    name: "hideChatButtons",
     description: "able to hide the chat buttons",
     settings: settings,
-    authors: [Devs.iamme],
+    authors: [
+        {
+            name: "i am me",
+            id: 984392761929256980n,
+        },
+    ],
     patches: [
         {
-            find: ".default.getRecipientEligibility",
+            find: '"sticker")',
             replacement: {
                 match: /(.buttons,children:)(\i)\}/,
                 replace: "$1$self.buttonsInner($2)}"

@@ -5,7 +5,7 @@
  */
 
 import { definePluginSettings } from "@api/Settings";
-import { Devs } from "@utils/constants";
+import { EquicordDevs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
 import { Forms, Menu, TextInput, useState } from "@webpack/common";
 
@@ -70,7 +70,7 @@ const settings = definePluginSettings({
 export default definePlugin({
     name: "CustomScreenShare",
     description: "Stream any resolution and any FPS!",
-    authors: [Devs.KawaiianPizza],
+    authors: [EquicordDevs.KawaiianPizza],
     settingsAboutComponent: () => (
         <Forms.FormSection>
             <Forms.FormTitle tag="h3">Usage</Forms.FormTitle>

@@ -17,8 +17,12 @@
 */
 
 import { addBadge, BadgePosition, ProfileBadge, removeBadge } from "@api/Badges";
+import { classNameFactory } from "@api/Styles";
+import ErrorBoundary from "@components/ErrorBoundary";
+import { Devs, EquicordDevs } from "@utils/constants";
+import { ModalContent, ModalRoot, openModal } from "@utils/modal";
 import definePlugin, { OptionType } from "@utils/types";
-import { React, Tooltip } from "@webpack/common";
+import { Forms, React, Tooltip, UserStore } from "@webpack/common";
 import { User } from "discord-types/general";
 
 type CustomBadge = string | {
@@ -32,7 +36,10 @@ interface BadgeCache {
     expires: number;
 }
 
-const API_URL = "https://clientmodbadges-api.herokuapp.com/";
+let badgeImages;
+
+// const API_URL = "https://clientmodbadges-api.herokuapp.com/";
+const API_URL = "https://globalbadges.suncord.rest/";
 
 const cache = new Map<string, BadgeCache>();
 const EXPIRES = 1000 * 60 * 15;
@@ -45,7 +52,8 @@ const fetchBadges = (id: string): BadgeCache["badges"] | undefined => {
             .then(body => {
                 cache.set(id, { badges: body, expires: Date.now() + EXPIRES });
                 return body;
-            });
+            })
+            .catch(() => null);
     } else if (cachedValue) {
         return cachedValue.badges;
     }
@@ -58,22 +66,29 @@ const BadgeComponent = ({ name, img }: { name: string, img: string; }) => {
                 <img
                     {...tooltipProps}
                     src={img}
-                    style={{ width: "22px", height: "22px", transform: name.includes("Replugged") ? "scale(0.9)" : null, margin: "0 2px" }}
+                    style={{
+                        width: "20px",
+                        height: "20px",
+                        transform: name.includes("Replugged") ? "scale(0.9)" : null
+                    }}
                 />
             )}
         </Tooltip>
     );
 };
 
-const GlobalBadges = ({ user }: { user: User; }) => {
+const GlobalBadges = ({ userId }: { userId: string; }) => {
     const [badges, setBadges] = React.useState<BadgeCache["badges"]>({});
-    React.useEffect(() => setBadges(fetchBadges(user.id) ?? {}), [user.id]);
+    React.useEffect(() => setBadges(fetchBadges(userId) ?? {}), [userId]);
 
     if (!badges) return null;
     const globalBadges: JSX.Element[] = [];
+    const badgeModal: JSX.Element[] = [];
 
     Object.keys(badges).forEach(mod => {
         if (mod.toLowerCase() === "vencord") return;
+        if (mod.toLowerCase() === "equicord") return;
+        if (mod.toLowerCase() === "suncord") return;
         badges[mod].forEach(badge => {
             if (typeof badge === "string") {
                 const fullNames = { "hunter": "Bug Hunter", "early": "Early User" };
@@ -86,12 +101,22 @@ const GlobalBadges = ({ user }: { user: User; }) => {
             const cleanName = badge.name.replace(mod, "").trim();
             const prefix = showPrefix() ? mod : "";
             if (!badge.custom) badge.name = `${prefix} ${cleanName.charAt(0).toUpperCase() + cleanName.slice(1)}`;
+            if (badge.custom) {
+                if (cleanName.toLowerCase().includes(mod)) return;
+                else if (prefix) badge.name = `${cleanName} (${prefix})`.replaceAll(" ()", "");
+            }
             globalBadges.push(<BadgeComponent name={badge.name} img={badge.badge} />);
+            badgeModal.push(<BadgeModalComponent name={badge.name} img={badge.badge} />);
         });
     });
+    badgeImages = badgeModal;
 
     return (
-        <div className="vc-global-badges" style={{ alignItems: "center", display: "flex" }}>
+        <div
+            className="vc-global-badges"
+            style={{ alignItems: "center", display: "flex" }}
+            onClick={_ => openBadgeModal(UserStore.getUser(userId))}
+        >
             {globalBadges}
         </div>
     );
@@ -100,7 +125,7 @@ const GlobalBadges = ({ user }: { user: User; }) => {
 const Badge: ProfileBadge = {
     component: b => <GlobalBadges {...b} />,
     position: BadgePosition.START,
-    shouldShow: userInfo => !!Object.keys(fetchBadges(userInfo.user.id) ?? {}).length,
+    shouldShow: userInfo => !!Object.keys(fetchBadges(userInfo.userId) ?? {}).length,
     key: "GlobalBadges"
 };
 
@@ -110,7 +135,7 @@ const showCustom = () => Vencord.Settings.plugins.GlobalBadges.showCustom;
 export default definePlugin({
     name: "GlobalBadges",
     description: "Adds global badges from other client mods",
-    authors: [{ name: "HypedDomi", id: 354191516979429376n }],
+    authors: [Devs.HypedDomi, EquicordDevs.Wolfie],
 
     start: () => addBadge(Badge),
     stop: () => removeBadge(Badge),
@@ -130,3 +155,69 @@ export default definePlugin({
         }
     }
 });
+
+/*
+Badge duping fix for modal lines below
+L39 the value for everything below
+L81 for not reusing globalbadges const
+L100 for the size of the badges
+L103 actual dupe fix
+L109 is when clicking the badge open the modal
+Everything below is related to the badge modal
+*/
+const cl = classNameFactory("vc-author-modal-");
+
+const BadgeModalComponent = ({ name, img }: { name: string, img: string; }) => {
+    return (
+        <Tooltip text={name} >
+            {(tooltipProps: any) => (
+                <img
+                    {...tooltipProps}
+                    src={img}
+                    style={{ width: "50px", height: "50px", margin: "2px 2px" }}
+                />
+            )}
+        </Tooltip>
+    );
+};
+
+function BadgeModal({ user }: { user: User; }) {
+    return (
+        <>
+            <div className={cl("header")}>
+                <img
+                    className={cl("avatar")}
+                    src={user.getAvatarURL(void 0, 512, true)}
+                    alt=""
+                />
+                <Forms.FormTitle tag="h2" className={cl("name")}>{user.username}</Forms.FormTitle>
+            </div>
+            {badgeImages.length ? (
+                <Forms.FormText>
+                    {user.username} has {badgeImages.length} global badges.
+                </Forms.FormText>
+            ) : (
+                <Forms.FormText>
+                    {user.username} has no global badges.
+                </Forms.FormText>
+            )}
+            {!!badgeImages.length && (
+                <div className={cl("badges")}>
+                    {badgeImages}
+                </div>
+            )}
+        </>
+    );
+}
+
+function openBadgeModal(user: User) {
+    openModal(modalprops =>
+        <ModalRoot {...modalprops}>
+            <ErrorBoundary>
+                <ModalContent className={cl("root")}>
+                    <BadgeModal user={user} />
+                </ModalContent>
+            </ErrorBoundary>
+        </ModalRoot>
+    );
+}

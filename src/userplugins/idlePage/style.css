@@ -1,0 +1,14 @@
+.custom-idle-div-page {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    position: 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.custom-idle-div-page > h1{
+    font-size: 20ex;
+    color: #b4f9f8;
+    padding-bottom: 13vh;
+}

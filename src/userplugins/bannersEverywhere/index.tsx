@@ -4,14 +4,17 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { definePluginSettings } from "@api/Settings";
-import { disableStyle, enableStyle } from "@api/Styles";
-import { Devs } from "@utils/constants";
-import definePlugin, { OptionType } from "@utils/types";
-import { RestAPI } from "@webpack/common";
-import { User } from "discord-types/general";
+import "./index.css";
 
-import style from "./index.css?managed";
+import { definePluginSettings } from "@api/Settings";
+import ErrorBoundary from "@components/ErrorBoundary";
+import { Devs } from "@utils/constants";
+import { fetchUserProfile } from "@utils/discord";
+import { Queue } from "@utils/Queue";
+import { useAwaiter } from "@utils/react";
+import definePlugin, { OptionType } from "@utils/types";
+import { useEffect, UserProfileStore, useStateFromStores } from "@webpack/common";
+import { User } from "discord-types/general";
 
 const settings = definePluginSettings({
     animate: {
@@ -20,81 +23,38 @@ const settings = definePluginSettings({
         default: false
     },
 });
-const data: { [key: string]: string | null; } = {};
 
-let enabled = false;
+const discordQueue = new Queue();
+const usrbgQueue = new Queue();
 
-async function refreshVisibleMembers() {
-    // TODO - move away from dom query
-    for await (const elem of document.querySelectorAll(
-        'div[role="listitem"][class*="member"]'
-    )) {
-        const rect = elem.getBoundingClientRect();
 
-        if (
-            !(
-                rect.top >= 0 &&
-                rect.left >= 0 &&
-                rect.bottom <=
-                (window.innerHeight || document.documentElement.clientHeight) &&
-                rect.right <=
-                (window.innerWidth || document.documentElement.clientWidth)
-            )
-        )
-            continue;
+const useFetchMemberProfile = (userId: string): string => {
+    const profile = useStateFromStores([UserProfileStore], () => UserProfileStore.getUserProfile(userId));
 
-        const avatar = (
-            elem.querySelector('img[class*="avatar"]') as any
-        ).src.split("/");
+    const usrbgUrl = (Vencord.Plugins.plugins.USRBG as any)?.getImageUrl(userId);
 
-        let memberId = "";
-        if (avatar[3] === "avatars") memberId = avatar[4];
-        else if (avatar[3] === "guilds") memberId = avatar[6];
-        else continue;
+    useEffect(() => {
+        if (usrbgUrl) return;
+        let cancel = false;
 
-        if (data[memberId]) continue;
+        discordQueue.push(() => {
+            if (cancel) return Promise.resolve(void 0);
+            return fetchUserProfile(userId).finally(async () => {
+                await new Promise<void>(resolve => setTimeout(resolve, 1000));
+            });
+        });
 
-        let res: any;
-        try {
-            res = (await RestAPI.get({
-                url: `/users/${memberId}`,
-            })) as { body: { banner: string; }; };
-        } catch (e: any) {
-            if (e.status === 429) {
-                await new Promise(r => setTimeout(r, e.body.retry_after * 2000));
-                continue;
-            }
-        }
+        return () => { cancel = true; };
+    }, []);
 
-        const { banner } = res.body;
+    if (usrbgUrl) return usrbgUrl;
 
-        if (!banner) {
-            data[memberId] = null;
-            continue;
-        }
-
-        data[
-            memberId
-        ] = `https://cdn.discordapp.com/banners/${memberId}/${banner}.${banner.startsWith("a_") ? "gif" : "png"
-        }?size=4096`;
-
-        // Trigger a rerender via hovering
-        elem.dispatchEvent(
-            new MouseEvent("mouseover", {
-                bubbles: true,
-                cancelable: true,
-                view: window,
-            })
-        );
-
-        // Please dont ratelimit us :pleadey:
-        await new Promise(r => setTimeout(r, 1000));
-    }
-    if (enabled) {
-        setTimeout(refreshVisibleMembers, 1000);
-    }
-}
-
+    if (!profile?.banner) return "";
+    const extension = settings.store.animate && profile.banner.startsWith("a_")
+        ? ".gif"
+        : ".png";
+    return `https://cdn.discordapp.com/banners/${userId}/${profile.banner}${extension}`;
+};
 export default definePlugin({
     name: "BannersEverywhere",
     description: "Displays banners in the member list ",
@@ -107,7 +67,7 @@ export default definePlugin({
             {
                 // We add the banner as a property while we can still access the user id
                 match: /verified:(\i).isVerifiedBot.*?name:null.*?(?=avatar:)/,
-                replace: "$&banner:$self.memberListBannerHook($1),",
+                replace: "$&banner:$self.memberListBanner({user: $1}),",
             },
         },
         {
@@ -122,33 +82,36 @@ export default definePlugin({
 
     ],
 
-    start() {
-        enableStyle(style);
-        enabled = true;
-        refreshVisibleMembers();
-    },
+    memberListBanner: ErrorBoundary.wrap(({ user }: { user: User; }) => {
+        const url = useFetchMemberProfile(user.id);
 
-    stop() {
-        enabled = false;
-        disableStyle(style);
-    },
+        const [shouldShow] = useAwaiter(async () => {
+            // This will get re-run when the url changes
+            if (!url || url === "") return false;
+            if (!settings.store.animate) {
+                // Discord cdn can return both png and gif, useFetchMemberProfile gives it respectively
+                if (url!.includes("cdn.discordapp.com")) return true;
 
-    memberListBannerHook(user: User) {
-        let url = this.getBanner(user.id);
-        if (url === "") return;
-        if (!settings.store.animate) url = url.replace(".gif", ".png");
+                // HEAD request to check if the image is a png
+                return await new Promise(resolve => {
+                    usrbgQueue.push(() => fetch(url!.replace(".gif", ".png"), { method: "HEAD" }).then(async res => {
+                        console.log(res);
+                        await new Promise<void>(resolve => setTimeout(resolve, 1000));
+                        resolve(res.ok && res.headers.get("content-type")?.startsWith("image/png"));
+                        return;
+                    }));
+                });
+            }
+            return true;
+        }, { fallbackValue: false, deps: [url] });
 
+        if (!shouldShow) return null;
         return (
             <img src={url} className="vc-banners-everywhere-memberlist"></img>
         );
-    },
+    }, { noop: true }),
 
-    getBanner(userId: string): string {
-        if (data[userId]) return data[userId] as string;
-        if (Vencord.Plugins.isPluginEnabled("USRBG") && (Vencord.Plugins.plugins.USRBG as any).data[userId]) {
-            data[userId] = (Vencord.Plugins.plugins.USRBG as any).data[userId];
-            return data[userId] as string;
-        }
-        return "";
-    },
+
+
+
 });

@@ -9,6 +9,3 @@ Available as "Change Icon" in the folder context menu
 ![an image of some example custom folder icons](https://github.com/sadan4/Vencord/assets/117494111/c5324ab1-3b7a-4286-8cb5-41c0ceb2ea44)
 
 ![the modal used to customize the folder icons](https://github.com/sadan4/Vencord/assets/117494111/1426d350-56db-4687-8052-6c1b1ce873a1)
-
-
-

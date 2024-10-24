@@ -1,3 +1,9 @@
+/*
+ * Vencord, a Discord client mod
+ * Copyright (c) 2024 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 import { ModalProps } from "@utils/modal";
 import { User } from "discord-types/general";
 
@@ -27,6 +33,7 @@ export interface Theme {
         invite_link: string;
         avatar_hash: string;
     };
+    source?: string;
 }
 
 export interface ThemeInfoModalProps extends ModalProps {
@@ -39,6 +46,11 @@ export const enum TabItem {
     SUBMIT_THEMES,
 }
 
+export interface LikesComponentProps {
+    theme: Theme;
+    userId: User["id"];
+}
+
 export const enum SearchStatus {
     ALL,
     ENABLED,
@@ -47,4 +59,14 @@ export const enum SearchStatus {
     SNIPPET,
     DARK,
     LIGHT,
+    LIKED,
 }
+
+export type ThemeLikeProps = {
+    status: number;
+    likes: [{
+        _id?: string;
+        themeId: number;
+        userIds: User["id"][];
+    }];
+};

@@ -2,19 +2,21 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 sadan
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
-import { folderProp } from ".";
 import settings, { folderIcon, folderIconsData } from "./settings";
 
 export async function setFolderData(props: folderProp, newData: folderIcon) {
-    if(!settings.store.folderIcons){
+    if (!settings.store.folderIcons){
         settings.store.folderIcons = {};
     }
     const folderSettings = (settings.store.folderIcons as folderIconsData);
     folderSettings[props.folderId] = newData;
 }
-
+export interface folderProp {
+    folderId: string;
+    folderColor: number;
+}
 /**
     * @param rgbVal RGB value
     * @param alpha alpha bewteen zero and 1

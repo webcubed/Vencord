@@ -2,14 +2,13 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 sadan
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
 import { closeModal, ModalContent, ModalHeader, ModalRoot, openModalLazy } from "@utils/modal";
 import { Button, Menu, Slider, TextInput, useState } from "@webpack/common";
 
-import { folderProp } from ".";
 import settings, { folderIconsData } from "./settings";
-import { int2rgba, setFolderData } from "./util";
+import { folderProp, int2rgba, setFolderData } from "./util";
 
 export function ImageModal(folderProps: folderProp) {
     const [data, setData] = useState(((settings.store.folderIcons ?? {}) as folderIconsData)[folderProps.folderId]?.url ?? "");
@@ -94,7 +93,7 @@ export function makeContextItem(a: folderProp) {
             key="custom-folder-icons"
             label="Change Icon"
             action={() => {
-                openModalLazy(async () => {
+                openModalLazy(async() => {
                     return props => (
                         <ModalRoot {...props}>
                             <ModalHeader >

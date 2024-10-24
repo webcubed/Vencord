@@ -2,18 +2,13 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
-import { Settings } from "@api/Settings";
-import { definePluginSettings } from "@api/Settings";
+import { definePluginSettings, Settings } from "@api/Settings";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType, StartAt } from "@utils/types";
 import { findComponentByCodeLazy } from "@webpack";
-import { Clipboard, Toasts } from "@webpack/common";
-import { Button, Forms } from "@webpack/common";
-import { UserStore } from "@webpack/common";
-import { TextInput } from "@webpack/common";
-import { useState } from "@webpack/common";
+import { Button, Clipboard, Forms, TextInput, Toasts, useState } from "@webpack/common";
 
 import { darkenColorHex, generateRandomColorHex, saturateColorHex } from "./generateTheme";
 import { themes } from "./themeDefinitions";
@@ -29,10 +24,9 @@ export interface ThemePreset {
 let setPreset;
 
 
-function LoadPreset(preset? : ThemePreset)
-{
-    if(setPreset == settings.store.ColorPreset) { return; }
-    const theme : ThemePreset = preset == null ? themes[settings.store.ColorPreset] : preset;
+function LoadPreset(preset?: ThemePreset) {
+    if (setPreset === settings.store.ColorPreset) { return; }
+    const theme: ThemePreset = preset == null ? themes[settings.store.ColorPreset] : preset;
     setPreset = settings.store.ColorPreset;
     settings.store.Primary = theme.bgcol;
     settings.store.Accent = theme.accentcol;
@@ -53,10 +47,9 @@ function mute(hex, amount) {
     return "#" + ((r << 16) + (g << 8) + b).toString(16).padStart(6, "0");
 }
 
-function copyPreset(name : string)
-{
+function copyPreset(name: string) {
     const template =
-    `
+        `
 {
     bgcol: "${settings.store.Primary}",
     accentcol: "${settings.store.Accent}",
@@ -74,32 +67,24 @@ function copyPreset(name : string)
 function CopyPresetComponent() {
 
     const [inputtedName, setInputtedName] = useState("");
-
-    const currentUser = UserStore.getCurrentUser();
     return (
-        (currentUser.id === "976176454511509554" || currentUser.id == "361575984639770625") && (
-            <>
-                <Forms.FormSection>
-                    <Forms.FormTitle>{"Preset name"}</Forms.FormTitle>
-                    <TextInput
-                        type="text"
-                        value={inputtedName}
-                        onChange={setInputtedName}
-                        placeholder={"Enter a name"}
-                    />
-                </Forms.FormSection>
-                <Button onClick={() => {
-                    copyPreset(inputtedName);
-                }}>Copy preset</Button>
-                <Button onClick={() => {
-                    generateAndApplyProceduralTheme();
-                }}>Generate Random</Button>
-            </>
-        )
-        ||
-        (
-            <></>
-        )
+        <>
+            <Forms.FormSection>
+                <Forms.FormTitle>{"Preset name"}</Forms.FormTitle>
+                <TextInput
+                    type="text"
+                    value={inputtedName}
+                    onChange={setInputtedName}
+                    placeholder={"Enter a name"}
+                />
+            </Forms.FormSection>
+            <Button onClick={() => {
+                copyPreset(inputtedName);
+            }}>Copy preset</Button>
+            <Button onClick={() => {
+                generateAndApplyProceduralTheme();
+            }}>Generate Random</Button>
+        </>
     );
 }
 
@@ -139,7 +124,7 @@ const settings = definePluginSettings({
         default: false,
         onChange: () => injectCSS()
     },
-    tooltips : {
+    tooltips: {
         type: OptionType.BOOLEAN,
         description: "If tooltips are displayed in the client",
         default: false,
@@ -167,25 +152,25 @@ const settings = definePluginSettings({
         type: OptionType.COMPONENT,
         description: "",
         default: "000000",
-        component: () => <ColorPick propertyname="Primary"/>
+        component: () => <ColorPick propertyname="Primary" />
     },
     Accent: {
         type: OptionType.COMPONENT,
         description: "",
         default: "313338",
-        component: () => <ColorPick propertyname="Accent"/>
+        component: () => <ColorPick propertyname="Accent" />
     },
     Text: {
         type: OptionType.COMPONENT,
         description: "",
         default: "ffffff",
-        component: () => <ColorPick propertyname="Text"/>
+        component: () => <ColorPick propertyname="Text" />
     },
     Brand: {
         type: OptionType.COMPONENT,
         description: "",
         default: "ffffff",
-        component: () => <ColorPick propertyname="Brand"/>
+        component: () => <ColorPick propertyname="Brand" />
     },
     pastelStatuses: {
         type: OptionType.BOOLEAN,
@@ -198,15 +183,14 @@ const settings = definePluginSettings({
         type: OptionType.COMPONENT,
         description: "meow",
         default: "",
-        component: () => <CopyPresetComponent/>
+        component: () => <CopyPresetComponent />
     },
     ExportTheme:
     {
         type: OptionType.COMPONENT,
         description: "",
         default: "",
-        component: () => <Button onClick={() =>
-        {
+        component: () => <Button onClick={() => {
             copyCSS();
             Toasts.show({
                 id: Toasts.genId(),
@@ -218,7 +202,7 @@ const settings = definePluginSettings({
 });
 
 
-export function ColorPick({ propertyname }: { propertyname: string }) {
+export function ColorPick({ propertyname }: { propertyname: string; }) {
     return (
 
         <div className="color-options-container">
@@ -226,8 +210,7 @@ export function ColorPick({ propertyname }: { propertyname: string }) {
 
             <ColorPicker
                 color={parseInt(settings.store[propertyname], 16)}
-                onChange={color =>
-                {
+                onChange={color => {
                     const hexColor = color.toString(16).padStart(6, "0");
                     settings.store[propertyname] = hexColor;
                     injectCSS();
@@ -240,24 +223,21 @@ export function ColorPick({ propertyname }: { propertyname: string }) {
 }
 
 
-function copyCSS()
-{
+function copyCSS() {
     if (Clipboard.SUPPORTS_COPY) {
         Clipboard.copy(getCSS(parseFontContent()));
     }
 }
 
-function parseFontContent()
-{
+function parseFontContent() {
     const fontRegex = /family=([^&;,:]+)/;
     const customFontString: string = Settings.plugins.Glide.customFont;
-    if(customFontString == null){ return; }
+    if (customFontString == null) { return; }
     const fontNameMatch: RegExpExecArray | null = fontRegex.exec(customFontString);
     const fontName = fontNameMatch ? fontNameMatch[1].replace(/[^a-zA-Z0-9]+/g, " ") : "";
     return fontName;
 }
-function injectCSS()
-{
+function injectCSS() {
 
     const fontName = parseFontContent();
     const theCSS = getCSS(fontName);
@@ -272,11 +252,10 @@ function injectCSS()
     document.documentElement.appendChild(styleElement);
 }
 
-function getCSS(fontName)
-{
+function getCSS(fontName) {
     return `
         /* IMPORTS */
-    
+
         /* Fonts */
         @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
@@ -294,20 +273,20 @@ function getCSS(fontName)
             width: 65px;
             opacity: 100;
         }
-        ` : ""}         
+        ` : ""}
         /*Member list anim toggle*/
         ${Settings.plugins.Glide.memberListAnim ? `
-            .container_cbd271 
+            .container_cbd271
             {
                 width: 60px;
                 opacity: 0.2;
                 transition: width var(--animspeed) ease 0.1s, opacity var(--animspeed) ease 0.1s;
-            
+
             }
-            .container_cbd271:hover 
+            .container_cbd271:hover
             {
                 width: 250px;
-                opacity: 1;    
+                opacity: 1;
             }
         ` : ""}
         /*Privacy blur*/
@@ -317,8 +296,8 @@ function getCSS(fontName)
                 .title_a7d72e,
                 .layout_f9647d,
                 [aria-label="Members"] {
-                filter: blur(0); 
-                transition: filter 0.2s ease-in-out; 
+                filter: blur(0);
+                transition: filter 0.2s ease-in-out;
                 }
 
                 body:not(:hover) .header_f9f2ca,
@@ -326,7 +305,7 @@ function getCSS(fontName)
                 body:not(:hover) .title_a7d72e,
                 body:not(:hover) [aria-label="Members"],
                 body:not(:hover) .layout_f9647d {
-                filter: blur(5px); 
+                filter: blur(5px);
                 }
         ` : ""}
         /*Tooltips*/
@@ -338,7 +317,7 @@ function getCSS(fontName)
         :root
         {
             --animspeed: ${Settings.plugins.Glide.animationSpeed + "s"};
-            --font-primary: ${(fontName.length > 0 ? fontName : "Nunito")};        
+            --font-primary: ${(fontName.length > 0 ? fontName : "Nunito")};
             --accent: #${Settings.plugins.Glide.Accent};
             --bgcol: #${Settings.plugins.Glide.Primary};
             --text: #${Settings.plugins.Glide.Text};
@@ -367,18 +346,18 @@ function getCSS(fontName)
 
             /*buttons*/
             --button-secondary-background: var(--accent);
-            
+
             /*also buttons*/
             --brand-experiment: var(--brand);
             --brand-experiment-560: var(--brand);
             --brand-500: var(--brand);
-            
+
             /*message bar*/
             --channeltextarea-background: var(--accent);
-            
+
             /*selected dm background*/
             --background-modifier-selected: var(--accent);
-            
+
             /*emoji autofill*/
             --primary-630: var(--accent);
 
@@ -400,10 +379,10 @@ function getCSS(fontName)
 
 
         /*background based*/
-        
+
             /*primary color, self explanatory*/
             --background-primary: var(--bgcol);
-            
+
             /*dm list*/
             --background-secondary: var(--bgcol);
 
@@ -424,8 +403,8 @@ function getCSS(fontName)
             --background-mentioned-hover: var(--bgcol) !important;
             --background-mentioned: var(--bgcol) !important;
 
-            
-            
+
+
 
         /*other*/
 
@@ -542,7 +521,7 @@ function getCSS(fontName)
                     background-color: var(--primary);
                 }
                 ${settings.store.pastelStatuses ?
-                `
+            `
                     /*Pastel statuses*/
                     rect[fill='#23a55a'], svg[fill='#23a55a'] {
                         fill: #80c968 !important;
@@ -585,23 +564,23 @@ function getCSS(fontName)
                 [class^="imageWr"], [data-type="sticker"], [class^="embed"]
                 {
                     border-radius: 20px;
-                }      
-                
+                }
+
                 .item_d90b3d
                 {
                   border-radius: 15px;
                 }
 
-            
+
 
                 /*slightly move messages right when hovered*/
                 .cozyMessage_d5deea
                 {
                     left: 0px;
-                
+
                     transition-duration: 0.2s;
                 }
-                .cozyMessage_d5deea:hover 
+                .cozyMessage_d5deea:hover
                 {
                     left: 3px;
                 }
@@ -615,7 +594,7 @@ function getCSS(fontName)
                     display: none !important;
                 }
                 /*Hide most of the ugly useless scrollbars*/
-                ::-webkit-scrollbar 
+                ::-webkit-scrollbar
                 {
                     display:none;
                 }
@@ -629,17 +608,17 @@ function getCSS(fontName)
 
                 /*yeet the shitty nitro and family link tabs that no one likes*/
                 .channel_c91bad[aria-posinset="2"],
-                .familyCenterLinkButton_f0963d 
+                .familyCenterLinkButton_f0963d
                 {
                     display: none;
-                
+
                 }
                 /*Remove the buttons at the bottom of the user pop out (seriously, who wanted this?)*/
                 .addFriendSection__413d3
                 {
                     display: none;
                 }
-                
+
                 /*No more useless spotify activity header*/
                 .headerContainer_c1d9fd
                 {
@@ -650,7 +629,7 @@ function getCSS(fontName)
                 {
                   display: none;
                 }
-                /*pad the message bar right slightly. Not sure what caused the buttons to flow out of it, might be something in the theme :shrug:*/         
+                /*pad the message bar right slightly. Not sure what caused the buttons to flow out of it, might be something in the theme :shrug:*/
                 .inner_d0696b
                 {
                     padding-right: 10px;
@@ -667,9 +646,9 @@ function getCSS(fontName)
                 {
                     display: none;
                 }
-                
+
                 /*hide the play button while a soundmoji is playing*/
-                .playing_bf9443 [viewBox="0 0 24 24"] 
+                .playing_bf9443 [viewBox="0 0 24 24"]
                 {
                     display:none;
                 }
@@ -682,7 +661,7 @@ function getCSS(fontName)
                 .scroller_d90b3d
                 {
                     padding: 6px 8px !important;
-                }        
+                }
                 /*Hide the icon that displays what platform the user is listening with on spotify status*/
                 .platformIcon_c1d9fd
                 {
@@ -714,7 +693,7 @@ function getCSS(fontName)
                 .userPopoutOuter_c69a7b
                 {
                   border-radius: 25px;
-                }                       
+                }
                 /*round the inner profile popout*/
                 [class="userPopoutInner_c69a7b userProfileInner_c69a7b userProfileInnerThemedWithBanner_c69a7b"]::before
                 {
@@ -750,7 +729,7 @@ function getCSS(fontName)
                 /*Change the font*/
                 :root
                 {
-                    --font-code: "Fira Code"; 
+                    --font-code: "Fira Code";
                 }
 
                 /*Round all status symbols. basically does what that one plugin does but easier (disabled because of a bug)
@@ -763,7 +742,7 @@ function getCSS(fontName)
                 /*pfp uploader crosshair*/
                 .overlayAvatar_ba5b9e
                 {
-                    background-image: url(https://raw.githubusercontent.com/cheesesamwich/Tobleronecord/main/src/tobleroneplugins/Glide/crosshair.png);
+                    background-image: url(https://raw.githubusercontent.com/Equicord/Equicord/main/src/equicordplugins/glide/crosshair.png);
                     background-repeat: no-repeat;
                     background-position-x: 50%;
                     background-position-y: 50%;
@@ -771,7 +750,7 @@ function getCSS(fontName)
                 }
 
                 /*change highlighted text color*/
-                ::selection 
+                ::selection
                 {
                     color: inherit;
                     background-color: transparent;
@@ -796,20 +775,14 @@ function getCSS(fontName)
 export default definePlugin({
     name: "Glide",
     description: "A sleek, rounded theme for discord.",
-    authors:
-    [
-        Devs.Samwich
-    ],
+    authors: [Devs.Samwich],
     settings,
-    start()
-    {
+    start() {
         injectCSS();
     },
-    stop()
-    {
+    stop() {
         const injectedStyle = document.getElementById("GlideStyleInjection");
-        if(injectedStyle)
-        {
+        if (injectedStyle) {
             injectedStyle.remove();
         }
     },
@@ -817,5 +790,3 @@ export default definePlugin({
     // preview thing, kinda low effort but eh
     settingsAboutComponent: () => <img src="https://files.catbox.moe/j8y2gt.webp" width="568px" border-radius="30px" ></img>
 });
-
-
