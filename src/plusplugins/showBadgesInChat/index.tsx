@@ -6,7 +6,7 @@
 
 import { addDecoration, removeDecoration } from "@api/MessageDecorations";
 import { Devs } from "@utils/constants";
-import { isPluginDev, isSuncordPluginDev, isEquicordPluginDev } from "@utils/misc";
+import { isPluginDev, isSuncordPluginDev, isEquicordPluginDev, isPlusPluginDev, isPlusMt } from "@utils/misc";
 import definePlugin from "@utils/types";
 import { findByPropsLazy, findComponentByCodeLazy } from "@webpack";
 import badges from "plugins/_api/badges";
@@ -36,10 +36,10 @@ const discordBadges: readonly [number, string, string][] = Object.freeze([
 function CheckBadge({ badge, author }: { badge: string; author: User; }): JSX.Element | null {
 
     switch (badge) {
-        case "EquicordDonor":
+        case "VencordDonor":
             return (
-                <span style={{ order: settings.store.EquicordDonorPosition }}>
-                    {badges.getEquicordDonorBadges(author.id)?.map((badge: any) => (
+                <span style={{ order: settings.store.VencordDonorPosition }}>
+                    {badges.getDonorBadges(author.id)?.map(badge => (
                         <RoleIconComponent
                             className={roleIconClassName}
                             name={badge.description}
@@ -49,14 +49,14 @@ function CheckBadge({ badge, author }: { badge: string; author: User; }): JSX.El
                     ))}
                 </span>
             );
-        case "EquicordContributer":
-            return isEquicordPluginDev(author.id) ? (
-                <span style={{ order: settings.store.EquicordContributorPosition }}>
+        case "VencordContributer":
+            return isPluginDev(author.id) ? (
+                <span style={{ order: settings.store.VencordContributorPosition }}>
                     <RoleIconComponent
                         className={roleIconClassName}
-                        name="Equicord Contributor"
+                        name="Vencord Contributor"
                         size={20}
-                        src={"https://i.imgur.com/57ATLZu.png"}
+                        src={"https://vencord.dev/assets/favicon.png"}
                     />
                 </span>
             ) : null;
@@ -84,10 +84,10 @@ function CheckBadge({ badge, author }: { badge: string; author: User; }): JSX.El
                     />
                 </span>
             ) : null;
-        case "VencordDonor":
+        case "EquicordDonor":
             return (
-                <span style={{ order: settings.store.VencordDonorPosition }}>
-                    {badges.getDonorBadges(author.id)?.map(badge => (
+                <span style={{ order: settings.store.EquicordDonorPosition }}>
+                    {badges.getEquicordDonorBadges(author.id)?.map((badge: any) => (
                         <RoleIconComponent
                             className={roleIconClassName}
                             name={badge.description}
@@ -97,12 +97,47 @@ function CheckBadge({ badge, author }: { badge: string; author: User; }): JSX.El
                     ))}
                 </span>
             );
-        case "VencordContributer":
-            return isPluginDev(author.id) ? (
-                <span style={{ order: settings.store.VencordContributorPosition }}>
+        case "EquicordContributer":
+            return isEquicordPluginDev(author.id) ? (
+                <span style={{ order: settings.store.EquicordContributorPosition }}>
                     <RoleIconComponent
                         className={roleIconClassName}
-                        name="Vencord Contributor"
+                        name="Equicord Contributor"
+                        size={20}
+                        src={"https://i.imgur.com/57ATLZu.png"}
+                    />
+                </span>
+            ) : null;
+        case "PlusCustom":
+            return (
+                <span style={{ order: settings.store.PlusCustomPosition }}>
+                    {badges.getPlusCustomBadges(author.id)?.map((badge: any) => (
+                        <RoleIconComponent
+                            className={roleIconClassName}
+                            name={badge.description}
+                            size={20}
+                            src={badge.image}
+                        />
+                    ))}
+                </span>
+            );
+        case "PlusContributer":
+            return isPlusPluginDev(author.id) ? (
+                <span style={{ order: settings.store.PlusContributorPosition }}>
+                    <RoleIconComponent
+                        className={roleIconClassName}
+                        name={"Vencord+ Contributor"}
+                        size={20}
+                        src={"https://vencord.dev/assets/favicon.png"}
+                    />
+                </span>
+            ) : null;
+        case "PlusMaintainer":
+            return isPlusMt(author.id) ? (
+                <span style={{ order: settings.store.PlusMaintainerPosition }}>
+                    <RoleIconComponent
+                        className={roleIconClassName}
+                        name={"Vencord+ Maintainer"}
                         size={20}
                         src={"https://vencord.dev/assets/favicon.png"}
                     />
@@ -148,12 +183,15 @@ function ChatBadges({ author }: { author: User; }) {
 
     return (
         <span className="vc-sbic-badge-row" style={{ margin: "2px" }}>
-            {settings.store.showEquicordDonor && <CheckBadge badge={"EquicordDonor"} author={author} />}
-            {settings.store.showEquicordContributor && <CheckBadge badge={"EquicordContributer"} author={author} />}
-            {settings.store.showSuncordDonor && <CheckBadge badge={"SuncordDonor"} author={author} />}
-            {settings.store.showSuncordContributor && <CheckBadge badge={"SuncordContributer"} author={author} />}
             {settings.store.showVencordDonor && <CheckBadge badge={"VencordDonor"} author={author} />}
             {settings.store.showVencordContributor && <CheckBadge badge={"VencordContributer"} author={author} />}
+            {settings.store.showSuncordDonor && <CheckBadge badge={"SuncordDonor"} author={author} />}
+            {settings.store.showSuncordContributor && <CheckBadge badge={"SuncordContributer"} author={author} />}
+            {settings.store.showEquicordDonor && <CheckBadge badge={"EquicordDonor"} author={author} />}
+            {settings.store.showEquicordContributor && <CheckBadge badge={"EquicordContributer"} author={author} />}
+            {settings.store.showPlusCustom && <CheckBadge badge={"PlusCustom"} author={author} />}
+            {settings.store.showPlusContributor && <CheckBadge badge={"PlusContributer"} author={author} />}
+            {settings.store.showPlusMaintainer && <CheckBadge badge={"PlusMaintainer"} author={author} />}
             {settings.store.showDiscordProfile && <CheckBadge badge={"DiscordProfile"} author={author} />}
             {settings.store.showDiscordNitro && <CheckBadge badge={"DiscordNitro"} author={author} />}
         </span>
