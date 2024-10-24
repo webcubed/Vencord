@@ -21,7 +21,6 @@ import DonateButton from "@components/DonateButton";
 import ErrorBoundary from "@components/ErrorBoundary";
 import { Flex } from "@components/Flex";
 import { Heart } from "@components/Heart";
-import { PlusIcon } from "@components/Icons";
 import { openContributorModal } from "@components/PluginSettings/ContributorModal";
 import { Devs } from "@utils/constants";
 import { Logger } from "@utils/Logger";
@@ -412,7 +411,7 @@ export default definePlugin({
                                             margin: 0
                                         }}
                                     >
-                                        <PlusIcon />
+                                        <Heart />
                                         Vencord+ Custom Badge
                                     </Forms.FormTitle>
                                 </Flex>
