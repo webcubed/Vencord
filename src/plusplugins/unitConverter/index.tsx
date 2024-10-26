@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import "./style.css";
 
@@ -35,7 +35,7 @@ export const settings = definePluginSettings({
     // invert: {
     //     type: OptionType.BOOLEAN,
     //     default: false,
-    //     // is there a better way to word this?
+    //     // Is there a better way to word this?
     //     description: "If this option is set, ignore the units you set and invert every conversion."
     // }
 });
@@ -48,8 +48,8 @@ export default definePlugin({
             id: 521819891141967883n
         }
     ],
-    start(){
-        addAccessory("vc-converter", props => <ConverterAccessory message={props.message}/>);
+    start() {
+        addAccessory("vc-converter", props => <ConverterAccessory message={props.message} />);
         addButton("vc-converter", message => {
             if (!message.content) return null;
             return {
@@ -57,7 +57,7 @@ export default definePlugin({
                 icon: ConvertIcon,
                 message,
                 channel: ChannelStore.getChannel(message.channel_id),
-                onClick: async() => {
+                onClick: async () => {
                     const setConversion = conversions.get(message.id);
                     if (!setConversion) return;
                     setConversion(convert(message.content));

@@ -1,6 +1,6 @@
-# vc-timezones
+# Timezones
 
-lets you set timezones for users
+Lets you set timezones for users.
 
 ![image](https://i.imgur.com/OuSDgxe.png)
 

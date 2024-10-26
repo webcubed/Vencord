@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { type ModalProps, openModal } from "@utils/modal";
 import { extractAndLoadChunksLazy, findByCodeLazy, findByPropsLazy, findComponentByCodeLazy } from "@webpack";
@@ -10,7 +10,7 @@ import type { useToken } from "@webpack/types";
 import type { Guild } from "discord-types/general";
 import type { ComponentType, FunctionComponent, PropsWithChildren, ReactNode } from "react";
 
-import type { ProfileEffectConfig } from "../lib/profileEffects";
+import type { ProfileEffectConfig } from "../lib";
 
 export * from "./Builder";
 export * from "./BuilderButton";
@@ -67,14 +67,14 @@ export interface CustomColorPickerProps {
 
 export const CustomColorPicker = findComponentByCodeLazy<CustomColorPickerProps>(".customColorPicker");
 
-export interface ProfileEffectModalProps extends ModalProps {
+interface ProfileEffectModalProps extends ModalProps {
     analyticsLocations?: string[] | undefined;
     guild?: Guild | null | undefined;
     initialSelectedEffectId?: string | undefined;
     onApply: (effect: ProfileEffectConfig | null) => void;
 }
 
-export let ProfileEffectModal: FunctionComponent<ProfileEffectModalProps> = () => null;
+let ProfileEffectModal: FunctionComponent<ProfileEffectModalProps> = () => null;
 
 export function setProfileEffectModal(comp: typeof ProfileEffectModal) {
     ProfileEffectModal = comp;

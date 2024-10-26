@@ -48,7 +48,7 @@ const settings = definePluginSettings({
 
 export default definePlugin({
     name: "ReplaceActivityTypes",
-    description: "Replace the activity type (Playing) of any rich presence app",
+    description: "Replace the activity type (Playing) of any application's rich presence",
     authors: [Devs.Nyako],
     patches: [
         // how has this patch not broken yet lol (i do not like fixing patches tho)

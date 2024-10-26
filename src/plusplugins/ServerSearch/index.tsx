@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated, camila314, and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import "./styles.css";
 
@@ -10,10 +10,9 @@ import { addServerListElement, removeServerListElement, ServerListRenderPosition
 import ErrorBoundary from "@components/ErrorBoundary";
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
-import { findByCodeLazy } from "@webpack";
+import { FluxDispatcher } from "@webpack/common";
 import { Tooltip } from "webpack/common/components";
 
-const openPopout = findByCodeLazy(".QUICKSWITCHER_OPENED,{");
 function SearchIcon() {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" id="vc-searchbutton-icon">
@@ -40,7 +39,13 @@ export default definePlugin({
                             id="vc-searchbutton"
                             onMouseEnter={onMouseEnter}
                             onMouseLeave={onMouseLeave}
-                            onClick={() => openPopout("DM_SEARCH")}>
+                            onClick={() =>
+                                FluxDispatcher.dispatch({
+                                    type: "QUICKSWITCHER_SHOW",
+                                    query: "",
+                                    queryMode: null
+                                })
+                            }>
                             <SearchIcon />
                         </div>
                     )}

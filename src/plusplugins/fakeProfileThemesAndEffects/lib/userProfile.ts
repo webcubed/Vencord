@@ -2,10 +2,10 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { settings } from "..";
-import { decodeColor, decodeColorsLegacy, decodeEffect, extractFPTE } from "./fpte";
+import { decodeColor, decodeColorsLegacy, decodeEffect, extractFPTE } from ".";
 
 export interface UserProfile {
     bio: string;
@@ -31,7 +31,7 @@ function updateProfileEffectId(profile: UserProfile, id: bigint) {
     }
 }
 
-export function decodeAboutMeFPTEHook(profile: UserProfile | undefined) {
+export function decodeAboutMeFPTEHook(profile?: UserProfile) {
     if (!profile) return profile;
 
     if (settings.store.prioritizeNitro) {

@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { findByCodeLazy, findStoreLazy } from "@webpack";
 import type { FluxStore } from "@webpack/types";
@@ -14,18 +14,18 @@ export const ProfileEffectStore: FluxStore & {
     hasFetched: () => boolean;
     readonly fetchError: Error | undefined;
     readonly isFetching: boolean;
-    readonly profileEffects: readonly ProfileEffect[];
+    readonly profileEffects: ProfileEffect[];
     readonly tryItOutId: string | null;
 } = findStoreLazy("ProfileEffectStore");
 
 export const ProfileEffectRecord: {
-    new (profileEffectProperties: ProfileEffectProperties): ProfileEffectRecordInstance;
+    new(profileEffectProperties: ProfileEffectProperties): ProfileEffectRecordInstance;
     fromServer: (profileEffectFromServer: SnakeCasedProperties<ProfileEffectProperties>) => ProfileEffectRecordInstance;
 } = findByCodeLazy(",this.type=", ".PROFILE_EFFECT");
 
-type ProfileEffectProperties = Omit<ProfileEffectRecordInstance, "type">;
+export type ProfileEffectProperties = Omit<ProfileEffectRecordInstance, "type">;
 
-interface ProfileEffectRecordInstance {
+export interface ProfileEffectRecordInstance {
     id: string;
     skuId: string;
     type: CollectiblesItemType.PROFILE_EFFECT;

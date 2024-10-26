@@ -3,11 +3,9 @@
     opacity: 0.8;
     -webkit-mask-image: linear-gradient(to right, transparent 20%, #fff);
     mask-image: linear-gradient(to right, transparent 20%, #fff);
-    height: 100%;
+    object-fit: cover;
     width: 100%;
-    background-size: cover;
-    background-position: center;
+    height: 100%;
     position: absolute;
-    border-radius: 4px;
     cursor: pointer;
 }
