@@ -7,6 +7,7 @@ const PLUGINS = [
     require("./HistoryModal").default,
     require("./MessageLinkTooltip").default,
     require("./ModalFade").default,
+    require("./MoreThemes").default,
     require("./Shiggy").default,
     require("./NotificationTitle").default,
     require("./TeX").default,
