@@ -1,25 +1,13 @@
 /*
- * Vencord, a modification for Discord's desktop app
- * Copyright (c) 2023 Vendicated and contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Vencord, a Discord client mod
+ * Copyright (c) 2024 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 
 import { MessageStore } from "@webpack/common";
 import { User } from "discord-types/general";
 
-import { LoggedMessageJSON, RefrencedMessage } from "../types";
+import { LoggedMessageJSON, ReferencedMessage } from "../types";
 import { getGuildIdByChannel, isGhostPinged } from "./index";
 
 export function cleanupMessage(message: any, removeDetails: boolean = true): LoggedMessageJSON {
@@ -39,9 +27,9 @@ export function cleanupMessage(message: any, removeDetails: boolean = true): Log
         ret.message_reference = message.message_reference || message.messageReference;
         if (ret.message_reference) {
             if (message.referenced_message) {
-                ret.referenced_message = cleanupMessage(message.referenced_message) as RefrencedMessage;
+                ret.referenced_message = cleanupMessage(message.referenced_message) as ReferencedMessage;
             } else if (MessageStore.getMessage(ret.message_reference.channel_id, ret.message_reference.message_id)) {
-                ret.referenced_message = cleanupMessage(MessageStore.getMessage(ret.message_reference.channel_id, ret.message_reference.message_id)) as RefrencedMessage;
+                ret.referenced_message = cleanupMessage(MessageStore.getMessage(ret.message_reference.channel_id, ret.message_reference.message_id)) as ReferencedMessage;
             }
         }
     }
@@ -55,9 +43,9 @@ export function cleanUpCachedMessage(message: any) {
     return ret;
 }
 
-// stolen from mlv2
+// stolen from MessageLoggerV2
 export function cleanupEmbed(embed) {
-    /* backported code from MLV2 rewrite */
+    /* backported code from the MessageLoggerV2 rewrite */
     if (!embed.id) return embed; /* already cleaned */
     const retEmbed: any = {};
     if (typeof embed.rawTitle === "string") retEmbed.title = embed.rawTitle;
@@ -102,9 +90,9 @@ export function cleanupEmbed(embed) {
     return retEmbed;
 }
 
-// stolen from mlv2
+// stolen from MessageLoggerV2
 export function cleanupUserObject(user: User) {
-    /* backported from MLV2 rewrite */
+    /* backported from the MessageLoggerV2 rewrite */
     return {
         discriminator: user.discriminator,
         username: user.username,

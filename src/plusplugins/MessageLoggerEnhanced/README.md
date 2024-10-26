@@ -1,9 +1,9 @@
-# vc-message-logger-enhanced
+# MessageLoggerEnhanced
 
 ## What is this?
 
-This is a third-party-plugin for [Vencord](https://vencord.dev/) that logs messages, images, and ghost pings in Discord.
-The plugin saves messages to a json file, and can restore them after reloading Discord.
+This is a third-party-plugin for [Vencord](https://vencord.dev/) that logs messages, images and ghost pings in Discord.
+The plugin saves messages to a json file and can restore them after reloading Discord.
 
 ## Features
 
@@ -24,15 +24,13 @@ The plugin saves messages to a json file, and can restore them after reloading D
 > [!NOTE]
 > The "Cache Messages From Servers" Option basically treats all servers as whitelisted if its not blacklisted. If you have a lot of servers, this can cause a lot of messages to be logged.
 
-# How to Install
-
-tutorial: https://youtu.be/8wexjSo8fNw
-
-# How to manually update
-
-https://github.com/Syncxv/vc-message-logger-enhanced/assets/47534062/31be3fcb-71db-4714-9d94-99b340371e96
-
 # Changelog
+
+## 4.0.0
+- Moved from JSON to IndexedDB
+- Support all attachments types (videos, audio, etc)
+- Import logs now doensn't overwrite existing logs
+- Fix Image Rendering
 
 ## 3.0.1
 - Delete message without it being logged by other message loggers (by [@redbaron2k7](https://github.com/redbaron2k7))
@@ -103,6 +101,6 @@ can finally go back to makin tuff
 
 https://github.com/Syncxv/vc-message-logger-enhanced/assets/47534062/de932bff-91fe-4825-8ef7-551cf245e51a
 
-## found a bug?
+## Found a bug?
 
-Message me on discord. @daveyy1
+Message `daveyy1` on Discord.

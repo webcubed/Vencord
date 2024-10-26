@@ -1,27 +1,14 @@
 /*
- * Vencord, a modification for Discord's desktop app
- * Copyright (c) 2023 Vendicated and contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Vencord, a Discord client mod
+ * Copyright (c) 2024 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 
-import { get, set } from "@api/DataStore";
 import { PluginNative } from "@utils/types";
 import { findByCodeLazy, findLazy } from "@webpack";
 import { ChannelStore, moment, UserStore } from "@webpack/common";
 
-import { LOGGED_MESSAGES_KEY, MessageLoggerStore } from "../LoggedMessageManager";
+import { DBMessageStatus } from "../db";
 import { LoggedMessageJSON } from "../types";
 import { DEFAULT_IMAGE_CACHE_DIR } from "./constants";
 import { DISCORD_EPOCH } from "./index";
@@ -47,6 +34,14 @@ export const hasPingged = (message?: LoggedMessageJSON | { mention_everyone: boo
     );
 };
 
+export const getMessageStatus = (message: LoggedMessageJSON) => {
+    if (isGhostPinged(message)) return DBMessageStatus.GHOST_PINGED;
+    if (message.deleted) return DBMessageStatus.DELETED;
+    if (message.editHistory?.length) return DBMessageStatus.EDITED;
+
+    throw new Error("Unknown message status");
+};
+
 export const discordIdToDate = (id: string) => new Date((parseInt(id) / 4194304) + DISCORD_EPOCH);
 
 export const sortMessagesByDate = (timestampA: string, timestampB: string) => {
@@ -67,7 +62,7 @@ export const sortMessagesByDate = (timestampA: string, timestampB: string) => {
 
 
 
-// stolen from mlv2
+// stolen from MessageLoggerV2
 export function findLastIndex<T>(array: T[], predicate: (e: T, t: number, n: T[]) => boolean) {
     let l = array.length;
     while (l--) {
@@ -81,8 +76,9 @@ const getTimestamp = (timestamp: any): Date => {
     return new Date(timestamp);
 };
 
-export const mapEditHistory = (m: any) => {
-    m.timestamp = getTimestamp(m.timestamp);
+export const mapTimestamp = (m: any) => {
+    if (m.timestamp) m.timestamp = getTimestamp(m.timestamp);
+    if (m.editedTimestamp) m.editedTimestamp = getTimestamp(m.editedTimestamp);
     return m;
 };
 
@@ -92,22 +88,28 @@ export const messageJsonToMessageClass = memoize((log: { message: LoggedMessageJ
     if (!log?.message) return null;
 
     const message: any = new MessageClass(log.message);
-    // @ts-ignore
     message.timestamp = getTimestamp(message.timestamp);
 
-    const editHistory = message.editHistory?.map(mapEditHistory);
+    const editHistory = message.editHistory?.map(mapTimestamp);
     if (editHistory && editHistory.length > 0) {
         message.editHistory = editHistory;
     }
     if (message.editedTimestamp)
         message.editedTimestamp = getTimestamp(message.editedTimestamp);
-    message.author = new AuthorClass(message.author);
+
+    if (message.firstEditTimestamp)
+        message.firstEditTimestamp = getTimestamp(message.firstEditTimestamp);
+
+    message.author = UserStore.getUser(message.author.id) ?? new AuthorClass(message.author);
     message.author.nick = message.author.globalName ?? message.author.username;
 
     message.embeds = message.embeds.map(e => sanitizeEmbed(message.channel_id, message.id, e));
 
     if (message.poll)
         message.poll.expiry = moment(message.poll.expiry);
+
+    if (message.messageSnapshots)
+        message.messageSnapshots.map(m => mapTimestamp(m.message));
 
     // console.timeEnd("message populate");
     return message;
@@ -130,8 +132,7 @@ export async function doesBlobUrlExist(url: string) {
 export function getNative(): PluginNative<typeof import("../native")> {
     if (IS_WEB) {
         const Native = {
-            getLogsFromFs: async () => get(LOGGED_MESSAGES_KEY, MessageLoggerStore),
-            writeLogs: async (logs: string) => set(LOGGED_MESSAGES_KEY, JSON.parse(logs), MessageLoggerStore),
+            writeLogs: async () => { },
             getDefaultNativeImageDir: async () => DEFAULT_IMAGE_CACHE_DIR,
             getDefaultNativeDataDir: async () => "",
             deleteFileNative: async () => { },
@@ -148,6 +149,8 @@ export function getNative(): PluginNative<typeof import("../native")> {
             getRepoInfo: async () => ({ ok: true, value: { repo: "", gitHash: "" } }),
             getNewCommits: async () => ({ ok: true, value: [] }),
             update: async () => ({ ok: true, value: "" }),
+            chooseFile: async () => "",
+            downloadAttachment: async () => ({ error: "web", path: null }),
         } satisfies PluginNative<typeof import("../native")>;
 
         return Native;

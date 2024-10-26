@@ -1,20 +1,8 @@
 /*
- * Vencord, a modification for Discord's desktop app
- * Copyright (c) 2023 Vendicated and contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Vencord, a Discord client mod
+ * Copyright (c) 2024 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 
 import { Message, MessageAttachment, MessageJSON } from "discord-types/general";
 
@@ -24,9 +12,10 @@ export interface LoggedAttachment extends MessageAttachment {
     blobUrl?: string;
     nativefileSystem?: boolean;
     oldUrl?: string;
+    oldProxyUrl?: string;
 }
 
-export type RefrencedMessage = LoggedMessageJSON & { message_id: string; };
+export type ReferencedMessage = LoggedMessageJSON & { message_id: string; };
 export interface LoggedMessageJSON extends Omit<LoggedMessage, "timestamp"> {
     mention_everyone?: string;
     guildId?: string;
@@ -34,8 +23,8 @@ export interface LoggedMessageJSON extends Omit<LoggedMessage, "timestamp"> {
     ghostPinged?: boolean;
     timestamp: string;
     ourCache?: boolean;
-    referenced_message: RefrencedMessage;
-    message_reference: RefrencedMessage;
+    referenced_message: ReferencedMessage;
+    message_reference: ReferencedMessage;
 }
 
 export interface LoggedMessage extends Message {
@@ -89,6 +78,27 @@ export interface LoadMessagePayload {
     hasMoreAfter: boolean;
     limit: number;
     isStale: boolean;
+}
+
+export interface FetchMessagesResponse {
+    ok: boolean;
+    headers: Headers;
+    body: LoggedMessageJSON[] & {
+        extra?: LoggedMessageJSON[];
+    };
+    text: string;
+    status: number;
+}
+
+export interface PatchAttachmentItem {
+    uniqueId: string;
+    originalItem: LoggedAttachment;
+    type: string;
+    downloadUrl: string;
+    height: number;
+    width: number;
+    spoiler: boolean;
+    contentType: string;
 }
 
 export interface AttachmentData {

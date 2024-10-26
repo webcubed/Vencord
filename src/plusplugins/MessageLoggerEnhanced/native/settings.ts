@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2023 Vendicated and contributors
+ * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -19,7 +19,7 @@ export async function getSettings(): Promise<MLSettings> {
         const settings = await fs.readFile(await getSettingsFilePath(), "utf8");
         return JSON.parse(settings);
     } catch (err) {
-        // probably doesnt exist
+        // probably doesn't exist
         // time to create it
         const settings = {
             logsDir: await getDefaultNativeDataDir(),
@@ -33,7 +33,7 @@ export async function getSettings(): Promise<MLSettings> {
     }
 }
 
-// dont expose this to renderer future me
+// don't expose this to renderer future me
 export async function saveSettings(settings: MLSettings) {
     if (!settings) return;
     await fs.writeFile(await getSettingsFilePath(), JSON.stringify(settings, null, 4), "utf8");
@@ -47,4 +47,3 @@ async function getSettingsFilePath() {
 
     return mlSettingsDir;
 }
-
