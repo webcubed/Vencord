@@ -97,7 +97,7 @@ function editUserPane(user: ClientUser, props: ModalProps) {
 
 export default definePlugin({
     name: "[WIP] EditUsers",
-    description: "Adds a button to edit users.",
+    description: "Adds a button to edit users",
     authors: [Devs.ImLvna],
 
     patches: [

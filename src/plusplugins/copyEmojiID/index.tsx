@@ -38,7 +38,7 @@ const settings = definePluginSettings({
 
 export default definePlugin({
     name: "CopyEmojiID",
-    description: "Adds button to copy emoji ID!",
+    description: "Adds a button to copy an emoji's ID",
     authors: [Devs.HappyEnderman, Devs.ANIKEIPS],
     settings,
 

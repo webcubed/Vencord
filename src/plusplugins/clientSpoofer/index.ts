@@ -28,7 +28,7 @@ const settings = definePluginSettings({
 
 export default definePlugin({
     name: "ClientSpoofer",
-    description: "Make Discord think you're using a different client.",
+    description: "Make Discord think you're using a different platform",
     authors: [Devs.ImLvna],
 
     settings,

@@ -144,7 +144,7 @@ export default definePlugin({
     authors: [Devs.Inbestigator],
     patches: [
         {
-            find: "INTERACTION_APPLICATION_COMMAND_INVALID_VERSION",
+            find: "#{intl::INTERACTION_APPLICATION_COMMAND_INVALID_VERSION}",
             replacement: {
                 match: /await\s.{1,2}\..{1,2}\.post\(\{url:.{1,2}\.ANM\.INTERACTIONS,body:(.),/g,
                 replace: "await $self.interactionHandler($1);$&"

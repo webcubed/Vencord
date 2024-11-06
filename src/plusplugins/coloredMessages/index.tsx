@@ -217,7 +217,7 @@ const ChatBarIcon: ChatBarButton = ({ isMainChat }) => {
 
 export default definePlugin({
     name: "ColoredMessages",
-    description: "Adds a new button to the message bar that allows you to insert colored code blocks into your messages!",
+    description: "Adds a new button to the message bar that allows you to insert colored code blocks into your messages",
     authors: [Devs.Knocklive],
     dependencies: ["ChatInputButtonAPI"],
 

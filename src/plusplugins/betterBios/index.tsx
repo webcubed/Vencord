@@ -21,7 +21,7 @@ export default definePlugin({
         }
     },
     {
-        find: ".Messages.VIEW_ALL_ROLES,",
+        find: "#{intl::VIEW_ALL_ROLES}",
         group: true,
         replacement: [{
             match: /(?<=.useState\(null\),)(\i=\i\.useMemo.{0,300})(return null!=\i\?(\i)\.slice.{0,30}\i,\i\])\)/,
@@ -33,7 +33,7 @@ export default definePlugin({
             replace: "onClick:() => (() => { try { setClamp(!clamp) } catch { $1() } })()"
         }]
     }, {
-        find: /\.BITE_SIZE,onOpenProfile:\i,usernameIcon:/,
+        find: /#{intl::BITE_SIZE},onOpenProfile:\i,usernameIcon:/,
         replacement: {
             match: /(?<=profileViewedAnalytics:\i}\),)/,
             replace: "$self.membersSince({...arguments[0]}),"
