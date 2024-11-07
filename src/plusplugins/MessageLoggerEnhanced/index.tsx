@@ -141,7 +141,7 @@ async function messageUpdateHandler(payload: MessageUpdatePayload) {
 
     if (message == null) {
         // MESSAGE_UPDATE gets dispatched when emebeds change too and content becomes null
-        if (cachedMessage != null && payload.message.content != null && cachedMessage.content != payload.message.content) {
+        if (cachedMessage != null && payload.message.content != null && cachedMessage.content !== payload.message.content) {
             message = {
                 ...cachedMessage,
                 content: payload.message.content,
@@ -158,7 +158,7 @@ async function messageUpdateHandler(payload: MessageUpdatePayload) {
         }
     }
 
-    if (message === null || message.channel_id === null || message.editHistory === null || message.editHistory.length === 0) return;
+    if (message == null || message.channel_id == null || message.editHistory == null || message.editHistory.length === 0) return;
 
     // Flogger.log("ADDING MESSAGE (EDITED)", message, payload);
     await addMessage(message, idb.DBMessageStatus.EDITED);
@@ -200,7 +200,7 @@ async function processMessageFetch(response: FetchMessagesResponse) {
         for (const recivedMessage of response.body) {
             const record = messages.find(m => m.message_id === recivedMessage.id);
 
-            if (record === null) continue;
+            if (record == null) continue;
 
             if (record.message.editHistory && record.message.editHistory.length > 0) {
                 recivedMessage.editHistory = record.message.editHistory;
