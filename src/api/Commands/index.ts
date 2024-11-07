@@ -61,14 +61,14 @@ export const _handleCommand = function (cmd: Command, args: Argument[], ctx: Com
 
     const handleError = (err: any) => {
         // TODO: cancel send if cmd.inputType === BUILT_IN_TEXT
-        const msg = `An Error occurred while executing command "${cmd.name}"`;
+        const msg = `An error occurred while executing command "${cmd.name}"`;
         const reason = err instanceof Error ? err.stack || err.message : String(err);
 
         console.error(msg, err);
         sendBotMessage(ctx.channel.id, {
             content: `${msg}:\n${makeCodeblock(reason)}`,
             author: {
-                username: "Vencord"
+                username: "Vencord+"
             }
         });
     };

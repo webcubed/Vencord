@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+*/
 
 import esbuild from "esbuild";
 import { readdir } from "fs/promises";
@@ -51,25 +51,25 @@ const nodeCommonOpts = {
     define: defines
 };
 
-const sourceMapFooter = (s) => (watch ? "" : `//# sourceMappingURL=vencord://${s}.js.map`);
+const sourceMapFooter = s => watch ? "" : `//# sourceMappingURL=vencord://${s}.js.map`;
 const sourcemap = watch ? "inline" : "external";
 
 /**
  * @type {import("esbuild").Plugin}
  */
 const globNativesPlugin = {
-  name: "glob-natives-plugin",
-  setup: (build) => {
-    const filter = /^~pluginNatives$/;
-    build.onResolve({ filter }, (args) => {
-      return {
-        namespace: "import-natives",
-        path: args.path,
-      };
-    });
+    name: "glob-natives-plugin",
+    setup: build => {
+        const filter = /^~pluginNatives$/;
+        build.onResolve({ filter }, args => {
+            return {
+                namespace: "import-natives",
+                path: args.path
+            };
+        });
 
         build.onLoad({ filter, namespace: "import-natives" }, async () => {
-            const pluginDirs = ["plugins", "userplugins"];
+            const pluginDirs = ["plugins", "plusplugins"];
             let code = "";
             let natives = "\n";
             let i = 0;

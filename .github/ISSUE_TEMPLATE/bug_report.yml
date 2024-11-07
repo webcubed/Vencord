@@ -1,27 +1,14 @@
 name: Bug/Crash Report
-description: Create a bug or crash report for Vencord. ALWAYS FIRST USE OUR SUPPORT CHANNEL! ONLY USE THIS FORM IF YOU ARE A CONTRIBUTOR OR WERE TOLD TO DO SO IN THE SUPPORT CHANNEL.
-labels: [bug]
-title: "[Bug] <title>"
+description: Create a bug or crash report for Vencord+.
+labels: [Bug]
 
 body:
-  - type: markdown
-    attributes:
-      value: |
-        # READ THIS BEFORE OPENING AN ISSUE
-
-        This form is ONLY FOR DEVELOPERS. YOUR ISSUE WILL BE CLOSED AND YOU WILL POSSIBLY BE BLOCKED FROM THE REPOSITORY IF YOU IGNORE THIS.
-        
-        DO NOT USE THIS FORM, unless
-        - you are a vencord contributor
-        - you were given explicit permission to use this form by a moderator in our support server
-        
-        DO NOT USE THIS FORM FOR SECURITY RELATED ISSUES. [CREATE A SECURITY ADVISORY INSTEAD.](https://github.com/Vendicated/Vencord/security/advisories/new)
   
   - type: input
     id: discord
     attributes:
-      label: Discord Account
-      description: Who on Discord is making this request? Not required but encouraged for easier follow-up
+      label: Discord Username
+      description: Who on Discord is making this request? Not required, but encouraged for easier follow-up
       placeholder: username#0000
     validations:
       required: false

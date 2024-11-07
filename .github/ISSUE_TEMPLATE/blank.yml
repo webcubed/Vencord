@@ -1,5 +1,5 @@
 name: Blank Issue
-description: Create a blank issue. ALWAYS FIRST USE OUR SUPPORT CHANNEL! ONLY USE THIS FORM IF YOU ARE A CONTRIBUTOR OR WERE TOLD TO DO SO IN THE SUPPORT CHANNEL.
+description: Create a blank issue.
 
 body:
   - type: markdown
@@ -7,13 +7,7 @@ body:
       value: |
         # READ THIS BEFORE OPENING AN ISSUE
 
-        This form is ONLY FOR DEVELOPERS. YOUR ISSUE WILL BE CLOSED AND YOU WILL POSSIBLY BE BLOCKED FROM THE REPOSITORY IF YOU IGNORE THIS.
-        
-        DO NOT USE THIS FORM, unless
-        - you are a vencord contributor
-        - you were given explicit permission to use this form by a moderator in our support server
-        
-        DO NOT USE THIS FORM FOR SECURITY RELATED ISSUES. [CREATE A SECURITY ADVISORY INSTEAD.](https://github.com/Vendicated/Vencord/security/advisories/new)
+        Do not use this template to request a plugin to be added to Vencord+.
 
   - type: textarea
     id: content
@@ -21,11 +15,3 @@ body:
       label: Content
     validations:
       required: true
-
-  - type: checkboxes
-    id: agreement-check
-    attributes:
-      label: Request Agreement
-      options:
-        - label: I have read the requirements for opening an issue above
-          required: true

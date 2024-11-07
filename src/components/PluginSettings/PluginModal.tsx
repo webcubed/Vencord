@@ -224,7 +224,7 @@ export default function PluginModal({ plugin, onRestartNeeded, onClose, transiti
                 <Forms.FormSection>
                     <Flex className={cl("info")}>
                         <Forms.FormText className={cl("description")}>{plugin.description}</Forms.FormText>
-                        {!pluginMeta.userPlugin && (
+                        {!pluginMeta.plusPlugin && (
                             <div className="vc-settings-modal-links">
                                 <WebsiteButton
                                     text="View more info"

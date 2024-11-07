@@ -10,7 +10,7 @@ import { useSettings } from "@api/Settings";
 import { classNameFactory } from "@api/Styles";
 import ErrorBoundary from "@components/ErrorBoundary";
 import { Link } from "@components/Link";
-import { DevsById } from "@utils/constants";
+import { DevsById, SuncordDevsById, EquicordDevsById, PlusDevsById, PlusMtsById } from "@utils/constants";
 import { fetchUserProfile } from "@utils/discord";
 import { classes, pluralise } from "@utils/misc";
 import { ModalContent, ModalRoot, openModal } from "@utils/modal";
@@ -51,8 +51,8 @@ function ContributorModal({ user }: { user: User; }) {
 
     const plugins = useMemo(() => {
         const allPlugins = Object.values(Plugins);
-        const pluginsByAuthor = DevsById[user.id]
-            ? allPlugins.filter(p => p.authors.includes(DevsById[user.id]))
+        const pluginsByAuthor = DevsById[user.id] || SuncordDevsById[user.id] || EquicordDevsById[user.id] || PlusDevsById[user.id] || PlusMtsById[user.id]
+            ? allPlugins.filter(p => p.authors.includes(DevsById[user.id] || SuncordDevsById[user.id] || EquicordDevsById[user.id] || PlusDevsById[user.id] || PlusMtsById[user.id]))
             : allPlugins.filter(p => p.authors.some(a => a.name === user.username));
 
         return pluginsByAuthor
@@ -60,7 +60,7 @@ function ContributorModal({ user }: { user: User; }) {
             .sort((a, b) => Number(a.required ?? false) - Number(b.required ?? false));
     }, [user.id, user.username]);
 
-    const ContributedHyperLink = <Link href="https://vencord.dev/source">contributed</Link>;
+    const ContributedHyperLink = <Link href="https://github.com/RobinRMC/VencordPlus">contributed</Link>;
 
     return (
         <>
@@ -90,11 +90,11 @@ function ContributorModal({ user }: { user: User; }) {
 
             {plugins.length ? (
                 <Forms.FormText>
-                    This person has {ContributedHyperLink} to {pluralise(plugins.length, "plugin")}!
+                    {user.username} has {ContributedHyperLink} to {pluralise(plugins.length, "plugin")}!
                 </Forms.FormText>
             ) : (
                 <Forms.FormText>
-                    This person has not made any plugins. They likely {ContributedHyperLink} to Vencord in other ways!
+                    {user.username} has not made any plugins. They likely {ContributedHyperLink} to Vencord+ in other ways!
                 </Forms.FormText>
             )}
 
@@ -105,7 +105,7 @@ function ContributorModal({ user }: { user: User; }) {
                             key={p.name}
                             plugin={p}
                             disabled={p.required ?? false}
-                            onRestartNeeded={() => showToast("Restart to apply changes!")}
+                            onRestartNeeded={() => showToast("Restart your client to apply the changes!")}
                         />
                     )}
                 </div>

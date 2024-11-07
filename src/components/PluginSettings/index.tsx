@@ -212,7 +212,7 @@ export default function PluginSettings() {
             title: "Restart required",
             body: (
                 <>
-                    <p>The following plugins require a restart:</p>
+                    <p>The following plugins require a client restart:</p>
                     <div>{changes.map((s, i) => (
                         <>
                             {i > 0 && ", "}

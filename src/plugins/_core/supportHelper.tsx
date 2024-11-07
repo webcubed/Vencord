@@ -27,7 +27,7 @@ import { Devs, SUPPORT_CHANNEL_ID } from "@utils/constants";
 import { sendMessage } from "@utils/discord";
 import { Logger } from "@utils/Logger";
 import { Margins } from "@utils/margins";
-import { isPluginDev, tryOrElse } from "@utils/misc";
+import { isPluginDev, isSuncordPluginDev, isEquicordPluginDev, isPlusPluginDev, isPlusMt, tryOrElse } from "@utils/misc";
 import { relaunch } from "@utils/native";
 import { onlyOnce } from "@utils/onlyOnce";
 import { makeCodeblock } from "@utils/text";
@@ -76,7 +76,7 @@ async function generateDebugInfoMessage() {
 
     const client = (() => {
         if (IS_DISCORD_DESKTOP) return `Discord Desktop v${DiscordNative.app.getVersion()}`;
-        if (IS_VESKTOP) return `Vesktop v${VesktopNative.app.getVersion()}`;
+        if (IS_VESKTOP) return `Vesktop+ v${VesktopNative.app.getVersion()}`;
         if ("legcord" in window) return `Legcord v${window.legcord.version}`;
 
         // @ts-expect-error
@@ -85,8 +85,8 @@ async function generateDebugInfoMessage() {
     })();
 
     const info = {
-        Vencord:
-            `v${VERSION} • [${gitHash}](<https://github.com/Vendicated/Vencord/commit/${gitHash}>)` +
+        "Vencord+":
+            `v${VERSION} • [${gitHash}](<https://github.com/RobinRMC/VencordPlus/commit/${gitHash}>)` +
             `${SettingsPlugin.additionalInfo} - ${Intl.DateTimeFormat("en-GB", { dateStyle: "medium" }).format(BUILD_TIMESTAMP)}`,
         Client: `${RELEASE_CHANNEL} ~ ${client}`,
         Platform: window.navigator.platform
@@ -100,7 +100,7 @@ async function generateDebugInfoMessage() {
         "NoRPC enabled": Vencord.Plugins.isPluginEnabled("NoRPC"),
         "Activity Sharing disabled": tryOrElse(() => !ShowCurrentGame.getSetting(), false),
         "Vencord DevBuild": !IS_STANDALONE,
-        "Has UserPlugins": Object.values(PluginMeta).some(m => m.userPlugin),
+        "Has PlusPlugins": Object.values(PluginMeta).some(m => m.plusPlugin),
         "More than two weeks out of date": BUILD_TIMESTAMP < Date.now() - 12096e5,
     };
 
@@ -118,14 +118,14 @@ function generatePluginList() {
     const enabledPlugins = Object.keys(plugins)
         .filter(p => Vencord.Plugins.isPluginEnabled(p) && !isApiPlugin(p));
 
-    const enabledStockPlugins = enabledPlugins.filter(p => !PluginMeta[p].userPlugin);
-    const enabledUserPlugins = enabledPlugins.filter(p => PluginMeta[p].userPlugin);
+    const enabledStockPlugins = enabledPlugins.filter(p => !PluginMeta[p].plusPlugin);
+    const enabledPlusPlugins = enabledPlugins.filter(p => PluginMeta[p].plusPlugin);
 
 
     let content = `**Enabled Plugins (${enabledStockPlugins.length}):**\n${makeCodeblock(enabledStockPlugins.join(", "))}`;
 
-    if (enabledUserPlugins.length) {
-        content += `**Enabled UserPlugins (${enabledUserPlugins.length}):**\n${makeCodeblock(enabledUserPlugins.join(", "))}`;
+    if (enabledPlusPlugins.length) {
+        content += `**Enabled PlusPlugins (${enabledPlusPlugins.length}):**\n${makeCodeblock(enabledPlusPlugins.join(", "))}`;
     }
 
     return content;
@@ -157,14 +157,14 @@ export default definePlugin({
     commands: [
         {
             name: "vencord-debug",
-            description: "Send Vencord debug info",
-            predicate: ctx => isPluginDev(UserStore.getCurrentUser()?.id) || AllowedChannelIds.includes(ctx.channel.id),
+            description: "Send Vencord+ debug info",
+            predicate: ctx => isPluginDev(UserStore.getCurrentUser()?.id) || isSuncordPluginDev(UserStore.getCurrentUser()?.id) || isEquicordPluginDev(UserStore.getCurrentUser()?.id) || isPlusPluginDev(UserStore.getCurrentUser()?.id) || isPlusMt(UserStore.getCurrentUser()?.id) || AllowedChannelIds.includes(ctx.channel.id),
             execute: async () => ({ content: await generateDebugInfoMessage() })
         },
         {
             name: "vencord-plugins",
-            description: "Send Vencord plugin list",
-            predicate: ctx => isPluginDev(UserStore.getCurrentUser()?.id) || AllowedChannelIds.includes(ctx.channel.id),
+            description: "Send Vencord+ plugin list",
+            predicate: ctx => isPluginDev(UserStore.getCurrentUser()?.id) || isSuncordPluginDev(UserStore.getCurrentUser()?.id) || isEquicordPluginDev(UserStore.getCurrentUser()?.id) || isPlusPluginDev(UserStore.getCurrentUser()?.id) || isPlusMt(UserStore.getCurrentUser()?.id) || AllowedChannelIds.includes(ctx.channel.id),
             execute: () => ({ content: generatePluginList() })
         }
     ],
@@ -174,7 +174,7 @@ export default definePlugin({
             if (channelId !== SUPPORT_CHANNEL_ID) return;
 
             const selfId = UserStore.getCurrentUser()?.id;
-            if (!selfId || isPluginDev(selfId)) return;
+            if (!selfId || isPluginDev(selfId) || isSuncordPluginDev(selfId) || isEquicordPluginDev(selfId) || isPlusPluginDev(selfId) || isPlusMt(selfId)) return;
 
             if (!IS_UPDATER_DISABLED) {
                 await checkForUpdatesOnce().catch(() => { });
@@ -183,9 +183,9 @@ export default definePlugin({
                     return Alerts.show({
                         title: "Hold on!",
                         body: <div>
-                            <Forms.FormText>You are using an outdated version of Vencord! Chances are, your issue is already fixed.</Forms.FormText>
+                            <Forms.FormText>You are using an outdated version of Vencord+! Chances are your issue is already fixed.</Forms.FormText>
                             <Forms.FormText className={Margins.top8}>
-                                Please first update before asking for support!
+                                Please update before asking for support!
                             </Forms.FormText>
                         </div>,
                         onCancel: () => openUpdaterModal!(),
@@ -207,10 +207,10 @@ export default definePlugin({
                     body: <div>
                         <Forms.FormText>You are using an externally updated Vencord version, which we do not provide support for!</Forms.FormText>
                         <Forms.FormText className={Margins.top8}>
-                            Please either switch to an <Link href="https://vencord.dev/download">officially supported version of Vencord</Link>, or
-                            contact your package maintainer for support instead.
+                            If you are experiencing issues, please contact your <Link href="https://github.com/RobinRMC/VencordPlus">package maintainer</Link> for support instead.
                         </Forms.FormText>
-                    </div>
+                    </div>,
+                    onCloseCallback: () => {}
                 });
             }
 
@@ -221,8 +221,7 @@ export default definePlugin({
                         <Forms.FormText>You are using a custom build of Vencord, which we do not provide support for!</Forms.FormText>
 
                         <Forms.FormText className={Margins.top8}>
-                            We only provide support for <Link href="https://vencord.dev/download">official builds</Link>.
-                            Either <Link href="https://vencord.dev/download">switch to an official build</Link> or figure your issue out yourself.
+                            If you are experiencing issues, please contact your <Link href="https://github.com/RobinRMC/VencordPlus">package maintainer</Link> for support instead.
                         </Forms.FormText>
 
                         <Text variant="text-md/bold" className={Margins.top8}>You will be banned from receiving support if you ignore this rule.</Text>

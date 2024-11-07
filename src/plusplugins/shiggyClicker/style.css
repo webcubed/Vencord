@@ -1,0 +1,7 @@
+/* stylelint-disable selector-class-pattern */
+.shiggyClicker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}

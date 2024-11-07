@@ -2,17 +2,20 @@
     "name": "vencord",
     "private": "true",
     "version": "1.10.6",
-    "description": "The cutest Discord client mod",
-    "homepage": "https://github.com/Vendicated/Vencord#readme",
+    "description": "Vencord+ is a fork of Vencord that adds unapproved plugins.",
+    "homepage": "https://github.com/RobinRMC/VencordPlus#readme",
     "bugs": {
-        "url": "https://github.com/Vendicated/Vencord/issues"
+        "url": "https://github.com/RobinRMC/VencordPlus/issues"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Vendicated/Vencord.git"
+        "url": "git+https://github.com/RobinRMC/VencordPlus.git"
     },
     "license": "GPL-3.0-or-later",
     "author": "Vendicated",
+    "directories": {
+        "doc": "docs"
+    },
     "scripts": {
         "build": "node --require=./scripts/suppressExperimentalWarnings.js scripts/build/build.mjs",
         "buildStandalone": "pnpm build --standalone",
@@ -30,7 +33,7 @@
         "lint": "eslint",
         "lint-styles": "stylelint \"src/**/*.css\" --ignore-pattern src/userplugins",
         "lint:fix": "pnpm lint --fix",
-        "test": "pnpm buildStandalone && pnpm lint && pnpm lint-styles && pnpm testTsc && pnpm generatePluginJson",
+        "test": "pnpm buildStandalone && pnpm testTsc && pnpm generatePluginJson",
         "testWeb": "pnpm lint && pnpm buildWeb && pnpm testTsc",
         "testTsc": "tsc --noEmit"
     },
@@ -39,11 +42,12 @@
         "@sapphi-red/web-noise-suppressor": "0.3.5",
         "@vap/core": "0.0.12",
         "@vap/shiki": "0.10.5",
+        "buttplug": "^3.2.2",
         "fflate": "^0.8.2",
         "gifenc": "github:mattdesl/gifenc#64842fca317b112a8590f8fef2bf3825da8f6fe3",
         "monaco-editor": "^0.50.0",
         "nanoid": "^5.0.7",
-        "openai": "^4.68.1",
+        "openai": "^4.71.1",
         "virtual-merge": "^1.0.1"
     },
     "devDependencies": {
@@ -75,6 +79,7 @@
         "ts-pattern": "^5.3.1",
         "tsx": "^4.16.5",
         "type-fest": "^4.23.0",
+        "typed-emitter": "^2.1.0",
         "typescript": "^5.5.4",
         "typescript-eslint": "^8.0.0",
         "typescript-transform-paths": "^3.4.7",

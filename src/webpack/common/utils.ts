@@ -65,7 +65,6 @@ export const i18n = mapMangledModuleLazy('defaultLocale:"en-US"', {
     t: filters.byProps(runtimeHashMessageKey("DISCORD"))
 });
 
-
 export let SnowflakeUtils: t.SnowflakeUtils;
 waitFor(["fromTimestamp", "extractTimestamp"], m => SnowflakeUtils = m);
 

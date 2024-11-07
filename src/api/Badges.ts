@@ -91,7 +91,13 @@ export function _getBadges(args: BadgeUserArgs) {
         }
     }
     const donorBadges = (Plugins.BadgeAPI as unknown as typeof import("../plugins/_api/badges").default).getDonorBadges(args.userId);
+    const suncordDonorBadges = (Plugins.BadgeAPI as unknown as typeof import("../plugins/_api/badges").default).getSuncordDonorBadges(args.userId);
+    const equicordDonorBadges = (Plugins.BadgeAPI as unknown as typeof import("../plugins/_api/badges").default).getEquicordDonorBadges(args.userId);
+    const plusCustomBadges = (Plugins.BadgeAPI as unknown as typeof import("../plugins/_api/badges").default).getPlusCustomBadges(args.userId);
     if (donorBadges) badges.unshift(...donorBadges);
+    if (suncordDonorBadges) badges.unshift(...suncordDonorBadges);
+    if (equicordDonorBadges) badges.unshift(...equicordDonorBadges);
+    if (plusCustomBadges) badges.unshift(...plusCustomBadges);
 
     return badges;
 }

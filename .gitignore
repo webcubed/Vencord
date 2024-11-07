@@ -18,6 +18,4 @@ lerna-debug.log*
 .pnpm-debug.log*
 *.tsbuildinfo
 
-
 ExtensionCache/
-settings/

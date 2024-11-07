@@ -1,0 +1,57 @@
+name: Request plugin
+description: Create a request for a plugin to be added to Vencord+
+labels: [Addition]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # READ THIS BEFORE OPENING A REQUEST
+
+        **You will be blocked from opening further requests if you don't follow these rules.**
+        
+        Before making a request, make sure someone didn't already request the plugin to be added.
+
+        Put the name of the plugin as the title of the request.
+
+        Skip formalities like "hello" and do not use AI to "spice up" your request. Keep it short and concise, with only the information necessary.
+        ## One request per issue
+
+        Do not include multiple requests in one issue. If you are making 5 requests, make 5 separate issues.
+        
+        ## Do not request any of the following plugins:
+        - Plugins that spam Discord and thus risk an account suspension. Examples:
+          - Message Pruner
+          - Animated Status
+          - Nitro Snipers
+          - Selfbots
+        - Plugins that replace text in your messages, like FxTwitter. (Use https://vencord.dev/plugins/TextReplace!)
+        - Plugins that hide UI elements, like the GIF button. (Use QuickCSS instead!)
+
+  - type: input
+    id: link
+    attributes:
+      label: Link
+      placeholder: Provide a link to the plugin
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      placeholder: Describe what the plugin does
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: agreement-check
+    attributes:
+      label: Agreement
+      options:
+        - label: I have read the above and made sure my plugin request is clear and concise.
+          required: true
+        - label: "I have checked the [existing plugins in Vencord](https://vencord.dev/plugins) and the [existing plugins in Vencord+](https://github.com/RobinRMC/VencordPlus/tree/main/src/plusplugins) and made sure the plugin I want to request hasn't already been added."
+          required: true
+        - label: "I have searched the [existing plugin requests](https://github.com/RobinRMC/VencordPlus/issues?q=is%3Aissue+label%3AAddition) and made sure the plugin I want to request hasn't already been requested."
+          required: true

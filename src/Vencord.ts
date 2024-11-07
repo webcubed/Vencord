@@ -77,7 +77,7 @@ async function syncSettings() {
             // of the possible ones it has (such as when your settings are newer).
             showNotification({
                 title: "Cloud Settings",
-                body: "Your settings have been updated! Click here to restart to fully apply changes!",
+                body: "Your settings have been updated! Click here to restart your client to fully apply the changes!",
                 color: "var(--green-360)",
                 onClick: relaunch
             });
@@ -100,8 +100,8 @@ async function init() {
                 await update();
                 if (Settings.autoUpdateNotification)
                     setTimeout(() => showNotification({
-                        title: "Vencord has been updated!",
-                        body: "Click here to restart",
+                        title: "Vencord+ has been updated!",
+                        body: "Click here to restart your client",
                         permanent: true,
                         noPersist: true,
                         onClick: relaunch
@@ -110,7 +110,7 @@ async function init() {
             }
 
             setTimeout(() => showNotification({
-                title: "A Vencord update is available!",
+                title: "A Vencord+ update is available!",
                 body: "Click here to view the update",
                 permanent: true,
                 noPersist: true,

@@ -1,0 +1,12 @@
+name: Request update
+description: Create a request for a plugin added to Vencord+ to be updated.
+labels: [Update]
+
+body:
+  - type: input
+    id: link
+    attributes:
+      label: Link
+      placeholder: "[Optional] Provide a link to the plugin"
+    validations:
+      required: false

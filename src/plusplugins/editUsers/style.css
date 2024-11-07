@@ -1,0 +1,10 @@
+.edit-user-modal {
+    overflow: visible !important;
+    width: 100%;
+    max-width: 564px;
+    padding: 20px 16px !important;
+    padding-right: 16px !important;
+    background-color: var(--modal-background);
+    border-radius: 4px;
+    color: var(--text-normal);
+}

@@ -573,16 +573,16 @@ export const Devs = /* #__PURE__*/ Object.freeze({
     },
     relitrix: {
         name: "Relitrix",
-        id: 423165393901715456n,
+        id: 423165393901715456n
     },
     RamziAH: {
         name: "RamziAH",
-        id: 1279957227612147747n,
+        id: 1279957227612147747n
     },
-    SomeAspy: {
+        SomeAspy: {
         name: "SomeAspy",
-        id: 516750892372852754n,
-    },
+        id: 516750892372852754n
+    }
 } satisfies Record<string, Dev>);
 
 export const SuncordDevs = /* #__PURE__*/ Object.freeze({

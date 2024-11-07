@@ -86,7 +86,7 @@ function toCodeBlock(s: string, indentation = 0, isDiscord = false) {
 async function printReport() {
     console.log();
 
-    console.log("# Vencord Report" + (CANARY ? " (Canary)" : ""));
+    console.log("# Vencord+ Report" + (CANARY ? " (Canary)" : ""));
 
     console.log();
 
@@ -135,7 +135,7 @@ async function printReport() {
             },
             body: JSON.stringify({
                 description: "Here's the latest Vencord Report!",
-                username: "Vencord Reporter" + (CANARY ? " (Canary)" : ""),
+                username: "Vencord+ Reporter" + (CANARY ? " (Canary)" : ""),
                 embeds: [
                     {
                         title: "Bad Patches",
@@ -199,7 +199,7 @@ page.on("console", async e => {
 
     const firstArg = await rawArgs[0]?.jsonValue();
 
-    const isVencord = firstArg === "[Vencord]";
+    const isVencord = firstArg === "[Vencord+]";
     const isDebug = firstArg === "[PUP_DEBUG]";
 
     outer:

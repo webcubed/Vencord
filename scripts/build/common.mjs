@@ -47,7 +47,7 @@ export const gitHash = process.env.VENCORD_HASH || execSync("git rev-parse --sho
 
 export const banner = {
     js: `
-// Vencord ${gitHash}
+// Vencord+ ${gitHash}
 // Standalone: ${IS_STANDALONE}
 // Platform: ${IS_STANDALONE === false ? process.platform : "Universal"}
 // Updater Disabled: ${IS_UPDATER_DISABLED}
@@ -113,14 +113,14 @@ export const globPlugins = kind => ({
         });
 
         build.onLoad({ filter, namespace: "import-plugins" }, async () => {
-            const pluginDirs = ["plugins/_api", "plugins/_core", "plugins", "userplugins"];
+            const pluginDirs = ["plugins/_api", "plugins/_core", "plugins", "plusplugins"];
             let code = "";
             let pluginsCode = "\n";
             let metaCode = "\n";
             let excludedCode = "\n";
             let i = 0;
             for (const dir of pluginDirs) {
-                const userPlugin = dir === "userplugins";
+                const plusPlugin = dir === "plusplugins";
 
                 const fullDir = `./src/${dir}`;
                 if (!await exists(fullDir)) continue;
@@ -152,7 +152,7 @@ export const globPlugins = kind => ({
                     const mod = `p${i}`;
                     code += `import ${mod} from "./${dir}/${fileName.replace(/\.tsx?$/, "")}";\n`;
                     pluginsCode += `[${mod}.name]:${mod},\n`;
-                    metaCode += `[${mod}.name]:${JSON.stringify({ folderName, userPlugin })},\n`; // TODO: add excluded plugins to display in the UI?
+                    metaCode += `[${mod}.name]:${JSON.stringify({ folderName, plusPlugin })},\n`; // TODO: add excluded plugins to display in the UI?
                     i++;
                 }
             }

@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Vencord Support Server
-    url: https://discord.gg/D9uwnFnqmd
-    about: If you need help regarding Vencord, please join our support server!
-  - name: Vencord Installer
+  - name: Vesktop+
+    url: https://github.com/RobinRMC/VesktopPlus
+    about: You can find Vesktop+ here.
+  - name: Vencord+ Installer
     url: https://github.com/Vencord/Installer
-    about: You can find the Vencord Installer here
+    about: You can find the Vencord+ installer here.

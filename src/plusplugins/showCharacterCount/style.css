@@ -1,0 +1,3 @@
+div[class^=inner]>div[class^=buttons_] {
+  margin-right: 8px;
+}

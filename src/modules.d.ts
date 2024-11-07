@@ -23,7 +23,7 @@ declare module "~plugins" {
     export default plugins;
     export const PluginMeta: Record<string, {
         folderName: string;
-        userPlugin: boolean;
+        plusPlugin: boolean;
     }>;
     export const ExcludedPlugins: Record<string, "web" | "discordDesktop" | "vencordDesktop" | "desktop" | "dev">;
 }

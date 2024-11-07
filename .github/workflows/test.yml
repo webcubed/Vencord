@@ -4,7 +4,13 @@ on:
     pull_request:
         branches:
             - main
-            - dev
+        paths-ignore:
+            - README.md
+            - LICENSE
+            - CODE_OF_CONDUCT.md
+            - CONTRIBUTING.md
+            - docs/**
+            - RemovedPlusPlugins/**
 jobs:
     test:
         runs-on: ubuntu-latest
@@ -20,7 +26,7 @@ jobs:
                   cache: "pnpm"
 
             - name: Install dependencies
-              run: pnpm install --frozen-lockfile
+              run: pnpm install --frozen-lockfile && pnpm install buttplug --workspace-root && pnpm install openai --workspace-root
 
             - name: Lint & Test if desktop version compiles
               run: pnpm test
