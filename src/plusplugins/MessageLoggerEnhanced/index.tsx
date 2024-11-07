@@ -92,7 +92,7 @@ async function messageDeleteHandler(payload: MessageDeletePayload & { isBulk: bo
         }
 
 
-        if (message === null || message.channel_id === null || !message.deleted) return;
+        if (message == null || message.channel_id == null || !message.deleted) return;
         // Flogger.log("ADDING MESSAGE (DELETED)", message);
         if (payload.isBulk)
             return message;
@@ -139,9 +139,9 @@ async function messageUpdateHandler(payload: MessageUpdatePayload) {
 
     let message = oldGetMessage?.(payload.message.channel_id, payload.message.id) as LoggedMessage | LoggedMessageJSON | null;
 
-    if (message === null) {
+    if (message == null) {
         // MESSAGE_UPDATE gets dispatched when emebeds change too and content becomes null
-        if (cachedMessage !== null && payload.message.content !== null && cachedMessage.content !== payload.message.content) {
+        if (cachedMessage != null && payload.message.content != null && cachedMessage.content != payload.message.content) {
             message = {
                 ...cachedMessage,
                 content: payload.message.content,

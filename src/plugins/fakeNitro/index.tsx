@@ -454,7 +454,7 @@ export default definePlugin({
 
     handleGradientThemeSelect(backgroundGradientPresetId: number | undefined, theme: number, original: () => void) {
         const premiumType = UserStore?.getCurrentUser()?.premiumType ?? 0;
-        if (premiumType === 2 || backgroundGradientPresetId === null) return original();
+        if (premiumType == 2 || backgroundGradientPresetId == null) return original();
 
         if (!PreloadedUserSettingsActionCreators || !AppearanceSettingsActionCreators || !ClientThemeSettingsActionsCreators || !BINARY_READ_OPTIONS) return;
 
