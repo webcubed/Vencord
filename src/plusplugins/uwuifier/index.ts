@@ -112,7 +112,7 @@ function uwuify(message: string): string {
     const words: string[] | null = message.match(rule);
     let answer = "";
 
-    if (words === null) return "";
+    if (words == null) return "";
 
     for (let i = 0; i < words.length; i++) {
         if (isOneCharacterString(words[i]) || words[i].startsWith("https://")) {

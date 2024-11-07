@@ -457,7 +457,7 @@ export const mapMangledModule = traceFunction("mapMangledModule", function mapMa
     const exports = {} as Record<S, any>;
 
     const id = findModuleId(...Array.isArray(code) ? code : [code]);
-    if (id === null)
+    if (id == null)
         return exports;
 
     const mod = wreq(id as any);
@@ -547,7 +547,7 @@ export async function extractAndLoadChunks(code: CodeFilter, matcher: RegExp = D
         await Promise.all(chunkIds.map(id => wreq.e(id)));
     }
 
-    if (wreq.m[entryPointId] === null) {
+    if (wreq.m[entryPointId] == null) {
         const err = new Error("extractAndLoadChunks: Entry point is not loaded in the module factories, perhaps one of the chunks failed to load");
         logger.warn(err, "Code:", code, "Matcher:", matcher);
 

@@ -129,7 +129,7 @@ export type MediaModalProps = {
 
 export const openMediaModal: (props: MediaModalProps) => void = proxyLazyWebpack(() => {
     const mediaModalKeyModuleId = findModuleId('"Zoomed Media Modal"');
-    if (mediaModalKeyModuleId === null) return;
+    if (mediaModalKeyModuleId == null) return;
 
     const openMediaModalModule = wreq(findModuleId(mediaModalKeyModuleId, "modalKey:") as any);
     return Object.values<any>(openMediaModalModule).find(v => String(v).includes("modalKey:"));

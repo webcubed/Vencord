@@ -23,5 +23,5 @@ const videoExtensions = ["mp4", "ogg", "webm", "avi", "wmv", "flv", "mov", "mkv"
 
 export function getFormat(url: string) {
     const extension = getUrlExtension(url);
-    return url.startsWith("https://media.tenor") || extension === null || videoExtensions.includes(extension) ? Format.VIDEO : Format.IMAGE;
+    return url.startsWith("https://media.tenor") || extension == null || videoExtensions.includes(extension) ? Format.VIDEO : Format.IMAGE;
 }

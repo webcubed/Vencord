@@ -79,7 +79,7 @@ export function shouldIgnore({ channelId, authorId, guildId, flags, bot, ghostPi
     const isEphemeral = ((flags ?? 0) & EPHEMERAL) === EPHEMERAL;
     if (isEphemeral) return true; // ignore
 
-    if (channelId && guildId === null)
+    if (channelId && guildId == null)
         guildId = getGuildIdByChannel(channelId);
 
     const myId = UserStore.getCurrentUser().id;

@@ -79,7 +79,7 @@ export function Builder({ guild }: BuilderProps) {
                             look={Button.Looks.LINK}
                             color={Button.Colors.PRIMARY}
                             size={Button.Sizes.SMALL}
-                            style={primaryColor === null && accentColor === null && !effect ? { visibility: "hidden" } : undefined}
+                            style={primaryColor == null && accentColor == null && !effect ? { visibility: "hidden" } : undefined}
                             onClick={() => {
                                 setPrimaryColor(null);
                                 setAccentColor(null);

@@ -61,7 +61,7 @@ async function messageDeleteHandler(payload: MessageDeletePayload & { isBulk: bo
 
         let message: LoggedMessage | LoggedMessageJSON | null =
             oldGetMessage?.(payload.channelId, payload.id);
-        if (message === null) {
+        if (message == null) {
             // most likely an edited message
             const cachedMessage = cacheSentMessages.get(`${payload.channelId},${payload.id}`);
             if (!cachedMessage) return; // Flogger.log("no message to save");
@@ -358,13 +358,13 @@ export default definePlugin({
 
     getDeleted(m1, m2) {
         const deleted = m2?.deleted;
-        if (deleted === null && m1?.deleted !== null) return m1.deleted;
+        if (deleted == null && m1?.deleted !== null) return m1.deleted;
         return deleted;
     },
 
     getEdited(m1, m2) {
         const editHistory = m2?.editHistory;
-        if (editHistory === null && m1?.editHistory !== null && m1.editHistory.length > 0)
+        if (editHistory == null && m1?.editHistory !== null && m1.editHistory.length > 0)
             return m1.editHistory.map(mapTimestamp);
         return editHistory;
     },

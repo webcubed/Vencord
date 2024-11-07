@@ -78,7 +78,7 @@ export function addPatch(newPatch: Omit<Patch, "plugin">, pluginName: string) {
 }
 
 function isReporterTestable(p: Plugin, part: ReporterTestable) {
-    return p.reporterTestable === null
+    return p.reporterTestable == null
         ? true
         : (p.reporterTestable & part) === part;
 }

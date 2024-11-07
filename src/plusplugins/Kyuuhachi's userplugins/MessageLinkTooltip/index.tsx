@@ -179,7 +179,7 @@ function useMessage(channelId, messageId) {
     );
     const [message, setMessage] = useState(cachedMessage);
     useEffect(() => {
-        if (message === null)
+        if (message == null)
             (async () => {
                 const res = await RestAPI.get({
                     url: Constants.Endpoints.MESSAGES(channelId),

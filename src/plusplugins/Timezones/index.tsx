@@ -123,7 +123,7 @@ const TimestampComponent = ErrorBoundary.wrap(({ userId, timestamp, type }: Prop
 }, { noop: true });
 
 const userContextMenuPatch: NavContextMenuPatchCallback = (children, { user }: { user: User; }) => {
-    if (user?.id === null) return;
+    if (user?.id == null) return;
 
     const setTimezoneItem = (
         <Menu.MenuItem

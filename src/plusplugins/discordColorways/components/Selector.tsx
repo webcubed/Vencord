@@ -223,7 +223,7 @@ export default function ({
                 {(activeColorwayObject.sourceType === "temporary" && settings.selectorType === "normal" && settings.selectorType === "normal") && <div
                     className="discordColorway"
                     id="colorway-Temporary"
-                    aria-checked={activeColorwayObject.id === "Auto" && activeColorwayObject.source === null}
+                    aria-checked={activeColorwayObject.id === "Auto" && activeColorwayObject.source == null}
                     onClick={async () => {
                         DataStore.set("activeColorwayObject", nullColorwayObj);
                         setActiveColorwayObject(nullColorwayObj);
@@ -258,7 +258,7 @@ export default function ({
                 {getComputedStyle(document.body).getPropertyValue("--os-accent-color") && ["all", "official"].includes(visibleSources) && settings.selectorType === "normal" && "auto".includes(searchValue.toLowerCase()) ? <div
                     className="discordColorway"
                     id="colorway-Auto"
-                    aria-checked={activeColorwayObject.id === "Auto" && activeColorwayObject.source === null}
+                    aria-checked={activeColorwayObject.id === "Auto" && activeColorwayObject.source == null}
                     onClick={async () => {
                         const activeAutoPreset = await DataStore.get("activeAutoPreset");
                         if (activeColorwayObject.id === "Auto") {

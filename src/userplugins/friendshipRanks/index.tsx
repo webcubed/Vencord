@@ -134,7 +134,7 @@ function getBadgesToApply() {
 
                     const days = daysSince(RelationshipStore.getSince(info.userId));
 
-                    if (self[index + 1] === null) {
+                    if (self[index + 1] == null) {
                         return days > rank.requirement;
                     }
 

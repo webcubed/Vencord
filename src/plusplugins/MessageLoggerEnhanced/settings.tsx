@@ -218,7 +218,7 @@ export const settings = definePluginSettings({
             <Button
                 disabled={
                     IS_WEB
-                    || settings.store.imageCacheDir === null
+                    || settings.store.imageCacheDir == null
                     || settings.store.imageCacheDir === DEFAULT_IMAGE_CACHE_DIR
                 }
                 onClick={() => Native.showItemInFolder(settings.store.imageCacheDir)}

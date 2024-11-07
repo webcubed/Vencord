@@ -68,7 +68,7 @@ export function SelectFolderInput({ settingsKey, successMessage }: Props) {
     return (
         <div className={cl("-container")}>
             <div onClick={() => copyWithToast(path)} className={cl("-input")}>
-                {path === null || path === DEFAULT_IMAGE_CACHE_DIR ? "Choose Folder" : getDirName(path)}
+                {path == null || path === DEFAULT_IMAGE_CACHE_DIR ? "Choose Folder" : getDirName(path)}
             </div>
             <Button
                 className={cl("-button")}

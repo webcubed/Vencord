@@ -100,7 +100,7 @@ async function setRpc(disable?: boolean, details?: string, imageURL?: string) {
         "assets": {
             // i love insanely long statements
             "large_image":
-                (imageURL === null || !settings.store.albumCoverImage) ?
+                (imageURL == null || !settings.store.albumCoverImage) ?
                     await getApplicationAsset(settings.store.assetURL.length ? settings.store.assetURL : UserStore.getCurrentUser().getAvatarURL()) :
                     await getApplicationAsset(imageURL)
         }
@@ -162,7 +162,7 @@ async function updateData() {
                     period: "7day"
                 });
 
-            if (lastFMDataJson === null) return;
+            if (lastFMDataJson == null) return;
 
             const lastFMData = JSON.parse(lastFMDataJson);
             console.log(lastFMData);

@@ -22,7 +22,7 @@ function handlePresenceUpdate(status: string, userId: string) {
         if (status !== "offline") {
             presenceStatus.hasBeenOnline = true;
             presenceStatus.lastOffline = null;
-        } else if (presenceStatus.hasBeenOnline && presenceStatus.lastOffline === null) {
+        } else if (presenceStatus.hasBeenOnline && presenceStatus.lastOffline == null) {
             presenceStatus.lastOffline = Date.now();
         }
     } else {

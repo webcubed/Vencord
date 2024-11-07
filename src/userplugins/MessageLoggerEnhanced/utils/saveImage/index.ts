@@ -83,7 +83,7 @@ export async function cacheMessageImages(message: LoggedMessage | LoggedMessageJ
             const fileExtension = getFileExtension(attachment.filename ?? attachment.url) ?? attachment.content_type?.split("/")?.[1] ?? ".png";
             const path = await cacheImage(attachment.url, i, attachment.id, message.id, message.channel_id, fileExtension);
 
-            if (path === null) {
+            if (path == null) {
                 Flogger.error("Failed to save image from attachment. id: ", attachment.id);
                 continue;
             }

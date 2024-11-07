@@ -149,7 +149,7 @@ function patchFactories(factories: Record<string, (module: any, exports: any, re
         const patchedBy = new Set();
 
         const factory = factories[id] = function (module: any, exports: any, require: WebpackInstance) {
-            if (wreq === null && IS_DEV) {
+            if (wreq == null && IS_DEV) {
                 if (!webpackNotInitializedLogged) {
                     webpackNotInitializedLogged = true;
                     logger.error("WebpackRequire was not initialized, running modules without patches instead.");

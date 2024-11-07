@@ -100,7 +100,7 @@ const StatusSubMenuComponent = () => {
         {Object.entries((settings.store.StatusPresets as { [k: string]: DiscordStatus | undefined; })).map(([index, status]) => status !== null ? <Menu.MenuItem
             id={"status-presets-" + index}
             label={status.status}
-            action={() => (status.emojiInfo?.id !== null && UserStore.getCurrentUser().hasPremiumPerks || status.emojiInfo?.id === null) && setStatus(status)}
+            action={() => (status.emojiInfo?.id !== null && UserStore.getCurrentUser().hasPremiumPerks || status.emojiInfo?.id == null) && setStatus(status)}
             render={() => <RenderStatusMenuItem
                 status={status}
                 update={update}
@@ -136,7 +136,7 @@ export default definePlugin({
     render(status: null | { emoji: Emoji | null; }, openCustomStatusModal: () => void) {
         return <ErrorBoundary>
             <div className={StatusStyles.menuDivider} />
-            {status === null ?
+            {status == null ?
                 <PMenu
                     id="sp-custom/presets-status"
                     action="PRESS_SET_STATUS"

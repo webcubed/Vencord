@@ -70,7 +70,7 @@ export function SetTimezoneModal({ userId, modalProps }: { userId: string, modal
                 </Button>
                 <Button
                     color={Button.Colors.BRAND}
-                    disabled={currentValue === null}
+                    disabled={currentValue == null}
                     onClick={async () => {
                         await setUserTimezone(userId, currentValue!);
                         modalProps.onClose();

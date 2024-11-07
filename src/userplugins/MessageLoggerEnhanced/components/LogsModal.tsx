@@ -177,7 +177,7 @@ export function LogsModal({ modalProps, initalQuery }: Props) {
                         className={cl("content")}
                     >
                         {
-                            pending || logs === null || messages.length === 0
+                            pending || logs == null || messages.length === 0
                                 ? <EmptyLogs />
                                 : (
                                     <LogsContentMemo

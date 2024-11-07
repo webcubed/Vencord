@@ -34,7 +34,7 @@ export function isInWhitelist(id: string) {
 // Convert snake_case to camelCase for all keys in an object, including nested objects
 export function convertSnakeCaseToCamelCase(obj: any): any {
 
-    if (!Array.isArray(obj) && (typeof obj !== "object" || obj === null)) return obj;
+    if (!Array.isArray(obj) && (typeof obj !== "object" || obj == null)) return obj;
 
     if (Array.isArray(obj)) return obj.map(convertSnakeCaseToCamelCase);
 

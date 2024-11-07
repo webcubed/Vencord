@@ -85,7 +85,7 @@ export function connect(doAutoconnect = true, autoconnectTimeout = 3000) {
         function typeSwitch(type) {
             switch (type) {
                 case "change-colorway":
-                    if (data.active.id === null) {
+                    if (data.active.id == null) {
                         DataStore.set("activeColorwayObject", nullColorwayObj);
                         ColorwayCSS.remove();
                         FluxDispatcher.dispatch({

@@ -26,7 +26,7 @@ function MakeContextCallback(type: "settings" | "other"): NavContextMenuPatchCal
     } : (children, contextMenuApiArguments) => {
         const guildid = SelectedGuildStore.getGuildId();
         const role = GuildStore.getRole(guildid, contextMenuApiArguments.id);
-        if (role === null) return;
+        if (role == null) return;
         children.splice(-1, 0,
             <Menu.MenuItem
                 id={"vc-dup-role"}

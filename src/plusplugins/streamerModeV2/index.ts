@@ -103,18 +103,18 @@ export default definePlugin({
             }
         }
 
-        if (down === null) {
-            down = function(event) {
+        if (down == null) {
+            down = function (event) {
                 if (event.key === "Shift") {
                     toggleStreamerModeV2(true);
                 }
             };
         }
 
-         if (up === null) {
-            up = function(event) {
+        if (up == null) {
+            up = function (event) {
                 if (event.key === "Shift") {
-                    setTimeout(function(){ toggleStreamerModeV2(false); }, 1000);
+                    setTimeout(function () { toggleStreamerModeV2(false); }, 1000);
                 }
             };
         }

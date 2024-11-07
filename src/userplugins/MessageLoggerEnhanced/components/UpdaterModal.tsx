@@ -79,7 +79,7 @@ export function UpdaterModal({ modalProps }: { modalProps: ModalProps; }) {
         <ModalRoot {...modalProps} size={ModalSize.LARGE}>
             <ModalContent className={cl("content")}>
                 <Forms.FormTitle tag="h5">Repo</Forms.FormTitle>
-                {!repoPending && repoInfo !== null && err === null && (
+                {!repoPending && repoInfo !== null && err == null && (
                     <>
                         <Forms.FormText className="vc-text-selectable">
                             {repoPending
@@ -100,7 +100,7 @@ export function UpdaterModal({ modalProps }: { modalProps: ModalProps; }) {
                 <Forms.FormDivider className={Margins.top8 + " " + Margins.bottom8} />
                 <Forms.FormTitle tag="h5">Updates</Forms.FormTitle>
 
-                {(updates === null || repoInfo === null) && updateError ? (
+                {(updates == null || repoInfo == null) && updateError ? (
                     <UpdateErrorCard updateError={updateError} title="Failed to check updates. Check the console for more info" />
                 ) : (
                     <Forms.FormText className={Margins.bottom8}>

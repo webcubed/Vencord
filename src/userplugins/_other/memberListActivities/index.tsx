@@ -122,7 +122,7 @@ export default definePlugin({
     settings,
 
     patchActivityList: (activities: Activity[]): JSX.Element | null => {
-        if (activities === null) {
+        if (activities == null) {
             return null;
         }
 
@@ -193,7 +193,7 @@ export default definePlugin({
 
                 if (application) {
                     const src = `https://cdn.discordapp.com/app-icons/${application.id}/${application.icon}.png`;
-                    if (application.icon === null)
+                    if (application.icon == null)
                         pushIcon(<DefaultActivityIcon />, application.name);
                     else
                         pushIcon(src, application.name);

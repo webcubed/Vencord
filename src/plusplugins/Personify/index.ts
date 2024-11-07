@@ -85,7 +85,7 @@ async function textProcessing(input: string) {
         model: `${settings.store.modal}`
     });
 
-    if (completion.choices[0].message.content === null) { return input; }
+    if (completion.choices[0].message.content == null) { return input; }
 
     if (completion.choices[0].message.content.includes("can't assist")) { return `${input} (AI Refused)`; }
     return completion.choices[0].message.content;

@@ -423,7 +423,7 @@ export default definePlugin({
     },
 
     addToLog(m: Message) {
-        if (m === null || keywordLog.some(e => e.id === m.id))
+        if (m == null || keywordLog.some(e => e.id === m.id))
             return;
 
         DataStore.get(KEYWORD_LOG_KEY).then(log => {

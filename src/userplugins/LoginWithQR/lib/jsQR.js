@@ -838,7 +838,7 @@
           }
         }
         function decode(matrix) {
-          if (matrix === null) {
+          if (matrix == null) {
             return null;
           }
           var result = decodeMatrix(matrix);
@@ -8327,11 +8327,11 @@
           }
           var syndrome = new GenericGFPoly_1.default(field, syndromeCoefficients);
           var sigmaOmega = runEuclideanAlgorithm(field, field.buildMonomial(twoS, 1), syndrome, twoS);
-          if (sigmaOmega === null) {
+          if (sigmaOmega == null) {
             return null;
           }
           var errorLocations = findErrorLocations(field, sigmaOmega[0]);
-          if (errorLocations === null) {
+          if (errorLocations == null) {
             return null;
           }
           var errorMagnitudes = findErrorMagnitudes(field, sigmaOmega[1], errorLocations);
