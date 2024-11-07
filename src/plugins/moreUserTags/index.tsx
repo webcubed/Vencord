@@ -213,7 +213,7 @@ export default definePlugin({
             find: ".Types.ORIGINAL_POSTER",
             replacement: {
                 match: /;return\((\(null==\i\?void 0:\i\.isSystemDM\(\).+?.Types.ORIGINAL_POSTER\)),null==(\i)\)/,
-                replace: ";$1;$2=$self.getTag({...arguments[0],origType:$2,location:'chat'});return $2 === null"
+                replace: ";$1;$2=$self.getTag({...arguments[0],origType:$2,location:'chat'});return $2 == null"
             }
         },
         // in the member list

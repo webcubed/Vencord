@@ -87,8 +87,8 @@ function VoiceChannelTooltip({ channel, isLocked }: VoiceChannelTooltipProps) {
         [voiceStates]
     );
 
-    const guild = channel.getGuildId() === null ? undefined : GuildStore.getGuild(channel.getGuildId());
-    const guildIcon = guild?.icon === null ? undefined : IconUtils.getGuildIconURL({
+    const guild = channel.getGuildId() == null ? undefined : GuildStore.getGuild(channel.getGuildId());
+    const guildIcon = guild?.icon == null ? undefined : IconUtils.getGuildIconURL({
         id: guild.id,
         icon: guild.icon,
         size: 30
@@ -96,7 +96,7 @@ function VoiceChannelTooltip({ channel, isLocked }: VoiceChannelTooltipProps) {
 
     const channelIcon = match(channel.type)
         .with(P.union(1, 3), () => {
-            return channel.recipients.length >= 2 && channel.icon === null
+            return channel.recipients.length >= 2 && channel.icon == null
                 ? <GroupDMAvatars recipients={channel.recipients} size="SIZE_32" />
                 : <Avatar src={getDMChannelIcon(channel)} size="SIZE_32" />;
         })
@@ -141,8 +141,8 @@ const clickTimers = {} as Record<string, any>;
 export const VoiceChannelIndicator = ErrorBoundary.wrap(({ userId, isMessageIndicator, isProfile, isActionButton, shouldHighlight }: VoiceChannelIndicatorProps) => {
     const channelId = useStateFromStores([VoiceStateStore], () => VoiceStateStore.getVoiceStateForUser(userId)?.channelId as string | undefined);
 
-    const channel = channelId === null ? undefined : ChannelStore.getChannel(channelId);
-    if (channel === null) return null;
+    const channel = channelId == null ? undefined : ChannelStore.getChannel(channelId);
+    if (channel == null) return null;
 
     const isDM = channel.isDM() || channel.isMultiUserDM();
     if (!isDM && !PermissionStore.can(PermissionsBits.VIEW_CHANNEL, channel) && !Vencord.Plugins.isPluginEnabled("ShowHiddenChannels")) return null;
@@ -153,7 +153,7 @@ export const VoiceChannelIndicator = ErrorBoundary.wrap(({ userId, isMessageIndi
         e.preventDefault();
         e.stopPropagation();
 
-        if (channel === null || channelId === null) return;
+        if (channel == null || channelId == null) return;
 
         clearTimeout(clickTimers[channelId]);
         delete clickTimers[channelId];

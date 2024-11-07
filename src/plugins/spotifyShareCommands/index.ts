@@ -84,7 +84,7 @@ export default definePlugin({
             options: [],
             execute: (_, ctx) => {
                 const track: Track | null = Spotify.getTrack();
-                if (track === null) {
+                if (track == null) {
                     sendBotMessage(ctx.channel.id, {
                         content: "You're not listening to any music."
                     });
@@ -103,7 +103,7 @@ export default definePlugin({
             options: [],
             execute: (_, ctx) => {
                 const track: Track | null = Spotify.getTrack();
-                if (track === null) {
+                if (track == null) {
                     sendBotMessage(ctx.channel.id, {
                         content: "You're not listening to any music."
                     });
@@ -121,7 +121,7 @@ export default definePlugin({
             options: [],
             execute: (_, ctx) => {
                 const track: Track | null = Spotify.getTrack();
-                if (track === null) {
+                if (track == null) {
                     sendBotMessage(ctx.channel.id, {
                         content: "You're not listening to any music."
                     });

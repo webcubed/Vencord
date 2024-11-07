@@ -163,7 +163,7 @@ function ChangeDecorationModal(props: ModalProps) {
                                 case "none":
                                     return <DecorationGridNone
                                         className={cl("change-decoration-modal-decoration")}
-                                        isSelected={activeSelectedDecoration === null}
+                                        isSelected={activeSelectedDecoration == null}
                                         onSelect={() => setTryingDecoration(null)}
                                     />;
                                 case "create":

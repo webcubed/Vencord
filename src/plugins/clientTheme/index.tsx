@@ -196,7 +196,7 @@ function generateLightModeFixes(styles) {
 
 function captureOne(str, regex) {
     const result = str.match(regex);
-    return (result === null) ? null : result[1];
+    return (result == null) ? null : result[1];
 }
 
 function mapReject(arr, mapFunc) {

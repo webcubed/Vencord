@@ -76,7 +76,7 @@ export default definePlugin({
             const hostRuleIndex = hostRule.toString();
 
             this.hostRules.set(hostRuleIndex, hostRule);
-            if (this.rulesByHost.get(hostRuleIndex) === null) {
+            if (this.rulesByHost.get(hostRuleIndex) == null) {
                 this.rulesByHost.set(hostRuleIndex, new Set());
             }
             this.rulesByHost.get(hostRuleIndex).add(paramRule);

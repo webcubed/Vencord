@@ -45,7 +45,7 @@ export function _modifyAccessories(
 ) {
     for (const accessory of accessories.values()) {
         let accessories = accessory.callback(props);
-        if (accessories === null)
+        if (accessories == null)
             continue;
 
         if (!Array.isArray(accessories))

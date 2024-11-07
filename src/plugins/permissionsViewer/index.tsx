@@ -149,7 +149,7 @@ function makeContextMenuPatch(childId: string | string[], type?: MenuItemParentT
             .otherwise(() => null);
 
 
-        if (item === null) return;
+        if (item == null) return;
 
         if (group) {
             return group.push(item);

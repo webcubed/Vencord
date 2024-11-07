@@ -253,7 +253,7 @@ export default definePlugin({
 
     handleDelete(cache: any, data: { ids: string[], id: string; mlDeleted?: boolean; }, isBulk: boolean) {
         try {
-            if (cache === null || (!isBulk && !cache.has(data.id))) return cache;
+            if (cache == null || (!isBulk && !cache.has(data.id))) return cache;
 
             const mutate = (id: string) => {
                 const msg = cache.get(id);
