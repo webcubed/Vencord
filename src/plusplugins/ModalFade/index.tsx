@@ -77,13 +77,13 @@ export default definePlugin({
     MainWrapper(props: object) {
         const context = useModalContext();
         const modals = useModalsStore(modals => modals[context] ?? []);
-        const modal = modals.findLast(modal => modal.Layer == null || modal.Layer === AppLayer);
+        const modal = modals.findLast(modal => modal.Layer === null || modal.Layer === AppLayer);
         const anim = ANIMS[modal?.backdropStyle ?? "DARK"];
         const isInstant = modal?.instant;
         const prevIsInstant = usePrevious(isInstant);
         const style = useSpring({
             config: { duration: isInstant || prevIsInstant ? 0 : 300 },
-            ...modal != null ? anim.on : anim.off,
+            ...modal !== null ? anim.on : anim.off,
         });
         return <animated.div style={style} {...props} />;
     }

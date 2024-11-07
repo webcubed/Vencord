@@ -68,14 +68,14 @@ export default definePlugin({
             if (optimistic || type !== "MESSAGE_CREATE") return;
             if (message.state === "SENDING") return;
             if (!message.content) return;
-            if(message.channel_id !== getCurrentChannel().id) return;
+            if (message.channel_id !== getCurrentChannel().id) return;
 
             readOutText(message.content);
         }
     },
     settings,
-    start()
-    {
+    start();
+{
         openai = new OpenAI({ apiKey: settings.store.apiKey, dangerouslyAllowBrowser: true });
     }
 });
