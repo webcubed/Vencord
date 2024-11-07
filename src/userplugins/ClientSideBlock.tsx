@@ -50,7 +50,7 @@ const settings = definePluginSettings(
             type: OptionType.SELECT,
             description: "What should display instead of the message when someone replies to someone you have hidden",
             restartNeeded: true,
-            options: [{ value: "displayText", label: "Display text saying a hidden message was replied to", default: true },{ value: "hideReply", label: "Literally nothing" }]
+            options: [{ value: "displayText", label: "Display text saying a hidden message was replied to", default: true }, { value: "hideReply", label: "Literally nothing" }]
         },
         guildBlackList: {
             type: OptionType.STRING,
@@ -66,24 +66,19 @@ const settings = definePluginSettings(
         }
     });
 
-function isChannelBlocked(channelID)
-{
+function isChannelBlocked(channelID) {
     const guildID = ChannelStore.getChannel(channelID)?.guild_id;
 
-    if(settings.store.guildBlackList.split(", ").includes(guildID) || (!settings.store.guildWhiteList.split(", ").includes(guildID) && settings.store.guildWhiteList.length > 0))
-    {
+    if (settings.store.guildBlackList.split(", ").includes(guildID) || (!settings.store.guildWhiteList.split(", ").includes(guildID) && settings.store.guildWhiteList.length > 0)) {
         return true;
     }
 
     return false;
 }
 
-function shouldHideUser(userId: string, channelId? : string)
-{
-    if(channelId)
-    {
-        if(isChannelBlocked(channelId))
-        {
+function shouldHideUser(userId: string, channelId?: string) {
+    if (channelId) {
+        if (isChannelBlocked(channelId)) {
             return false;
         }
 
@@ -93,13 +88,11 @@ function shouldHideUser(userId: string, channelId? : string)
     }
 
     // hide the user if the user is blocked and the hide blocked users setting is enabled
-    if(RelationshipStore.isBlocked(userId) && settings.store.hideBlockedUsers)
-    {
+    if (RelationshipStore.isBlocked(userId) && settings.store.hideBlockedUsers) {
         return true;
     }
     // failsafe that is needed for some reason
-    if(settings.store.usersToBlock.length == 0)
-    {
+    if (settings.store.usersToBlock.length === 0) {
         return false;
     }
     // hide the user if the id is in the users to block setting
@@ -107,16 +100,14 @@ function shouldHideUser(userId: string, channelId? : string)
 }
 
 // This is really horror
-function isRoleAllBlockedMembers(roleId, guildId)
-{
+function isRoleAllBlockedMembers(roleId, guildId) {
     const role = GuildStore.getRole(guildId, roleId);
     if (!role) return false;
 
-    const membersWithRole : GuildMember[] = GuildMemberStore.getMembers(guildId).filter(member => member.roles.includes(roleId));
+    const membersWithRole: GuildMember[] = GuildMemberStore.getMembers(guildId).filter(member => member.roles.includes(roleId));
     if (membersWithRole.length === 0) return false;
 
-    if(isChannelBlocked(guildId))
-    {
+    if (isChannelBlocked(guildId)) {
         return false;
     }
     // need to add an online check at some point but this sorta works for now
@@ -124,10 +115,8 @@ function isRoleAllBlockedMembers(roleId, guildId)
 }
 
 
-function hiddenReplyComponent()
-{
-    switch(settings.store.blockedReplyDisplay)
-    {
+function hiddenReplyComponent() {
+    switch (settings.store.blockedReplyDisplay) {
         case "displayText":
             return <Text tag="p" selectable={false} variant="text-sm/normal" style={{ marginTop: "0px", marginBottom: "0px" }}><i>↓ Replying to blocked message</i></Text>;
         case "hideReply":
@@ -140,9 +129,9 @@ export default definePlugin({
     description: "Allows you to locally hide almost all content from any user",
     tags: ["blocked", "block", "hide", "hidden", "noblockedmessages"],
     authors:
-    [
-        Devs.Samwich
-    ],
+        [
+            Devs.Samwich
+        ],
     settings,
     shouldHideUser: shouldHideUser,
     hiddenReplyComponent: hiddenReplyComponent,

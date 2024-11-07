@@ -28,7 +28,7 @@ export default definePlugin({
     ],
     changeConnections(connections: Connection[]) {
         connections
-            .filter(connection => connection.enabled == !1)
+            .filter(connection => connection.enabled === !1)
             .forEach(connection => {
                 connection.enabled = true;
                 console.log(`Enabled connection ${connection.name}`);

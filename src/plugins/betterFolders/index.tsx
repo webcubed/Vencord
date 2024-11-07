@@ -259,7 +259,7 @@ export default definePlugin({
 
     getGuildTree(isBetterFolders: boolean, originalTree: any, expandedFolderIds?: Set<any>) {
         return useMemo(() => {
-            if (!isBetterFolders || expandedFolderIds == null) return originalTree;
+            if (!isBetterFolders || expandedFolderIds === null) return originalTree;
 
             const newTree = new GuildsTree();
             // Children is every folder and guild which is not in a folder, this filters out only the expanded folders

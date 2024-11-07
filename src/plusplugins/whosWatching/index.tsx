@@ -9,7 +9,7 @@ import { classNameFactory } from "@api/Styles";
 import ErrorBoundary from "@components/ErrorBoundary";
 import { Flex } from "@components/Flex";
 import { EquicordDevs } from "@utils/constants";
-import { openUserProfile, getIntlMessage } from "@utils/discord";
+import { getIntlMessage,openUserProfile } from "@utils/discord";
 import { Margins } from "@utils/margins";
 import { classes } from "@utils/misc";
 import definePlugin, { OptionType } from "@utils/types";

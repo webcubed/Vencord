@@ -38,7 +38,7 @@ const messageContextMenuPatch: NavContextMenuPatchCallback = (children, props) =
     if (!favoriteableName) { return; }
     // WHY DID I DO IT THIS WAY
     const name = favoriteableName.split(":").join("");
-    if (name == null) { return; }
+    if (name === null) { return; }
     const group = findGroupChildrenByChildId("favorite", children) || findGroupChildrenByChildId("unfavorite", children);
     if (!group) return;
 

@@ -45,7 +45,7 @@ export function getIntlMessage(key: string, values?: Record<PropertyKey, any>): 
  */
 export function getIntlMessageFromHash(hashedKey: string, values?: Record<PropertyKey, any>, originalKey?: string): any {
     try {
-        return values == null ? i18n.intl.string(i18n.t[hashedKey]) : i18n.intl.format(i18n.t[hashedKey], values);
+        return values === null ? i18n.intl.string(i18n.t[hashedKey]) : i18n.intl.format(i18n.t[hashedKey], values);
     } catch (e) {
         IntlManagerLogger.error(`Failed to get intl message for key: ${originalKey ?? hashedKey}`, e);
         return originalKey ?? "";

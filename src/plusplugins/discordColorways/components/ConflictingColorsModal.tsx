@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { DataStore, useEffect,useState } from "..";
+import { DataStore, useEffect, useState } from "..";
 import { knownThemeVars } from "../constants";
 import { ModalProps } from "../types";
 import { getFontOnBg, getHex } from "../utils";
@@ -45,7 +45,7 @@ export default function ({
         load();
     }, []);
 
-    return <div className={`colorwaysModal ${modalProps.transitionState == 2 ? "closing" : ""} ${modalProps.transitionState == 4 ? "hidden" : ""}`} data-theme={theme}>
+    return <div className={`colorwaysModal ${modalProps.transitionState === 2 ? "closing" : ""} ${modalProps.transitionState === 4 ? "hidden" : ""}`} data-theme={theme}>
         <h2 className="colorwaysModalHeader">
             Conflicting Colors Found
         </h2>

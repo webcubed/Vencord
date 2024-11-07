@@ -135,7 +135,7 @@ export default definePlugin({
 });
 
 function withTooltip(Component, props, messageId, channelId) {
-    if(!messageId) return <Component {...props} />;
+    if (!messageId) return <Component {...props} />;
     return <Tooltip
         tooltipClassName="c98-message-link-tooltip"
         text={
@@ -156,10 +156,10 @@ function MessagePreview({ channelId, messageId }) {
     const message = useMessage(channelId, messageId);
     const rawCompact = MessageDisplayCompact.useSetting();
 
-    const compact = settings.store.display == "compact" ? true : settings.store.display == "cozy" ? false : rawCompact;
+    const compact = settings.store.display === "compact" ? true : settings.store.display === "cozy" ? false : rawCompact;
 
     // TODO handle load failure
-    if(!message) {
+    if (!message) {
         return <Spinner type={Spinner.Type.PULSING_ELLIPSIS} />;
     }
 
@@ -179,7 +179,7 @@ function useMessage(channelId, messageId) {
     );
     const [message, setMessage] = useState(cachedMessage);
     useEffect(() => {
-        if(message == null)
+        if (message === null)
             (async () => {
                 const res = await RestAPI.get({
                     url: Constants.Endpoints.MESSAGES(channelId),

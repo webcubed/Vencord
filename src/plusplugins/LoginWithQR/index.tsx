@@ -5,11 +5,11 @@
  */
 
 import { definePluginSettings } from "@api/Settings";
+import { getIntlMessage } from "@utils/discord";
 import definePlugin, { OptionType } from "@utils/types";
 import { findByProps } from "@webpack";
 import { Button, Forms, Menu, TabBar } from "@webpack/common";
 import { ReactElement } from "react";
-import { getIntlMessage } from "@utils/discord";
 
 import { preload, unload } from "./images";
 import { cl, QrCodeIcon } from "./ui";

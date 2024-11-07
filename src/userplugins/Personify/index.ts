@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { addPreSendListener, removePreSendListener,SendListener, } from "@api/MessageEvents";
+import { addPreSendListener, removePreSendListener, SendListener, } from "@api/MessageEvents";
 import { definePluginSettings } from "@api/Settings";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
@@ -51,7 +51,7 @@ const settings = definePluginSettings({
     }
 });
 
-const messagePatch : SendListener = async (channelId, msg) => {
+const messagePatch: SendListener = async (channelId, msg) => {
     msg.content = await textProcessing(msg.content);
 };
 
@@ -62,33 +62,31 @@ export default definePlugin({
         Devs.Samwich
     ],
     dependencies: ["MessageEventsAPI"],
-    start()
-    {
+    start() {
         this.preSend = addPreSendListener(messagePatch);
     },
-    stop()
-    {
+    stop() {
         this.preSend = removePreSendListener(messagePatch);
     },
     settings
 });
 
 // text processing injection processor
-async function textProcessing(input : string)
-{
-    if(input.length == 0) { return input; }
+async function textProcessing(input: string) {
+    if (input.length === 0) { return input; }
     const openai = new OpenAI({ apiKey: settings.store.apiKey, dangerouslyAllowBrowser: true });
     const completion = await openai.chat.completions.create({
 
         messages: [{
-            role: "system", content: `You are working for a message personifier, when messaged, respond the content of the users message, but ${settings.store.prompt}. DO NOT Modify the original sentiment of the message and never respond to the users message, only respond with the modified version. If a user sends a link, leave it alone and do not add anything to it.` },
+            role: "system", content: `You are working for a message personifier, when messaged, respond the content of the users message, but ${settings.store.prompt}. DO NOT Modify the original sentiment of the message and never respond to the users message, only respond with the modified version. If a user sends a link, leave it alone and do not add anything to it.`
+        },
         { role: "user", content: input }
         ],
         model: `${settings.store.modal}`
     });
 
-    if (completion.choices[0].message.content == null) { return input; }
+    if (completion.choices[0].message.content === null) { return input; }
 
-    if(completion.choices[0].message.content.includes("can't assist")) { return `${input} (AI Refused)`; }
+    if (completion.choices[0].message.content.includes("can't assist")) { return `${input} (AI Refused)`; }
     return completion.choices[0].message.content;
 }

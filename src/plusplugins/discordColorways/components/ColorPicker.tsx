@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { DataStore, Toasts,useEffect, useState } from "..";
+import { DataStore, Toasts, useEffect, useState } from "..";
 import { mainColors } from "../constants";
 import { colorVariables } from "../css";
 import { ModalProps } from "../types";
@@ -34,7 +34,7 @@ export default function ({ modalProps }: { modalProps: ModalProps; }) {
         setColorVars(results);
     }
 
-    return <div className={`colorwaysModal ${modalProps.transitionState == 2 ? "closing" : ""} ${modalProps.transitionState == 4 ? "hidden" : ""}`} data-theme={theme}>
+    return <div className={`colorwaysModal ${modalProps.transitionState === 2 ? "closing" : ""} ${modalProps.transitionState === 4 ? "hidden" : ""}`} data-theme={theme}>
         <div style={{ gap: "8px", marginBottom: "8px", display: "flex" }}>
             <input
                 type="text"

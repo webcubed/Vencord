@@ -8,11 +8,10 @@ import { NavContextMenuPatchCallback } from "@api/ContextMenu";
 import { CodeBlock } from "@components/CodeBlock";
 import ErrorBoundary from "@components/ErrorBoundary";
 import { Devs } from "@utils/constants";
+import { getIntlMessage } from "@utils/discord";
 import { Margins } from "@utils/margins";
 import { closeModal, ModalCloseButton, ModalContent, ModalHeader, ModalRoot, ModalSize, openModal } from "@utils/modal";
 import definePlugin from "@utils/types";
-import { getIntlMessage } from "@utils/discord";
-
 import { Forms, Menu, Text } from "@webpack/common";
 import { Message } from "discord-types/general";
 

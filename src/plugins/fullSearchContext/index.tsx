@@ -69,7 +69,7 @@ interface MessageActionsProps {
 }
 
 const contextMenuPatch: NavContextMenuPatchCallback = (children, props: MessageActionsProps) => {
-    if (props?.isFullSearchContextMenu == null) return;
+    if (props?.isFullSearchContextMenu === null) return;
 
     const group = findGroupChildrenByChildId("devmode-copy-id", children, true);
     group?.push(

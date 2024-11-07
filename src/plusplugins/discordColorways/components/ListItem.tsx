@@ -22,7 +22,7 @@ export default function ({
     function onWindowUnfocused(e) {
         e = e || window.event;
         var from = e.relatedTarget || e.toElement;
-        if (!from || from.nodeName == "HTML") {
+        if (!from || from.nodeName === "HTML") {
             setStatus("none");
         }
     }

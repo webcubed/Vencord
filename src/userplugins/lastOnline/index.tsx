@@ -6,8 +6,7 @@
 
 import definePlugin from "@utils/types";
 import { findByProps } from "@webpack";
-import { moment } from "@webpack/common";
-import { React } from "@webpack/common";
+import { moment, React } from "@webpack/common";
 import { User } from "discord-types/general";
 
 interface PresenceStatus {
@@ -23,7 +22,7 @@ function handlePresenceUpdate(status: string, userId: string) {
         if (status !== "offline") {
             presenceStatus.hasBeenOnline = true;
             presenceStatus.lastOffline = null;
-        } else if (presenceStatus.hasBeenOnline && presenceStatus.lastOffline == null) {
+        } else if (presenceStatus.hasBeenOnline && presenceStatus.lastOffline === null) {
             presenceStatus.lastOffline = Date.now();
         }
     } else {

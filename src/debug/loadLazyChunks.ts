@@ -43,7 +43,7 @@ export async function loadLazyChunks() {
                 let invalidChunkGroup = false;
 
                 for (const id of chunkIds) {
-                    if (wreq.u(id) == null || wreq.u(id) === "undefined.js") continue;
+                    if (wreq.u(id) === null || wreq.u(id) === "undefined.js") continue;
 
                     const isWorkerAsset = await fetch(wreq.p + wreq.u(id))
                         .then(r => r.text())
@@ -134,7 +134,7 @@ export async function loadLazyChunks() {
         // Matches "id" or id:
         for (const currentMatch of wreq!.u.toString().matchAll(/(?:"([\deE]+?)"(?![,}]))|(?:([\deE]+?):)/g)) {
             const id = currentMatch[1] ?? currentMatch[2];
-            if (id == null) continue;
+            if (id === null) continue;
 
             allChunks.push(Number(id));
         }

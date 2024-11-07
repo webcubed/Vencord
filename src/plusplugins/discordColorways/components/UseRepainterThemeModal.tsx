@@ -20,7 +20,7 @@ export default function ({ modalProps, onFinish }: { modalProps: ModalProps, onF
         load();
     }, []);
 
-    return <div className={`colorwaysModal ${modalProps.transitionState == 2 ? "closing" : ""} ${modalProps.transitionState == 4 ? "hidden" : ""}`} data-theme={theme}>
+    return <div className={`colorwaysModal ${modalProps.transitionState === 2 ? "closing" : ""} ${modalProps.transitionState === 4 ? "hidden" : ""}`} data-theme={theme}>
         <h2 className="colorwaysModalHeader">Use Repainter theme</h2>
         <div className="colorwaysModalContent">
             <span className="colorwaysModalSectionHeader">URL: {URLError ? <span className="colorwaysModalSectionError">{URLError}</span> : <></>}</span>

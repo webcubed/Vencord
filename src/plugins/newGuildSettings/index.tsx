@@ -95,7 +95,7 @@ const makeContextMenuPatch: (shouldAddIcon: boolean) => NavContextMenuPatchCallb
 };
 
 function applyDefaultSettings(guildId: string | null) {
-    if (guildId === "@me" || guildId === "null" || guildId == null) return;
+    if (guildId === "@me" || guildId === "null" || guildId === null) return;
     updateGuildNotificationSettings(guildId,
         {
             muted: settings.store.guild,

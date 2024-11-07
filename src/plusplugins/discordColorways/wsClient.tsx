@@ -58,11 +58,11 @@ export function restartWS() {
 }
 
 export function isWSOpen() {
-    return Boolean(socket && (socket.readyState == socket.OPEN));
+    return Boolean(socket && (socket.readyState === socket.OPEN));
 }
 
 export function connect(doAutoconnect = true, autoconnectTimeout = 3000) {
-    if (socket && socket.readyState == socket.OPEN) return;
+    if (socket && socket.readyState === socket.OPEN) return;
     const ws: WebSocket = socket = new WebSocket("ws://localhost:6124");
 
     let hasErrored = false;
@@ -85,7 +85,7 @@ export function connect(doAutoconnect = true, autoconnectTimeout = 3000) {
         function typeSwitch(type) {
             switch (type) {
                 case "change-colorway":
-                    if (data.active.id == null) {
+                    if (data.active.id === null) {
                         DataStore.set("activeColorwayObject", nullColorwayObj);
                         ColorwayCSS.remove();
                         FluxDispatcher.dispatch({
@@ -100,7 +100,7 @@ export function connect(doAutoconnect = true, autoconnectTimeout = 3000) {
                         });
 
                         DataStore.get("colorwaysPreset").then((colorwaysPreset: string) => {
-                            if (colorwaysPreset == "default") {
+                            if (colorwaysPreset === "default") {
                                 ColorwayCSS.set(generateCss(
                                     data.active.colors,
                                     true,
@@ -133,7 +133,7 @@ export function connect(doAutoconnect = true, autoconnectTimeout = 3000) {
                     DataStore.get("colorwaysBoundManagers").then((boundManagers: { [managerKey: string]: string; }[]) => {
                         if (data.MID) {
                             const boundSearch = boundManagers.filter(boundManager => {
-                                if (Object.keys(boundManager)[0] == data.MID) return boundManager;
+                                if (Object.keys(boundManager)[0] === data.MID) return boundManager;
                             });
                             if (boundSearch.length) {
                                 boundKey = boundSearch[0];

@@ -421,7 +421,7 @@ export default definePlugin({
 
     handleProtoChange(proto: any, user: any) {
         try {
-            if (proto == null || typeof proto === "string") return;
+            if (proto === null || typeof proto === "string") return;
 
             const premiumType: number = user?.premium_type ?? UserStore?.getCurrentUser()?.premiumType ?? 0;
 
@@ -454,7 +454,7 @@ export default definePlugin({
 
     handleGradientThemeSelect(backgroundGradientPresetId: number | undefined, theme: number, original: () => void) {
         const premiumType = UserStore?.getCurrentUser()?.premiumType ?? 0;
-        if (premiumType === 2 || backgroundGradientPresetId == null) return original();
+        if (premiumType === 2 || backgroundGradientPresetId === null) return original();
 
         if (!PreloadedUserSettingsActionCreators || !AppearanceSettingsActionCreators || !ClientThemeSettingsActionsCreators || !BINARY_READ_OPTIONS) return;
 
@@ -583,7 +583,7 @@ export default definePlugin({
 
                 let listHasAnItem = false;
                 for (const [index, child] of newChild.props.children.entries()) {
-                    if (child == null) {
+                    if (child === null) {
                         delete newChild.props.children[index];
                         continue;
                     }
@@ -948,7 +948,7 @@ export default definePlugin({
 
             messageObj.content = messageObj.content.replace(/(?<!\\)<a?:(?:\w+):(\d+)>/ig, (emojiStr, emojiId, offset, origStr) => {
                 const emoji = EmojiStore.getCustomEmojiById(emojiId);
-                if (emoji == null) return emojiStr;
+                if (emoji === null) return emojiStr;
                 if (this.canUseEmote(emoji, channelId)) return emojiStr;
 
                 hasBypass = true;

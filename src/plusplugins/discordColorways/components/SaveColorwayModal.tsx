@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { DataStore, openModal,useEffect, useState } from "..";
+import { DataStore, openModal, useEffect, useState } from "..";
 import { Colorway, ModalProps } from "../types";
 import { PlusIcon } from "./Icons";
 import { StoreNameModal } from "./SettingsTabs/SourceManager";
@@ -26,7 +26,7 @@ export default function ({ modalProps, colorways, onFinish }: { modalProps: Moda
         }
         load();
     }, []);
-    return <div className={`colorwaysModal ${modalProps.transitionState == 2 ? "closing" : ""} ${modalProps.transitionState == 4 ? "hidden" : ""}`} data-theme={theme}>
+    return <div className={`colorwaysModal ${modalProps.transitionState === 2 ? "closing" : ""} ${modalProps.transitionState === 4 ? "hidden" : ""}`} data-theme={theme}>
         <h2 className="colorwaysModalHeader">
             Save to source:
         </h2>
@@ -70,7 +70,7 @@ export default function ({ modalProps, colorways, onFinish }: { modalProps: Moda
                         const storeToModify: { name: string, colorways: Colorway[], id?: string; } | undefined = (await DataStore.get("customColorways") as { name: string, colorways: Colorway[], id?: string; }[]).filter(source => source.name === storename)[0];
                         colorways.map((colorway, i) => {
                             if (storeToModify.colorways.map(colorway => colorway.name).includes(colorway.name)) {
-                                openModal(props => <div className={`colorwaysModal ${modalProps.transitionState == 2 ? "closing" : ""} ${modalProps.transitionState == 4 ? "hidden" : ""}`} data-theme={theme}>
+                                openModal(props => <div className={`colorwaysModal ${modalProps.transitionState === 2 ? "closing" : ""} ${modalProps.transitionState === 4 ? "hidden" : ""}`} data-theme={theme}>
                                     <h2 className="colorwaysModalHeader">
                                         Duplicate Colorway
                                     </h2>
@@ -98,7 +98,7 @@ export default function ({ modalProps, colorways, onFinish }: { modalProps: Moda
                                                 function NewColorwayNameModal({ modalProps, onSelected }: { modalProps: ModalProps, onSelected: (e: string) => void; }) {
                                                     const [errorMsg, setErrorMsg] = useState<string>();
                                                     const [newColorwayName, setNewColorwayName] = useState("");
-                                                    return <div className={`colorwaysModal ${modalProps.transitionState == 2 ? "closing" : ""} ${modalProps.transitionState == 4 ? "hidden" : ""}`} data-theme={theme}>
+                                                    return <div className={`colorwaysModal ${modalProps.transitionState === 2 ? "closing" : ""} ${modalProps.transitionState === 4 ? "hidden" : ""}`} data-theme={theme}>
                                                         <h2 className="colorwaysModalHeader">
                                                             Select new name
                                                         </h2>

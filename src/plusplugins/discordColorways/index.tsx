@@ -20,7 +20,8 @@ import { FluxEvents as $FluxEvents } from "@webpack/types";
 // Mod-specific imports
 import {
     CSSProperties as $CSSProperties,
-    ReactNode as $ReactNode } from "react";
+    ReactNode as $ReactNode
+} from "react";
 
 import { ColorwayCSS } from "./colorwaysAPI";
 import ColorwayID from "./components/ColorwayID";
@@ -45,7 +46,7 @@ export const DataStore = $DataStore;
 export type ReactNode = $ReactNode;
 export type CSSProperties = $CSSProperties;
 export type FluxEvents = $FluxEvents;
-export { closeModal,openModal } from "@utils/modal";
+export { closeModal, openModal } from "@utils/modal";
 export {
     Clipboard,
     FluxDispatcher,
@@ -60,7 +61,8 @@ export {
     useRef,
     UserStore,
     useState,
-    useStateFromStores } from "@webpack/common";
+    useStateFromStores
+} from "@webpack/common";
 
 export let ColorPicker: React.FunctionComponent<ColorPickerProps> = () => {
     return <Spinner className="colorways-creator-module-warning" />;
@@ -236,7 +238,7 @@ export default definePlugin({
         const active: ColorwayObject = activeColorwayObject;
 
         if (active.id) {
-            if (colorwaysPreset == "default") {
+            if (colorwaysPreset === "default") {
                 ColorwayCSS.set(generateCss(
                     active.colors,
                     true,

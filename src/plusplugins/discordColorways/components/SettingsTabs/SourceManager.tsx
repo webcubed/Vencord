@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { DataStore, openModal,ReactNode, useEffect, useState } from "../../";
+import { DataStore, openModal, ReactNode, useEffect, useState } from "../../";
 import { defaultColorwaySource } from "../../constants";
 import { Colorway, ModalProps } from "../../types";
 import { chooseFile, saveFile } from "../../utils";
@@ -24,7 +24,7 @@ export function StoreNameModal({ modalProps, originalName, onFinish, conflicting
         load();
     }, []);
 
-    return <div className={`colorwaysModal ${modalProps.transitionState == 2 ? "closing" : ""} ${modalProps.transitionState == 4 ? "hidden" : ""}`} data-theme={theme}>
+    return <div className={`colorwaysModal ${modalProps.transitionState === 2 ? "closing" : ""} ${modalProps.transitionState === 4 ? "hidden" : ""}`} data-theme={theme}>
         <h2 className="colorwaysModalHeader">
             {conflicting ? "Duplicate Store Name" : "Give this store a name"}
         </h2>
@@ -73,7 +73,7 @@ function AddOnlineStoreModal({ modalProps, onFinish }: { modalProps: ModalProps,
         }
         load();
     }, []);
-    return <div className={`colorwaysModal ${modalProps.transitionState == 2 ? "closing" : ""} ${modalProps.transitionState == 4 ? "hidden" : ""}`} data-theme={theme}>
+    return <div className={`colorwaysModal ${modalProps.transitionState === 2 ? "closing" : ""} ${modalProps.transitionState === 4 ? "hidden" : ""}`} data-theme={theme}>
         <h2 className="colorwaysModalHeader">
             Add a source:
         </h2>

@@ -48,7 +48,7 @@ export function MemberCount({ isTooltip, tooltipGuildId }: { isTooltip?: true; t
         OnlineMemberCountStore.ensureCount(guildId);
     }, [guildId]);
 
-    if (totalCount == null)
+    if (totalCount === null)
         return null;
 
     const formattedOnlineCount = onlineCount != null ? numberFormat(onlineCount) : "?";

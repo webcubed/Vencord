@@ -90,7 +90,7 @@ export default definePlugin({
         return (
             <>
                 <span>{title}</span>
-                {(savedSession == null || savedSession.isNew) && (
+                {(savedSession === null || savedSession.isNew) && (
                     <div
                         className="vc-plugins-badge"
                         style={{

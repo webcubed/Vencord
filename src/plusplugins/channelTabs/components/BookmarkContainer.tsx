@@ -5,11 +5,11 @@
  */
 
 import { classNameFactory } from "@api/Styles";
+import { getIntlMessage } from "@utils/discord";
 import { classes } from "@utils/misc";
 import { closeModal, openModal } from "@utils/modal";
 import { findByPropsLazy } from "@webpack";
 import { Avatar, ChannelStore, ContextMenuApi, FluxDispatcher, GuildStore, Menu, ReadStateStore, ReadStateUtils, Text, Tooltip, useDrag, useDrop, useEffect, useRef, UserStore } from "@webpack/common";
-import { getIntlMessage } from "@utils/discord";
 
 import { BasicChannelTabsProps, Bookmark, BookmarkFolder, BookmarkProps, CircleQuestionIcon, isBookmarkFolder, settings, switchChannel, useBookmarks } from "../util";
 import { NotificationDot } from "./ChannelTab";

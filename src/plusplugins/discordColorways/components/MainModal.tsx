@@ -6,7 +6,7 @@
 
 import { MouseEvent, MouseEventHandler } from "react";
 
-import { DataStore, FluxDispatcher, FluxEvents,useEffect, useRef, useState } from "../";
+import { DataStore, FluxDispatcher, FluxEvents, useEffect, useRef, useState } from "../";
 import { ModalProps } from "../types";
 import { restartWS, updateRemoteSources, wsOpen } from "../wsClient";
 import { boundKey as bk } from "../wsClient";
@@ -46,7 +46,7 @@ export default function ({
     }, []);
 
     function SidebarTab({ id, title, icon, bottom }: { id: "selector" | "settings" | "sources" | "store" | "ws_connection", title: string, icon: JSX.Element, bottom?: boolean; }) {
-        return <div className={"colorwaySelectorSidebar-tab" + (id == activeTab ? " active" : "")} style={bottom ? { marginTop: "auto" } : {}} onClick={!bottom ? ((() => setActiveTab(id)) as unknown as MouseEventHandler<HTMLDivElement>) : rightClickContextMenu}>{icon}</div>;
+        return <div className={"colorwaySelectorSidebar-tab" + (id === activeTab ? " active" : "")} style={bottom ? { marginTop: "auto" } : {}} onClick={!bottom ? ((() => setActiveTab(id)) as unknown as MouseEventHandler<HTMLDivElement>) : rightClickContextMenu}>{icon}</div>;
     }
 
     const rightClickContextMenu: MouseEventHandler<HTMLDivElement> = (e: MouseEvent<HTMLDivElement>) => {
@@ -71,7 +71,7 @@ export default function ({
 
     return (
         <>
-            <div className={`colorwaySelectorModal ${modalProps.transitionState == 2 ? "closing" : ""} ${modalProps.transitionState == 4 ? "hidden" : ""}`} data-theme={theme} {...modalProps}>
+            <div className={`colorwaySelectorModal ${modalProps.transitionState === 2 ? "closing" : ""} ${modalProps.transitionState === 4 ? "hidden" : ""}`} data-theme={theme} {...modalProps}>
                 <div className="colorwaySelectorSidebar">
                     <SidebarTab icon={<>&#xF30D;</>} id="selector" title="Change Colorway" />
                     <SidebarTab icon={<>&#xF3E3;</>} id="settings" title="Settings" />
@@ -81,9 +81,9 @@ export default function ({
                 </div>
                 <div className="colorwayModalContent">
                     {activeTab === "selector" && <Selector />}
-                    {activeTab == "sources" && <SourceManager />}
-                    {activeTab == "store" && <Store />}
-                    {activeTab == "settings" && <div style={{ padding: "16px" }}><SettingsPage /></div>}
+                    {activeTab === "sources" && <SourceManager />}
+                    {activeTab === "store" && <Store />}
+                    {activeTab === "settings" && <div style={{ padding: "16px" }}><SettingsPage /></div>}
                 </div>
                 <div ref={menuProps} className={`colorwaysManagerConnectionMenu ${showMenu ? "visible" : ""}`} style={{
                     position: "fixed",

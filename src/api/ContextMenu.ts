@@ -94,7 +94,7 @@ export function removeGlobalContextMenuPatch(patch: GlobalContextMenuPatchCallba
  */
 export function findGroupChildrenByChildId(id: string | string[], children: Array<ReactElement | null | undefined>, matchSubstring = false): Array<ReactElement | null | undefined> | null {
     for (const child of children) {
-        if (child == null) continue;
+        if (child === null) continue;
 
         if (Array.isArray(child)) {
             const found = findGroupChildrenByChildId(id, child, matchSubstring);

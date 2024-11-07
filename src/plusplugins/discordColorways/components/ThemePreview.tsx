@@ -47,7 +47,7 @@ export default function ThemePreview({
                                 if (isModal) {
                                     modalProps?.onClose();
                                 } else {
-                                    openModal((props: ModalProps) => <div className={`colorwaysPreview-modal ${props.transitionState == 2 ? "closing" : ""} ${props.transitionState == 4 ? "hidden" : ""}`}>
+                                    openModal((props: ModalProps) => <div className={`colorwaysPreview-modal ${props.transitionState === 2 ? "closing" : ""} ${props.transitionState === 4 ? "hidden" : ""}`}>
                                         <style>
                                             {previewCSS}
                                         </style>

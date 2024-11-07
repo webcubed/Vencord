@@ -61,7 +61,7 @@ async function messageDeleteHandler(payload: MessageDeletePayload & { isBulk: bo
 
         let message: LoggedMessage | LoggedMessageJSON | null =
             oldGetMessage?.(payload.channelId, payload.id);
-        if (message == null) {
+        if (message === null) {
             // most likely an edited message
             const cachedMessage = cacheSentMessages.get(`${payload.channelId},${payload.id}`);
             if (!cachedMessage) return; // Flogger.log("no message to save");
@@ -92,7 +92,7 @@ async function messageDeleteHandler(payload: MessageDeletePayload & { isBulk: bo
         }
 
 
-        if (message == null || message.channel_id == null || !message.deleted) return;
+        if (message === null || message.channel_id === null || !message.deleted) return;
         // Flogger.log("ADDING MESSAGE (DELETED)", message);
         if (payload.isBulk)
             return message;
@@ -139,7 +139,7 @@ async function messageUpdateHandler(payload: MessageUpdatePayload) {
 
     let message = oldGetMessage?.(payload.message.channel_id, payload.message.id) as LoggedMessage | LoggedMessageJSON | null;
 
-    if (message == null) {
+    if (message === null) {
         // MESSAGE_UPDATE gets dispatched when emebeds change too and content becomes null
         if (cachedMessage != null && payload.message.content != null && cachedMessage.content !== payload.message.content) {
             message = {
@@ -158,7 +158,7 @@ async function messageUpdateHandler(payload: MessageUpdatePayload) {
         }
     }
 
-    if (message == null || message.channel_id == null || message.editHistory == null || message.editHistory.length === 0) return;
+    if (message === null || message.channel_id === null || message.editHistory === null || message.editHistory.length === 0) return;
 
     // Flogger.log("ADDING MESSAGE (EDITED)", message, payload);
     await addMessage(message, idb.DBMessageStatus.EDITED);
@@ -200,7 +200,7 @@ async function processMessageFetch(response: FetchMessagesResponse) {
         for (const recivedMessage of response.body) {
             const record = messages.find(m => m.message_id === recivedMessage.id);
 
-            if (record == null) continue;
+            if (record === null) continue;
 
             if (record.message.editHistory && record.message.editHistory.length > 0) {
                 recivedMessage.editHistory = record.message.editHistory;
@@ -358,13 +358,13 @@ export default definePlugin({
 
     getDeleted(m1, m2) {
         const deleted = m2?.deleted;
-        if (deleted == null && m1?.deleted != null) return m1.deleted;
+        if (deleted === null && m1?.deleted != null) return m1.deleted;
         return deleted;
     },
 
     getEdited(m1, m2) {
         const editHistory = m2?.editHistory;
-        if (editHistory == null && m1?.editHistory != null && m1.editHistory.length > 0)
+        if (editHistory === null && m1?.editHistory != null && m1.editHistory.length > 0)
             return m1.editHistory.map(mapTimestamp);
         return editHistory;
     },

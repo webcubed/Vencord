@@ -66,7 +66,7 @@ export default definePlugin({
                     try {
                         if (data.op === 2) {
                             logger.Log("DEBUG", "Hooking IDENTIFY packet");
-                            if (settings.store.platform == Platforms.android) {
+                            if (settings.store.platform === Platforms.android) {
                                 data.d.properties.os = "Android";
                                 data.d.properties.browser = "Discord Android";
                                 data.d.properties.device = "Samsung Galaxy";
@@ -74,7 +74,7 @@ export default definePlugin({
                                     "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36";
                                 data.d.properties.browser_version = "126.0.0.0";
                                 data.d.properties.os_version = "34";
-                            } else if (settings.store.platform == Platforms.xbox || settings.store.platform == Platforms.ps5) {
+                            } else if (settings.store.platform === Platforms.xbox || settings.store.platform === Platforms.ps5) {
                                 data.d.properties.os = "Embedded";
                                 data.d.properties.browser = "Discord Embedded";
                                 data.d.properties.device = "";
@@ -82,7 +82,7 @@ export default definePlugin({
                                     "Mozilla/5.0 (Windows NT 10.0; Win64; x64; Xbox; Xbox Series X) AppleWebKit/537.36 (KHTML, like Gecko) PlayStation Chrome/48.0.2564.82 Safari/537.36 Edge/20.02";
                                 data.d.properties.browser_version = "126.0.0.0";
                                 data.d.properties.os_version = "";
-                            } else if (settings.store.platform == Platforms.web) {
+                            } else if (settings.store.platform === Platforms.web) {
                                 data.d.properties.os = "Windows";
                                 data.d.properties.browser = "Chrome";
                                 data.d.properties.device = "";
@@ -90,7 +90,7 @@ export default definePlugin({
                                     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 GLS/100.10.9939.100";
                                 data.d.properties.browser_version = "125.0.0.0";
                                 data.d.properties.os_version = "10";
-                            } else if (settings.store.platform == Platforms.desktop) {
+                            } else if (settings.store.platform === Platforms.desktop) {
                                 data.d.properties.os = "Windows";
                                 data.d.properties.browser = "Discord Client";
                                 data.d.properties.browser_version = "30.1.0";
@@ -101,12 +101,12 @@ export default definePlugin({
                                 data.d.properties.os_version = "10.0.19045";
                             }
 
-                        } else if (data.op == 3) {
+                        } else if (data.op === 3) {
                             logger.Log("DEBUG", "Hooked activities");
                             if (data.d.hasOwnProperty("activities")) {
                                 const activityPacket: ActivityPacket = data.d as unknown as ActivityPacket;
                                 for (const activity of activityPacket.d.activities) {
-                                    if (activity.type == 0 || activity.type == 2) {
+                                    if (activity.type === 0 || activity.type === 2) {
                                         if (settings.store.platform === Platforms.ps5) {
                                             logger.Log("INFO", `[${activity.name}]: Setting platform to ps5`);
                                             activity.platform = "ps5";

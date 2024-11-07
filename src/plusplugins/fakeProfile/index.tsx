@@ -149,7 +149,7 @@ function encode(primary: number, accent: number): string {
 }
 
 function decode(bio: string): Array<number> | null {
-  if (bio == null) return null;
+  if (bio === null) return null;
   const colorString = bio.match(
     /\u{e005b}\u{e0023}([\u{e0061}-\u{e0066}\u{e0041}-\u{e0046}\u{e0030}-\u{e0039}]+?)\u{e002c}\u{e0023}([\u{e0061}-\u{e0066}\u{e0041}-\u{e0046}\u{e0030}-\u{e0039}]+?)\u{e005d}/u
   );
@@ -294,7 +294,7 @@ const openModalOnClick = () => {
 };
 
 function ImageIcon(path: string) {
-  return ({ tooltip }: { tooltip: string }) => (
+  return ({ tooltip }: { tooltip: string; }) => (
     <Tooltip text={tooltip}>
       {(tooltipProps: any) => (
         <img {...tooltipProps} src={path} height={20} width={20} />
@@ -580,7 +580,7 @@ export default definePlugin({
   SKU_ID,
   useUserAvatarDecoration(
     user?: User
-  ): { asset: string; skuId: string; animated: boolean } | null {
+  ): { asset: string; skuId: string; animated: boolean; } | null {
     const [avatarDecoration, setAvatarDecoration] = useState<{
       asset: string;
       skuId: string;
@@ -613,10 +613,10 @@ export default definePlugin({
 
     return avatarDecoration
       ? {
-          asset: avatarDecoration.asset,
-          skuId: avatarDecoration.skuId,
-          animated: avatarDecoration.animated,
-        }
+        asset: avatarDecoration.asset,
+        skuId: avatarDecoration.skuId,
+        animated: avatarDecoration.animated,
+      }
       : null;
   },
   voiceBackgroundHook({ className, participantUserId }: any) {

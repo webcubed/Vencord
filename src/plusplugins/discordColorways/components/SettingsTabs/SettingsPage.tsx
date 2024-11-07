@@ -7,7 +7,7 @@
 import { ColorwayCSS } from "plusplugins/discordColorways/colorwaysAPI";
 import { colorToHex } from "plusplugins/discordColorways/utils";
 
-import { DataStore, FluxDispatcher, FluxEvents,PluginProps, ReactNode, useEffect, useState } from "../../";
+import { DataStore, FluxDispatcher, FluxEvents, PluginProps, ReactNode, useEffect, useState } from "../../";
 import { defaultColorwaySource, fallbackColorways, nullColorwayObj } from "../../constants";
 import { generateCss, getPreset, gradientBase, gradientPresetIds } from "../../css";
 import { Colorway, ColorwayObject } from "../../types";
@@ -131,7 +131,7 @@ export default function ({
                     style={{ border: "none" }}
                     onChange={({ currentTarget: { value } }) => {
                         setShouldAutoconnect(value as "1" | "2");
-                        if (value == "1") {
+                        if (value === "1") {
                             DataStore.set("colorwaysManagerDoAutoconnect", true);
                             if (!isWSOpen()) connect();
                         } else {
@@ -169,7 +169,7 @@ export default function ({
                                         sendColorway(active);
                                     }
                                 } else {
-                                    if (value == "default") {
+                                    if (value === "default") {
                                         ColorwayCSS.set(generateCss(
                                             active.colors,
                                             true,

@@ -61,35 +61,35 @@ function AudioUpload() {
 }
 
 const settings = definePluginSettings({
-    audio: {
-        type: OptionType.COMPONENT,
-        component: () => <AudioUpload/>
-    }
+	audio: {
+		type: OptionType.COMPONENT,
+		component: () => <AudioUpload />
+	}
 });
 
 export default definePlugin({
-    name: "CustomNotifySound",
-    authors: [Devs.camila314],
-    description: "Customize the notification sound",
-    settings,
-    patches: [
-    	{
-    	    find: ",\".mp3\"",
-    	    replacement: {
-    	        match: /Audio;(\i)\.src=/,
-    	        replace: "Audio; let __aud = this.name == \"message1\" ? $self.getAudioURL() : null; $1.src = __aud ? __aud : "
-    	    }
-    	},
-    ],
+	name: "CustomNotifySound",
+	authors: [Devs.camila314],
+	description: "Customize the notification sound",
+	settings,
+	patches: [
+		{
+			find: ",\".mp3\"",
+			replacement: {
+				match: /Audio;(\i)\.src=/,
+				replace: "Audio; let __aud = this.name === \"message1\" ? $self.getAudioURL() : null; $1.src = __aud ? __aud : "
+			}
+		},
+	],
 
-    getAudioURL() {
-    	return chosenAudio ? URL.createObjectURL(chosenAudio) : null;
-    },
+	getAudioURL() {
+		return chosenAudio ? URL.createObjectURL(chosenAudio) : null;
+	},
 
-    async start() {
-    	const data = await DataStore.get(FILE_KEY);
-    	if (data) {
+	async start() {
+		const data = await DataStore.get(FILE_KEY);
+		if (data) {
 			chosenAudio = deserializeFile(data);
-    	}
-    }
+		}
+	}
 });

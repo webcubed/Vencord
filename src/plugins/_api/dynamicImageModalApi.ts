@@ -17,7 +17,7 @@ export default definePlugin({
             find: "SCALE_DOWN:",
             replacement: {
                 match: /!\(null==(\i)\|\|0===\i\|\|null==(\i)\|\|0===\i\)/,
-                replace: (_, width, height) => `!((null == ${width} || 0 === ${width}) && (null == ${height} || 0 === ${height}))`
+                replace: (_, width, height) => `!((null === ${width} || 0 === ${width}) && (null === ${height} || 0 === ${height}))`
             }
         }
     ]

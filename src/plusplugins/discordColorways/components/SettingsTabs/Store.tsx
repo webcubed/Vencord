@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { DataStore, openModal,ReactNode, useEffect, useState } from "../../";
+import { DataStore, openModal, ReactNode, useEffect, useState } from "../../";
 import { StoreItem } from "../../types";
 import { DeleteIcon, DownloadIcon, PalleteIcon } from "../Icons";
 import Selector from "../Selector";
@@ -125,7 +125,7 @@ export default function ({
                         <button
                             className="colorwaysPillButton colorwaysPillButton-onSurface"
                             onClick={async () => {
-                                openModal(props => <div className={`colorwaysModal ${props.transitionState == 2 ? "closing" : ""} ${props.transitionState == 4 ? "hidden" : ""}`} data-theme={theme}>
+                                openModal(props => <div className={`colorwaysModal ${props.transitionState === 2 ? "closing" : ""} ${props.transitionState === 4 ? "hidden" : ""}`} data-theme={theme}>
                                     <h2 className="colorwaysModalHeader">
                                         Previewing colorways for {item.name}
                                     </h2>

@@ -4,22 +4,19 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { ApplicationCommandOptionType,findOption } from "@api/Commands";
+import { ApplicationCommandOptionType, findOption } from "@api/Commands";
 import { definePluginSettings } from "@api/Settings";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
-function getMessage(opts)
-{
+function getMessage(opts) {
     const inputOption = findOption(opts, "input", "");
 
-    const queryURL = "" + searchEngines[settings.store.defaultEngine]+ encodeURIComponent(inputOption);
+    const queryURL = "" + searchEngines[settings.store.defaultEngine] + encodeURIComponent(inputOption);
 
-    if(settings.store.hyperlink)
-    {
+    if (settings.store.hyperlink) {
         return `[${inputOption}](${queryURL})`;
     }
-    else
-    {
+    else {
         return queryURL;
     }
 }
@@ -49,7 +46,7 @@ const settings = definePluginSettings({
         options: Object.keys(searchEngines).map((key, index) => ({
             label: key,
             value: key,
-            default: index == 0
+            default: index === 0
         }))
     }
 });

@@ -11,14 +11,14 @@ import { DeleteIcon } from "@components/Icons";
 import { Devs } from "@utils/constants";
 import { useForceUpdater } from "@utils/react";
 import definePlugin, { OptionType } from "@utils/types";
-import { Button, Forms, TextInput,useState } from "@webpack/common";
+import { Button, Forms, TextInput, useState } from "@webpack/common";
 
 const WORDS_KEY = "ContentWarning_words";
 
 let triggerWords = [""];
 
 function safeMatchesRegex(s: string, r: string) {
-	if (r == "") return false;
+	if (r === "") return false;
 	try {
 		return s.match(new RegExp(r.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
 	} catch {
@@ -47,7 +47,7 @@ function FlaggedInput({ index, forceUpdate }) {
 		setValue(triggerWords[index]);
 	}
 
-	const isLast = index == triggerWords.length - 1;
+	const isLast = index === triggerWords.length - 1;
 
 	const updateValue = v => {
 		triggerWords[index] = v;
@@ -60,7 +60,7 @@ function FlaggedInput({ index, forceUpdate }) {
 	};
 
 	const removeSelf = () => {
-		if (triggerWords.length == 1) {
+		if (triggerWords.length === 1) {
 			return;
 		}
 		triggerWords = triggerWords.slice(0, index).concat(triggerWords.slice(index + 1));
@@ -78,16 +78,16 @@ function FlaggedInput({ index, forceUpdate }) {
 		</div>
 
 		<Button
-		    onClick={removeSelf}
-		    look={Button.Looks.BLANK}
-		    size={Button.Sizes.ICON}
-		    style={{
-		    	padding: 0,
-		    	color: "var(--primary-400)",
-		    	transition: "color 0.2s ease-in-out",
-		    	opacity: isLast ? "0%" : "100%"
-		    }}>
-		    <DeleteIcon/>
+			onClick={removeSelf}
+			look={Button.Looks.BLANK}
+			size={Button.Sizes.ICON}
+			style={{
+				padding: 0,
+				color: "var(--primary-400)",
+				transition: "color 0.2s ease-in-out",
+				opacity: isLast ? "0%" : "100%"
+			}}>
+			<DeleteIcon />
 		</Button>
 	</Flex>);
 }
@@ -113,7 +113,7 @@ function FlaggedWords() {
 const settings = definePluginSettings({
 	flagged: {
 		type: OptionType.COMPONENT,
-		component: () => <FlaggedWords/>,
+		component: () => <FlaggedWords />,
 	}
 });
 
@@ -139,7 +139,7 @@ export default definePlugin({
 
 	modify(e, c) {
 		if (triggerWords.some(w => safeMatchesRegex(e.message.content, w))) {
-			return <TriggerContainer child={c}/>;
+			return <TriggerContainer child={c} />;
 		} else {
 			return c;
 		}

@@ -5,17 +5,17 @@
  */
 
 import { DataStore, FluxDispatcher, FluxEvents, ReactNode, Toasts } from "..";
-import { openModal,useEffect, useState } from "../";
+import { openModal, useEffect, useState } from "../";
 import { ColorwayCSS } from "../colorwaysAPI";
 import { nullColorwayObj } from "../constants";
 import { generateCss, getAutoPresets, getPreset, gradientBase, gradientPresetIds } from "../css";
-import { Colorway, ColorwayObject, ModalProps,SortOptions, SourceObject } from "../types";
+import { Colorway, ColorwayObject, ModalProps, SortOptions, SourceObject } from "../types";
 import { colorToHex, getHex, stringToHex } from "../utils";
-import { hasManagerRole, requestManagerRole, sendColorway, updateRemoteSources,wsOpen } from "../wsClient";
+import { hasManagerRole, requestManagerRole, sendColorway, updateRemoteSources, wsOpen } from "../wsClient";
 import AutoColorwaySelector from "./AutoColorwaySelector";
 import CreatorModal from "./CreatorModal";
 import FiltersMenu from "./FiltersMenu";
-import { DeleteIcon,IDIcon, PalleteIcon, PlusIcon } from "./Icons";
+import { DeleteIcon, IDIcon, PalleteIcon, PlusIcon } from "./Icons";
 import InfoModal from "./InfoModal";
 import ReloadButton from "./ReloadButton";
 import SourcesMenu from "./SourcesMenu";
@@ -192,12 +192,12 @@ export default function ({
             <FiltersMenu sort={sortBy} onSortChange={newSort => {
                 setSortBy(newSort);
             }} />
-            <SourcesMenu source={filters.filter(filter => filter.id == visibleSources)[0]} sources={filters} onSourceChange={sourceId => {
+            <SourcesMenu source={filters.filter(filter => filter.id === visibleSources)[0]} sources={filters} onSourceChange={sourceId => {
                 setVisibleSources(sourceId);
             }} />
         </div>
     </Header> : <></>}
-        {(wsConnected && settings.selectorType == "normal" && !isManager) ? <span style={{
+        {(wsConnected && settings.selectorType === "normal" && !isManager) ? <span style={{
             color: "#fff",
             margin: "auto",
             fontWeight: "bold",
@@ -341,7 +341,7 @@ export default function ({
                                         setActiveColorwayObject(newObj);
 
                                         DataStore.get("colorwaysPreset").then((colorwaysPreset: string) => {
-                                            if (colorwaysPreset == "default") {
+                                            if (colorwaysPreset === "default") {
                                                 ColorwayCSS.set(generateCss(
                                                     colors,
                                                     true,
@@ -440,7 +440,7 @@ export default function ({
                                             DataStore.set("activeColorwayObject", newObj);
 
                                             DataStore.get("colorwaysPreset").then((colorwaysPreset: string) => {
-                                                if (colorwaysPreset == "default") {
+                                                if (colorwaysPreset === "default") {
                                                     ColorwayCSS.set(generateCss(
                                                         newObj.colors,
                                                         true,

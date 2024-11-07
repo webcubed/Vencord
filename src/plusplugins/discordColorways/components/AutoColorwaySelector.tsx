@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { DataStore, useEffect,useState } from "../";
+import { DataStore, useEffect, useState } from "../";
 import { getAutoPresets } from "../css";
 import { ModalProps } from "../types";
 
@@ -18,7 +18,7 @@ export default function ({ modalProps, onChange, autoColorwayId = "" }: { modalP
         }
         load();
     }, []);
-    return <div className={`colorwaysModal ${modalProps.transitionState == 2 ? "closing" : ""} ${modalProps.transitionState == 4 ? "hidden" : ""}`} data-theme={theme}>
+    return <div className={`colorwaysModal ${modalProps.transitionState === 2 ? "closing" : ""} ${modalProps.transitionState === 4 ? "hidden" : ""}`} data-theme={theme}>
         <h2 className="colorwaysModalHeader">
             Auto Preset Settings
         </h2>

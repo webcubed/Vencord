@@ -6,9 +6,9 @@
 
 import "./WelcomeBackHeader.css";
 
+import { getIntlMessage } from "@utils/discord";
 import { findByPropsLazy } from "@webpack";
 import { Button, NavigationRouter, UserStore, useStateFromStores } from "@webpack/common";
-import { getIntlMessage } from "@utils/discord";
 
 import { cl } from "./common";
 import { OnlineFriendsCount } from "./OnlineFriendsCount";

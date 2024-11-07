@@ -55,7 +55,7 @@ export let loggedMessages: LoggedMessages = { ...defaultLoggedMessages };
 
         const data = await DataStore.get(LOGGED_MESSAGES_KEY, MessageLoggerStore);
 
-        if (data == null) {
+        if (data === null) {
             Flogger.log("No logged messages in DataStore");
             return;
         }
@@ -221,7 +221,7 @@ export function getMessage(channelId: string, messageId: string) {
 export async function deleteOldestMessageWithoutSaving(loggedMessages: LoggedMessages) {
     const oldestMessage = getOldestMessage(loggedMessages);
     if (!oldestMessage || !oldestMessage.message) {
-        console.warn("couldnt find oldest message. oldestMessage == null || oldestMessage.message == null");
+        console.warn("couldnt find oldest message. oldestMessage === null || oldestMessage.message === null");
         return loggedMessages;
     }
 

@@ -16,7 +16,7 @@ export default function ({ modalProps }: { modalProps: ModalProps; }) {
         }
         load();
     }, []);
-    return <div className={`colorwaysModal ${modalProps.transitionState == 2 ? "closing" : ""} ${modalProps.transitionState == 4 ? "hidden" : ""}`} data-theme={theme}>
+    return <div className={`colorwaysModal ${modalProps.transitionState === 2 ? "closing" : ""} ${modalProps.transitionState === 4 ? "hidden" : ""}`} data-theme={theme}>
         <h2 className="colorwaysModalHeader">
             Project Colorway has moved
         </h2>

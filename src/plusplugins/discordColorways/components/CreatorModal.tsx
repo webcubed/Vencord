@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { ColorPicker, DataStore, openModal, PluginProps, Slider,useEffect, useReducer, UserStore, useState } from "..";
+import { ColorPicker, DataStore, openModal, PluginProps, Slider, useEffect, useReducer, UserStore, useState } from "..";
 import { knownThemeVars } from "../constants";
 import { Colorway, ModalProps } from "../types";
 import { colorToHex, getHex, HexToHSL, hexToString } from "../utils";
@@ -121,7 +121,7 @@ export default function ({
     };
 
     return (
-        <div className={`colorwaysModal ${modalProps.transitionState == 2 ? "closing" : ""} ${modalProps.transitionState == 4 ? "hidden" : ""}`} data-theme={theme}>
+        <div className={`colorwaysModal ${modalProps.transitionState === 2 ? "closing" : ""} ${modalProps.transitionState === 4 ? "hidden" : ""}`} data-theme={theme}>
             <h2 className="colorwaysModalHeader">Create a Colorway</h2>
             <div className="colorwaysModalContent" style={{ minWidth: 500 }}>
                 <span className="colorwaysModalSectionHeader">Name:</span>

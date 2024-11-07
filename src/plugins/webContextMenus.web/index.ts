@@ -101,7 +101,7 @@ export default definePlugin({
             find: "open-native-link",
             replacement: [
                 {
-                    // if (IS_DESKTOP || null == ...)
+                    // if (IS_DESKTOP || null === ...)
                     match: /if\(!\i\.\i\|\|null==/,
                     replace: "if(null=="
                 },

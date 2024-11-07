@@ -20,8 +20,7 @@ export async function getApplicationAsset(key: string): Promise<string> {
 }
 
 
-enum StatsDisplay
-{
+enum StatsDisplay {
     messagesSentToday,
     messagesSentAllTime,
     mostListenedAlbum
@@ -85,10 +84,8 @@ const settings = definePluginSettings(
     });
 
 async function setRpc(disable?: boolean, details?: string, imageURL?: string) {
-    if(!disable)
-    {
-        if(!settings.store.lastFMApiKey.length && settings.store.statDisplay == StatsDisplay.mostListenedAlbum)
-        {
+    if (!disable) {
+        if (!settings.store.lastFMApiKey.length && settings.store.statDisplay === StatsDisplay.mostListenedAlbum) {
             FluxDispatcher.dispatch({
                 type: "LOCAL_ACTIVITY_UPDATE",
                 activity: null,
@@ -105,7 +102,7 @@ async function setRpc(disable?: boolean, details?: string, imageURL?: string) {
         "assets": {
             // i love insanely long statements
             "large_image":
-                (imageURL == null || !settings.store.albumCoverImage) ?
+                (imageURL === null || !settings.store.albumCoverImage) ?
                     await getApplicationAsset(settings.store.assetURL.length ? settings.store.assetURL : UserStore.getCurrentUser().getAvatarURL()) :
                     await getApplicationAsset(imageURL)
         }
@@ -135,49 +132,44 @@ interface IMessageCreate {
 
 const Native = VencordNative.pluginHelpers.RPCStats as PluginNative<typeof import("./native")>;
 
-async function updateData()
-{
-    switch(settings.store.statDisplay)
-    {
+async function updateData() {
+    switch (settings.store.statDisplay) {
         case StatsDisplay.messagesSentToday:
             let messagesSent;
-            if(await DataStore.get("RPCStatsDate") == getCurrentDate())
-            {
+            if (await DataStore.get("RPCStatsDate") === getCurrentDate()) {
                 messagesSent = await DataStore.get("RPCStatsMessages");
             }
-            else
-            {
+            else {
                 await DataStore.set("RPCStatsDate", getCurrentDate());
                 await DataStore.set("RPCStatsMessages", 0);
                 messagesSent = 0;
             }
             setRpc(false, `Messages sent today: ${messagesSent}\n`);
-        break;
+            break;
         case StatsDisplay.messagesSentAllTime:
             let messagesAllTime = await DataStore.get("RPCStatsAllTimeMessages");
-            if(!messagesAllTime)
-            {
+            if (!messagesAllTime) {
                 DataStore.set("RPCStatsAllTimeMessages", 0);
                 messagesAllTime = 0;
             }
             setRpc(false, `Messages sent all time: ${messagesAllTime}\n`);
-        break;
+            break;
         // slightly cursed
         case StatsDisplay.mostListenedAlbum:
 
             const lastFMDataJson = await Native.fetchTopAlbum(
-            {
-               apiKey: settings.store.lastFMApiKey,
-               user: settings.store.lastFMUsername,
-               period: "7day"
-            });
+                {
+                    apiKey: settings.store.lastFMApiKey,
+                    user: settings.store.lastFMUsername,
+                    period: "7day"
+                });
 
-            if(lastFMDataJson == null) return;
+            if (lastFMDataJson === null) return;
 
             const lastFMData = JSON.parse(lastFMDataJson);
             console.log(lastFMData);
             setRpc(false, settings.store.lastFMStatFormat.replace("$album", lastFMData.albumName).replace("$artist", lastFMData.artistName), lastFMData?.albumCoverUrl);
-        break;
+            break;
     }
 }
 
@@ -185,20 +177,17 @@ export default definePlugin({
     name: "RPCStats",
     description: "Displays stats about your activity as an rpc",
     authors: [Devs.Samwich],
-    async start()
-    {
+    async start() {
         updateData();
 
-        setInterval(() =>
-        {
+        setInterval(() => {
             checkForNewDay();
             updateData();
         }, 1000);
 
     },
     settings,
-    stop()
-    {
+    stop() {
         setRpc(true);
     },
     flux:

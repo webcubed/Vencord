@@ -212,7 +212,7 @@ function memberCount(): string {
     const { groups } = ChannelMemberStore.getProps(guildId, channelId);
     const total = GuildMemberCountStore.getMemberCount(guildId);
 
-    if (total == null)
+    if (total === null)
         return "";
 
     const online =

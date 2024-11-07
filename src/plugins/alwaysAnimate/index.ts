@@ -34,7 +34,7 @@ export default definePlugin({
                 match: /canAnimate:.+?([,}].*?\))/g,
                 replace: (m, rest) => {
                     const destructuringMatch = rest.match(/}=.+/);
-                    if (destructuringMatch == null) return `canAnimate:!0${rest}`;
+                    if (destructuringMatch === null) return `canAnimate:!0${rest}`;
                     return m;
                 }
             }

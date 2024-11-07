@@ -6,9 +6,9 @@
 
 import "./Feed.css";
 
+import { getIntlMessage } from "@utils/discord";
 import { findByPropsLazy, findComponentByCodeLazy, findStoreLazy } from "@webpack";
 import { Button, ChannelStore, GuildStore, NavigationRouter, useStateFromStores } from "@webpack/common";
-import { getIntlMessage } from "@utils/discord";
 
 import ActivityFeedCard from "./ActivityFeedCard";
 import { cl } from "./common";

@@ -5,10 +5,10 @@
  */
 
 import { Devs } from "@utils/constants";
+import { getIntlMessage } from "@utils/discord";
 import definePlugin from "@utils/types";
 import { findByCodeLazy, findByPropsLazy } from "@webpack";
 import { ChannelStore, GuildStore, RelationshipStore, UserStore } from "@webpack/common";
-import { getIntlMessage } from "@utils/discord";
 
 const { getName } = findByPropsLazy("getName", "useName", "getNickname");
 const computeChannelName = findByCodeLazy(".isThread())return'\"'.concat(");

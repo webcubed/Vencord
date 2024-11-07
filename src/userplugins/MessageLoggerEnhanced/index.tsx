@@ -64,7 +64,7 @@ async function messageDeleteHandler(payload: MessageDeletePayload & { isBulk: bo
 
         let message: LoggedMessage | LoggedMessageJSON | null =
             oldGetMessage?.(payload.channelId, payload.id);
-        if (message == null) {
+        if (message === null) {
             // most likely an edited message
             const cachedMessage = cacheSentMessages.get(`${payload.channelId},${payload.id}`);
             if (!cachedMessage) return; // Flogger.log("no message to save");
@@ -93,7 +93,7 @@ async function messageDeleteHandler(payload: MessageDeletePayload & { isBulk: bo
         }
 
 
-        if (message == null || message.channel_id == null || !message.deleted) return;
+        if (message === null || message.channel_id === null || !message.deleted) return;
         // Flogger.log("ADDING MESSAGE (DELETED)", message);
         await addMessage(message, "deletedMessages", payload.isBulk ?? false);
     }
@@ -134,7 +134,7 @@ async function messageUpdateHandler(payload: MessageUpdatePayload) {
 
     let message = oldGetMessage?.(payload.message.channel_id, payload.message.id) as LoggedMessage | LoggedMessageJSON | null;
 
-    if (message == null) {
+    if (message === null) {
         // MESSAGE_UPDATE gets dispatched when emebeds change too and content becomes null
         if (cachedMessage != null && payload.message.content != null && cachedMessage.content !== payload.message.content) {
             message = {
@@ -153,7 +153,7 @@ async function messageUpdateHandler(payload: MessageUpdatePayload) {
         }
     }
 
-    if (message == null || message.channel_id == null || message.editHistory == null || message.editHistory.length === 0) return;
+    if (message === null || message.channel_id === null || message.editHistory === null || message.editHistory.length === 0) return;
 
     // Flogger.log("ADDING MESSAGE (EDITED)", message, payload);
     await addMessage(message, "editedMessages");
@@ -187,7 +187,7 @@ function messageLoadSuccess(payload: LoadMessagePayload) {
         const recievedMessage = payload.messages[i];
         const record = loggedMessages[recievedMessage.id];
 
-        if (record == null || record.message == null) continue;
+        if (record === null || record.message === null) continue;
 
         if (record.message.editHistory!.length !== 0) {
             payload.messages[i].editHistory = record.message.editHistory;
@@ -394,7 +394,7 @@ export const settings = definePluginSettings({
             <Button
                 disabled={
                     IS_WEB
-                    || settings.store.imageCacheDir == null
+                    || settings.store.imageCacheDir === null
                     || settings.store.imageCacheDir === DEFAULT_IMAGE_CACHE_DIR
                 }
                 onClick={() => Native.showItemInFolder(settings.store.imageCacheDir)}
@@ -537,13 +537,13 @@ export default definePlugin({
 
     getDeleted(m1, m2) {
         const deleted = m2?.deleted;
-        if (deleted == null && m1?.deleted != null) return m1.deleted;
+        if (deleted === null && m1?.deleted != null) return m1.deleted;
         return deleted;
     },
 
     getEdited(m1, m2) {
         const editHistory = m2?.editHistory;
-        if (editHistory == null && m1?.editHistory != null && m1.editHistory.length > 0)
+        if (editHistory === null && m1?.editHistory != null && m1.editHistory.length > 0)
             return m1.editHistory.map(mapEditHistory);
         return editHistory;
     },
@@ -558,7 +558,7 @@ export default definePlugin({
             return props.attachment = this.attachments.get(attachment.id)!; // Flogger.log("blobUrl already exists");
 
         imageUtils.getAttachmentBlobUrl(attachment).then((blobUrl: string | null) => {
-            if (blobUrl == null) {
+            if (blobUrl === null) {
                 Flogger.error("image not found. for message.id =", message.id, blobUrl);
                 return;
             }

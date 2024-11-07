@@ -99,8 +99,8 @@ async function bulkFetchPronouns(ids: string[]): Promise<PronounsResponse> {
 }
 
 function extractPronouns(pronounSets?: PronounSets): string | undefined {
-    if (pronounSets == null) return undefined;
-    if (pronounSets.en == null) return PronounMapping.unspecified;
+    if (pronounSets === null) return undefined;
+    if (pronounSets.en === null) return PronounMapping.unspecified;
 
     const pronouns = pronounSets.en;
     if (pronouns.length === 0) return PronounMapping.unspecified;

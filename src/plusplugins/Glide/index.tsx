@@ -26,7 +26,7 @@ let setPreset;
 
 function LoadPreset(preset?: ThemePreset) {
     if (setPreset === settings.store.ColorPreset) { return; }
-    const theme: ThemePreset = preset == null ? themes[settings.store.ColorPreset] : preset;
+    const theme: ThemePreset = preset === null ? themes[settings.store.ColorPreset] : preset;
     setPreset = settings.store.ColorPreset;
     settings.store.Primary = theme.bgcol;
     settings.store.Accent = theme.accentcol;
@@ -232,7 +232,7 @@ function copyCSS() {
 function parseFontContent() {
     const fontRegex = /family=([^&;,:]+)/;
     const customFontString: string = Settings.plugins.Glide.customFont;
-    if (customFontString == null) { return; }
+    if (customFontString === null) { return; }
     const fontNameMatch: RegExpExecArray | null = fontRegex.exec(customFontString);
     const fontName = fontNameMatch ? fontNameMatch[1].replace(/[^a-zA-Z0-9]+/g, " ") : "";
     return fontName;

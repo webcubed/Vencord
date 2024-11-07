@@ -57,7 +57,7 @@ export default definePlugin({
 
     wrapComponent({ messageId, channelId }, Component: ComponentType) {
         return props => {
-            if(messageId === undefined) return <Component {...props} />;
+            if (messageId === undefined) return <Component {...props} />;
             return <Tooltip
                 tooltipClassName="c98-message-link-tooltip"
                 text={
@@ -85,7 +85,7 @@ function MessagePreview({ channelId, messageId }) {
     const channel = ChannelStore.getChannel(channelId);
     const message = useMessage(channelId, messageId);
     // TODO handle load failure
-    if(!message) {
+    if (!message) {
         return <Spinner type={Spinner.Type.PULSING_ELLIPSIS} />;
     }
 
@@ -104,7 +104,7 @@ function useMessage(channelId, messageId) {
     );
     const [message, setMessage] = useState(cachedMessage);
     useEffect(() => {
-        if(message == null)
+        if (message === null)
             (async () => {
                 const res = await RestAPI.get({
                     url: `/channels/${channelId}/messages`,

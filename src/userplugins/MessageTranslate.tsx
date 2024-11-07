@@ -36,16 +36,15 @@ async function translateAPI(sourceLang: string, targetLang: string, text: string
     return await response.json();
 }
 
-async function TranslateMessage(string)
-{
+async function TranslateMessage(string) {
     // there may be a better way to do this lmao
-    if(string.includes("(Translated)")) return string;
+    if (string.includes("(Translated)")) return string;
 
     const response = await translateAPI("auto", settings.store.targetLanguage, string);
 
-    if(response.src == settings.store.targetLanguage || response.confidence < settings.store.confidenceRequirement) return string;
+    if (response.src === settings.store.targetLanguage || response.confidence < settings.store.confidenceRequirement) return string;
 
-    const { sentences }: { sentences: { trans?: string }[] } = await response;
+    const { sentences }: { sentences: { trans?: string; }[]; } = await response;
     const translatedText = sentences.map(s => s?.trans).filter(Boolean).join("");
 
     return `${translatedText} *(Translated)*`;
@@ -55,9 +54,9 @@ export default definePlugin({
     name: "MessageTranslate",
     description: "Auto translate messages to your language",
     authors:
-    [
-        Devs.Samwich
-    ],
+        [
+            Devs.Samwich
+        ],
     settings,
     TranslateMessage: TranslateMessage,
     patches: [
