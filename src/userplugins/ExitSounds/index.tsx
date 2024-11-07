@@ -63,7 +63,7 @@ export default definePlugin({
 
     handleChannelChange(id: string, callback: (id: string) => void) {
         const voiceID = SelectedChannelStore.getVoiceChannelId();
-        if (voiceID && (SelectedChannelStore.getVoiceChannelId() != id)) {
+        if (voiceID && (SelectedChannelStore.getVoiceChannelId() !== id)) {
             const guildID = settings.store.soundGuildId;
             const soundboardID = settings.store.soundId;
 

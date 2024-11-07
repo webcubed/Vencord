@@ -73,13 +73,13 @@ export default LazyComponent(() => {
         const plugins = useMemo(() =>
             Object.values(Vencord.Plugins.plugins)
                 .sort((a, b) => a.name.localeCompare(b.name)),
-        []
+            []
         );
         const data = plugins
             .filter(plugin => (
                 plugin.name.toLowerCase().includes(query) ||
-            plugin.description.toLowerCase().includes(query) ||
-            plugin.tags?.some(t => t.toLowerCase().includes(query))
+                plugin.description.toLowerCase().includes(query) ||
+                plugin.tags?.some(t => t.toLowerCase().includes(query))
             ))
             .map(plugin => ({ key: plugin.name, plugin }));
 
@@ -107,10 +107,10 @@ export default LazyComponent(() => {
                         onClickRow={selectRow}
                     />
                 </ScrollerThin>
-                {current != null && (
+                {current !== null && (
                     <PluginPanel
                         plugin={current}
-                        initialHeight={ref.current != null ? ref.current.clientHeight / 2 : 300}
+                        initialHeight={ref.current !== null ? ref.current.clientHeight / 2 : 300}
                     />
                 )}
             </div>

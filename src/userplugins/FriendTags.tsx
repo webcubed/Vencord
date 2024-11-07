@@ -12,10 +12,7 @@ import { Devs } from "@utils/constants";
 import { useForceUpdater } from "@utils/react";
 import definePlugin from "@utils/types";
 import { OptionType } from "@utils/types";
-import { Button, ChannelStore, Text, TextInput, useEffect, UserStore, useState } from "@webpack/common";
-import { Forms } from "@webpack/common";
-import { RelationshipStore } from "@webpack/common";
-import { Menu } from "@webpack/common";
+import { Forms, Menu, RelationshipStore Button, ChannelStore, Text, TextInput, useEffect, UserStore, useState } from "@webpack/common";
 
 const tagStoreName = "vc-friendtags-tags";
 
@@ -66,7 +63,7 @@ interface UserTagData {
 
 async function SetData() {
     const fetchData = await DataStore.get(tagStoreName);
-    if (SavedData != fetchData) {
+    if (SavedData !== fetchData) {
         await DataStore.set(tagStoreName, JSON.stringify(SavedData));
     }
     return true;
@@ -127,7 +124,7 @@ function TagConfigCard(props) {
                 }
             </ExpandableHeader>
             <Button onClick={async () => {
-                SavedData = SavedData.filter(data => (data.tagName != tagName));
+                SavedData = SavedData.filter(data => (data.tagName !== tagName));
                 await SetData();
                 update();
             }} color={Button.Colors.RED}>Remove</Button>
@@ -179,7 +176,7 @@ const settings = definePluginSettings(
 
 function UserToTagID(user, tag, remove) {
     if (remove) {
-        SavedData.filter(e => e.tagName === tag)[0].userIds = SavedData.filter(e => e.tagName === tag)[0].userIds.filter(e => e != user);
+        SavedData.filter(e => e.tagName === tag)[0].userIds = SavedData.filter(e => e.tagName === tag)[0].userIds.filter(e => e !== user);
     }
     else {
         SavedData.filter(e => e.tagName === tag)[0]?.userIds.push(user);

@@ -59,11 +59,11 @@ const self = module.exports;
                 a = function (t, e) {
                   (l[r] = t), (l[r + 1] = e), 2 === (r += 2) && (i ? i(d) : g());
                 };
-              var t = "undefined" != typeof window ? window : void 0,
+              var t = "undefined" !== typeof window ? window : void 0,
                 o = t || {},
                 s = o.MutationObserver || o.WebKitMutationObserver,
                 c = "undefined" === typeof self && void 0 !== G && "[object process]" === {}.toString.call(G),
-                f = "undefined" != typeof Uint8ClampedArray && "undefined" != typeof importScripts && "undefined" != typeof MessageChannel;
+                f = "undefined" !== typeof Uint8ClampedArray && "undefined" !== typeof importScripts && "undefined" !== typeof MessageChannel;
               function h() {
                 var t = setTimeout;
                 return function () {
@@ -258,7 +258,7 @@ const self = module.exports;
                       (a = !0), (o = t);
                     }
                     if (i === w && e._state !== E) this._settledAt(e._state, t, e._result);
-                    else if ("function" != typeof i) this._remaining--, (this._result[t] = e);
+                    else if ("function" !== typeof i) this._remaining--, (this._result[t] = e);
                     else if (n === S) {
                       var s = new n(b);
                       a ? R(s, o) : C(s, e, i), this._willSettleAt(s, t);
@@ -329,7 +329,7 @@ const self = module.exports;
                   (this._result = this._state = void 0),
                   (this._subscribers = []),
                   b !== t &&
-                    ("function" != typeof t &&
+                    ("function" !== typeof t &&
                       (function () {
                         throw new TypeError("You must pass a resolver function as the first argument to the promise constructor");
                       })(),
@@ -384,7 +384,7 @@ const self = module.exports;
                 (S.polyfill = function () {
                   var t = void 0;
                   if (void 0 !== q) t = q;
-                  else if ("undefined" != typeof self) t = self;
+                  else if ("undefined" !== typeof self) t = self;
                   else
                     try {
                       t = Function("return this")();
@@ -405,7 +405,7 @@ const self = module.exports;
               );
             }),
             "object" === typeof r && void 0 !== n ? (n.exports = e()) : "function" === typeof define && define.amd ? define(e) : (t.ES6Promise = e());
-        }).call(this, Y("VCmEsw"), "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
+        }).call(this, Y("VCmEsw"), "undefined" !== typeof self ? self : "undefined" !== typeof window ? window : {});
       },
       { VCmEsw: 2 },
     ],
@@ -414,8 +414,8 @@ const self = module.exports;
         var r = (e.exports = {});
         function i() {}
         (r.nextTick = (function () {
-          var t = "undefined" != typeof window && window.setImmediate,
-            e = "undefined" != typeof window && window.postMessage && window.addEventListener;
+          var t = "undefined" !== typeof window && window.setImmediate,
+            e = "undefined" !== typeof window && window.postMessage && window.addEventListener;
           if (t)
             return function (t) {
               return window.setImmediate(t);
@@ -596,17 +596,17 @@ const self = module.exports;
                         -1 == ["alt", "src", "usemap", "ismap", "data-is-apng", "width", "height"].indexOf(t.nodeName) && e.setAttributeNode(t.cloneNode(!1));
                       }),
                       e.setAttribute("data-apng-src", s.src),
-                      "" != s.alt && e.appendChild(document.createTextNode(s.alt));
+                      "" !== s.alt && e.appendChild(document.createTextNode(s.alt));
                     var n = "",
                       r = "",
                       i = 0,
                       o = "";
-                    "" != s.style.width && "auto" != s.style.width ? (n = s.style.width) : s.hasAttribute("width") && (n = s.getAttribute("width") + "px"),
-                      "" != s.style.height && "auto" != s.style.height
+                    "" !== s.style.width && "auto" !== s.style.width ? (n = s.style.width) : s.hasAttribute("width") && (n = s.getAttribute("width") + "px"),
+                      "" !== s.style.height && "auto" !== s.style.height
                         ? (r = s.style.height)
                         : s.hasAttribute("height") && (r = s.getAttribute("height") + "px"),
-                      "" != n && "" === r && ((i = parseFloat(n)), (o = n.match(/\D+$/)[0]), (r = Math.round((e.height * i) / e.width) + o)),
-                      "" != r && "" === n && ((i = parseFloat(r)), (o = r.match(/\D+$/)[0]), (n = Math.round((e.width * i) / e.height) + o)),
+                      "" !== n && "" === r && ((i = parseFloat(n)), (o = n.match(/\D+$/)[0]), (r = Math.round((e.height * i) / e.width) + o)),
+                      "" !== r && "" === n && ((i = parseFloat(r)), (o = r.match(/\D+$/)[0]), (n = Math.round((e.width * i) / e.height) + o)),
                       (e.style.width = n),
                       (e.style.height = r);
                     var a = s.parentNode;
@@ -622,7 +622,7 @@ const self = module.exports;
               var e = t.getContext("2d");
               "_apng_animation" in e && e._apng_animation.removeContext(e);
             });
-        }).call(this, "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
+        }).call(this, "undefined" !== typeof self ? self : "undefined" !== typeof window ? window : {});
       },
       { "./loader": 6, "./parser": 7, "./support-test": 8 },
     ],
@@ -654,11 +654,11 @@ const self = module.exports;
         e.exports = function (t) {
           var A = new Uint8Array(t);
           return new r(function (t, e) {
-            for (var n = 0; n < g.length; n++) if (g[n] != A[n]) return void e("Not a PNG file (invalid file signature)");
+            for (var n = 0; n < g.length; n++) if (g[n] !== A[n]) return void e("Not a PNG file (invalid file signature)");
             var r = !1;
             if (
               (w(A, function (t) {
-                return "acTL" != t || !(r = !0);
+                return "acTL" !== t || !(r = !0);
               }),
               r)
             ) {
@@ -706,7 +706,7 @@ const self = module.exports;
                   }
                 }),
                 c && f.frames.push(c),
-                0 != f.frames.length)
+                0 !== f.frames.length)
               )
                 for (var i = 0, o = new Blob(a), h = new Blob(s), l = 0; l < f.frames.length; l++) {
                   c = f.frames[l];
@@ -737,7 +737,7 @@ const self = module.exports;
                 i = a(t, n + 4, 4),
                 o = e(i, t, n, r);
               n += 12 + r;
-            } while (!1 !== o && "IEND" != i && n < t.length);
+            } while (!1 !== o && "IEND" !== i && n < t.length);
           },
           y = function (t, e) {
             var n = 0;
@@ -822,13 +822,13 @@ const self = module.exports;
                   if (t.APNG && !r) reject();
                   else {
                     var e = !0;
-                    for (var n in t) t.hasOwnProperty(n) && "APNG" != n && (e = e && t[n]);
+                    for (var n in t) t.hasOwnProperty(n) && "APNG" !== n && (e = e && t[n]);
                   }
                 })
               );
             },
           };
-        }).call(this, "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
+        }).call(this, "undefined" !== typeof self ? self : "undefined" !== typeof window ? window : {});
       },
       { "es6-promise": 1 },
     ],

@@ -147,13 +147,13 @@ export function shouldIgnore({ channelId, authorId, guildId, flags, bot, ghostPi
 
     if (isWhitelisted) return false; // keep
 
-    if (isCachedByUs && (!settings.store.cacheMessagesFromServers && guildId != null && !isGuildWhitelisted)) return true; // ignore
+    if (isCachedByUs && (!settings.store.cacheMessagesFromServers && guildId !== null && !isGuildWhitelisted)) return true; // ignore
 
     if (isBlacklisted && (!isAuthorWhitelisted || !isChannelWhitelisted)) return true; // ignore
 
-    if (guildId != null && shouldIgnoreMutedGuilds && UserGuildSettingsStore.isMuted(guildId)) return true; // ignore
-    if (channelId != null && shouldIgnoreMutedCategories && UserGuildSettingsStore.isCategoryMuted(guildId, channelId)) return true; // ignore
-    if (channelId != null && shouldIgnoreMutedChannels && UserGuildSettingsStore.isChannelMuted(guildId, channelId)) return true; // ignore
+    if (guildId !== null && shouldIgnoreMutedGuilds && UserGuildSettingsStore.isMuted(guildId)) return true; // ignore
+    if (channelId !== null && shouldIgnoreMutedCategories && UserGuildSettingsStore.isCategoryMuted(guildId, channelId)) return true; // ignore
+    if (channelId !== null && shouldIgnoreMutedChannels && UserGuildSettingsStore.isChannelMuted(guildId, channelId)) return true; // ignore
 
     return false; // keep;
 }

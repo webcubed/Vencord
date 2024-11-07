@@ -195,7 +195,7 @@ export default definePlugin({
         async MESSAGE_CREATE({ optimistic, type, message }: IMessageCreate) {
             if (optimistic || type !== "MESSAGE_CREATE") return;
             if (message.state === "SENDING") return;
-            if (message.author.id != UserStore.getCurrentUser().id) return;
+            if (message.author.id !== UserStore.getCurrentUser().id) return;
             await DataStore.set("RPCStatsMessages", await DataStore.get("RPCStatsMessages") + 1);
             await DataStore.set("RPCStatsAllTimeMessages", await DataStore.get("RPCStatsAllTimeMessages") + 1);
             updateData();

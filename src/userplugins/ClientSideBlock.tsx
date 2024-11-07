@@ -8,8 +8,7 @@ import { definePluginSettings } from "@api/Settings";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
 import { ChannelStore, GuildStore, RelationshipStore, UserStore } from "@webpack/common";
-import { Text } from "@webpack/common";
-import { GuildMemberStore } from "@webpack/common";
+import { GuildMemberStore, Text } from "@webpack/common";
 import { GuildMember } from "discord-types/general";
 
 const settings = definePluginSettings(
@@ -185,7 +184,7 @@ export default definePlugin({
             replacement: [
                 {
                     match: /let \i;let\{repliedAuthor:/,
-                    replace: "if(arguments[0] != null && arguments[0].referencedMessage.message != null) { if($self.shouldHideUser(arguments[0].referencedMessage.message.author.id, arguments[0].baseMessage.messageReference.channel_id)) { return $self.hiddenReplyComponent(); } }$&"
+                    replace: "if(arguments[0] !== null && arguments[0].referencedMessage.message !== null) { if($self.shouldHideUser(arguments[0].referencedMessage.message.author.id, arguments[0].baseMessage.messageReference.channel_id)) { return $self.hiddenReplyComponent(); } }$&"
                 }
             ]
         },
@@ -195,7 +194,7 @@ export default definePlugin({
             replacement: {
                 // horror but it works
                 match: /function\(\i,(\i),\i\){.*,\[\i,\i,\i\]\);/,
-                replace: "$&if($1.rawRecipients[0] != null){if($1.rawRecipients[0].id != null){if($self.shouldHideUser($1.rawRecipients[0].id)) return null;}}"
+                replace: "$&if($1.rawRecipients[0] !== null){if($1.rawRecipients[0].id !== null){if($self.shouldHideUser($1.rawRecipients[0].id)) return null;}}"
             }
         },
 
@@ -222,7 +221,7 @@ export default definePlugin({
             find: "}getMutualFriends(",
             replacement: {
                 match: /(getMutualFriends\(\i\){)return (\i[\i])/,
-                replace: "$1if($2 != undefined) return $2.filter(u => !$self.shouldHideUser(u.key))"
+                replace: "$1if($2 !== undefined) return $2.filter(u => !$self.shouldHideUser(u.key))"
             }
         }
     ]

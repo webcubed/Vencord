@@ -83,9 +83,9 @@ export default definePlugin({
             for (let wordIndex = 0; wordIndex < blockedKeywords.length; wordIndex++) {
                 // doing this because undefined strings get converted to the string "undefined" in regex tests
                 // @ts-ignore
-                const descriptionHasKeywords = embed.rawDescription != null && blockedKeywords[wordIndex].test(embed.rawDescription);
+                const descriptionHasKeywords = embed.rawDescription !== null && blockedKeywords[wordIndex].test(embed.rawDescription);
                 // @ts-ignore
-                const titleHasKeywords = embed.rawTitle != null && blockedKeywords[wordIndex].test(embed.rawTitle);
+                const titleHasKeywords = embed.rawTitle !== null && blockedKeywords[wordIndex].test(embed.rawTitle);
                 if (descriptionHasKeywords || titleHasKeywords) {
                     return true;
                 }

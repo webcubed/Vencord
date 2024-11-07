@@ -358,10 +358,10 @@ function patchFactories(factories: Record<string, (module: any, exports: any, re
         if (IS_DEV) {
             if (mod !== originalMod) {
                 factory.$$vencordPatchedSource = String(mod);
-            } else if (wreq != null) {
+            } else if (wreq !== null) {
                 const existingFactory = wreq.m[id];
 
-                if (existingFactory != null) {
+                if (existingFactory !== null) {
                     factory.$$vencordPatchedSource = existingFactory.$$vencordPatchedSource;
                 }
             }

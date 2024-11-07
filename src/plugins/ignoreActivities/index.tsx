@@ -292,7 +292,7 @@ export default definePlugin({
 
         const oldIgnoredActivitiesData = await DataStore.get<Map<IgnoredActivity["id"], IgnoredActivity>>("IgnoreActivities_ignoredActivities");
 
-        if (oldIgnoredActivitiesData != null) {
+        if (oldIgnoredActivitiesData !== null) {
             settings.store.ignoredActivities = Array.from(oldIgnoredActivitiesData.values())
                 .map(activity => ({ ...activity, name: "Unknown Name" }));
 
@@ -315,7 +315,7 @@ export default definePlugin({
     isActivityNotIgnored(props: { type: number; application_id?: string; name?: string; }) {
         if (isActivityTypeIgnored(props.type, props.application_id)) return false;
 
-        if (props.application_id != null) {
+        if (props.application_id !== null) {
             return !getIgnoredActivities().some(activity => activity.id === props.application_id) || (settings.store.listMode === FilterMode.Whitelist && settings.store.idsList.includes(props.application_id));
         } else {
             const exePath = RunningGameStore.getRunningGames().find(game => game.name === props.name)?.exePath;

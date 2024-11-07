@@ -55,7 +55,7 @@ function getExpirationMs(expiration: "TODAY" | number) {
 function setStatus(status: DiscordStatus) {
     CustomStatusSettings.updateSetting({
         text: status.text.trim(),
-        expiresAtMs: status.clearAfter != null ? String(getExpirationMs(status.clearAfter)) : "0",
+        expiresAtMs: status.clearAfter !== null ? String(getExpirationMs(status.clearAfter)) : "0",
         emojiId: status.emojiInfo?.id ?? "0",
         emojiName: status.emojiInfo?.name ?? "",
         createdAtMs: String(Date.now())
@@ -67,7 +67,7 @@ const ClearStatusButton = () => <Clickable className={StatusStyles.clearCustomSt
 function StatusIcon({ isHovering, status }: { isHovering: boolean; status: DiscordStatus; }) {
     return <div className={StatusStyles.status}>{isHovering ?
         <Icons.CircleXIcon size="sm" />
-        : (status.emojiInfo != null ? <EmojiComponent emoji={status.emojiInfo} animate={false} hideTooltip={false} /> : <div className={StatusStyles.customEmojiPlaceholder} />)}</div>;
+        : (status.emojiInfo !== null ? <EmojiComponent emoji={status.emojiInfo} animate={false} hideTooltip={false} /> : <div className={StatusStyles.customEmojiPlaceholder} />)}</div>;
 }
 
 const RenderStatusMenuItem = ({ status, update, disabled }: { status: DiscordStatus; update: () => void; disabled: boolean; }) => {
@@ -97,14 +97,14 @@ const RenderStatusMenuItem = ({ status, update, disabled }: { status: DiscordSta
 const StatusSubMenuComponent = () => {
     const update = useForceUpdater();
     return <Menu.Menu navId="sp-custom-status-submenu" onClose={() => { }}>
-        {Object.entries((settings.store.StatusPresets as { [k: string]: DiscordStatus | undefined; })).map(([index, status]) => status != null ? <Menu.MenuItem
+        {Object.entries((settings.store.StatusPresets as { [k: string]: DiscordStatus | undefined; })).map(([index, status]) => status !== null ? <Menu.MenuItem
             id={"status-presets-" + index}
             label={status.status}
-            action={() => (status.emojiInfo?.id != null && UserStore.getCurrentUser().hasPremiumPerks || status.emojiInfo?.id === null) && setStatus(status)}
+            action={() => (status.emojiInfo?.id !== null && UserStore.getCurrentUser().hasPremiumPerks || status.emojiInfo?.id === null) && setStatus(status)}
             render={() => <RenderStatusMenuItem
                 status={status}
                 update={update}
-                disabled={status.emojiInfo?.id != null && !UserStore.getCurrentUser().hasPremiumPerks}
+                disabled={status.emojiInfo?.id !== null && !UserStore.getCurrentUser().hasPremiumPerks}
             />}
         /> : null)}
     </Menu.Menu>;
@@ -150,7 +150,7 @@ export default definePlugin({
                     action="PRESS_EDIT_CUSTOM_STATUS"
                     onClick={openCustomStatusModal}
                     hint={<ClearStatusButton />}
-                    icon={() => status.emoji != null ? <EmojiComponent emoji={status.emoji} animate={false} hideTooltip={false} /> : null}
+                    icon={() => status.emoji !== null ? <EmojiComponent emoji={status.emoji} animate={false} hideTooltip={false} /> : null}
                     label="Edit Custom Status" renderSubmenu={StatusSubMenuComponent}
                 />}
         </ErrorBoundary>;

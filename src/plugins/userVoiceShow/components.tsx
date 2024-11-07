@@ -36,8 +36,8 @@ function SpeakerIcon(props: IconProps) {
     return (
         <div
             {...props}
-            role={props.onClick != null ? "button" : undefined}
-            className={classes(cl("speaker"), props.onClick != null ? cl("clickable") : undefined, props.className)}
+            role={props.onClick !== null ? "button" : undefined}
+            className={classes(cl("speaker"), props.onClick !== null ? cl("clickable") : undefined, props.className)}
         >
             <svg
                 width={props.size}
@@ -58,8 +58,8 @@ function LockedSpeakerIcon(props: IconProps) {
     return (
         <div
             {...props}
-            role={props.onClick != null ? "button" : undefined}
-            className={classes(cl("speaker"), props.onClick != null ? cl("clickable") : undefined, props.className)}
+            role={props.onClick !== null ? "button" : undefined}
+            className={classes(cl("speaker"), props.onClick !== null ? cl("clickable") : undefined, props.className)}
         >
             <svg
                 width={props.size}
@@ -83,7 +83,7 @@ function VoiceChannelTooltip({ channel, isLocked }: VoiceChannelTooltipProps) {
     const voiceStates = useStateFromStores([VoiceStateStore], () => VoiceStateStore.getVoiceStatesForChannel(channel.id));
 
     const users = useMemo(
-        () => Object.values<any>(voiceStates).map(voiceState => UserStore.getUser(voiceState.userId)).filter(user => user != null),
+        () => Object.values<any>(voiceStates).map(voiceState => UserStore.getUser(voiceState.userId)).filter(user => user !== null),
         [voiceStates]
     );
 
@@ -105,9 +105,9 @@ function VoiceChannelTooltip({ channel, isLocked }: VoiceChannelTooltipProps) {
 
     return (
         <>
-            {guild != null && (
+            {guild !== null && (
                 <div className={cl("name")}>
-                    {guildIcon != null && <img className={cl("guild-icon")} src={guildIcon} alt="" />}
+                    {guildIcon !== null && <img className={cl("guild-icon")} src={guildIcon} alt="" />}
                     <Text variant="text-sm/bold">{guild.name}</Text>
                 </div>
             )}

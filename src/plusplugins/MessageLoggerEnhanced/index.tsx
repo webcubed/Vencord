@@ -141,7 +141,7 @@ async function messageUpdateHandler(payload: MessageUpdatePayload) {
 
     if (message === null) {
         // MESSAGE_UPDATE gets dispatched when emebeds change too and content becomes null
-        if (cachedMessage != null && payload.message.content != null && cachedMessage.content !== payload.message.content) {
+        if (cachedMessage !== null && payload.message.content !== null && cachedMessage.content !== payload.message.content) {
             message = {
                 ...cachedMessage,
                 content: payload.message.content,
@@ -166,7 +166,7 @@ async function messageUpdateHandler(payload: MessageUpdatePayload) {
 
 function messageCreateHandler(payload: MessageCreatePayload) {
     // we do this here because cache is limited and to save memory
-    if (!settings.store.cacheMessagesFromServers && payload.guildId != null) {
+    if (!settings.store.cacheMessagesFromServers && payload.guildId !== null) {
         const ids = [payload.channelId, payload.message?.author?.id, payload.guildId];
         const isWhitelisted =
             settings.store.whitelistedIds
@@ -358,13 +358,13 @@ export default definePlugin({
 
     getDeleted(m1, m2) {
         const deleted = m2?.deleted;
-        if (deleted === null && m1?.deleted != null) return m1.deleted;
+        if (deleted === null && m1?.deleted !== null) return m1.deleted;
         return deleted;
     },
 
     getEdited(m1, m2) {
         const editHistory = m2?.editHistory;
-        if (editHistory === null && m1?.editHistory != null && m1.editHistory.length > 0)
+        if (editHistory === null && m1?.editHistory !== null && m1.editHistory.length > 0)
             return m1.editHistory.map(mapTimestamp);
         return editHistory;
     },

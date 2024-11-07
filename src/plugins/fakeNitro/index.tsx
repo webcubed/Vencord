@@ -428,7 +428,7 @@ export default definePlugin({
             if (premiumType !== 2) {
                 proto.appearance ??= AppearanceSettingsActionCreators.create();
 
-                if (UserSettingsProtoStore.settings.appearance?.theme != null) {
+                if (UserSettingsProtoStore.settings.appearance?.theme !== null) {
                     const appearanceSettingsDummy = AppearanceSettingsActionCreators.create({
                         theme: UserSettingsProtoStore.settings.appearance.theme
                     });
@@ -436,7 +436,7 @@ export default definePlugin({
                     proto.appearance.theme = appearanceSettingsDummy.theme;
                 }
 
-                if (UserSettingsProtoStore.settings.appearance?.clientThemeSettings?.backgroundGradientPresetId?.value != null) {
+                if (UserSettingsProtoStore.settings.appearance?.clientThemeSettings?.backgroundGradientPresetId?.value !== null) {
                     const clientThemeSettingsDummy = ClientThemeSettingsActionsCreators.create({
                         backgroundGradientPresetId: {
                             value: UserSettingsProtoStore.settings.appearance.clientThemeSettings.backgroundGradientPresetId.value
@@ -460,7 +460,7 @@ export default definePlugin({
 
         const currentAppearanceSettings = PreloadedUserSettingsActionCreators.getCurrentValue().appearance;
 
-        const newAppearanceProto = currentAppearanceSettings != null
+        const newAppearanceProto = currentAppearanceSettings !== null
             ? AppearanceSettingsActionCreators.fromBinary(AppearanceSettingsActionCreators.toBinary(currentAppearanceSettings), BINARY_READ_OPTIONS)
             : AppearanceSettingsActionCreators.create();
 
@@ -511,7 +511,7 @@ export default definePlugin({
     },
 
     clearEmptyArrayItems(array: Array<any>) {
-        return array.filter(item => item != null);
+        return array.filter(item => item !== null);
     },
 
     ensureChildrenIsArray(child: ReactElement) {
@@ -559,8 +559,8 @@ export default definePlugin({
         };
 
         const transformChild = (child: ReactElement) => {
-            if (child?.props?.trusted != null) return transformLinkChild(child);
-            if (child?.props?.children != null) {
+            if (child?.props?.trusted !== null) return transformLinkChild(child);
+            if (child?.props?.children !== null) {
                 if (!Array.isArray(child.props.children)) {
                     child.props.children = modifyChild(child.props.children);
                     return child;

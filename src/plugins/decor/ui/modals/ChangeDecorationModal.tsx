@@ -94,7 +94,7 @@ function ChangeDecorationModal(props: ModalProps) {
     const [tryingDecoration, setTryingDecoration] = useState<Decoration | null | undefined>(undefined);
     const isTryingDecoration = typeof tryingDecoration !== "undefined";
 
-    const avatarDecorationOverride = tryingDecoration != null ? decorationToAvatarDecoration(tryingDecoration) : tryingDecoration;
+    const avatarDecorationOverride = tryingDecoration !== null ? decorationToAvatarDecoration(tryingDecoration) : tryingDecoration;
 
     const {
         decorations,

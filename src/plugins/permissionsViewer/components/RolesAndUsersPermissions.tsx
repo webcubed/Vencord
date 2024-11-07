@@ -105,7 +105,7 @@ function RolesAndUsersPermissionsComponent({ permissions, guild, modalProps, hea
                             {permissions.map((permission, index) => {
                                 const user: User | undefined = UserStore.getUser(permission.id ?? "");
                                 const role: Role | undefined = roles[permission.id ?? ""];
-                                const roleIconSrc = role != null ? getRoleIconSrc(role) : undefined;
+                                const roleIconSrc = role !== null ? getRoleIconSrc(role) : undefined;
 
                                 return (
                                     <div
@@ -140,13 +140,13 @@ function RolesAndUsersPermissionsComponent({ permissions, guild, modalProps, hea
                                                     style={{ backgroundColor: role?.colorString ?? "var(--primary-300)" }}
                                                 />
                                             )}
-                                            {permission.type === PermissionType.Role && roleIconSrc != null && (
+                                            {permission.type === PermissionType.Role && roleIconSrc !== null && (
                                                 <img
                                                     className={cl("modal-role-image")}
                                                     src={roleIconSrc}
                                                 />
                                             )}
-                                            {permission.type === PermissionType.User && user != null && (
+                                            {permission.type === PermissionType.User && user !== null && (
                                                 <img
                                                     className={cl("modal-user-img")}
                                                     src={user.getAvatarURL(void 0, void 0, false)}
@@ -157,7 +157,7 @@ function RolesAndUsersPermissionsComponent({ permissions, guild, modalProps, hea
                                                     permission.type === PermissionType.Role
                                                         ? role?.name ?? "Unknown Role"
                                                         : permission.type === PermissionType.User
-                                                            ? (user != null && getUniqueUsername(user)) ?? "Unknown User"
+                                                            ? (user !== null && getUniqueUsername(user)) ?? "Unknown User"
                                                             : (
                                                                 <Flex style={{ gap: "0.2em", justifyItems: "center" }}>
                                                                     @owner

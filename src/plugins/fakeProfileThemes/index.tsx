@@ -59,7 +59,7 @@ function decode(bio: string): Array<number> | null {
     const colorString = bio.match(
         /\u{e005b}\u{e0023}([\u{e0061}-\u{e0066}\u{e0041}-\u{e0046}\u{e0030}-\u{e0039}]{1,6})\u{e002c}\u{e0023}([\u{e0061}-\u{e0066}\u{e0041}-\u{e0046}\u{e0030}-\u{e0039}]{1,6})\u{e005d}/u,
     );
-    if (colorString != null) {
+    if (colorString !== null) {
         const parsed = [...colorString[0]]
             .map(x => String.fromCodePoint(x.codePointAt(0)! - 0xe0000))
             .join("");

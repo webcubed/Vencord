@@ -117,7 +117,7 @@ export const ThemeInfoModal: React.FC<ThemeInfoModalProps> = ({ author, theme, .
                                         className={Margins.top8}
                                         onClick={async e => {
                                             e.preventDefault();
-                                            theme.guild?.invite_link != null && openInviteModal(theme.guild?.invite_link.split("discord.gg/")[1]).catch(() => showToast("Invalid or expired invite!", Toasts.Type.FAILURE));
+                                            theme.guild?.invite_link !== null && openInviteModal(theme.guild?.invite_link.split("discord.gg/")[1]).catch(() => showToast("Invalid or expired invite!", Toasts.Type.FAILURE));
                                         }}
                                     >
                                         Join Discord Server

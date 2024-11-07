@@ -6,8 +6,7 @@
 
 import definePlugin from "@utils/types";
 import { findByProps } from "@webpack";
-import { moment } from "@webpack/common";
-import { React } from "@webpack/common";
+import { moment, React } from "@webpack/common";
 import { User } from "discord-types/general";
 
 interface PresenceStatus {

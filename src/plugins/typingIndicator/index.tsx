@@ -53,7 +53,7 @@ function TypingIndicator({ channelId }: { channelId: string; }) {
             const oldKeys = Object.keys(old);
             const currentKeys = Object.keys(current);
 
-            return oldKeys.length === currentKeys.length && currentKeys.every(key => old[key] != null);
+            return oldKeys.length === currentKeys.length && currentKeys.every(key => old[key] !== null);
         }
     );
     const currentChannelId: string = useStateFromStores([SelectedChannelStore], () => SelectedChannelStore.getChannelId());

@@ -22,7 +22,7 @@ const QuestsButton = () => {
         const expiresAt = new Date(quest.config.expiresAt).getTime();
         const currentTime = Date.now();
         const isExpired = expiresAt <= currentTime;
-        const isEnrolled = quest.userStatus?.enrolledAt != null;
+        const isEnrolled = quest.userStatus?.enrolledAt !== null;
 
         return !isExpired && !isEnrolled;
     });

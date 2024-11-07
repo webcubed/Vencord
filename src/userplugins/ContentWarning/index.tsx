@@ -43,7 +43,7 @@ function TriggerContainer({ child }) {
 function FlaggedInput({ index, forceUpdate }) {
 	const [value, setValue] = useState(triggerWords[index]);
 
-	if (value != triggerWords[index]) {
+	if (value !== triggerWords[index]) {
 		setValue(triggerWords[index]);
 	}
 

@@ -64,6 +64,6 @@ export default definePlugin({
     },
 
     get shouldSuperReactByDefault() {
-        return settings.store.superReactByDefault && UserStore.getCurrentUser().premiumType != null;
+        return settings.store.superReactByDefault && UserStore.getCurrentUser().premiumType !== null;
     }
 });

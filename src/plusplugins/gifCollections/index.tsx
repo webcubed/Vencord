@@ -194,7 +194,7 @@ export default definePlugin({
                 this.oldTrendingCat = instance.props.trendingCategories;
 
 
-            if (this.oldTrendingCat != null)
+            if (this.oldTrendingCat !== null)
                 instance.props.trendingCategories = this.collections.reverse().concat(this.oldTrendingCat as Collection[]);
 
         } catch (err) {
@@ -205,7 +205,7 @@ export default definePlugin({
     shouldStopFetch(query: string) {
         if (query.startsWith(GIF_COLLECTION_PREFIX)) {
             const collection = this.collections.find(c => c.name === query);
-            if (collection != null) return true;
+            if (collection !== null) return true;
         }
         return false;
     },
@@ -233,7 +233,7 @@ export default definePlugin({
         }
 
         const { src, url, height, width } = item;
-        if (src && url && height != null && width != null && !item.id?.startsWith(GIF_ITEM_PREFIX))
+        if (src && url && height !== null && width !== null && !item.id?.startsWith(GIF_ITEM_PREFIX))
             return ContextMenuApi.openContextMenu(e, () =>
                 <Menu.Menu
                     navId="gif-collection-id"

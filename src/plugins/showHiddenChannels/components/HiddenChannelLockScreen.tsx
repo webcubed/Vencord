@@ -225,7 +225,7 @@ function HiddenChannelLockScreen({ channel }: { channel: ExtendedChannel; }) {
                         Default thread slowmode: {formatDuration(defaultThreadRateLimitPerUser!, "seconds")}
                     </Text>
                 }
-                {((channel.isGuildVoice() || channel.isGuildStageVoice()) && bitrate != null) &&
+                {((channel.isGuildVoice() || channel.isGuildStageVoice()) && bitrate !== null) &&
                     <Text variant="text-md/normal">Bitrate: {bitrate} bits</Text>
                 }
                 {rtcRegion !== undefined &&
@@ -240,13 +240,13 @@ function HiddenChannelLockScreen({ channel }: { channel: ExtendedChannel; }) {
                         {" " + formatDuration(defaultAutoArchiveDuration!, "minutes")}
                     </Text>
                 }
-                {defaultForumLayout != null &&
+                {defaultForumLayout !== null &&
                     <Text variant="text-md/normal">Default layout: {ForumLayoutTypesToNames[defaultForumLayout]}</Text>
                 }
-                {defaultSortOrder != null &&
+                {defaultSortOrder !== null &&
                     <Text variant="text-md/normal">Default sort order: {SortOrderTypesToNames[defaultSortOrder]}</Text>
                 }
-                {defaultReactionEmoji != null &&
+                {defaultReactionEmoji !== null &&
                     <div className="shc-lock-screen-default-emoji-container">
                         <Text variant="text-md/normal">Default reaction emoji:</Text>
                         {Parser.defaultRules[defaultReactionEmoji.emojiName ? "emoji" : "customEmoji"].react({

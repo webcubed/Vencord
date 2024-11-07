@@ -48,11 +48,11 @@ export default definePlugin({
         const guild = GuildStore.getGuild(channel.guild_id);
         const parent = ChannelStore.getChannel(channel.parent_id);
 
-        if (channel.type != ChannelTypes.DM) {
+        if (channel.type !== ChannelTypes.DM) {
             let where = ChannelTypesSets.THREADS.has(channel.type)
                 ? `${channelName(channel)} in ${channelName(parent, true)}`
                 : `${channelName(channel, true)}`;
-            if (guild != null)
+            if (guild !== null)
                 where += `, ${guild.name}`;
             title += `\n(${where})`;
         }

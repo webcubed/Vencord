@@ -40,7 +40,7 @@ export let loggedMessages: LoggedMessages = { ...defaultLoggedMessages };
     try {
         const Native = getNative();
         const res = await Native.getLogsFromFs();
-        if (res != null) {
+        if (res !== null) {
             Flogger.log("Got logged messages from native wont be checking DataStore");
             const cleaned = await cleanMessages(res, Native);
             loggedMessages = cleaned;
@@ -120,7 +120,7 @@ function removeLogWithoutSaving(messageId: string, loggedMessages: LoggedMessage
     if (record) {
         const channel_id = record.message?.channel_id;
 
-        if (channel_id != null) {
+        if (channel_id !== null) {
             removeFromKey(messageId, channel_id, loggedMessages, "editedMessages");
             removeFromKey(messageId, channel_id, loggedMessages, "deletedMessages");
         }
@@ -202,7 +202,7 @@ export async function findLoggedChannelByMessage(messageId: string, key?: keyof 
 
 export function getOldestMessage(loggedMessageIds: LoggedMessages) {
     const messags = Object.values(loggedMessageIds)
-        .filter(m => !Array.isArray(m) && m.message != null) as MessageRecord[];
+        .filter(m => !Array.isArray(m) && m.message !== null) as MessageRecord[];
 
     const sortedMessages = messags.sort((a, b) => sortMessagesByDate(a.message.timestamp, b.message.timestamp));
 
@@ -213,7 +213,7 @@ export function getOldestMessage(loggedMessageIds: LoggedMessages) {
 
 export function getMessage(channelId: string, messageId: string) {
     const messags = Object.values(savedLoggedMessages)
-        .filter(m => !Array.isArray(m) && m.message != null) as MessageRecord[];
+        .filter(m => !Array.isArray(m) && m.message !== null) as MessageRecord[];
 
     return messags.find(m => m.message.channel_id === channelId && m.message.id === messageId);
 }

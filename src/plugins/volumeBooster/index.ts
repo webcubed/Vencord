@@ -134,7 +134,7 @@ export default definePlugin({
         }
 
         // @ts-expect-error
-        if (data.sinkId != null && data.sinkId !== data.audioContext.sinkId && "setSinkId" in AudioContext.prototype) {
+        if (data.sinkId !== null && data.sinkId !== data.audioContext.sinkId && "setSinkId" in AudioContext.prototype) {
             // @ts-expect-error https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/setSinkId
             data.audioContext.setSinkId(data.sinkId);
         }

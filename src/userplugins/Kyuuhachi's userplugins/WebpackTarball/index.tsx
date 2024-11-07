@@ -5,8 +5,7 @@
  */
 
 import { definePluginSettings } from "@api/Settings";
-import { WEBPACK_CHUNK } from "@utils/constants";
-import { Devs } from "@utils/constants";
+import { Devs, WEBPACK_CHUNK } from "@utils/constants";
 import { makeLazy } from "@utils/lazy";
 import { closeModal, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalProps, ModalRoot, openModal } from "@utils/modal";
 import definePlugin, { OptionType } from "@utils/types";
@@ -48,7 +47,7 @@ export const getBuildNumber = makeLazy(() => {
         const metrics = findByProps("_getMetricWithDefaults")._flush.toString();
         const [, builtAt, buildNumber] = metrics.match(/\{built_at:"(\d+)",build_number:"(\d+)"\}/);
         return { buildNumber, builtAt: new Date(Number(builtAt)) };
-    } catch(e) {
+    } catch (e) {
         console.error("failed to get build number:", e);
         return { buildNumber: "unknown", builtAt: new Date() };
     }
@@ -57,14 +56,14 @@ export const getBuildNumber = makeLazy(() => {
 async function saveTar(patched: boolean) {
     const tar = new TarFile();
     const { buildNumber, builtAt } = getBuildNumber();
-    const mtime = (builtAt.getTime() / 1000)|0;
+    const mtime = (builtAt.getTime() / 1000) | 0;
 
     const root = patched ? `vencord-${buildNumber}` : `discord-${buildNumber}`;
 
-    for(const [id, module] of Object.entries(wreq.m)) {
+    for (const [id, module] of Object.entries(wreq.m)) {
         const patchedSrc = Function.toString.call(module);
         const originalSrc = module.toString();
-        if(patched && patchedSrc != originalSrc)
+        if (patched && patchedSrc !== originalSrc)
             tar.addTextFile(
                 `${root}/${id}.v.js`,
                 `webpack[${JSON.stringify(id)}] = ${patchedSrc}\n`,

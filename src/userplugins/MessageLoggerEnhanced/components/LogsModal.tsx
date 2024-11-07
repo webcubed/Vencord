@@ -111,7 +111,7 @@ export function LogsModal({ modalProps, initalQuery }: Props) {
                     : true
             )
             .filter(m =>
-                logs[m]?.message != null &&
+                logs[m]?.message !== null &&
                 (
                     success === false
                         ? true
@@ -399,7 +399,7 @@ function LMessage({ log, isGroupStart, forceUpdate, }: LMessageProps) {
                         />
 
                         {
-                            log.message.guildId != null
+                            log.message.guildId !== null
                             && (
                                 <Menu.MenuItem
                                     key="copy-server-id"

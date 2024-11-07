@@ -76,7 +76,7 @@ export default definePlugin({
                 // Will never render if above patch fails
                 {
                     match: /(?<=pendingReply:\i}=(\i),.+?)null!=(\i)&&(\i).push\(\(0,\i.jsx\)\(\i.\i,{reply:\i,/,
-                    replace: "null === $2 && null != $1.mentions && $3.push($self.AllowedMentionsBar({ mentions: $1.mentions, channel: $1.channel })), $&"
+                    replace: "null === $2 && null !== $1.mentions && $3.push($self.AllowedMentionsBar({ mentions: $1.mentions, channel: $1.channel })), $&"
                 }
             ]
         },
@@ -86,7 +86,7 @@ export default definePlugin({
                 // Add AllowedMentionsBar to reply bar when replying
                 {
                     match: /(?<="div",\{className:\i.actions,children:\[)(?=\i&&)/,
-                    replace: "null != $self.getAllowedMentions(arguments[0].reply.channel.id, false) && $self.AllowedMentionsBarInner({ mentions: $self.getAllowedMentions(arguments[0].reply.channel.id, false), channel: arguments[0].reply.channel, trailingSeparator: true }),",
+                    replace: "null !== $self.getAllowedMentions(arguments[0].reply.channel.id, false) && $self.AllowedMentionsBarInner({ mentions: $self.getAllowedMentions(arguments[0].reply.channel.id, false), channel: arguments[0].reply.channel, trailingSeparator: true }),",
                 }
             ]
         },

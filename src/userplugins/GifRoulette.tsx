@@ -9,8 +9,7 @@ import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
 import { UserSettingsActionCreators } from "@webpack/common";
 
-function getMessage(opts, other)
-{
+function getMessage(opts, other) {
     const frecencyStore = UserSettingsActionCreators.FrecencyUserSettingsActionCreators.getCurrentValue();
 
     const gifsArray = Object.keys(frecencyStore.favoriteGifs.gifs);
@@ -19,10 +18,8 @@ function getMessage(opts, other)
 
     let ownerPing = "";
 
-    if(other.guild != null)
-    {
-        if(other.guild.ownerId != null && settings.store.pingOwnerChance && Math.random() <= 0.1)
-        {
+    if (other.guild !== null) {
+        if (other.guild.ownerId !== null && settings.store.pingOwnerChance && Math.random() <= 0.1) {
             ownerPing = `<@${other.guild.ownerId}>`;
         }
     }

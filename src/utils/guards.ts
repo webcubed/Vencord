@@ -21,5 +21,5 @@ export function isTruthy<T>(item: T): item is Exclude<T, 0 | "" | false | null |
 }
 
 export function isNonNullish<T>(item: T): item is Exclude<T, null | undefined> {
-    return item != null;
+    return item !== null;
 }

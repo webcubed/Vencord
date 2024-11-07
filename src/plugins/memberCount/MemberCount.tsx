@@ -51,7 +51,7 @@ export function MemberCount({ isTooltip, tooltipGuildId }: { isTooltip?: true; t
     if (totalCount === null)
         return null;
 
-    const formattedOnlineCount = onlineCount != null ? numberFormat(onlineCount) : "?";
+    const formattedOnlineCount = onlineCount !== null ? numberFormat(onlineCount) : "?";
 
     return (
         <div className={cl("widget", { tooltip: isTooltip, "member-list": !isTooltip })}>

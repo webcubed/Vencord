@@ -74,7 +74,7 @@ function Modal({ modalProps, modalKey, discordId, name, type }: { modalProps: an
                             />
                         )}
                         <ReviewsInputComponent
-                            isAuthor={ownReview != null}
+                            isAuthor={ownReview !== null}
                             discordId={discordId}
                             name={name}
                             refetch={refetch}

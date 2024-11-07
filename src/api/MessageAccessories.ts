@@ -54,13 +54,13 @@ export function _modifyAccessories(
             continue;
 
         elements.splice(
-            accessory.position != null
+            accessory.position !== null
                 ? accessory.position < 0
                     ? elements.length + accessory.position
                     : accessory.position
                 : elements.length,
             0,
-            ...accessories.filter(e => e != null) as JSX.Element[]
+            ...accessories.filter(e => e !== null) as JSX.Element[]
         );
     }
 

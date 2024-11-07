@@ -128,7 +128,7 @@ export default definePlugin({
         if (!this.instance || this.instance.dead) return favorites;
         const { favorites: filteredFavorites } = this.instance.props;
 
-        return filteredFavorites != null && filteredFavorites?.length !== favorites.length ? filteredFavorites : favorites;
+        return filteredFavorites !== null && filteredFavorites?.length !== favorites.length ? filteredFavorites : favorites;
 
     }
 });
@@ -163,7 +163,7 @@ function SearchBar({ instance, SearchBarComponent }: { instance: Instance; Searc
                     score: fuzzySearch(searchQuery.toLowerCase(), getTargetString(gif.url ?? gif.src).replace(/(%20|[_-])/g, " ").toLowerCase()),
                     gif,
                 }))
-                .filter(m => m.score != null) as { score: number; gif: Gif; }[];
+                .filter(m => m.score !== null) as { score: number; gif: Gif; }[];
 
         result.sort((a, b) => b.score - a.score);
         props.favorites = result.map(e => e.gif);
@@ -186,7 +186,7 @@ function SearchBar({ instance, SearchBarComponent }: { instance: Instance; Searc
             onChange={onChange}
             onClear={() => {
                 setQuery("");
-                if (instance.props.favCopy != null) {
+                if (instance.props.favCopy !== null) {
                     instance.props.favorites = instance.props.favCopy;
                     instance.forceUpdate();
                 }

@@ -73,7 +73,7 @@ function ToggleModal() {
 
 function handleToggle() {
     const style = document.getElementById("DemonstrationStyle");
-    if (style != null) {
+    if (style !== null) {
         style.remove();
         playSound("https://files.catbox.moe/wp5rpz.wav");
     }

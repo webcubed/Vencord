@@ -10,8 +10,7 @@ import definePlugin, { OptionType } from "@utils/types";
 import { Text } from "@webpack/common";
 
 // definitely not stolen from glide :P
-async function injectCSS()
-{
+async function injectCSS() {
     var elementToRemove = document.getElementById("DemonstrationStyle");
     if (elementToRemove) {
         elementToRemove.remove();
@@ -40,8 +39,7 @@ const settings = definePluginSettings(
             type: OptionType.STRING,
             default: "F6",
             isValid: (value: string) => {
-                if(validKeycodes.includes(value))
-                {
+                if (validKeycodes.includes(value)) {
                     return true;
                 }
                 return false;
@@ -55,18 +53,15 @@ const settings = definePluginSettings(
         },
     });
 
-function handleKeydown(event)
-{
-    if(event.code !== settings.store.keyBind) { return; }
+function handleKeydown(event) {
+    if (event.code !== settings.store.keyBind) { return; }
 
     const style = document.getElementById("DemonstrationStyle");
-    if(style != null)
-    {
+    if (style !== null) {
         style.remove();
         playSound("https://files.catbox.moe/wp5rpz.wav");
     }
-    else
-    {
+    else {
         injectCSS();
         playSound("https://files.catbox.moe/ckz46t.wav");
     }
@@ -87,20 +82,17 @@ export default definePlugin({
     authors: [
         Devs.Samwich
     ],
-    settingsAboutComponent: () =>
-    {
+    settingsAboutComponent: () => {
         return (
             <>
                 <Text>To change your keycode, check out <a href="https://www.toptal.com/developers/keycode" target="_blank">this tool</a>!</Text>
             </>
         );
     },
-    start()
-    {
+    start() {
         document.addEventListener("keydown", handleKeydown);
     },
-    stop()
-    {
+    stop() {
         document.removeEventListener("keydown", handleKeydown);
     },
     settings
