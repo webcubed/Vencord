@@ -74,7 +74,7 @@ export default definePlugin({
         }
     },
     settings,
-    start();
+    start()
 {
         openai = new OpenAI({ apiKey: settings.store.apiKey, dangerouslyAllowBrowser: true });
     }

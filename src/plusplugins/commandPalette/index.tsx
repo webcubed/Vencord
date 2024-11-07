@@ -80,7 +80,7 @@ export const settings = definePluginSettings({
     allowMouseControl: {
         description: "Allow the mouse to control the command palette.",
         type: OptionType.BOOLEAN,
-        default: true;
+        default: true
     }
 });
 
