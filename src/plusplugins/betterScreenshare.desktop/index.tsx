@@ -17,7 +17,6 @@
 */
 
 import { definePluginSettings } from "@api/Settings";
-import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
 
 import { addSettingsPanelButton, Emitter, removeSettingsPanelButton, ScreenshareSettingsIcon } from "../philsPluginLibrary";

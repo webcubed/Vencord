@@ -7,7 +7,7 @@
 import { NavContextMenuPatchCallback } from "@api/ContextMenu";
 import { definePluginSettings } from "@api/Settings";
 import definePlugin, { OptionType } from "@utils/types";
-import { Constants, FluxDispatcher, Menu, RestAPI, SelectedChannelStore } from "@webpack/common";
+import { Constants, Menu, RestAPI, SelectedChannelStore } from "@webpack/common";
 
 const settings = definePluginSettings({
     soundGuildId: {

@@ -9,12 +9,12 @@ import { classNameFactory } from "@api/Styles";
 import ErrorBoundary from "@components/ErrorBoundary";
 import { Flex } from "@components/Flex";
 import { EquicordDevs } from "@utils/constants";
-import { openUserProfile } from "@utils/discord";
+import { openUserProfile, getIntlMessage } from "@utils/discord";
 import { Margins } from "@utils/margins";
 import { classes } from "@utils/misc";
 import definePlugin, { OptionType } from "@utils/types";
 import { findByPropsLazy, findComponentByCodeLazy, findStoreLazy } from "@webpack";
-import { Clickable, Forms, i18n, RelationshipStore, Tooltip, UserStore, useStateFromStores } from "@webpack/common";
+import { Clickable, Forms, RelationshipStore, Tooltip, UserStore, useStateFromStores } from "@webpack/common";
 import { User } from "discord-types/general";
 
 interface WatchingProps {
@@ -57,7 +57,7 @@ function Watching({ userIds, guildId }: WatchingProps): JSX.Element {
         <div className={cl("content")}>
             {userIds.length ?
                 (<>
-                    <Forms.FormTitle>{i18n.Messages.SPECTATORS.format({ numViewers: userIds.length })}</Forms.FormTitle>
+                    <Forms.FormTitle>{getIntlMessage("SPECTATORS").format({ numViewers: userIds.length })}</Forms.FormTitle>
                     <Flex flexDirection="column" style={{ gap: 6 }} >
                         {users.map(user => (
                             <Flex flexDirection="row" style={{ gap: 6, alignContent: "center" }} className={cl("user")} >
@@ -65,7 +65,7 @@ function Watching({ userIds, guildId }: WatchingProps): JSX.Element {
                                 {getUsername(user)}
                             </Flex>
                         ))}
-                        {missingUsers > 0 && <span className={cl("more_users")}>{`+${i18n.Messages.NUM_USERS.format({ num: missingUsers })}`}</span>}
+                        {missingUsers > 0 && <span className={cl("more_users")}>{`+${getIntlMessage("NUM_USERS").format({ num: missingUsers })}`}</span>}
                     </Flex>
                 </>)
                 : (<span className={cl("no_viewers")}>No spectators</span>)}
@@ -135,7 +135,7 @@ export default definePlugin({
                 <div className={classes(cl("spectators_panel"), Margins.top8)}>
                     {users.length ?
                         <>
-                            <Forms.FormTitle tag="h3" style={{ marginTop: 8, marginBottom: 0, textTransform: "uppercase" }}>{i18n.Messages.SPECTATORS.format({ numViewers: userIds.length })}</Forms.FormTitle>
+                            <Forms.FormTitle tag="h3" style={{ marginTop: 8, marginBottom: 0, textTransform: "uppercase" }}>{getIntlMessage("SPECTATORS").format({ numViewers: userIds.length })}</Forms.FormTitle>
                             <UserSummaryItem
                                 users={users}
                                 count={userIds.length}

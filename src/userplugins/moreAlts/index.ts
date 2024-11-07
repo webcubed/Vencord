@@ -1,3 +1,9 @@
+/*
+ * Vencord, a Discord client mod
+ * Copyright (c) 2024 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 import { definePluginSettings } from "@api/Settings";
 import definePlugin, { OptionType } from "@utils/types";
 const settings = definePluginSettings({
@@ -24,7 +30,7 @@ export default definePlugin({
             replacement: [{
                 // the first export seems to always be the amount of alts, we should find a better way to do this in the future
                 match: /(.{0,2}):function\(\){return .{1,2}\}/,
-                replace: `$1:function(){return $self.settings.amtOfAcounts}`
+                replace: "$1:function(){return $self.settings.amtOfAcounts}"
             }]
         }
     ]

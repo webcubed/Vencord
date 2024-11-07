@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import {
     clear,
@@ -12,7 +12,7 @@ import {
     set,
     setMany,
 } from "@api/DataStore";
-import { UserUtils, useState } from "@webpack/common";
+import { UserUtils } from "@webpack/common";
 
 const NotesStore = createStore("UserNotesData", "UserNotesStore");
 

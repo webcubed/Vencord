@@ -1,79 +1,85 @@
+/*
+ * Vencord, a Discord client mod
+ * Copyright (c) 2024 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 (function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
+	if(typeof exports === "object" && typeof module === "object")
 		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
+	else if(typeof define === "function" && define.amd)
 		define([], factory);
-	else if(typeof exports === 'object')
-		exports["jsQR"] = factory();
+	else if(typeof exports === "object")
+		exports.jsQR = factory();
 	else
-		root["jsQR"] = factory();
-})(typeof self !== 'undefined' ? self : this, function() {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
-/******/ })
-/************************************************************************/
-/******/ ([
+		root.jsQR = factory();
+})(typeof self !== "undefined" ? self : this, function() {
+return /** ****/ (function(modules) { // webpackBootstrap
+/** ****/ // The module cache
+/** ****/ var installedModules = {};
+/** ****/
+/** ****/ // The require function
+/** ****/ function __webpack_require__(moduleId) {
+/** ****/
+/** ****/ // Check if module is in cache
+/** ****/ if(installedModules[moduleId]) {
+/** ****/ return installedModules[moduleId].exports;
+/** ****/ }
+/** ****/ // Create a new module (and put it into the cache)
+/** ****/ var module = installedModules[moduleId] = {
+/** ****/ i: moduleId,
+/** ****/ l: false,
+/** ****/ exports: {}
+/** ****/ };
+/** ****/
+/** ****/ // Execute the module function
+/** ****/ modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/** ****/
+/** ****/ // Flag the module as loaded
+/** ****/ module.l = true;
+/** ****/
+/** ****/ // Return the exports of the module
+/** ****/ return module.exports;
+/** ****/ }
+/** ****/
+/** ****/
+/** ****/ // expose the modules object (__webpack_modules__)
+/** ****/ __webpack_require__.m = modules;
+/** ****/
+/** ****/ // expose the module cache
+/** ****/ __webpack_require__.c = installedModules;
+/** ****/
+/** ****/ // define getter function for harmony exports
+/** ****/ __webpack_require__.d = function(exports, name, getter) {
+/** ****/ if(!__webpack_require__.o(exports, name)) {
+/** ****/ Object.defineProperty(exports, name, {
+/** ****/ configurable: false,
+/** ****/ enumerable: true,
+/** ****/ get: getter
+/** ****/ });
+/** ****/ }
+/** ****/ };
+/** ****/
+/** ****/ // getDefaultExport function for compatibility with non-harmony modules
+/** ****/ __webpack_require__.n = function(module) {
+/** ****/ var getter = module && module.__esModule ?
+/** ****/ function getDefault() { return module.default; } :
+/** ****/ function getModuleExports() { return module; };
+/** ****/ __webpack_require__.d(getter, "a", getter);
+/** ****/ return getter;
+/** ****/ };
+/** ****/
+/** ****/ // Object.prototype.hasOwnProperty.call
+/** ****/ __webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/** ****/
+/** ****/ // __webpack_public_path__
+/** ****/ __webpack_require__.p = "";
+/** ****/
+/** ****/ // Load entry module and return exports
+/** ****/ return __webpack_require__(__webpack_require__.s = 3);
+/** ****/ })
+/** **********************************************************************/
+/** ****/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -132,7 +138,7 @@ var GenericGF = /** @class */ (function () {
         var x = 1;
         for (var i = 0; i < this.size; i++) {
             this.expTable[i] = x;
-            x = x * 2;
+            x *= 2;
             if (x >= this.size) {
                 x = (x ^ this.primitive) & (this.size - 1); // tslint:disable-line:no-bitwise
             }
@@ -369,7 +375,7 @@ function jsQR(data, width, height, providedOptions) {
     });
     var shouldInvert = options.inversionAttempts === "attemptBoth" || options.inversionAttempts === "invertFirst";
     var tryInvertedFirst = options.inversionAttempts === "onlyInvert" || options.inversionAttempts === "invertFirst";
-    var _a = binarizer_1.binarize(data, width, height, shouldInvert), binarized = _a.binarized, inverted = _a.inverted;
+    var _a = binarizer_1.binarize(data, width, height, shouldInvert), { binarized } = _a, { inverted } = _a;
     var result = scan(tryInvertedFirst ? inverted : binarized);
     if (!result && (options.inversionAttempts === "attemptBoth" || options.inversionAttempts === "invertFirst")) {
         result = scan(tryInvertedFirst ? binarized : inverted);
@@ -694,7 +700,7 @@ function readFormatInformation(matrix) {
     var bestDifference = Infinity;
     var bestFormatInfo = null;
     for (var _i = 0, FORMAT_INFO_TABLE_1 = FORMAT_INFO_TABLE; _i < FORMAT_INFO_TABLE_1.length; _i++) {
-        var _a = FORMAT_INFO_TABLE_1[_i], bits = _a.bits, formatInfo = _a.formatInfo;
+        var _a = FORMAT_INFO_TABLE_1[_i], { bits } = _a, { formatInfo } = _a;
         if (bits === topLeftFormatInfoBits || bits === topRightBottomRightFormatInfoBits) {
             return formatInfo;
         }
@@ -828,20 +834,20 @@ var BitStream_1 = __webpack_require__(7);
 var shiftJISTable_1 = __webpack_require__(8);
 var Mode;
 (function (Mode) {
-    Mode["Numeric"] = "numeric";
-    Mode["Alphanumeric"] = "alphanumeric";
-    Mode["Byte"] = "byte";
-    Mode["Kanji"] = "kanji";
-    Mode["ECI"] = "eci";
+    Mode.Numeric = "numeric";
+    Mode.Alphanumeric = "alphanumeric";
+    Mode.Byte = "byte";
+    Mode.Kanji = "kanji";
+    Mode.ECI = "eci";
 })(Mode = exports.Mode || (exports.Mode = {}));
 var ModeByte;
 (function (ModeByte) {
-    ModeByte[ModeByte["Terminator"] = 0] = "Terminator";
-    ModeByte[ModeByte["Numeric"] = 1] = "Numeric";
-    ModeByte[ModeByte["Alphanumeric"] = 2] = "Alphanumeric";
-    ModeByte[ModeByte["Byte"] = 4] = "Byte";
-    ModeByte[ModeByte["Kanji"] = 8] = "Kanji";
-    ModeByte[ModeByte["ECI"] = 7] = "ECI";
+    ModeByte[ModeByte.Terminator = 0] = "Terminator";
+    ModeByte[ModeByte.Numeric = 1] = "Numeric";
+    ModeByte[ModeByte.Alphanumeric = 2] = "Alphanumeric";
+    ModeByte[ModeByte.Byte = 4] = "Byte";
+    ModeByte[ModeByte.Kanji = 8] = "Kanji";
+    ModeByte[ModeByte.ECI = 7] = "ECI";
     // StructuredAppend = 0x3,
     // FNC1FirstPosition = 0x5,
     // FNC1SecondPosition = 0x9,
@@ -10016,7 +10022,7 @@ function locate(matrix) {
     if (finderPatternGroups.length === 0) {
         return null;
     }
-    var _a = reorderFinderPatterns(finderPatternGroups[0].points[0], finderPatternGroups[0].points[1], finderPatternGroups[0].points[2]), topRight = _a.topRight, topLeft = _a.topLeft, bottomLeft = _a.bottomLeft;
+    var _a = reorderFinderPatterns(finderPatternGroups[0].points[0], finderPatternGroups[0].points[1], finderPatternGroups[0].points[2]), { topRight } = _a, { topLeft } = _a, { bottomLeft } = _a;
     var alignment = findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, bottomLeft);
     var result = [];
     if (alignment) {
@@ -10098,5 +10104,5 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
 
 
 /***/ })
-/******/ ])["default"];
+/** ****/ ]).default;
 });

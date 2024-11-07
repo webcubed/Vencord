@@ -1,6 +1,13 @@
-import {definePluginSettings} from "@api/Settings";
-import {OptionType} from "@utils/types";
-import {Platforms} from "../types/Platforms";
+/*
+ * Vencord, a Discord client mod
+ * Copyright (c) 2024 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+import { definePluginSettings } from "@api/Settings";
+import { OptionType } from "@utils/types";
+
+import { Platforms } from "../types/Platforms";
 
 const settings = definePluginSettings({
     platform: {
@@ -8,14 +15,14 @@ const settings = definePluginSettings({
         restartNeeded: true,
         description: "Platform to switch to",
         options: [
-            {label: "Xbox Console (Embedded Platform)", value: Platforms.xbox, default: false},
-            {label: "PS5 Console (Embedded Platform)", value: Platforms.ps5, default: false},
-            {label: "Android (Discord Android)", value: Platforms.android, default: true},
-            {label: "Web (Discord Web)", value: Platforms.web, default: false},
-            {label: "Desktop (Discord Desktop)", value: Platforms.desktop, default: false},
+            { label: "Xbox Console (Embedded Platform)", value: Platforms.xbox, default: false },
+            { label: "PS5 Console (Embedded Platform)", value: Platforms.ps5, default: false },
+            { label: "Android (Discord Android)", value: Platforms.android, default: true },
+            { label: "Web (Discord Web)", value: Platforms.web, default: false },
+            { label: "Desktop (Discord Desktop)", value: Platforms.desktop, default: false },
 
         ],
     }
-})
+});
 
-export {settings}
+export { settings };

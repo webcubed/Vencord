@@ -1,16 +1,22 @@
+/*
+ * Vencord, a Discord client mod
+ * Copyright (c) 2024 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+import { definePluginSettings } from "@api/Settings";
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
+import { OptionType } from "@utils/types";
 import { findByPropsLazy } from "@webpack";
 import { Alerts, Button, GuildStore } from "@webpack/common";
-import { definePluginSettings } from "@api/Settings";
-import { OptionType } from "@utils/types";
 const DeleteGuild = findByPropsLazy("deleteGuild", "sendTransferOwnershipPincode").deleteGuild;
 
 function GetPropsAndDeleteGuild(id)
 {
-    let GotGuild = GuildStore.getGuild(id);
+    const GotGuild = GuildStore.getGuild(id);
     if(!GotGuild) return;
-    
+
     DeleteGuild(id, GotGuild.name);
 }
 
@@ -35,7 +41,7 @@ export default definePlugin({
     {
         if(settings.store.confirmModal)
         {
-            Alerts.show({title: "Delete server?", body: <p>It's permanent, if that wasn't obvious.</p>, confirmColor: Button.Colors.RED, confirmText: "Delete", onConfirm: () => GetPropsAndDeleteGuild(server.id), cancelText: "Cancel"});
+            Alerts.show({ title: "Delete server?", body: <p>It's permanent, if that wasn't obvious.</p>, confirmColor: Button.Colors.RED, confirmText: "Delete", onConfirm: () => GetPropsAndDeleteGuild(server.id), cancelText: "Cancel" });
         }
         else
         {

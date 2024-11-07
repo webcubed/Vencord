@@ -2,13 +2,12 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
-import { PlusIcon } from "./Icons";
-
+import { DataStore, openModal,useEffect, useState } from "..";
 import { Colorway, ModalProps } from "../types";
+import { PlusIcon } from "./Icons";
 import { StoreNameModal } from "./SettingsTabs/SourceManager";
-import { DataStore, useState, useEffect, openModal } from "..";
 
 export default function ({ modalProps, colorways, onFinish }: { modalProps: ModalProps, colorways: Colorway[], onFinish: () => void; }) {
     const [offlineColorwayStores, setOfflineColorwayStores] = useState<{ name: string, colorways: Colorway[], id?: string; }[]>([]);

@@ -1,3 +1,9 @@
+/*
+ * Vencord, a Discord client mod
+ * Copyright (c) 2024 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 import type { WebpackInstance } from "discord-types/other";
 
 export async function protectWebpack<T>(webpack: any[], body: () => Promise<T>): Promise<T> {

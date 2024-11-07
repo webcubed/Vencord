@@ -2,15 +2,14 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
-import { generateCss, pureGradientBase } from "../css";
-import { Colorway, ModalProps } from "../types";
-import { colorToHex, stringToHex, saveFile } from "../utils";
-import SaveColorwayModal from "./SaveColorwayModal";
-import ThemePreview from "./ThemePreview";
+import { DataStore, openModal, PluginProps, Toasts,useEffect, UserStore, useState, useStateFromStores } from "..";
 import { ColorwayCSS } from "../colorwaysAPI";
-import { PluginProps, useState, UserStore, useStateFromStores, DataStore, useEffect, openModal, Toasts } from "..";
+import { pureGradientBase } from "../css";
+import { Colorway, ModalProps } from "../types";
+import { saveFile,stringToHex } from "../utils";
+import ThemePreview from "./ThemePreview";
 
 function RenameColorwayModal({ modalProps, ogName, onFinish, colorwayList }: { modalProps: ModalProps, ogName: string, onFinish: (name: string) => void, colorwayList: Colorway[]; }) {
     const [error, setError] = useState<string>("");

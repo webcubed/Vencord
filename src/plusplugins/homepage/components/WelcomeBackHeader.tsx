@@ -7,7 +7,8 @@
 import "./WelcomeBackHeader.css";
 
 import { findByPropsLazy } from "@webpack";
-import { Button, i18n, NavigationRouter, UserStore, useStateFromStores } from "@webpack/common";
+import { Button, NavigationRouter, UserStore, useStateFromStores } from "@webpack/common";
+import { getIntlMessage } from "@utils/discord";
 
 import { cl } from "./common";
 import { OnlineFriendsCount } from "./OnlineFriendsCount";
@@ -49,7 +50,7 @@ export default function WelcomeBackHeader(props: {}) {
                     color={Button.Colors.PRIMARY}
                     onClick={() => NavigationRouter.transitionTo(Routes.ME)}
                 >
-                    {i18n.Messages.DIRECT_MESSAGES}
+                    {getIntlMessage("DIRECT_MESSAGES")}
                 </Button>
             </div>
         </div>

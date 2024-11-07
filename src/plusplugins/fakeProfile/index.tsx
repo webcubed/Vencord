@@ -58,7 +58,7 @@ let CustomEffectsData: Record<string, ProfileEffectConfig> = {};
 
 const UserBadges: Record<string, ProfileBadge[]> = {};
 const updateBadgesForAllUsers = () => {
-  Object.keys(UsersData).forEach((userId) => {
+  Object.keys(UsersData).forEach(userId => {
     const newBadges = UsersData[userId].badges;
     const existingBadges = UserBadges[userId] || [];
     if (newBadges) {
@@ -72,7 +72,7 @@ const updateBadgesForAllUsers = () => {
             description: badge.description,
             link:
               badge.link || "https://github.com/gujarathisampath/fakeProfile",
-            shouldShow: (userInfo) => userInfo.userId === userId
+            shouldShow: userInfo => userInfo.userId === userId
           } as {
             image: string;
             position: BadgePosition;
@@ -140,9 +140,9 @@ function encode(primary: number, accent: number): string {
     .padStart(6, "0")}]`;
   const padding = "";
   const encoded = Array.from(message)
-    .map((x) => x.codePointAt(0))
-    .filter((x) => x! >= 0x20 && x! <= 0x7f)
-    .map((x) => String.fromCodePoint(x! + 0xe0000))
+    .map(x => x.codePointAt(0))
+    .filter(x => x! >= 0x20 && x! <= 0x7f)
+    .map(x => String.fromCodePoint(x! + 0xe0000))
     .join("");
 
   return (padding || "") + " " + encoded;
@@ -155,12 +155,12 @@ function decode(bio: string): Array<number> | null {
   );
   if (colorString != null) {
     const parsed = [...colorString[0]]
-      .map((x) => String.fromCodePoint(x.codePointAt(0)! - 0xe0000))
+      .map(x => String.fromCodePoint(x.codePointAt(0)! - 0xe0000))
       .join("");
     const colors = parsed
       .substring(1, parsed.length - 1)
       .split(",")
-      .map((x) => parseInt(x.replace("#", "0x"), 16));
+      .map(x => parseInt(x.replace("#", "0x"), 16));
 
     return colors;
   } else {
@@ -246,7 +246,7 @@ function fakeProfileSection({
 }
 
 const openModalOnClick = () => {
-  const modalKey = openModal((props) => (
+  const modalKey = openModal(props => (
     <ErrorBoundary
       noop
       onError={() => {
@@ -383,7 +383,7 @@ export default definePlugin({
       updateBadgesForAllUsers();
     }
     if (settings.store.showCustomBadgesinmessage) {
-      addDecoration("custom-badge", (props) => (
+      addDecoration("custom-badge", props => (
         <ErrorBoundary noop>
           <BadgeMain user={props.message?.author} wantTopMargin={true} />
         </ErrorBoundary>

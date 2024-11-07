@@ -7,8 +7,9 @@
 import { definePluginSettings } from "@api/Settings";
 import definePlugin, { OptionType } from "@utils/types";
 import { findByProps } from "@webpack";
-import { Button, Forms, i18n, Menu, TabBar } from "@webpack/common";
+import { Button, Forms, Menu, TabBar } from "@webpack/common";
 import { ReactElement } from "react";
+import { getIntlMessage } from "@utils/discord";
 
 import { preload, unload } from "./images";
 import { cl, QrCodeIcon } from "./ui";
@@ -38,7 +39,7 @@ export default definePlugin({
 
                 return (
                     <Button size={Button.Sizes.SMALL} onClick={openQrModal}>
-                        {i18n.Messages.USER_SETTINGS_SCAN_QR_CODE}
+                        {getIntlMessage("USER_SETTINGS_SCAN_QR_CODE")}
                     </Button>
                 );
             },
@@ -93,7 +94,7 @@ export default definePlugin({
     insertScanQrButton: (button: ReactElement) => (
         <div className={cl("settings-btns")}>
             <Button size={Button.Sizes.SMALL} onClick={openQrModal}>
-                {i18n.Messages.USER_SETTINGS_SCAN_QR_CODE}
+                {getIntlMessage("USER_SETTINGS_SCAN_QR_CODE")}
             </Button>
             {button}
         </div>
@@ -108,7 +109,7 @@ export default definePlugin({
             <Menu.MenuGroup>
                 <Menu.MenuItem
                     id="scan-qr"
-                    label={i18n.Messages.USER_SETTINGS_SCAN_QR_CODE}
+                    label={getIntlMessage("USER_SETTINGS_SCAN_QR_CODE")}
                     icon={QrCodeIcon}
                     action={openQrModal}
                     showIconFirst
@@ -121,7 +122,7 @@ export default definePlugin({
 
     ScanQrTabBarComponent: () => (
         <TabBar.Item id="Scan QR Code" onClick={openQrModal}>
-            {i18n.Messages.USER_SETTINGS_SCAN_QR_CODE}
+            {getIntlMessage("USER_SETTINGS_SCAN_QR_CODE")}
         </TabBar.Item>
     ),
 

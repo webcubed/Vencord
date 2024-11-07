@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 /** The FPTE delimiter codepoint (codepoint of zero-width space). */
 const DELIMITER_CODEPOINT = 0x200B;

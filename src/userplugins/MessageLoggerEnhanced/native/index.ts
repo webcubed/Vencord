@@ -10,7 +10,7 @@ import path from "node:path";
 import { Queue } from "@utils/Queue";
 import { dialog, IpcMainInvokeEvent, shell } from "electron";
 
-import { DATA_DIR } from "../../../main/utils/constants";
+import { DATA_DIR } from "@main\utils\constants";
 import { getSettings, saveSettings } from "./settings";
 export * from "./updater";
 import { ensureDirectoryExists, getAttachmentIdFromFilename } from "./utils";

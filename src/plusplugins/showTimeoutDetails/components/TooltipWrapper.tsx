@@ -6,7 +6,7 @@
 
 import { classes, Margins } from "@utils/index";
 import { findByPropsLazy } from "@webpack";
-import { ChannelStore, GuildMemberStore, i18n, Popout, Text, Tooltip } from "@webpack/common";
+import { ChannelStore, GuildMemberStore, Popout, Text, Tooltip } from "@webpack/common";
 import { Message } from "discord-types/general";
 import { FunctionComponent, ReactNode } from "react";
 
@@ -82,7 +82,7 @@ function renderTimeout(message: Message, inline: boolean) {
     return inline
         ? countdown()
         : <>
-            {i18n.Messages.GUILD_ENABLE_COMMUNICATION_TIME_REMAINING.format({
+            {getIntlMessage("GUILD_ENABLE_COMMUNICATION_TIME_REMAINING").format({
                 username: message.author.username,
                 countdown
             })}

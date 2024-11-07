@@ -2,11 +2,10 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { PluginProps, UserStore } from "./";
-
-import { HexToHSL, colorToHex } from "./utils";
+import { colorToHex,HexToHSL } from "./utils";
 
 export const colorVariables: string[] = [
     "brand-100",
@@ -935,9 +934,9 @@ export function getPreset(colors: { accent?: string, primary?: string, secondary
             id: "AMOLED",
             colors: ["accent"],
             calculated: {
-                primary: `#000000`,
-                secondary: `#000000`,
-                tertiary: `#000000`
+                primary: "#000000",
+                secondary: "#000000",
+                tertiary: "#000000"
             }
         }
     };

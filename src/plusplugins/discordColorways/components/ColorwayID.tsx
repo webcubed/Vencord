@@ -2,13 +2,13 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
-import { DataStore, openModal, useState, useEffect, Toasts, FluxDispatcher, FluxEvents } from "..";
+import { DataStore, FluxDispatcher, FluxEvents,openModal, Toasts, useEffect, useState } from "..";
+import { ColorwayCSS } from "../colorwaysAPI";
 import { generateCss } from "../css";
 import { colorToHex, hexToString } from "../utils";
 import CreatorModal from "./CreatorModal";
-import { ColorwayCSS } from "../colorwaysAPI";
 
 export default function ({ props }) {
     const [theme, setTheme] = useState("discord");

@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { DataStore, FluxDispatcher, FluxEvents, openModal } from ".";
 import { ColorwayCSS } from "./colorwaysAPI";
@@ -24,13 +24,13 @@ export function sendColorway(obj: ColorwayObject) {
         active: obj,
         boundKey
     }));
-};
+}
 export function requestManagerRole() {
     socket?.send(JSON.stringify({
         type: "complication:manager-role:request",
         boundKey
     }));
-};
+}
 export function updateRemoteSources() {
     DataStore.getMany([
         "colorwaySourceFiles",
@@ -63,7 +63,7 @@ export function isWSOpen() {
 
 export function connect(doAutoconnect = true, autoconnectTimeout = 3000) {
     if (socket && socket.readyState == socket.OPEN) return;
-    const ws: WebSocket = socket = new WebSocket('ws://localhost:6124');
+    const ws: WebSocket = socket = new WebSocket("ws://localhost:6124");
 
     let hasErrored = false;
 

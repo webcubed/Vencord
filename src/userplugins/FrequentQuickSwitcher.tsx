@@ -1,3 +1,9 @@
+/*
+ * Vencord, a Discord client mod
+ * Copyright (c) 2024 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { ChannelStore } from "@webpack/common";
@@ -5,10 +11,10 @@ import { UserSettingsActionCreators } from "@webpack/common";
 
 function generateSearchResults(query)
 {
-    let frequentChannelsWithQuery = Object.entries(UserSettingsActionCreators.FrecencyUserSettingsActionCreators.getCurrentValue().guildAndChannelFrecency.guildAndChannels)
+    const frequentChannelsWithQuery = Object.entries(UserSettingsActionCreators.FrecencyUserSettingsActionCreators.getCurrentValue().guildAndChannelFrecency.guildAndChannels)
     .map(([key, value]) => key)
-    .filter((id) => ChannelStore.getChannel(id) != null)
-    .filter((id) => ChannelStore.getChannel(id).name.includes(query))
+    .filter(id => ChannelStore.getChannel(id) != null)
+    .filter(id => ChannelStore.getChannel(id).name.includes(query))
     .sort((id1, id2) => {
         const channel1 = UserSettingsActionCreators.FrecencyUserSettingsActionCreators.getCurrentValue().guildAndChannelFrecency.guildAndChannels[id1];
         const channel2 = UserSettingsActionCreators.FrecencyUserSettingsActionCreators.getCurrentValue().guildAndChannelFrecency.guildAndChannels[id2];
@@ -16,9 +22,9 @@ function generateSearchResults(query)
     })
     .slice(0, 20);
 
-    return frequentChannelsWithQuery.map(channelID => 
+    return frequentChannelsWithQuery.map(channelID =>
     {
-        let channel = ChannelStore.getChannel(channelID);
+        const channel = ChannelStore.getChannel(channelID);
         return (
             {
                 "type": "TEXT_CHANNEL",
@@ -27,8 +33,8 @@ function generateSearchResults(query)
                 "comparator": query,
                 "sortable": query
             }
-        )
-    })
+        );
+    });
 }
 
 export default definePlugin({

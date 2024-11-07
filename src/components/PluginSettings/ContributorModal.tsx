@@ -10,7 +10,7 @@ import { useSettings } from "@api/Settings";
 import { classNameFactory } from "@api/Styles";
 import ErrorBoundary from "@components/ErrorBoundary";
 import { Link } from "@components/Link";
-import { DevsById, SuncordDevsById, EquicordDevsById, PlusDevsById, PlusMtsById } from "@utils/constants";
+import { DevsById, EquicordDevsById, PlusDevsById, PlusMtsById,SuncordDevsById } from "@utils/constants";
 import { fetchUserProfile } from "@utils/discord";
 import { classes, pluralise } from "@utils/misc";
 import { ModalContent, ModalRoot, openModal } from "@utils/modal";

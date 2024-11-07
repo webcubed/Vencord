@@ -2,19 +2,18 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
-/* eslint-disable arrow-parens */
-
-import SourceManager from "./SettingsTabs/SourceManager";
-import Store from "./SettingsTabs/Store";
-import Selector from "./Selector";
-import { useState, useEffect, DataStore, useRef, FluxDispatcher, FluxEvents } from "../";
-import SettingsPage from "./SettingsTabs/SettingsPage";
-import { ModalProps } from "../types";
 import { MouseEvent, MouseEventHandler } from "react";
+
+import { DataStore, FluxDispatcher, FluxEvents,useEffect, useRef, useState } from "../";
+import { ModalProps } from "../types";
 import { restartWS, updateRemoteSources, wsOpen } from "../wsClient";
 import { boundKey as bk } from "../wsClient";
+import Selector from "./Selector";
+import SettingsPage from "./SettingsTabs/SettingsPage";
+import SourceManager from "./SettingsTabs/SourceManager";
+import Store from "./SettingsTabs/Store";
 
 export default function ({
     modalProps

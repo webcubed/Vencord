@@ -2,11 +2,10 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
-import { ColorPicker, openModal, useEffect, useState, useReducer, UserStore, PluginProps, DataStore, Slider } from "..";
+import { ColorPicker, DataStore, openModal, PluginProps, Slider,useEffect, useReducer, UserStore, useState } from "..";
 import { knownThemeVars } from "../constants";
-import { generateCss, getPreset, gradientPresetIds } from "../css";
 import { Colorway, ModalProps } from "../types";
 import { colorToHex, getHex, HexToHSL, hexToString } from "../utils";
 import { updateRemoteSources } from "../wsClient";

@@ -21,6 +21,7 @@ import definePlugin from "@utils/types";
 import { Alerts, Menu } from "@webpack/common";
 import { Message } from "discord-types/general";
 import { Settings } from "Vencord";
+
 import { registerAction } from "./commandPalette/commands";
 import { openSimpleTextInput } from "./commandPalette/components/TextInput";
 const DOUBLECOUNTER_APP_ID = "703886990948565003";

@@ -27,7 +27,7 @@ import { Devs, SUPPORT_CHANNEL_ID } from "@utils/constants";
 import { sendMessage } from "@utils/discord";
 import { Logger } from "@utils/Logger";
 import { Margins } from "@utils/margins";
-import { isPluginDev, isSuncordPluginDev, isEquicordPluginDev, isPlusPluginDev, isPlusMt, tryOrElse } from "@utils/misc";
+import { isEquicordPluginDev, isPluginDev, isPlusMt, isPlusPluginDev, isSuncordPluginDev, tryOrElse } from "@utils/misc";
 import { relaunch } from "@utils/native";
 import { onlyOnce } from "@utils/onlyOnce";
 import { makeCodeblock } from "@utils/text";

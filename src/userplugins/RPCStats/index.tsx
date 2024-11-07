@@ -9,10 +9,10 @@ import { definePluginSettings } from "@api/Settings";
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { OptionType } from "@utils/types";
+import { PluginNative } from "@utils/types";
 import { ApplicationAssetUtils, FluxDispatcher } from "@webpack/common";
 import { UserStore } from "@webpack/common";
-import { Message } from "discord-types/general"
-import { PluginNative } from "@utils/types";
+import { Message } from "discord-types/general";
 
 export async function getApplicationAsset(key: string): Promise<string> {
     if (/https?:\/\/(cdn|media)\.discordapp\.(com|net)\/attachments\//.test(key)) return "mp:" + key.replace(/https?:\/\/(cdn|media)\.discordapp\.(com|net)\//, "");
@@ -103,10 +103,10 @@ async function setRpc(disable?: boolean, details?: string, imageURL?: string) {
         "type": 0,
         "flags": 1,
         "assets": {
-            //i love insanely long statements
-            "large_image": 
-                (imageURL == null || !settings.store.albumCoverImage) ? 
-                    await getApplicationAsset(settings.store.assetURL.length ? settings.store.assetURL : UserStore.getCurrentUser().getAvatarURL()) : 
+            // i love insanely long statements
+            "large_image":
+                (imageURL == null || !settings.store.albumCoverImage) ?
+                    await getApplicationAsset(settings.store.assetURL.length ? settings.store.assetURL : UserStore.getCurrentUser().getAvatarURL()) :
                     await getApplicationAsset(imageURL)
         }
     };
@@ -162,19 +162,19 @@ async function updateData()
             }
             setRpc(false, `Messages sent all time: ${messagesAllTime}\n`);
         break;
-        //slightly cursed
+        // slightly cursed
         case StatsDisplay.mostListenedAlbum:
 
-            let lastFMDataJson = await Native.fetchTopAlbum(
+            const lastFMDataJson = await Native.fetchTopAlbum(
             {
-               apiKey: settings.store.lastFMApiKey,  
-               user: settings.store.lastFMUsername, 
+               apiKey: settings.store.lastFMApiKey,
+               user: settings.store.lastFMUsername,
                period: "7day"
             });
 
             if(lastFMDataJson == null) return;
 
-            let lastFMData = JSON.parse(lastFMDataJson);
+            const lastFMData = JSON.parse(lastFMDataJson);
             console.log(lastFMData);
             setRpc(false, settings.store.lastFMStatFormat.replace("$album", lastFMData.albumName).replace("$artist", lastFMData.artistName), lastFMData?.albumCoverUrl);
         break;
@@ -189,7 +189,7 @@ export default definePlugin({
     {
         updateData();
 
-        setInterval(() => 
+        setInterval(() =>
         {
             checkForNewDay();
             updateData();

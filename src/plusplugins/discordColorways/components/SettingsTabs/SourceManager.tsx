@@ -2,16 +2,15 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
-import { DataStore, ReactNode, useEffect, useState, openModal } from "../../";
-import { CopyIcon, DeleteIcon, DownloadIcon, ImportIcon, PlusIcon } from "../Icons";
-
+import { DataStore, openModal,ReactNode, useEffect, useState } from "../../";
 import { defaultColorwaySource } from "../../constants";
 import { Colorway, ModalProps } from "../../types";
-import TabBar from "../TabBar";
 import { chooseFile, saveFile } from "../../utils";
 import { updateRemoteSources } from "../../wsClient";
+import { CopyIcon, DeleteIcon, DownloadIcon, ImportIcon, PlusIcon } from "../Icons";
+import TabBar from "../TabBar";
 
 export function StoreNameModal({ modalProps, originalName, onFinish, conflicting }: { modalProps: ModalProps, originalName: string, onFinish: (newName: string) => Promise<void>, conflicting: boolean; }) {
     const [error, setError] = useState<string>("");
@@ -244,14 +243,14 @@ function OfflineTab() {
             </button>
         </div>
         <div className="colorwaysSettings-sourceScroller">
-            {getComputedStyle(document.body).getPropertyValue("--os-accent-color") ? <div className={`colorwaysSettings-colorwaySource`} style={{ flexDirection: "column", padding: "16px", alignItems: "start" }}>
+            {getComputedStyle(document.body).getPropertyValue("--os-accent-color") ? <div className={"colorwaysSettings-colorwaySource"} style={{ flexDirection: "column", padding: "16px", alignItems: "start" }}>
                 <div style={{ alignItems: "center", width: "100%", height: "30px", display: "flex" }}>
                     <span className="colorwaysSettings-colorwaySourceLabel">OS Accent Color{" "}
                         <div className="colorways-badge">Built-In</div>
                     </span>
                 </div>
             </div> : <></>}
-            {customColorwayStores.map(({ name: customColorwaySourceName, colorways: offlineStoreColorways }) => <div className={`colorwaysSettings-colorwaySource`} style={{ flexDirection: "column", padding: "16px", alignItems: "start" }}>
+            {customColorwayStores.map(({ name: customColorwaySourceName, colorways: offlineStoreColorways }) => <div className={"colorwaysSettings-colorwaySource"} style={{ flexDirection: "column", padding: "16px", alignItems: "start" }}>
                 <span className="colorwaysSettings-colorwaySourceLabel">
                     {customColorwaySourceName}
                 </span>
@@ -327,7 +326,7 @@ function OnlineTab() {
             </button>
         </div>
         <div className="colorwaysSettings-sourceScroller">
-            {!colorwaySourceFiles.length && <div className={`colorwaysSettings-colorwaySource`} style={{ flexDirection: "column", padding: "16px", alignItems: "start" }} onClick={async () => {
+            {!colorwaySourceFiles.length && <div className={"colorwaysSettings-colorwaySource"} style={{ flexDirection: "column", padding: "16px", alignItems: "start" }} onClick={async () => {
                 DataStore.set("colorwaySourceFiles", [{ name: "Project Colorway", url: defaultColorwaySource }, ...(await DataStore.get("colorwaySourceFiles") as { name: string, url: string; }[]).filter(i => i.name !== "Project Colorway")]);
                 setColorwaySourceFiles([{ name: "Project Colorway", url: defaultColorwaySource }, ...(await DataStore.get("colorwaySourceFiles") as { name: string, url: string; }[]).filter(i => i.name !== "Project Colorway")]);
             }}>
@@ -336,7 +335,7 @@ function OnlineTab() {
                     Add Project Colorway Source
                 </span>
             </div>}
-            {colorwaySourceFiles.map((colorwaySourceFile: { name: string, url: string; }, i: number) => <div className={`colorwaysSettings-colorwaySource`} style={{ flexDirection: "column", padding: "16px", alignItems: "start" }}>
+            {colorwaySourceFiles.map((colorwaySourceFile: { name: string, url: string; }, i: number) => <div className={"colorwaysSettings-colorwaySource"} style={{ flexDirection: "column", padding: "16px", alignItems: "start" }}>
                 <div className="hoverRoll">
                     <span className="colorwaysSettings-colorwaySourceLabel hoverRoll_normal">
                         {colorwaySourceFile.name} {colorwaySourceFile.url === defaultColorwaySource && <div className="colorways-badge">Built-In</div>} {colorwaySourceFile.url === "https://raw.githubusercontent.com/DaBluLite/ProjectColorway/master/index.json" && <div className="colorways-badge">Built-In | Outdated</div>}

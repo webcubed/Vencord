@@ -7,7 +7,6 @@
 import { definePluginSettings } from "@api/Settings";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
-import { findByProps } from "@webpack";
 import { ChannelStore, GuildStore, RelationshipStore, UserStore } from "@webpack/common";
 import { Text } from "@webpack/common";
 import { GuildMemberStore } from "@webpack/common";
@@ -69,11 +68,11 @@ const settings = definePluginSettings(
 
 function isChannelBlocked(channelID)
 {
-    let guildID = ChannelStore.getChannel(channelID)?.guild_id;
+    const guildID = ChannelStore.getChannel(channelID)?.guild_id;
 
     if(settings.store.guildBlackList.split(", ").includes(guildID) || (!settings.store.guildWhiteList.split(", ").includes(guildID) && settings.store.guildWhiteList.length > 0))
     {
-        return true;   
+        return true;
     }
 
     return false;
@@ -88,9 +87,9 @@ function shouldHideUser(userId: string, channelId? : string)
             return false;
         }
 
-        let guildID = ChannelStore.getChannel(channelId)?.guild_id;
-        
-        //add new user hiding logic here at some point
+        const guildID = ChannelStore.getChannel(channelId)?.guild_id;
+
+        // add new user hiding logic here at some point
     }
 
     // hide the user if the user is blocked and the hide blocked users setting is enabled
@@ -120,7 +119,7 @@ function isRoleAllBlockedMembers(roleId, guildId)
     {
         return false;
     }
-    //need to add an online check at some point but this sorta works for now
+    // need to add an online check at some point but this sorta works for now
     return membersWithRole.every(member => shouldHideUser(member.userId) && !(UserStore.getUser(member.userId).desktop || UserStore.getUser(member.userId).mobile));
 }
 
@@ -211,7 +210,7 @@ export default definePlugin({
             }
         },
 
-        //thank nick (644298972420374528) for these patches :3 
+        // thank nick (644298972420374528) for these patches :3
 
         // filter relationships
         {
@@ -221,7 +220,7 @@ export default definePlugin({
                 replace: "$&.filter(id => !$self.shouldHideUser(id))"
             }
         },
-        //active now list
+        // active now list
         {
             find: "getUserAffinitiesUserIds(){",
             replacement: {

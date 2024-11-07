@@ -2,18 +2,18 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
-import { DataStore, PluginProps, ReactNode, useState, useEffect, FluxDispatcher, FluxEvents } from "../../";
-
-import { defaultColorwaySource, fallbackColorways, nullColorwayObj } from "../../constants";
-import { Colorway, ColorwayObject } from "../../types";
-import Setting from "../Setting";
-import Switch from "../Switch";
-import { connect, hasManagerRole, isWSOpen, sendColorway, wsOpen } from "../../wsClient";
-import { generateCss, getPreset, gradientBase, gradientPresetIds } from "../../css";
 import { ColorwayCSS } from "plusplugins/discordColorways/colorwaysAPI";
 import { colorToHex } from "plusplugins/discordColorways/utils";
+
+import { DataStore, FluxDispatcher, FluxEvents,PluginProps, ReactNode, useEffect, useState } from "../../";
+import { defaultColorwaySource, fallbackColorways, nullColorwayObj } from "../../constants";
+import { generateCss, getPreset, gradientBase, gradientPresetIds } from "../../css";
+import { Colorway, ColorwayObject } from "../../types";
+import { connect, hasManagerRole, isWSOpen, sendColorway, wsOpen } from "../../wsClient";
+import Setting from "../Setting";
+import Switch from "../Switch";
 
 export default function ({
     hasTheme = false

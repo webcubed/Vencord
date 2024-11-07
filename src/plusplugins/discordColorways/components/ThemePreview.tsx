@@ -2,12 +2,12 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
-import { CloseIcon } from "./Icons";
-import { HexToHSL } from "../utils";
 import { openModal } from "..";
 import { ModalProps } from "../types";
+import { HexToHSL } from "../utils";
+import { CloseIcon } from "./Icons";
 
 export default function ThemePreview({
     accent,

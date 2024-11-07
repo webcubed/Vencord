@@ -1,29 +1,34 @@
-import { Devs } from "@utils/constants";
-import definePlugin from "@utils/types";
-import { ModalCloseButton, ModalContent, ModalHeader, ModalProps, ModalRoot, ModalSize, openModal } from "@utils/modal";
-import { Button, ChannelStore, GuildMemberStore, GuildStore, PermissionsBits, PermissionStore, RelationshipStore, RestAPI, SnowflakeUtils, Text, UserStore, useState } from "@webpack/common";
-import { Guild, Channel } from "discord-types/general";
+/*
+ * Vencord, a Discord client mod
+ * Copyright (c) 2024 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 import { classNameFactory, disableStyle, enableStyle } from "@api/Styles";
-import { findByPropsLazy } from "@webpack";
-import { MessageStore } from "@webpack/common";
-import style from "./style.css?managed";
-import { useEffect } from "@webpack/common";
+import { Devs } from "@utils/constants";
+import { ModalCloseButton, ModalContent, ModalHeader, ModalProps, ModalRoot, ModalSize, openModal } from "@utils/modal";
 import { useAwaiter } from "@utils/react";
+import definePlugin from "@utils/types";
+import { findByPropsLazy } from "@webpack";
+import { Button, GuildMemberStore, GuildStore, PermissionsBits, PermissionStore, RelationshipStore, RestAPI, SnowflakeUtils, Text, UserStore, useState } from "@webpack/common";
+import { useEffect } from "@webpack/common";
 import { GuildMemberCountStore } from "plugins/memberCount";
 
-const cl = classNameFactory("serverpruner-")
+import style from "./style.css?managed";
+
+const cl = classNameFactory("serverpruner-");
 
 const { leaveGuild } = findByPropsLazy("deleteGuild", "leaveGuild");
 
 function InfoWithIcon(props)
 {
-    const {svg, children} = props;
+    const { svg, children } = props;
     return (
         <div className={cl("infowithicon")}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d={svg}/></svg>
             <Text color="header-primary" variant="heading-md/semibold">{children}</Text>
         </div>
-    )
+    );
 }
 
 function ServerInfoComponent(props)
@@ -43,19 +48,19 @@ function ServerInfoComponent(props)
                 {PermissionStore.can(PermissionsBits.ADMINISTRATOR, server) && <InfoWithIcon svg={"M309 106c11.4-7 19-19.7 19-34c0-22.1-17.9-40-40-40s-40 17.9-40 40c0 14.4 7.6 27 19 34l-57.3 114.6c-9.1 18.2-32.7 23.4-48.6 10.7L72 160c5-6.7 8-15 8-24c0-22.1-17.9-40-40-40S0 113.9 0 136s17.9 40 40 40h.7l45.7 251.4c5.5 30.4 32 52.6 63 52.6h277.2c30.9 0 57.4-22.1 63-52.6L535.3 176h.7c22.1 0 40-17.9 40-40s-17.9-40-40-40s-40 17.9-40 40c0 9 3 17.3 8 24l-89.1 71.3c-15.9 12.7-39.5 7.5-48.6-10.7z"}>You are an administrator in this server</InfoWithIcon>}
             </div>
         </div>
-    )
+    );
 }
 
 function PruneModal(props: ModalProps)
 {
     const joinedServers = Object.values(GuildStore.getGuilds()).filter(e => !e.isOwner(UserStore.getCurrentUser()));
 
-    let [index, setIndex] = useState(0);
+    const [index, setIndex] = useState(0);
 
-    let [messages, setMessages] = useState("");
-    let [recentMessages, setRecentMessages] = useState("");
+    const [messages, setMessages] = useState("");
+    const [recentMessages, setRecentMessages] = useState("");
 
-    let [waited, setWaited] = useState(false);
+    const [waited, setWaited] = useState(false);
     function ProcessNext(shouldLeave)
     {
         if(shouldLeave)
@@ -75,23 +80,23 @@ function PruneModal(props: ModalProps)
         }
     }
 
-    useEffect(() => 
+    useEffect(() =>
     {
-        const timer = setTimeout(() => 
+        const timer = setTimeout(() =>
         {
           setWaited(true);
         }, 2000);
         return () => clearTimeout(timer);
-    }, [index]); 
+    }, [index]);
 
-      
-    useAwaiter(async () => 
+
+    useAwaiter(async () =>
     {
-        let response = await RestAPI.get(
+        const response = await RestAPI.get(
         {
             url: `/guilds/${joinedServers[index].id}/messages/search?author_id=${UserStore.getCurrentUser().id}`
         });
-        let recentResponse = await RestAPI.get(
+        const recentResponse = await RestAPI.get(
         {
             url: `/guilds/${joinedServers[index].id}/messages/search?author_id=${UserStore.getCurrentUser().id}&min_id=${SnowflakeUtils.fromTimestamp(Date.now() - (7 * 24 * 60 * 60 * 1000))}`
         });
@@ -101,7 +106,7 @@ function PruneModal(props: ModalProps)
     {
         deps: [index],
         fallbackValue: null
-    })
+    });
 
     return (
         <ModalRoot {...props} size={ModalSize.MEDIUM}>

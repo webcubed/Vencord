@@ -2,24 +2,24 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
-import { PlusIcon, PalleteIcon, CodeIcon, IDIcon, DeleteIcon } from "./Icons";
 import { DataStore, FluxDispatcher, FluxEvents, ReactNode, Toasts } from "..";
+import { openModal,useEffect, useState } from "../";
+import { ColorwayCSS } from "../colorwaysAPI";
 import { nullColorwayObj } from "../constants";
 import { generateCss, getAutoPresets, getPreset, gradientBase, gradientPresetIds } from "../css";
-import { ColorwayObject, Colorway, SortOptions, SourceObject, ModalProps } from "../types";
+import { Colorway, ColorwayObject, ModalProps,SortOptions, SourceObject } from "../types";
 import { colorToHex, getHex, stringToHex } from "../utils";
+import { hasManagerRole, requestManagerRole, sendColorway, updateRemoteSources,wsOpen } from "../wsClient";
 import AutoColorwaySelector from "./AutoColorwaySelector";
 import CreatorModal from "./CreatorModal";
-import InfoModal from "./InfoModal";
-import { wsOpen, sendColorway, hasManagerRole, requestManagerRole, updateRemoteSources } from "../wsClient";
-import { ColorwayCSS } from "../colorwaysAPI";
-import { useState, useEffect, openModal } from "../";
-import UseRepainterThemeModal from "./UseRepainterThemeModal";
 import FiltersMenu from "./FiltersMenu";
-import SourcesMenu from "./SourcesMenu";
+import { DeleteIcon,IDIcon, PalleteIcon, PlusIcon } from "./Icons";
+import InfoModal from "./InfoModal";
 import ReloadButton from "./ReloadButton";
+import SourcesMenu from "./SourcesMenu";
+import UseRepainterThemeModal from "./UseRepainterThemeModal";
 
 export default function ({
     settings = { selectorType: "normal" },
@@ -64,12 +64,12 @@ export default function ({
             id: "all",
             sources: [...colorwayData, ...customColorwayData]
         },
-        ...colorwayData.map((source) => ({
+        ...colorwayData.map(source => ({
             name: source.source,
             id: source.source.toLowerCase().replaceAll(" ", "-"),
             sources: [source]
         })),
-        ...customColorwayData.map((source) => ({
+        ...customColorwayData.map(source => ({
             name: source.source,
             id: source.source.toLowerCase().replaceAll(" ", "-"),
             sources: [source]
@@ -102,7 +102,7 @@ export default function ({
             const onlineSources: { name: string, url: string; }[] = await DataStore.get("colorwaySourceFiles") as { name: string, url: string; }[];
 
             const responses: Response[] = await Promise.all(
-                onlineSources.map((source) =>
+                onlineSources.map(source =>
                     fetch(source.url, force ? { cache: "no-store" } : {})
                 )
             );
@@ -148,7 +148,7 @@ export default function ({
             <button
                 className="colorwaysPillButton"
                 onClick={() => {
-                    openModal((props) => <CreatorModal
+                    openModal(props => <CreatorModal
                         modalProps={props}
                         loadUIProps={loadUI}
                     />);
@@ -161,7 +161,7 @@ export default function ({
                 className="colorwaysPillButton"
                 id="colorway-userepaintertheme"
                 onClick={() => {
-                    openModal((props) => <UseRepainterThemeModal modalProps={props} onFinish={async ({ id, colors }) => {
+                    openModal(props => <UseRepainterThemeModal modalProps={props} onFinish={async ({ id, colors }) => {
                         const demandedColorway = generateCss({
                             primary: colors[7].replace("#", ""),
                             secondary: colors[11].replace("#", ""),
@@ -189,10 +189,10 @@ export default function ({
                 <PalleteIcon width={14} height={14} style={{ boxSizing: "content-box" }} />
                 Use Repainter theme
             </button>
-            <FiltersMenu sort={sortBy} onSortChange={(newSort) => {
+            <FiltersMenu sort={sortBy} onSortChange={newSort => {
                 setSortBy(newSort);
             }} />
-            <SourcesMenu source={filters.filter(filter => filter.id == visibleSources)[0]} sources={filters} onSourceChange={(sourceId) => {
+            <SourcesMenu source={filters.filter(filter => filter.id == visibleSources)[0]} sources={filters} onSourceChange={sourceId => {
                 setVisibleSources(sourceId);
             }} />
         </div>
@@ -322,7 +322,7 @@ export default function ({
                     <span className="colorwayLabel">Auto Colorway</span>
                     <button
                         className="colorwaysPillButton colorwaysPillButton-onSurface"
-                        onClick={async (e) => {
+                        onClick={async e => {
                             e.stopPropagation();
                             const activeAutoPreset = await DataStore.get("activeAutoPreset");
                             openModal((props: ModalProps) => <AutoColorwaySelector autoColorwayId={activeAutoPreset} modalProps={props} onChange={autoPresetId => {
@@ -477,7 +477,7 @@ export default function ({
                                     primary: color.primary,
                                     secondary: color.secondary,
                                     tertiary: color.tertiary
-                                }).map((colorStr) => <div
+                                }).map(colorStr => <div
                                     className="discordColorwayPreviewColor"
                                     style={{
                                         backgroundColor: `#${colorToHex(colorStr)}`,
@@ -492,9 +492,9 @@ export default function ({
                             <span className="colorwayLabel">{color.name}</span>
                             {settings.selectorType === "normal" && <button
                                 className="colorwaysPillButton colorwaysPillButton-onSurface"
-                                onClick={(e) => {
+                                onClick={e => {
                                     e.stopPropagation();
-                                    openModal((props) => <InfoModal
+                                    openModal(props => <InfoModal
                                         modalProps={props}
                                         colorway={color}
                                         loadUIProps={loadUI}

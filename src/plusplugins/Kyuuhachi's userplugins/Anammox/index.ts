@@ -1,3 +1,9 @@
+/*
+ * Vencord, a Discord client mod
+ * Copyright (c) 2024 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 import { definePluginSettings } from "@api/Settings";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
@@ -79,7 +85,7 @@ export default definePlugin({
             predicate: () => settings.store.billing,
         },
         { // Gift button
-            find: '.gifts)||void 0===',
+            find: ".gifts)||void 0===",
             replacement: {
                 match: /let\{disabled:\i,channel:\i\}=\i/,
                 replace: "return null;$&",

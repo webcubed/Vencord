@@ -4,11 +4,10 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { SendListener, addPreSendListener, removePreSendListener, } from "@api/MessageEvents";
-import { Settings } from "@api/Settings";
+import { addPreSendListener, removePreSendListener,SendListener, } from "@api/MessageEvents";
+import { definePluginSettings } from "@api/Settings";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
-import { definePluginSettings } from "@api/Settings";
 import OpenAI from "openai";
 
 const modalOptions = [
@@ -54,7 +53,7 @@ const settings = definePluginSettings({
 
 const messagePatch : SendListener = async (channelId, msg) => {
     msg.content = await textProcessing(msg.content);
-}
+};
 
 export default definePlugin({
     name: "Personify",
@@ -88,8 +87,8 @@ async function textProcessing(input : string)
         model: `${settings.store.modal}`
     });
 
-    if (completion.choices[0].message.content == null ) { return input; }
-    
+    if (completion.choices[0].message.content == null) { return input; }
+
     if(completion.choices[0].message.content.includes("can't assist")) { return `${input} (AI Refused)`; }
     return completion.choices[0].message.content;
 }

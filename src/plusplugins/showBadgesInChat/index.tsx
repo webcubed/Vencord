@@ -6,7 +6,7 @@
 
 import { addDecoration, removeDecoration } from "@api/MessageDecorations";
 import { Devs, EquicordDevs } from "@utils/constants";
-import { isPluginDev, isSuncordPluginDev, isEquicordPluginDev, isPlusPluginDev, isPlusMt } from "@utils/misc";
+import { isEquicordPluginDev, isPluginDev, isPlusMt,isPlusPluginDev, isSuncordPluginDev } from "@utils/misc";
 import definePlugin from "@utils/types";
 import { findByPropsLazy, findComponentByCodeLazy } from "@webpack";
 import badges from "plugins/_api/badges";

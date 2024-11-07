@@ -16,10 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import { Settings } from "@api/Settings";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
-import { Forms, Text  } from "@webpack/common";
+import { Forms } from "@webpack/common";
 
 export default definePlugin({
     name: "StagingBuild",
@@ -43,7 +42,7 @@ export default definePlugin({
     },
 
     start() {
-        window.GLOBAL_ENV.RELEASE_CHANNEL = "staging"
+        window.GLOBAL_ENV.RELEASE_CHANNEL = "staging";
     },
 
     stop() {

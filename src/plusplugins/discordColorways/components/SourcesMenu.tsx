@@ -2,9 +2,10 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { MouseEvent } from "react";
+
 import { useEffect, useRef, useState } from "..";
 
 export default function ({ source, sources, onSourceChange }: { source: { name: string, id: string; }, sources: { name: string, id: string; }[], onSourceChange: (sourceId: string) => void; }) {

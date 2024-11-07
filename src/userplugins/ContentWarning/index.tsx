@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import definePlugin, { OptionType } from "@utils/types";
-import { Button, Forms, useState, TextInput } from "@webpack/common";
 import { DataStore } from "@api/index";
 import { definePluginSettings } from "@api/Settings";
+import { Flex } from "@components/Flex";
 import { DeleteIcon } from "@components/Icons";
 import { Devs } from "@utils/constants";
-import { Flex } from "@components/Flex";
 import { useForceUpdater } from "@utils/react";
+import definePlugin, { OptionType } from "@utils/types";
+import { Button, Forms, TextInput,useState } from "@webpack/common";
 
 const WORDS_KEY = "ContentWarning_words";
 
@@ -20,7 +20,7 @@ let triggerWords = [""];
 function safeMatchesRegex(s: string, r: string) {
 	if (r == "") return false;
 	try {
-		return s.match(new RegExp(r.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+		return s.match(new RegExp(r.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
 	} catch {
 		return false;
 	}
@@ -33,7 +33,7 @@ function TriggerContainer({ child }) {
 		return child;
 	} else {
 		return (<div onClick={() => setVisible(true)}>
-			<div style={{ filter: "blur(4px) brightness(70%)"}}>
+			<div style={{ filter: "blur(4px) brightness(70%)" }}>
 				{child}
 			</div>
 		</div>);
@@ -41,15 +41,15 @@ function TriggerContainer({ child }) {
 }
 
 function FlaggedInput({ index, forceUpdate }) {
-	let [value, setValue] = useState(triggerWords[index]);
+	const [value, setValue] = useState(triggerWords[index]);
 
 	if (value != triggerWords[index]) {
 		setValue(triggerWords[index]);
 	}
 
-	let isLast = index == triggerWords.length - 1;
+	const isLast = index == triggerWords.length - 1;
 
-	const updateValue = (v) => {
+	const updateValue = v => {
 		triggerWords[index] = v;
 		setValue(v);
 
@@ -95,14 +95,14 @@ function FlaggedInput({ index, forceUpdate }) {
 function FlaggedWords() {
 	const forceUpdate = useForceUpdater();
 
-	let inputs = triggerWords.map((_, idx) => {
+	const inputs = triggerWords.map((_, idx) => {
 		return (
 			<FlaggedInput
 				index={idx}
 				forceUpdate={forceUpdate}
 			/>
 		);
-	})
+	});
 
 	return (<>
 		<Forms.FormTitle tag="h4">Flagged Words</Forms.FormTitle>
@@ -139,7 +139,7 @@ export default definePlugin({
 
 	modify(e, c) {
 		if (triggerWords.some(w => safeMatchesRegex(e.message.content, w))) {
-			return <TriggerContainer child={c}/>
+			return <TriggerContainer child={c}/>;
 		} else {
 			return c;
 		}

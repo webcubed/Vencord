@@ -4,18 +4,9 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { showNotification } from "@api/Notifications";
 import { Settings } from "@api/Settings";
-import { relaunch, showItemInFolder } from "@utils/native";
-import { checkForUpdates, getRepo } from "@utils/updater";
-import { Clipboard, GuildStore, NavigationRouter, SettingsRouter, Toasts } from "@webpack/common";
+import { Toasts } from "@webpack/common";
 
-import gitHash from "~git-hash";
-import gitRemote from "~git-remote";
-import Plugins from "~plugins";
-
-import { openMultipleChoice } from "./components/MultipleChoice";
-import { openSimpleTextInput } from "./components/TextInput";
 
 export interface ButtonAction {
     id: string;
@@ -25,7 +16,7 @@ export interface ButtonAction {
 }
 
 export const actions: ButtonAction[] = [
-  
+
 ];
 
 function togglePlugin(plugin: ButtonAction, enabled: boolean) {

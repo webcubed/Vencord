@@ -5,8 +5,8 @@
  */
 
 import definePlugin from "@utils/types";
+
 import { Connection } from "./connection-types";
-import { connect } from "http2";
 
 export default definePlugin({
     name: "AllConnectionsEnabled",

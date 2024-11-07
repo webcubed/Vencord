@@ -2,12 +2,12 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
+import { DataStore, useEffect,useState } from "..";
 import { knownThemeVars } from "../constants";
-import { getFontOnBg, getHex } from "../utils";
-import { DataStore, useState, useEffect } from "..";
 import { ModalProps } from "../types";
+import { getFontOnBg, getHex } from "../utils";
 
 export default function ({
     modalProps,

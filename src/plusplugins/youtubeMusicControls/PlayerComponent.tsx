@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import "./ytmStyles.css";
 
@@ -154,7 +154,7 @@ function SeekBar() {
 
     const [position, setPosition] = useState<number>(storePosition);
 
-    // eslint-disable-next-line consistent-return
+
     useEffect(() => {
         if (isPlaying && !isSettingPosition) {
             setPosition(YoutubeMusicStore.position);

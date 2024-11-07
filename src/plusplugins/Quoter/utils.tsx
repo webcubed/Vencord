@@ -1,3 +1,9 @@
+/*
+ * Vencord, a Discord client mod
+ * Copyright (c) 2024 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 import { UserStore } from "@webpack/common";
 
 export function canvasToBlob(canvas: HTMLCanvasElement): Promise<Blob> {
@@ -46,16 +52,16 @@ export async function fetchImageAsBlob(url: string): Promise<Blob> {
 export function FixUpQuote(quote) {
     const emojiRegex = /<a?:(\w+):(\d+)>/g;
     quote = quote.replace(emojiRegex, "");
-    
+
 
     const mentionRegex = /<@(.*)>/;
     let result = quote;
-    
-    mentionRegex.exec(quote)?.forEach(match => 
+
+    mentionRegex.exec(quote)?.forEach(match =>
     {
         console.log(match);
         result = result.replace(match, `@${UserStore.getUser(match.replace("<@", "").replace(">", "")).username}`);
-    })
+    });
 
     return result;
 }

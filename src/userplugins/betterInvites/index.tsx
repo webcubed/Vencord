@@ -6,7 +6,6 @@
 
 import "./style.css";
 
-import { Devs } from "@utils/constants";
 import { openUserProfile } from "@utils/discord";
 import { classes } from "@utils/misc";
 import definePlugin, { StartAt } from "@utils/types";

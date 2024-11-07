@@ -1,12 +1,19 @@
-import { addContextMenuPatch, findGroupChildrenByChildId, NavContextMenuPatchCallback, removeContextMenuPatch } from "@api/ContextMenu";
+/*
+ * Vencord, a Discord client mod
+ * Copyright (c) 2024 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+import { findGroupChildrenByChildId, NavContextMenuPatchCallback } from "@api/ContextMenu";
 import { Devs } from "@utils/constants";
 import { getCurrentChannel } from "@utils/discord";
 import { ModalCloseButton, ModalContent, ModalHeader, ModalProps, ModalRoot, ModalSize, openModal } from "@utils/modal";
 import definePlugin from "@utils/types";
-import { Button, Menu, Switch, Text, UploadHandler, useEffect, useState, Select } from "@webpack/common";
+import { Button, Menu, Select,Switch, Text, UploadHandler, useEffect, useState } from "@webpack/common";
 import { Message } from "discord-types/general";
+
 import { QuoteIcon } from "./components";
-import { wrapText, canvasToBlob, FixUpQuote, fetchImageAsBlob} from "./utils";
+import { canvasToBlob, fetchImageAsBlob,FixUpQuote, wrapText } from "./utils";
 
 enum ImageStyle
 {
@@ -52,7 +59,7 @@ function sizeUpgrade(url) {
     return u.toString();
 }
 
-let preparingSentence: string[] = [];
+const preparingSentence: string[] = [];
 const lines: string[] = [];
 
 async function createQuoteImage(avatarUrl: string, name: string, quoteOld: string, grayScale: boolean): Promise<Blob> {
@@ -151,10 +158,10 @@ function QuoteModal(props: ModalProps) {
                 <img src={""} id={"quoterPreview"} style={{ borderRadius: "20px", width: "100%" }}></img>
                 <br></br><br></br>
                 <Switch value={gray} onChange={setGray}>Grayscale</Switch>
-                <Select look={1} 
-                    options={Object.keys(ImageStyle).filter(key => isNaN(parseInt(key, 10))).map(key => ({ label: key.charAt(0).toUpperCase() + key.slice(1), 
-                    value: ImageStyle[key as keyof typeof ImageStyle] }))} 
-                    select={v => registerStyleChange(v)} isSelected={v => v == setStyle} 
+                <Select look={1}
+                    options={Object.keys(ImageStyle).filter(key => isNaN(parseInt(key, 10))).map(key => ({ label: key.charAt(0).toUpperCase() + key.slice(1),
+                    value: ImageStyle[key as keyof typeof ImageStyle] }))}
+                    select={v => registerStyleChange(v)} isSelected={v => v == setStyle}
                     serialize={v => v}></Select>
                 <br/>
                 <Button color={Button.Colors.BRAND_NEW} size={Button.Sizes.SMALL} onClick={() => Export()} style={{ display: "inline-block", marginRight: "5px" }}>Export</Button>

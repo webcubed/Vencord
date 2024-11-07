@@ -2,12 +2,13 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
-import { SortIcon } from "./Icons";
-import { useState, useEffect } from "..";
-import { SortOptions } from "../types";
 import { MouseEvent } from "react";
+
+import { useEffect,useState } from "..";
+import { SortOptions } from "../types";
+import { SortIcon } from "./Icons";
 
 export default function ({ sort, onSortChange }: { sort: SortOptions, onSortChange: (newSort: SortOptions) => void; }) {
     const [pos, setPos] = useState({ x: 0, y: 0 });
