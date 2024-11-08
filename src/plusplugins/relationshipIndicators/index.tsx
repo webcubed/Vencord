@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import {
     addBadge,
@@ -68,7 +68,7 @@ export default definePlugin({
     name: "RelationshipIndicators",
     authors: [Devs.Scyye],
     settings,
-    description: "Adds icons to indicate relationships with users.",
+    description: "Adds icons to indicate relationships with users",
     start() {
         Object.entries(indicatorLocations).forEach(([key, value]) => {
             if (settings.store[key]) value.onEnable();
@@ -80,6 +80,3 @@ export default definePlugin({
         });
     },
 });
-
-
-

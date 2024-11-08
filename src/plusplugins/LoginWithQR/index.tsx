@@ -63,13 +63,13 @@ export default definePlugin({
             replacement: {
                 // Find the Edit User Profile button and insert our custom button.
                 // A bit jank, but whatever
-                match: /,(.{11}\.Button,.{58}\.USER_SETTINGS_EDIT_USER_PROFILE}\))/,
+                match: /,(.{11}\.Button,.{58}#{intl::USER_SETTINGS_EDIT_USER_PROFILE}}\))/,
                 replace: ",$self.insertScanQrButton($1)",
             },
         },
         // Insert a Scan QR Code MenuItem in the simplified user popout
         {
-            find: "Messages.MULTI_ACCOUNT_MENU_LABEL",
+            find: "#{intl::MULTI_ACCOUNT_MENU_LABEL}",
             replacement: {
                 // Insert our own MenuItem before the Switch Accounts button
                 match: /children:\[(.{0,54}id:"switch-accounts")/,
@@ -78,7 +78,7 @@ export default definePlugin({
         },
         // Add a Scan QR entry to the settings TabBar
         {
-            find: ".BILLING_SETTINGS,",
+            find: "#{intl::BILLING_SETTINGS}",
             replacement: {
                 match: /((\i\.settings)\.forEach.+?(\i).push\(.+}\)}\))/,
                 replace: (_, original, settings, elements) =>

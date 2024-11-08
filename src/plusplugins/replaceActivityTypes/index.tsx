@@ -51,7 +51,7 @@ export default definePlugin({
     description: "Replace the activity type (Playing) of any application's rich presence",
     authors: [Devs.Nyako],
     patches: [
-        // how has this patch not broken yet lol (i do not like fixing patches tho)
+        // how has this patch not broken yet lol (I do not like fixing patches tho)
         {
             find: '"LocalActivityStore"',
             replacement: {

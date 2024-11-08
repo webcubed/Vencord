@@ -22,7 +22,7 @@ export default definePlugin({
             id: 953041961936359424n,
         },
     ],
-    description: "Disable converting text into a hyperlink when pasting a link while having text selected",
+    description: "Disables converting text into a hyperlink when pasting a link while having text selected",
     patches: [
         {
             find: ".selection,preventEmojiSurrogates:",

@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { definePluginSettings } from "@api/Settings";
 import ErrorBoundary from "@components/ErrorBoundary";
@@ -125,7 +125,7 @@ export default definePlugin({
 
         // User Popout Modal - above Notes
         {
-            find: ".Messages.MUTUAL_GUILDS_WITH_END_COUNT", // Lazy-loaded
+            find: "#{intl::MUTUAL_GUILDS_WITH_END_COUNT}", // Lazy-loaded
             replacement: {
                 match: /\.body.+?displayProfile:\i}\),/,
                 // paste my fancy custom button below the username
@@ -144,7 +144,7 @@ export default definePlugin({
 
         // Member List User
         {
-            find: ".MEMBER_LIST_ITEM_AVATAR_DECORATION_PADDING)",
+            find: "#{intl::MEMBER_LIST_ITEM_AVATAR_DECORATION_PADDING})",
             replacement: {
                 match: /avatar:(\i){1,2}/,
                 replace: "children:[$self.patchUserList(arguments[0], false)],$&",

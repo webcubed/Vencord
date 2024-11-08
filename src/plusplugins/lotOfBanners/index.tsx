@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { UserProfileStore, UserStore } from "@webpack/common";;
 import definePlugin from "@utils/types";
@@ -19,7 +19,7 @@ export default definePlugin({
     patches: [
         {
             // Add banner to member list
-            find: '.Messages.GUILD_OWNER,',
+            find: '#{intl::GUILD_OWNER}',
             predicate: () => settings.store.memberList,
             replacement: [
                 {
@@ -30,7 +30,7 @@ export default definePlugin({
         },
         {
             // Add banner to dm list
-            find: '.Messages.SYSTEM_DM_ACTIVITY_TEXT',
+            find: '#{intl::SYSTEM_DM_ACTIVITY_TEXT}',
             predicate: () => settings.store.dmList,
             replacement: [
                 {

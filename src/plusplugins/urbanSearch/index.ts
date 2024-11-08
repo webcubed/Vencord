@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { ApplicationCommandOptionType, sendBotMessage } from "@api/Commands";
 import { ApplicationCommandInputType } from "@api/Commands/types";
@@ -20,7 +20,7 @@ const settings = definePluginSettings({
 
 export default definePlugin({
     name: "UrbanDictionary",
-    description: "Search for a word on Urban Dictionary via /urban slash command",
+    description: "Search for a word on Urban Dictionary via the /urban slash command",
     authors: [Devs.jewdev],
     dependencies: ["CommandsAPI"],
     settings,

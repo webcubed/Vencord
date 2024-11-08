@@ -24,7 +24,7 @@ export default definePlugin({
     settings,
     patches: [
         {
-            find: ".CHARACTER_COUNT_OVER_LIMIT",
+            find: "#{intl::CHARACTER_COUNT_OVER_LIMIT}",
             replacement: [
                 {
                     match: /let/,

@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 nin0dev
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import "./style.css";
 

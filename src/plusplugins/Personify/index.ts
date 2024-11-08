@@ -34,21 +34,21 @@ const modalOptions = [
 const settings = definePluginSettings({
     apiKey: {
         type: OptionType.STRING,
-        description: "Your OpenAI API Key",
+        description: "Your OpenAI API key",
         default: "",
         restartNeeded: false
     },
     modal:
     {
         type: OptionType.SELECT,
-        description: "The GPT Modal to use. The plugin was developed and tested with base gpt-4, use any others at your own risk",
+        description: "The GPT model to use. The plugin was developed and tested with base GPT-4. Use any others at your own risk.",
         options: modalOptions
     },
     prompt:
     {
         type: OptionType.STRING,
         description: "The character prompt to use",
-        default: "As an uwu girl, use cute emoticons and act cutesy"
+        default: "as an uwu girl, use cute emoticons and act cutesy"
     }
 });
 
@@ -82,7 +82,7 @@ async function textProcessing(input : string)
     const completion = await openai.chat.completions.create({
 
         messages: [{
-            role: "system", content: `You are working for a message personifier, when messaged, respond the content of the users message, but ${settings.store.prompt}. DO NOT Modify the original sentiment of the message and never respond to the users message, only respond with the modified version. If a user sends a link, leave it alone and do not add anything to it.` },
+            role: "system", content: `You are working for a message personifier. When messaged, respond with the content of the user's message, but ${settings.store.prompt}. Do not modify the original sentiment of the message and never respond to the user's message. Only respond with the modified version. If a user sends a link, leave it alone and do not add anything to it.` },
         { role: "user", content: input }
         ],
         model: `${settings.store.modal}`

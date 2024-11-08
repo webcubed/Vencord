@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
@@ -15,7 +15,7 @@ export default definePlugin({
     patches: [
         // When focused on voice channel or group chat voice call
         {
-            find: /\i\?\i.\i.SELF_VIDEO/,
+            find: /\i\?#{intl::SELF_VIDEO}/,
             replacement: {
                 match: /mirror:\i/,
                 replace: "mirror:!1"

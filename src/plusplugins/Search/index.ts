@@ -14,7 +14,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ */
 
 import { ApplicationCommandOptionType } from "@api/Commands";
 import { definePluginSettings } from "@api/Settings";
@@ -51,11 +51,11 @@ export default definePlugin({
     name: "Search",
     authors: [Devs.JacobTm],
     settings,
-    description: "Generates search links for various search engines.",
+    description: "Generate search links for various search engines",
     dependencies: ["CommandsAPI"],
     commands: [{
         name: "search",
-        description: "Generates search link for selected engine.",
+        description: "Generate a search link for the selected engine.",
         options: [
             {
                 type: ApplicationCommandOptionType.STRING,

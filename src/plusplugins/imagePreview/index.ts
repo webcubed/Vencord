@@ -489,7 +489,7 @@ function removeHoverListeners() {
 
 export default definePlugin({
     name: "ImagePreview",
-    description: "Hover on images, avatars, links and stickers to show a full preview",
+    description: "Hover over images, avatars, links and stickers to show a full preview",
     authors: [EquicordDevs.creations],
     settings: settings,
 

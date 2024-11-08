@@ -23,7 +23,7 @@ import { Forms, Text  } from "@webpack/common";
 
 export default definePlugin({
     name: "StagingBuild",
-    description: "Allows you to switch to staging build!",
+    description: "Allows you to switch to staging build",
     authors: [Devs.HappyEnderman],
 
     patches: [],

@@ -28,7 +28,7 @@ export default definePlugin({
     description: "Puts results for the channels in the current server at the top of the quick switcher. Only reorders the results",
     patches: [
         {
-            find: ".QUICKSWITCHER_PLACEHOLDER",
+            find: "#{intl::QUICKSWITCHER_PLACEHOLDER}",
             replacement: {
                 match: /renderResults\(\).{0,50}\i:(\i)}=this\.props;/,
                 replace: "$&$1=$self.order($1);"
@@ -45,7 +45,7 @@ export default definePlugin({
                 r.score += maxScore;
             }
         }
-        // it makes no sense, but for some reason, it is b - a
+        // It makes no sense, but for some reason, it is b - a
         return results.sort((a, b) => b.score - a.score);
     }
 });

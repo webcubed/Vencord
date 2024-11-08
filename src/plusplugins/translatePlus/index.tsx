@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import "./style.css";
 
@@ -35,7 +35,7 @@ const messageCtxPatch: NavContextMenuPatchCallback = (children, { message }) => 
 
 export default definePlugin({
     name: "Translate+",
-    description: "Vencord's translate plugin, but with support for artistic languages!",
+    description: "Vencord's translate plugin, but with support for artistic languages",
     dependencies: ["MessageAccessoriesAPI"],
     authors: [Devs.Ven, EquicordDevs.Prince527],
     settings,
