@@ -1,6 +1,7 @@
 # Vencord+
 
-A fork of the Discord client mod called Vencord that adds unapproved plugins.
+A fork of a fork of the Discord client mod called Vencord that adds unapproved plugins.
+This is just [RobinRMC/Vencord](https://github.com/RobinRMC/Vencord) but with more plugins!
 
 | ![image](https://github.com/Vendicated/Vencord/assets/45497981/706722b1-32de-4d99-bee9-93993b504334) |
 | :--------------------------------------------------------------------------------------------------: |
