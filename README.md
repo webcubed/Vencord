@@ -9,22 +9,20 @@ This is just [RobinRMC/Vencord](https://github.com/RobinRMC/Vencord) but with mo
 
 ## Features
 
--   Super easy to install (Download Installer, open, click install button, done)
--   100+ plugins built in: [See a list](https://vencord.dev/plugins)
-    -   Some highlights: SpotifyControls, MessageLogger, Experiments, GameActivityToggle, Translate, NoTrack, QuickReply, Free Emotes/Stickers, PermissionsViewer, CustomCommands, ShowHiddenChannels, PronounDB
--   Fairly lightweight despite the many inbuilt plugins
--   Excellent Browser Support: Run Vencord in your Browser via extension or UserScript
--   Works on any Discord branch: Stable, Canary or PTB all work (though for the best experience I recommend stable!)
--   Custom CSS and Themes: Inbuilt css editor with support to import any css files (including BetterDiscord themes)
--   Privacy friendly, blocks Discord analytics & crash reporting out of the box and has no telemetry
--   Maintained very actively, broken plugins are usually fixed within 12 hours
--   Settings sync: Keep your plugins and their settings synchronised between devices / apps (optional)
-
+- Super easy to install (Download Installer, open, click install button, done)
+- 100+ plugins built in: [See a list](https://vencord.dev/plugins)
+  - Some highlights: SpotifyControls, MessageLogger, Experiments, GameActivityToggle, Translate, NoTrack, QuickReply, Free Emotes/Stickers, PermissionsViewer, CustomCommands, ShowHiddenChannels, PronounDB
+- Fairly lightweight despite the many inbuilt plugins
+- Excellent Browser Support: Run Vencord in your Browser via extension or UserScript
+- Works on any Discord branch: Stable, Canary or PTB all work (though for the best experience I recommend stable!)
+- Custom CSS and Themes: Inbuilt css editor with support to import any css files (including BetterDiscord themes)
+- Privacy friendly, blocks Discord analytics & crash reporting out of the box and has no telemetry
+- Maintained very actively, broken plugins are usually fixed within 12 hours
+- Settings sync: Keep your plugins and their settings synchronised between devices / apps (optional)
 
 ## Additional (unofficial) plugins [Vencord+]
 
-[Click here to see a list of the unapproved plugins Vencord+ makes available to you.](https://github.com/RobinRMC/VencordPlus/tree/main/src/plusplugins)
-
+[Click here to see a list of the unapproved plugins Vencord+ makes available to you.](https://github.com/webcubed/Vencord/tree/main/src/plusplugins)
 
 ## Installing / Uninstalling
 
@@ -34,7 +32,7 @@ This is just [RobinRMC/Vencord](https://github.com/RobinRMC/Vencord) but with mo
 
 ## Join the support/community server of Vencord
 
-https://discord.gg/D9uwnFnqmd
+<https://discord.gg/D9uwnFnqmd>
 
 Note: Do not request support in the Discord server of Vencord for anything regarding Vencord+!
 
@@ -44,7 +42,6 @@ Note: Do not request support in the Discord server of Vencord for anything regar
 | :------------------------------------------------------------------------------------------: |
 |   [![](https://meow.vendicated.dev/sponsors.png)](https://github.com/sponsors/Vendicated)    |
 | *generated using [github-sponsor-graph](https://github.com/Vendicated/github-sponsor-graph)* |
-
 
 ## Star History
 
