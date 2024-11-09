@@ -86,8 +86,8 @@ async function generateDebugInfoMessage() {
 
     const info = {
         "Vencord+":
-            `v${VERSION} • [${gitHash}](<https://github.com/RobinRMC/VencordPlus/commit/${gitHash}>)` +
-            `${SettingsPlugin.additionalInfo} - ${Intl.DateTimeFormat("en-GB", { dateStyle: "medium" }).format(BUILD_TIMESTAMP)}`,
+            `v${VERSION} • [${gitHash}](<https://github.com/webcubed/Vencord/commit/${gitHash}>)` +
+            `${SettingsPlugin.additionalInfo} - ${Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(BUILD_TIMESTAMP)}`,
         Client: `${RELEASE_CHANNEL} ~ ${client}`,
         Platform: window.navigator.platform
     };
