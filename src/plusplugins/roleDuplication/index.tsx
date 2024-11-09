@@ -7,12 +7,16 @@
 import "./style.css";
 
 import { NavContextMenuPatchCallback } from "@api/ContextMenu";
+import { getUserSettingLazy } from "@api/UserSettings";
 import definePlugin from "@utils/types";
 import { GuildStore, Menu, SelectedGuildStore } from "@webpack/common";
 import { Guild, Role } from "discord-types/general";
 
 import { createRole } from "./api";
 import { openModal } from "./modal";
+
+
+const DeveloperMode = getUserSettingLazy("appearance", "developerMode")!;
 
 function MakeContextCallback(type: "settings" | "other"): NavContextMenuPatchCallback {
     return type === "settings" ? (children, { guild, role }: { guild: Guild; role: Role; }) => {
@@ -26,7 +30,7 @@ function MakeContextCallback(type: "settings" | "other"): NavContextMenuPatchCal
     } : (children, contextMenuApiArguments) => {
         const guildid = SelectedGuildStore.getGuildId();
         const role = GuildStore.getRole(guildid, contextMenuApiArguments.id);
-        if (role == null) return;
+        if (!role) return;
         children.splice(-1, 0,
             <Menu.MenuItem
                 id={"vc-dup-role"}
@@ -38,7 +42,7 @@ function MakeContextCallback(type: "settings" | "other"): NavContextMenuPatchCal
 }
 
 export default definePlugin({
-    name: "roleDuplication",
+    name: "RoleDuplication",
     description: "Be able to duplicate/clone roles",
     authors: [
         {
@@ -49,5 +53,9 @@ export default definePlugin({
     contextMenus: {
         "guild-settings-role-context": MakeContextCallback("settings"),
         "dev-context": MakeContextCallback("other")
+    },
+    start() {
+        // DeveloperMode needs to be enabled for the context menu to be shown
+        DeveloperMode.updateSetting(true);
     }
 });
