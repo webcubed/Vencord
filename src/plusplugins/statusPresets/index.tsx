@@ -9,7 +9,6 @@ import "./style.css";
 import { definePluginSettings } from "@api/Settings";
 import { getUserSettingLazy } from "@api/UserSettings";
 import ErrorBoundary from "@components/ErrorBoundary";
-import { EquicordDevs } from "@utils/constants";
 import { classes } from "@utils/misc";
 import { useForceUpdater } from "@utils/react";
 import definePlugin, { OptionType, StartAt } from "@utils/types";
@@ -114,19 +113,24 @@ const StatusSubMenuComponent = () => {
 export default definePlugin({
     name: "StatusPresets",
     description: "Allows you to save your statuses and easily set them later",
-    authors: [EquicordDevs.iamme],
+    authors: [
+        {
+            name: "i am me",
+            id: 984392761929256980n,
+        },
+    ],
     settings: settings,
     dependencies: ["UserSettingsAPI"],
     patches: [
         {
-            find: "#{intl::CUSTOM_STATUS_SET_CUSTOM_STATUS}",
+            find: "#{intl::CUSTOM_STATUS_CLEAR_AFTER}",
             replacement: {
-                match: /\.ModalFooter,.{0,70}\i\.\i\.string\(\i\.\i#{intl::SAVE}\)\}\)/,
+                match: /\.ModalFooter,.{0,70}#{intl::SAVE}\}\)/,
                 replace: "$&,$self.renderRememberButton(this.state)"
             }
         },
         {
-            find: /"aria-label":.{0,1}\.\i\.string\(\i\.\i#{intl::STATUS_MENU_LABEL}/,
+            find: "#{intl::STATUS_MENU_LABEL}",
             replacement: {
                 match: /!\i&&(.{0,15}\i\.Fragment.{0,55}null==(\i).{0,200}customEmojiPlaceholder\}\),onClick:([^}]+}))/,
                 replace: "$self.render($2, $3),false&&$1"
