@@ -854,6 +854,10 @@ export const PlusMts = /* #__PURE__*/ Object.freeze({
     RobinRMC: {
         name: "RobinRMC",
         id: 304932282475479051n
+    },
+    webcubed: {
+        name: "webcubed",
+        id: 853658523786412063n
     }
 } satisfies Record<string, Dev>);
 
