@@ -369,7 +369,7 @@ class DataUI {
 
 export default definePlugin({
     name: "IRememberYou",
-    description: "Locally saves everyone you've been communicating with (including servers), in case of lose",
+    description: "Locally saves everyone you've been communicating with (including servers)",
     authors: [Devs.zoodogood],
     dependencies: ["MessageEventsAPI"],
     patches: [],
