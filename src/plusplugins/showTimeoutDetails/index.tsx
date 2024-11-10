@@ -16,7 +16,6 @@ import { findComponentLazy } from "@webpack";
 import TooltipWrapper from "./components/TooltipWrapper";
 import { TimeoutReasonStore } from "./TimeoutReasonStore";
 
-
 const countDownFilter = canonicalizeMatch("#{intl::MAX_AGE_NEVER}");
 export const CountDown = findComponentLazy(m => m.prototype?.render?.toString().includes(countDownFilter));
 
