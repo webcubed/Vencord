@@ -19,7 +19,7 @@ const isFlatpak = process.platform === "linux" && Boolean(process.env.FLATPAK_ID
 if (process.platform === "darwin") process.env.PATH = `/usr/local/bin:${process.env.PATH}`;
 
 
-const VENCORD_USER_PLUGIN_DIR = join(__dirname, "..", "src", "userplugins");
+const VENCORD_USER_PLUGIN_DIR = join(__dirname, "..", "src", "plusplugins");
 const getCwd = memoize(async () => {
     const dirs = await readdir(VENCORD_USER_PLUGIN_DIR, { withFileTypes: true });
 

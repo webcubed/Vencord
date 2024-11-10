@@ -14,7 +14,7 @@ import unusedImports from "eslint-plugin-unused-imports";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-    { ignores: ["dist", "browser", "packages/vencord-types", "userplugins"] },
+    { ignores: ["dist", "browser", "packages/vencord-types", "plusplugins"] },
     {
         files: ["src/**/*.{tsx,ts,mts,mjs,js,jsx}", "eslint.config.mjs"],
         plugins: {
