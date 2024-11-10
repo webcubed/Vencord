@@ -167,5 +167,3 @@ export default definePlugin({
         "channel-context": VoiceChannelContext
     },
 });
-
-
