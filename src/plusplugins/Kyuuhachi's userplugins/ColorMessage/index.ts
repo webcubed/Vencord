@@ -34,7 +34,7 @@ export default definePlugin({
 
     patches: [
         {
-            find: '.Messages.MESSAGE_EDITED,")"',
+            find: '#{intl::MESSAGE_EDITED},")"',
             replacement: {
                 match: /(?<=isUnsupported\]:(\i)\.isUnsupported\}\),)(?=children:\[)/,
                 replace: 'style:{"--98-message-color":$self.useMessageColor($1)},'

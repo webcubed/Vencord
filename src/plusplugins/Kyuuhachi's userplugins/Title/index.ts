@@ -22,7 +22,7 @@ function setTitle(v: string) {
 
 export default definePlugin({
     name: "Title",
-    description: "Replaces the window title prefix",
+    description: "Replace the window title prefix",
     authors: [Devs.Kyuuhachi],
     settings,
 
