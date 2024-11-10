@@ -46,7 +46,7 @@ export default definePlugin({
             find: "#{intl::GUILD_COMMUNICATION_DISABLED_ICON_TOOLTIP_BODY}",
             replacement: [
                 {
-                    match: /(\i)\.Tooltip,{(text:.{0,30}#{intl::GUILD_COMMUNICATION_DISABLED_ICON_TOOLTIP_BODY})/,
+                    match: /(\i)\.Tooltip,{(text:.{0,30}#{intl::GUILD_COMMUNICATION_DISABLED_ICON_TOOLTIP_BODY}\))/,
                     replace: "$self.TooltipWrapper,{message:arguments[0].message,$2"
                 }
             ]
