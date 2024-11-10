@@ -59,7 +59,7 @@ export default definePlugin({
             }
         },
         {
-            find: "#{intl::ADD_REACTION_NAMED}",
+            find: "#{intl::ADD_REACTION_NAMED},{emojiName",
             group: true,
             replacement: [
                 // Override limit of emojis to display with offset hook.
