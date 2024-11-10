@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { EquicordDevs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { Icons } from "@webpack/common";
 import { Message } from "discord-types/general";
@@ -12,7 +11,12 @@ import { Message } from "discord-types/general";
 export default definePlugin({
     name: "PinIcon",
     description: "Adds a pin icon to pinned messages",
-    authors: [EquicordDevs.iamme],
+    authors: [
+        {
+            name: "i am me",
+            id: 984392761929256980n,
+        },
+    ],
     patches: [
         {
             find: "#{intl::MESSAGE_EDITED}),",
