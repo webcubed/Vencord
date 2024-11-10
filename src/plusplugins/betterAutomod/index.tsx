@@ -73,7 +73,7 @@ export default definePlugin({
     settingsAboutComponent: settingsAboutComponent,
     patches: [
         {
-            find: ".Messages.GUILD_SETTINGS_AUTOMOD_MESSAGE_FILTER_DESCRIPTION",
+            find: "#{intl::GUILD_SETTINGS_AUTOMOD_MESSAGE_FILTER_DESCRIPTION}",
             replacement: [
                 {
                     match: /\.textBadge.+?}\),/,

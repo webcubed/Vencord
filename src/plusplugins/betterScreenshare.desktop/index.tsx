@@ -29,7 +29,7 @@ import { initScreenshareAudioStore, initScreenshareStore } from "./stores";
 
 export default definePlugin({
     name: "BetterScreenshare",
-    description: "This plugin allows you to further customize your screen sharing.",
+    description: "This plugin allows you to further customize your screen sharing",
     authors: [
         {
             name: "philhk",
@@ -39,7 +39,7 @@ export default definePlugin({
     dependencies: ["PhilsPluginLibrary"],
     patches: [
         {
-            find: "Messages.SCREENSHARE_RELAUNCH",
+            find: "#{intl::SCREENSHARE_RELAUNCH}",
             replacement: {
                 match: /((?:.*)(?<=function) .{0,8}?(?={).)(.{0,10000}Z.getVoiceChannelId\(\).{0,10000}]}\)}\))(})/,
                 replace: "$1return $self.replacedScreenshareModalComponent(function(){$2}, this, arguments)$3"
@@ -49,7 +49,7 @@ export default definePlugin({
     settings: definePluginSettings({
         hideDefaultSettings: {
             type: OptionType.BOOLEAN,
-            description: "Hide Discord screen sharing settings",
+            description: "Hide Discord's screen sharing settings",
             default: true,
         }
     }),

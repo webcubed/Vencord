@@ -14,14 +14,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ */
 
 import { EquicordDevs } from "@utils/constants";
 import definePlugin from "@utils/types";
 
 export default definePlugin({
     name: "UnlimitedAccounts",
-    description: "Increases the amount of accounts you can add.",
+    description: "Removes the maximum accounts limit",
     authors: [EquicordDevs.Balaclava, EquicordDevs.thororen],
     patches: [
         {

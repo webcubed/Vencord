@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+import { getIntlMessage } from "@utils/discord";
 import {
     ModalContent,
     ModalHeader,
@@ -15,7 +16,6 @@ import {
 import { findByPropsLazy } from "@webpack";
 import {
     Button,
-    i18n,
     RestAPI,
     Text,
     useEffect,
@@ -372,7 +372,7 @@ function QrModal(props: ModalProps) {
                     tag="h1"
                     style={{ flexGrow: 1 }}
                 >
-                    {i18n.Messages.USER_SETTINGS_SCAN_QR_CODE}
+                    {getIntlMessage("USER_SETTINGS_SCAN_QR_CODE")}
                 </Text>
             </ModalHeader>
             <ModalContent scrollbarType="none">
@@ -382,7 +382,8 @@ function QrModal(props: ModalProps) {
                         state === LoginStateType.Camera &&
                         !preview?.source &&
                         "modal-filepaste-disabled",
-                        preview?.source && "modal-filepaste-preview"
+                        preview?.source && "modal-filepaste-preview",
+                        preview?.crosses && "modal-filepaste-crosses"
                     )}
                     onClick={() =>
                         state === LoginStateType.Idle && inputRef.current?.click()
@@ -419,10 +420,28 @@ function QrModal(props: ModalProps) {
                 >
                     {preview?.source ? (
                         <div
-                            style={{ width: "100%", height: "100%", position: "relative" }}
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                position: "relative",
+                                ["--scale" as any]: preview.crosses
+                                    ? Math.max(preview.crosses[0].size * 0.9, 1)
+                                    : undefined,
+                                ["--offset-x" as any]: preview.crosses
+                                    ? `${-(preview.crosses.reduce((i, { x }) => i + x, 0) /
+                                        preview.crosses.length -
+                                        50)}%`
+                                    : undefined,
+                                ["--offset-y" as any]: preview.crosses
+                                    ? `${-(preview.crosses.reduce((i, { y }) => i + y, 0) /
+                                        preview.crosses.length -
+                                        50)}%`
+                                    : undefined,
+                            }}
+                            className={cl(preview?.crosses && "preview-crosses")}
                         >
                             {preview.source}
-                            {preview.crosses?.map(({ x, y, rot, size }, i) => (
+                            {preview.crosses?.map(({ x, y, rot, size }) => (
                                 <span
                                     className={cl("preview-cross")}
                                     style={{

@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { DataStore } from "@api/index";
 import { Flex } from "@components/Flex";
@@ -140,7 +140,7 @@ export default definePlugin({
         {
             find: "DefaultCustomizationSections",
             replacement: {
-                match: /(?<=USER_SETTINGS_AVATAR_DECORATION},"decoration"\),)/,
+                match: /(?<=#{intl::USER_SETTINGS_AVATAR_DECORATION}\)},"decoration"\),)/,
                 replace: "$self.ResetCard(),"
             }
         },

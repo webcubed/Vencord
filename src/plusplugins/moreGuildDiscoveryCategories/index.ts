@@ -14,9 +14,9 @@ export default definePlugin({
     description: "Show all guild discovery categories in the sidebar",
     patches: [
         {
-            find: "DISCOVERY_SIDEBAR_CATEGORIES.",
+            find: "#{intl::DISCOVERY_SIDEBAR_CATEGORIES}",
             replacement: {
-                match: /\i\.DISCOVERY_SIDEBAR_CATEGORIES(\.slice\(1\)|\.map\(\i=>\i\.find\(\i=>\i\.categoryId===\i\)\))/g,
+                match: /#{intl::DISCOVERY_SIDEBAR_CATEGORIES}(\.slice\(1\)|\.map\(\i=>\i\.find\(\i=>\i\.categoryId===\i\)\))/g,
                 replace: "this.getAllCategories()",
             },
         },

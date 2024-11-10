@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { classNameFactory, disableStyle, enableStyle } from "@api/Styles";
 import { Devs } from "@utils/constants";
@@ -28,7 +28,7 @@ export default definePlugin({
     },
     patches: [
         {
-            find: ".DISCODO_DISABLED",
+            find: "#{intl::DISCODO_DISABLED}",
             replacement: {
                 match: /.NavItem,{/,
                 replace: "$&onContextMenu:() => $self.onContextMenu(\"guild\"),"
@@ -38,7 +38,7 @@ export default definePlugin({
             find: "friends_tab_no_track",
             replacement:
             {
-                match: /text:\i.\i.Messages.FRIENDS,onClick:/,
+                match: /text:#{intl::FRIENDS},onClick:/,
                 replace: "onContextMenu:() => $self.onContextMenu(\"friend\"), $&"
             }
         }

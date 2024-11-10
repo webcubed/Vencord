@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 // Plugin Imports
 import ColorwaysButton from "./components/ColorwaysButton";
@@ -104,7 +104,7 @@ export default definePlugin({
 
         },
         {
-            find: "Messages.USER_SETTINGS_WITH_BUILD_OVERRIDE.format",
+            find: "#{intl::USER_SETTINGS_WITH_BUILD_OVERRIDE}",
             replacement: {
                 match: /(?<=(\i)\(this,"handleOpenSettingsContextMenu",.{0,100}?openContextMenuLazy.{0,100}?(await Promise\.all[^};]*?\)\)).*?,)(?=\1\(this)/,
                 replace: "(async ()=>$2)(),"
@@ -119,21 +119,21 @@ export default definePlugin({
             },
         },
         {
-            find: "Messages.ACTIVITY_SETTINGS",
+            find: "#{intl::ACTIVITY_SETTINGS}",
             replacement: {
-                match: /\{section:(\i\.\i)\.HEADER,\s*label:(\i)\.\i\.Messages\.APP_SETTINGS/,
+                match: /\{section:(\i\.\i)\.HEADER,\s*label:(\i)#{intl::APP_SETTINGS}/,
                 replace: "...$self.makeSettingsCategories($1),$&"
             }
         },
         {
-            find: "Messages.ACTIVITY_SETTINGS",
+            find: "#{intl::ACTIVITY_SETTINGS}",
             replacement: {
                 match: /(?<=section:(.{0,50})\.DIVIDER\}\))([,;])(?=.{0,200}(\i)\.push.{0,100}label:(\i)\.header)/,
                 replace: (_, sectionTypes, commaOrSemi, elements, element) => `${commaOrSemi} $self.addSettings(${elements}, ${element}, ${sectionTypes}) ${commaOrSemi}`
             }
         },
         {
-            find: "Messages.USER_SETTINGS_ACTIONS_MENU_LABEL",
+            find: "#{intl::USER_SETTINGS_ACTIONS_MENU_LABEL}",
             replacement: {
                 match: /(?<=function\((\i),\i\)\{)(?=let \i=Object.values\(\i.UserSettingsSections\).*?(\i)\.default\.open\()/,
                 replace: "$2.default.open($1);return;"

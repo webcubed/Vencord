@@ -74,7 +74,7 @@ export default definePlugin({
 
     patches: [
         {
-            find: ".NO_SEND_MESSAGES_PERMISSION_PLACEHOLDER:",
+            find: "#{intl::NO_SEND_MESSAGES_PERMISSION_PLACEHOLDER}",
             replacement: {
                 match: /(disableEnterToSubmit:)([^,]{0,100},)/g,
                 replace: "$1$self.settings.store.isEnabled||$2"

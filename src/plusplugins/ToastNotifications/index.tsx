@@ -14,7 +14,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ */
 
 import { definePluginSettings } from "@api/Settings";
 import { makeRange } from "@components/PluginSettings/components";
@@ -69,7 +69,7 @@ export const settings = definePluginSettings({
     },
     opacity: {
         type: OptionType.SLIDER,
-        description: "Opacity of the notification",
+        description: "Opacity of notifications",
         default: 100,
         markers: makeRange(10, 100, 10)
     },
@@ -81,7 +81,7 @@ export const settings = definePluginSettings({
     },
     exampleButton: {
         type: OptionType.COMPONENT,
-        description: "Show an example toast notification.",
+        description: "Show an example toast notification",
         component: () =>
             <Button onClick={showExampleNotification}>
                 Show Example Notification

@@ -20,7 +20,7 @@ const settings = definePluginSettings({
 
 export default definePlugin({
     name: "Platform Emulator",
-    description: "Tricks Discord into thinking you're on e.g. phone.",
+    description: "Tricks Discord into thinking you're online on a different platform",
     authors: [
         {
             id: 526331463709360141n,

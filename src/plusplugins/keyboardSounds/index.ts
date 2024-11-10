@@ -43,7 +43,7 @@ const keydown = (e: KeyboardEvent) => {
 
 export default definePlugin({
     name: "Keyboard Sounds",
-    description: "Adds the Opera GX Keyboard Sounds to Discord",
+    description: "Adds the keyboard sounds from Opera GX to Discord",
     authors: [Devs.HypedDomi],
     start: () => document.addEventListener("keydown", keydown),
     stop: () => document.removeEventListener("keydown", keydown),

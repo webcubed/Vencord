@@ -6,6 +6,6 @@
 
 # Features
 
--   Be able to see the inviter and inviter profile
--   Preview discoverable servers by clicking the server name
+-   Be able to see the inviter and their profile
+-   Preview discoverable servers by clicking on the server name
 -   Be able to see the invite's relative expiration date

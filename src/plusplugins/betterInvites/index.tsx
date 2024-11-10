@@ -6,7 +6,6 @@
 
 import "./style.css";
 
-import { Devs } from "@utils/constants";
 import { openUserProfile } from "@utils/discord";
 import { classes } from "@utils/misc";
 import definePlugin, { StartAt } from "@utils/types";
@@ -42,10 +41,10 @@ export default definePlugin({
     ],
     patches: [
         {
-            find: ".Messages.HUB_INVITE_ANOTHER_SCHOOL_LINK",
+            find: "#{intl::HUB_INVITE_ANOTHER_SCHOOL_LINK}",
             replacement: [
                 {
-                    match: /,(\i)&&(\(.{0,15}\i\.TooltipContainer.+)(\i\.\i\.Messages.GUEST_MEMBERSHIP_EXPLANATION)/,
+                    match: /,(\i)&&(\(.{0,15}\i\.TooltipContainer.+)(#{intl::GUEST_MEMBERSHIP_EXPLANATION})/,
                     replace: ",($1||((!$1)&&arguments[0].invite.expires_at)) && $2$self.RenderTip($1, $3, arguments[0].invite.expires_at)"
                 },
                 {

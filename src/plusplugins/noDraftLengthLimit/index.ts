@@ -13,9 +13,9 @@ export default definePlugin({
     authors: [Devs.Sqaaakoi],
     patches: [
         {
-            find: "MAX_MESSAGE_LENGTH_PREMIUM+500",
+            find: "#{intl::MAX_MESSAGE_LENGTH_PREMIUM}+500",
             replacement: {
-                match: /=[^=]{0,20}MAX_MESSAGE_LENGTH_PREMIUM\+500/,
+                match: /=[^=]{0,20}#{intl::MAX_MESSAGE_LENGTH_PREMIUM}\+500/,
                 replace: "=Infinity"
             }
         }

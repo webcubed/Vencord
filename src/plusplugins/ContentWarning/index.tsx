@@ -124,7 +124,7 @@ export default definePlugin({
 	settings,
 	patches: [
 		{
-			find: ".VOICE_HANGOUT_INVITE?",
+			find: "#{intl::VOICE_HANGOUT_INVITE}",
 			replacement: {
 				match: /(contentRef:\i}=(\i).+?)\(0,(.+]}\)]}\))/,
 				replace: "$1 $self.modify($2, (0, $3)"

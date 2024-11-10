@@ -17,7 +17,7 @@ export default definePlugin({
     description: "Mention someone randomly",
     patches: [
         {
-            find: ".LAUNCHABLE_APPLICATIONS;",
+            find: "#{intl::LAUNCHABLE_APPLICATIONS}",
             replacement: [
                 {
                     match: /&(\i)\(\)\((\i),\i\(\)\.test\)&&(\i)\.push\(\i\(\)\)/g,

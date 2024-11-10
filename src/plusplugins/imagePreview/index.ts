@@ -263,8 +263,10 @@ function loadImagePreview(url: string, sticker: boolean) {
                     fileSize.appendChild(showingSize);
                 }
 
-                preview.appendChild(fileName);
-                preview.appendChild(fileInfo);
+                if (settings.store.fileInformation) {
+                    preview.appendChild(fileName);
+                    preview.appendChild(fileInfo);
+                }
             });
 
             if (loadingSpinner) loadingSpinner.remove();
@@ -287,7 +289,7 @@ function loadImagePreview(url: string, sticker: boolean) {
             }
         });
 
-        currentPreview.addEventListener("mouseout", () => {
+        currentPreviewFile.addEventListener("mouseout", () => {
             if (currentPreview && !isCtrlHeld && shouldKeepPreviewOpen) {
                 deleteCurrentPreview();
                 shouldKeepPreviewOpen = false;
@@ -487,7 +489,7 @@ function removeHoverListeners() {
 
 export default definePlugin({
     name: "ImagePreview",
-    description: "Hover on images, avatars, links and stickers to show a full preview",
+    description: "Hover over images, avatars, links and stickers to show a full preview",
     authors: [EquicordDevs.creations],
     settings: settings,
 

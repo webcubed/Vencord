@@ -10,12 +10,12 @@ import definePlugin from "@utils/types";
 
 export default definePlugin({
     name: "FakeSoundboard",
-    description: "Allows you to use soundboard without nitro! (Vesktop/Web only)",
+    description: "Allows you to use Discord's soundboard, without having Nitro (Vesktop/web only)",
     authors: [Devs.ImLvna],
 
     patches: [
         {
-            find: "SOUNDBOARD_PLAY_SOUND.format",
+            find: "#{intl::SOUNDBOARD_PLAY_SOUND}",
             replacement: [{
                 match: /(?<=premiumDisabled,)(\i)&&!(\i)(?=\))/,
                 replace: "false"
@@ -32,7 +32,7 @@ export default definePlugin({
             }
         },
         {
-            find: "SOUNDBOARD_PLAY_SOUND.format",
+            find: "#{intl::SOUNDBOARD_PLAY_SOUND}",
             replacement: {
                 match: /null==\i\?\i\|\|(\i\(\i\)):\i\(\)/,
                 replace: "$1"

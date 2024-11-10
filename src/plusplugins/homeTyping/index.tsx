@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
@@ -16,7 +16,7 @@ const PrivateChannelSortStore = findStoreLazy("PrivateChannelSortStore") as { ge
 
 export default definePlugin({
     name: "HomeTyping",
-    description: "Changes the home button to a typing indicator if someone in your dms is typing",
+    description: "Shows a typing indicator on the home button when someone is typing in your DMs",
     authors: [Devs.Samwich],
     TypingIcon() {
         return <ThreeDots dotRadius={3} themed={true} />;
@@ -26,7 +26,7 @@ export default definePlugin({
     },
     patches: [
         {
-            find: ".Messages.DISCODO_DISABLED",
+            find: "#{intl::DISCODO_DISABLED}",
             replacement:
                 [
                     {

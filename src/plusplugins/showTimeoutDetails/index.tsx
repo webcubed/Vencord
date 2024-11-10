@@ -9,13 +9,15 @@ import "./styles.css";
 import { definePluginSettings } from "@api/Settings";
 import ErrorBoundary from "@components/ErrorBoundary";
 import { Devs } from "@utils/constants";
+import { canonicalizeMatch } from "@utils/patches";
 import definePlugin, { OptionType } from "@utils/types";
 import { findComponentLazy } from "@webpack";
 
 import TooltipWrapper from "./components/TooltipWrapper";
 import { TimeoutReasonStore } from "./TimeoutReasonStore";
 
-export const CountDown = findComponentLazy(m => m.prototype?.render?.toString().includes(".MAX_AGE_NEVER"));
+const countDownFilter = canonicalizeMatch("#{intl::MAX_AGE_NEVER}");
+export const CountDown = findComponentLazy(m => m.prototype?.render?.toString().includes(countDownFilter));
 
 export const enum DisplayStyle {
     Tooltip = "tooltip",
@@ -43,10 +45,10 @@ export default definePlugin({
 
     patches: [
         {
-            find: ".GUILD_COMMUNICATION_DISABLED_ICON_TOOLTIP_BODY",
+            find: "#{intl::GUILD_COMMUNICATION_DISABLED_ICON_TOOLTIP_BODY}",
             replacement: [
                 {
-                    match: /(\i)\.Tooltip,{(text:.{0,30}\.Messages\.GUILD_COMMUNICATION_DISABLED_ICON_TOOLTIP_BODY)/,
+                    match: /(\i)\.Tooltip,{(text:.{0,30}#{intl::GUILD_COMMUNICATION_DISABLED_ICON_TOOLTIP_BODY}\))/,
                     replace: "$self.TooltipWrapper,{message:arguments[0].message,$2"
                 }
             ]

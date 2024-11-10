@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import "./style.css";
 
@@ -15,23 +15,23 @@ export const ModalRootdiv = LazyComponent(() => Modals.ModalRoot);
 export const settings = definePluginSettings({
     BackgroundColor: {
         type: OptionType.STRING,
-        description: "Hex code of the backgorund. needs #",
+        description: "Hex code of the background color",
         default: "#1a1b26"
     },
     onHomeClick: {
         type: OptionType.BOOLEAN,
-        description: "run when the home button is click while already on the homepage",
+        description: "Run when the home button is clicked while already being on the homepage",
         restartNeeded: true,
         default: true
     },
     text: {
         type: OptionType.STRING,
-        description: "string to display on the idle page",
+        description: "Text to display on the idle page",
         default: ""
     },
     onIdle: {
         type: OptionType.BOOLEAN,
-        description: "activate on idle",
+        description: "Activate on idle",
         default: false
     }
 }
@@ -66,7 +66,7 @@ export default definePlugin({
     description: "Shows a blank page when you go idle",
     patches: [
         {
-            find: ".Messages.DISCODO_DISABLED",
+            find: "#{intl::DISCODO_DISABLED}",
             predicate() {
                 return settings.store.onHomeClick;
             },

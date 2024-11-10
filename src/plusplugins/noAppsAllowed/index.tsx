@@ -1,22 +1,22 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2023 Vendicated and contributors
+ * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import definePlugin from "@utils/types";
 
 export default definePlugin({
-    name: "noAppsAllowed",
-    description: "returns the bot's tag :skulk:",
+    name: "NoAppsAllowed",
+    description: "Returns the bot's tag :skulk:",
     authors: [{ name: "kvba", id: 105170831130234880n }],
 
     patches: [
         {
-            find: ",APP_TAG:\"",
+            find: "#{intl::APP_TAG::hash}\":",
             replacement: {
-                match: /APP_TAG:".*?"/,
-                replace: "APP_TAG:\"BOT\""
+                match: /(#{intl::APP_TAG::hash}"):".*?"/,
+                replace: '$1:"BOT"'
             }
         }
     ],

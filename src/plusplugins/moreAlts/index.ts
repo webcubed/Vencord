@@ -4,13 +4,13 @@ const settings = definePluginSettings({
     amtOfAcounts: {
         default: 10,
         type: OptionType.NUMBER,
-        description: "Amount of alts to allow."
+        description: "The amount of alts to allow."
     },
 });
 
 export default definePlugin({
     name: "MoreAlts",
-    description: "Allows you to have more alts in the account switcher.",
+    description: "Allows you to have more alts in the account switcher",
     authors: [
         {
             id: 253302259696271360n,

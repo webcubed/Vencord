@@ -32,7 +32,7 @@ const path = "/channels/@home";
 
 export default definePlugin({
     name: "Homepage",
-    description: "A new modern overview page of all your Discord activity.",
+    description: "A modern page with an overview of your activity on Discord",
     authors: [Devs.Sqaaakoi],
 
     patches: [

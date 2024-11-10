@@ -1,9 +1,3 @@
-/*
- * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
 
@@ -13,17 +7,15 @@ export default definePlugin({
     authors: [Devs.Kyuuhachi],
 
     patches: [
-        {
-            // Matches twice: the settings menu and the settings context menu
+        { // Matches twice: the settings menu and the settings context menu
             find: '("appearance_settings")',
             replacement: {
                 match: /\("appearance_settings"\)/,
-                replace: "$&||true"
+                replace: '$&||true'
             },
             all: true,
         },
-        {
-            // Make it actually save the setting instead of falling back to dark
+        { // Make it actually save the setting instead of falling back to dark
             find: 'getCurrentConfig({location:"ThemeStore"}).enabled',
             replacement: {
                 match: /getCurrentConfig\(\{location:"ThemeStore"\}\)\.enabled/,

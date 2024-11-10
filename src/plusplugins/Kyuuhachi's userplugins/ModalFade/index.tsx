@@ -8,7 +8,7 @@ import type { StoreApi, UseBoundStore } from "zustand";
 type Modal = {
     Layer?: any,
     instant?: boolean,
-    backdropStyle?: "SUBTLE" | "DARK" | "BLUR",
+    backdropStyle?: "SUBTLE" | "DARK" | "BLUR", "IMMERSIVE",
 };
 
 const { useModalContext, useModalsStore } = proxyLazy(() => Forms as any as {
@@ -20,8 +20,6 @@ const { useModalContext, useModalsStore } = proxyLazy(() => Forms as any as {
 });
 
 const { animated, useSpring, useTransition } = findByPropsLazy("a", "animated", "useTransition");
-// This doesn't seem to be necessary
-// const { default: AppLayer } = findByPropsLazy("AppLayerContainer", "AppLayerProvider");
 
 const ANIMS = {
     SUBTLE: {
@@ -36,6 +34,10 @@ const ANIMS = {
         off: { opacity: 1, filter: "blur(0px)" },
         on: { opacity: 0.7, filter: "blur(8px)" },
     },
+    IMMERSIVE: {
+        off: { opacity: 1 },
+        on: { opacity: 0.7 }
+    }
 };
 
 export default definePlugin({
@@ -52,12 +54,12 @@ export default definePlugin({
             }
         },
         {
-            find: "{})).SUBTLE=\"SUBTLE\"",
+            find: ".SUBTLE=\"SUBTLE\"",
             replacement: {
                 match: /\(0,\i\.useTransition\)*/,
                 replace: "$self.nullTransition"
             }
-        },
+        }
     ],
 
     nullTransition(value: any, args: object) {

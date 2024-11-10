@@ -50,7 +50,7 @@ const getPresend = dictionary => {
 
 export default definePlugin({
     name: "GrammarFix",
-    description: "Automatic punctuation, capitalization, and word replacement.",
+    description: "Automatic punctuation, capitalization and word replacement",
     authors: [EquicordDevs.unstream],
     dependencies: ["MessageEventsAPI"],
     async start() {

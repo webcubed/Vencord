@@ -22,7 +22,7 @@ export default definePlugin({
             inputType: ApplicationCommandInputType.BUILT_IN,
             options: [{
                 name: "user",
-                description: "The user profile you want to view. Leave empty to view your own profile",
+                description: "The user profile you want to view. Leave empty to view your own profile.",
                 required: false,
                 type: ApplicationCommandOptionType.USER
             }],

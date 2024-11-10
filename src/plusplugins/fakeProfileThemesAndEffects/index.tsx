@@ -67,7 +67,7 @@ export default definePlugin({
         },
         // Patches ProfileCustomizationPreview
         {
-            find: ".EDIT_PROFILE_BANNER})",
+            find: "#{intl::EDIT_PROFILE_BANNER}",
             replacement: {
                 match: /:function\(\){return (\i)}.+function \1\((\i)\){/,
                 replace: "$&$self.profilePreviewHook($2);"
