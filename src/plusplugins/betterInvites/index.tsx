@@ -41,7 +41,7 @@ export default definePlugin({
     ],
     patches: [
         {
-            find: ".Messages.HUB_INVITE_ANOTHER_SCHOOL_LINK",
+            find: "#{intl::HUB_INVITE_ANOTHER_SCHOOL_LINK}",
             replacement: [
                 {
                     match: /,(\i)&&(\(.{0,15}\i\.TooltipContainer.+)(\i\.\i\.Messages.GUEST_MEMBERSHIP_EXPLANATION)/,

@@ -21,7 +21,7 @@ export default definePlugin({
         }
     },
     {
-        find: ".Messages.VIEW_ALL_ROLES,",
+        find: "#{intl::VIEW_ALL_ROLES},",
         group: true,
         replacement: [{
             match: /(?<=.useState\(null\),)(\i=\i\.useMemo.{0,300})(return null!=\i\?(\i)\.slice.{0,30}\i,\i\])\)/,

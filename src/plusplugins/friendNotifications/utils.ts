@@ -39,7 +39,7 @@ export async function init() {
             DataStore.get(friendsPreviousStatusesKey()) || new Map(),
         ]);
 
-    storeValues2.forEach((v, k) => trackingStatusText.set(k, v));
+    storeValues2?.forEach((v, k) => trackingStatusText.set(k, v));
 
     const presenceStoreState: PresenceStoreState = PresenceStore.getState();
     const statuses = presenceStoreState.clientStatuses;

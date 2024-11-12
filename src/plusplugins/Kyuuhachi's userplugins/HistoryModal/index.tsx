@@ -34,7 +34,7 @@ export default definePlugin({
 
     patches: [
         {
-            find: "Messages.MESSAGE_EDITED,\")\"",
+            find: "#{intl::MESSAGE_EDITED},\")\"",
             replacement: [
                 {
                     match: /"span",\{/,

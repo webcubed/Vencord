@@ -125,7 +125,7 @@ export default definePlugin({
 
         // User Popout Modal - above Notes
         {
-            find: ".Messages.MUTUAL_GUILDS_WITH_END_COUNT", // Lazy-loaded
+            find: "#{intl::MUTUAL_GUILDS_WITH_END_COUNT}", // Lazy-loaded
             replacement: {
                 match: /\.body.+?displayProfile:\i}\),/,
                 // paste my fancy custom button below the username

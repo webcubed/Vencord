@@ -26,7 +26,7 @@ export default definePlugin({
     authors: [Devs.Sqaaakoi],
     patches: [
         {
-            find: "Messages.JOIN_SERVER_INVITE_EXAMPLES_HEADER",
+            find: "#{intl::JOIN_SERVER_INVITE_EXAMPLES_HEADER}",
             replacement: [
                 {
                     match: /(\[(\i),\i\]=\i\.useState\(""\).{0,2000})\i\.FormItem,{title:\i.{0,10}\.Messages\.JOIN_SERVER_INVITE_EXAMPLES_HEADER.{0,200}?}\),/,

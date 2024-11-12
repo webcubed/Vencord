@@ -30,7 +30,7 @@ export default definePlugin({
         }
     ],
     patches: [{
-        find: "Messages.ACCOUNT_A11Y_LABEL",
+        find: "#{intl::ACCOUNT_A11Y_LABEL}",
         replacement: {
             match: /((?:.*)(?<=function) .{0,8}?(?={).)(.{0,1000}ACCOUNT_PANEL.{0,1000}\)]}\))(})/,
             replace: "$1return $self.replacedUserPanelComponent(function(){$2}, this, arguments)$3"

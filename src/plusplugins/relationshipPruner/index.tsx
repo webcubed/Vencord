@@ -38,7 +38,7 @@ export default definePlugin({
             find: "friends_tab_no_track",
             replacement:
             {
-                match: /text:\i.\i.Messages.FRIENDS,onClick:/,
+                match: /text:\i.\i.#{intl::FRIENDS},onClick:/,
                 replace: "onContextMenu:() => $self.onContextMenu(\"friend\"), $&"
             }
         }

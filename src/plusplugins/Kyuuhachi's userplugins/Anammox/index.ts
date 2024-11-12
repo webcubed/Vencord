@@ -71,10 +71,10 @@ export default definePlugin({
             predicate: () => settings.store.dms,
         },
         { // Settings, sidebar
-            find: "Messages.BILLING_SETTINGS",
+            find: "#{intl::BILLING_SETTINGS}",
             replacement: [
                 {
-                    match: /(?<=Messages.BILLING_SETTINGS,)/,
+                    match: /(?<=#{intl::BILLING_SETTINGS},)/,
                     replace: "capitalism:true,"
                 },
                 {
