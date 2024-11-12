@@ -148,23 +148,23 @@ const settings = definePluginSettings({
     enableProfileEffects: {
         description: "Allows you to use profile effects",
         type: OptionType.BOOLEAN,
-        default: false
+        default: true
     },
     enableProfileThemes: {
         description: "Allows you to use profile themes",
         type: OptionType.BOOLEAN,
-        default: false
+        default: true
     },
     enableCustomBadges: {
         description: "Allows you to use custom badges",
         type: OptionType.BOOLEAN,
-        default: false,
+        default: true,
         restartNeeded: true
     },
     enableAvatarDecorations: {
         description: "Allows you to use avatar decorations",
         type: OptionType.BOOLEAN,
-        default: false
+        default: true
     },
     showCustomBadgesinmessage: {
         description: "Show custom badges in messages",
@@ -176,8 +176,8 @@ const settings = definePluginSettings({
         description: "Banner/avatar to use if both a Nitro and fakeProfile banner/avatar are present",
         type: OptionType.SELECT,
         options: [
-            { label: "Nitro", value: true, default: true },
-            { label: "fakeProfile", value: false },
+            { label: "Nitro", value: false },
+            { label: "fakeProfile", value: true, default: true },
         ]
     },
     voiceBackground: {
