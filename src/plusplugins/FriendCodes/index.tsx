@@ -10,11 +10,11 @@ import FriendCodesPanel from "./components/FriendCodesPanel";
 
 export default definePlugin({
     name: "FriendCodes",
-    description: "Generate friend codes/invites to easily add friends",
+    description: "Generate FriendCodes to easily add friends",
     authors: [{ name: "domi.btnr", id: 354191516979429376n }],
     patches: [
         {
-            find: "#{intl::ADD_FRIEND}}),(",
+            find: "#{intl::ADD_FRIEND})}),(",
             replacement: {
                 match: /\.Fragment[^]*?children:\[[^]*?}\)/,
                 replace: "$&,$self.FriendCodesPanel"

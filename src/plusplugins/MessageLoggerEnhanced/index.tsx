@@ -144,11 +144,11 @@ async function messageUpdateHandler(payload: MessageUpdatePayload) {
         if (cachedMessage != null && payload.message?.content != null && cachedMessage.content !== payload.message?.content) {
             message = {
                 ...cachedMessage,
-                content: payload.message.content,
+                content: payload.message?.content,
                 editHistory: [
                     ...(cachedMessage.editHistory ?? []),
                     {
-                        content: cachedMessage.content,
+                        content: cachedMessage?.content,
                         timestamp: (new Date()).toISOString()
                     }
                 ]
