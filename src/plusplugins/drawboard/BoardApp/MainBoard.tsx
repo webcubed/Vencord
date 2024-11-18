@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { InfoIcon, PlusIcon } from "@components/Icons";
 import { Button, ChannelStore, React, ScrollerThin, SelectedChannelStore, Tooltip, UploadHandler } from "@webpack/common";
