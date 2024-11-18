@@ -1,60 +1,138 @@
-/*
- * Vencord, a modification for Discord's desktop app
- * Copyright (c) 2022 Vendicated and contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
-
-import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
+import { Settings } from "Vencord";
 
-const sounds = {
-    click1: new Audio("https://github.com/HypedDomi/Vencord-Plugins/raw/main/Keyboard-Sounds/sounds/click1.wav"),
-    click2: new Audio("https://github.com/HypedDomi/Vencord-Plugins/raw/main/Keyboard-Sounds/sounds/click2.wav"),
-    click3: new Audio("https://github.com/HypedDomi/Vencord-Plugins/raw/main/Keyboard-Sounds/sounds/click3.wav"),
-    backspace: new Audio("https://github.com/HypedDomi/Vencord-Plugins/raw/main/Keyboard-Sounds/sounds/backspace.wav")
+const packs = {
+    "OperaGX": {
+        click1: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/OperaGX/click1.wav"),
+        click2: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/OperaGX/click2.wav"),
+        click3: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/OperaGX/click3.wav"),
+        backspace: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/OperaGX/backspace.wav"),
+        allowedKeys: []
+    },
+    "osu": {
+        caps: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/osu/key-caps.mp3"),
+        enter: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/osu/key-confirm.mp3"),
+        backspace: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/osu/key-delete.mp3"),
+        arrow: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/osu/key-movement.mp3"),
+        click1: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/osu/key-press-1.mp3"),
+        click2: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/osu/key-press-2.mp3"),
+        click3: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/osu/key-press-3.mp3"),
+        click4: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/osu/key-press-4.mp3"),
+        allowedKeys: [
+            "CapsLock",
+            "ArrowUp",
+            "ArrowRight",
+            "ArrowLeft",
+            "ArrowDown"
+        ]
+    }
 };
 
-const ignoredKeys = ["CapsLock", "ShiftLeft", "ShiftRight", "ControlLeft", "ControlRight", "AltLeft", "AltRight", "MetaLeft", "MetaRight", "ArrowUp", "ArrowRight", "ArrowLeft", "ArrowDown", "MediaPlayPause", "MediaStop", "MediaTrackNext", "MediaTrackPrevious", "MediaSelect", "MediaEject", "MediaVolumeUp", "MediaVolumeDown", "AudioVolumeUp", "AudioVolumeDown"];
+const ignoredKeys = [
+    "CapsLock",
+    "ShiftLeft",
+    "ShiftRight",
+    "ControlLeft",
+    "ControlRight",
+    "AltLeft",
+    "AltRight",
+    "MetaLeft",
+    "MetaRight",
+    "ArrowUp",
+    "ArrowRight",
+    "ArrowLeft",
+    "ArrowDown",
+    "MediaPlayPause",
+    "MediaStop",
+    "MediaTrackNext",
+    "MediaTrackPrevious",
+    "MediaSelect",
+    "MediaEject",
+    "MediaVolumeUp",
+    "MediaVolumeDown",
+    "AudioVolumeUp",
+    "AudioVolumeDown"
+];
+
+const getActiveSoundPack = () => Settings.plugins.KeyboardSounds.pack;
 
 const keydown = (e: KeyboardEvent) => {
-    if (ignoredKeys.includes(e.code)) return;
-    for (const sound of Object.values(sounds)) sound.pause();
-    if (e.code === "Backspace") {
-        sounds.backspace.currentTime = 0;
-        sounds.backspace.play();
-    } else {
-        const click = sounds[`click${Math.floor(Math.random() * 3) + 1}`];
-        click.currentTime = 0;
-        click.play();
+    const currentPack = packs[getActiveSoundPack()];
+    if (ignoredKeys.includes(e.code) && !currentPack.allowedKeys.includes(e.code)) return;
+
+    for (const sound of Object.values(currentPack))
+        if (sound instanceof Audio) sound.pause();
+
+    switch (e.code) {
+        case "Enter":
+            currentPack.enter.currentTime = 0;
+            currentPack.enter.play();
+            break;
+        case "Backspace":
+            currentPack.backspace.currentTime = 0;
+            currentPack.backspace.play();
+            break;
+        case "CapsLock":
+            currentPack.caps.currentTime = 0;
+            currentPack.caps.play();
+            break;
+        case "ArrowUp":
+        case "ArrowRight":
+        case "ArrowLeft":
+        case "ArrowDown":
+            currentPack.arrow.currentTime = 0;
+            currentPack.arrow.play();
+            break;
+        default:
+            const clickSoundsCount = Object.keys(currentPack).filter(key => key.startsWith("click")).length;
+            const click = currentPack[`click${Math.floor(Math.random() * clickSoundsCount) + 1}`];
+            click.currentTime = 0;
+            click.play();
+            break;
     }
 };
 
 export default definePlugin({
-    name: "Keyboard Sounds",
+    name: "KeyboardSounds",
     description: "Adds the keyboard sounds from Opera GX to Discord",
-    authors: [Devs.HypedDomi],
-    start: () => document.addEventListener("keydown", keydown),
+    authors: [{ name: "domi.btnr", id: 354191516979429376n }],
+    start: () => {
+        const volume = Settings.plugins.KeyboardSounds.volume;
+        const currentPack = packs[getActiveSoundPack()];
+        for (const sound of Object.values(currentPack))
+            if (sound instanceof Audio) sound.volume = volume / 100;
+        document.addEventListener("keydown", keydown);
+    },
     stop: () => document.removeEventListener("keydown", keydown),
     options: {
+        pack: {
+            description: "Select the sound pack you want to use",
+            type: OptionType.SELECT,
+            options: Object.keys(packs).map((pack, i) => {
+                return {
+                    label: pack,
+                    value: pack,
+                    default: i === 0
+                }
+            }),
+            onChange: () => {
+                const volume = Settings.plugins.KeyboardSounds.volume;
+                const currentPack = packs[getActiveSoundPack()];
+                for (const sound of Object.values(currentPack))
+                    if (sound instanceof Audio) sound.volume = volume / 100;
+            }
+        },
         volume: {
             description: "Volume",
             type: OptionType.SLIDER,
-            markers: [0, 100],
+            markers: [0, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
             stickToMarkers: false,
             default: 100,
-            onChange: value => { for (const sound of Object.values(sounds)) sound.volume = value / 100; }
+            onChange: value => {
+                const currentPack = packs[getActiveSoundPack()];
+                for (const sound of Object.values(currentPack))
+                    if (sound instanceof Audio) sound.volume = value / 100;
+            }
         }
     }
 });
