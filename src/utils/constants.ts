@@ -858,7 +858,7 @@ export const PlusMts = /* #__PURE__*/ Object.freeze({
     webcubed: {
         name: "webcubed",
         id: 853658523786412063n
-    }
+    },
     jamesbt365: {
         name: "jamesbt365",
         id: 158567567487795200n,
