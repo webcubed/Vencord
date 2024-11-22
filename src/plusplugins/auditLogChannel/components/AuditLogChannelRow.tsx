@@ -2,12 +2,11 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
 import { LogIcon } from "@components/Icons";
-import { getIntlMessage } from "@utils/discord";
 import { findByPropsLazy, findComponentByCodeLazy } from "@webpack";
-import { NavigationRouter } from "@webpack/common";
+import { i18n, NavigationRouter } from "@webpack/common";
 import { Guild } from "discord-types/general";
 
 const ChannelRow = findComponentByCodeLazy(".basicChannelRowLink,");
@@ -17,7 +16,7 @@ export default function AuditLogChannelRow(props: { guild: Guild, selected: bool
     return <ChannelRow
         id={`audit-log-${props.guild.id}`}
         renderIcon={(className: string) => <LogIcon className={className} />}
-        text={getIntlMessage("AUDIT_LOG")}
+        text={i18n.Messages.AUDIT_LOG}
         selected={props.selected}
         showUnread={false}
         onClick={() => {

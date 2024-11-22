@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
 import { DataStore, FluxDispatcher, FluxEvents, openModal } from ".";
 import { ColorwayCSS } from "./colorwaysAPI";
@@ -24,13 +24,13 @@ export function sendColorway(obj: ColorwayObject) {
         active: obj,
         boundKey
     }));
-}
+};
 export function requestManagerRole() {
     socket?.send(JSON.stringify({
         type: "complication:manager-role:request",
         boundKey
     }));
-}
+};
 export function updateRemoteSources() {
     DataStore.getMany([
         "colorwaySourceFiles",
@@ -58,12 +58,12 @@ export function restartWS() {
 }
 
 export function isWSOpen() {
-    return Boolean(socket && (socket.readyState === socket.OPEN));
+    return Boolean(socket && (socket.readyState == socket.OPEN));
 }
 
 export function connect(doAutoconnect = true, autoconnectTimeout = 3000) {
-    if (socket && socket.readyState === socket.OPEN) return;
-    const ws: WebSocket = socket = new WebSocket("ws://localhost:6124");
+    if (socket && socket.readyState == socket.OPEN) return;
+    const ws: WebSocket = socket = new WebSocket('ws://localhost:6124');
 
     let hasErrored = false;
 
@@ -100,7 +100,7 @@ export function connect(doAutoconnect = true, autoconnectTimeout = 3000) {
                         });
 
                         DataStore.get("colorwaysPreset").then((colorwaysPreset: string) => {
-                            if (colorwaysPreset === "default") {
+                            if (colorwaysPreset == "default") {
                                 ColorwayCSS.set(generateCss(
                                     data.active.colors,
                                     true,
@@ -133,7 +133,7 @@ export function connect(doAutoconnect = true, autoconnectTimeout = 3000) {
                     DataStore.get("colorwaysBoundManagers").then((boundManagers: { [managerKey: string]: string; }[]) => {
                         if (data.MID) {
                             const boundSearch = boundManagers.filter(boundManager => {
-                                if (Object.keys(boundManager)[0] === data.MID) return boundManager;
+                                if (Object.keys(boundManager)[0] == data.MID) return boundManager;
                             });
                             if (boundSearch.length) {
                                 boundKey = boundSearch[0];

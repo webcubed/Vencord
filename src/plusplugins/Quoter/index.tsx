@@ -1,21 +1,15 @@
-/*
- * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
-import { findGroupChildrenByChildId, NavContextMenuPatchCallback } from "@api/ContextMenu";
+import { addContextMenuPatch, findGroupChildrenByChildId, NavContextMenuPatchCallback, removeContextMenuPatch } from "@api/ContextMenu";
 import { Devs } from "@utils/constants";
 import { getCurrentChannel } from "@utils/discord";
 import { ModalCloseButton, ModalContent, ModalHeader, ModalProps, ModalRoot, ModalSize, openModal } from "@utils/modal";
 import definePlugin from "@utils/types";
-import { Button, Menu, Select, Switch, Text, UploadHandler, useEffect, useState } from "@webpack/common";
+import { Button, Menu, Switch, Text, UploadHandler, useEffect, useState, Select } from "@webpack/common";
 import { Message } from "discord-types/general";
-
 import { QuoteIcon } from "./components";
-import { canvasToBlob, fetchImageAsBlob, FixUpQuote, wrapText } from "./utils";
+import { wrapText, canvasToBlob, FixUpQuote, fetchImageAsBlob} from "./utils";
 
-enum ImageStyle {
+enum ImageStyle
+{
     inspirational
 }
 
@@ -41,7 +35,7 @@ const messagePatch: NavContextMenuPatchCallback = (children, { message }) => {
 
 let recentmessage: Message;
 let grayscale;
-let setStyle: ImageStyle = ImageStyle.inspirational;
+let setStyle : ImageStyle = ImageStyle.inspirational;
 
 export default definePlugin({
     name: "Quoter",
@@ -58,7 +52,7 @@ function sizeUpgrade(url) {
     return u.toString();
 }
 
-const preparingSentence: string[] = [];
+let preparingSentence: string[] = [];
 const lines: string[] = [];
 
 async function createQuoteImage(avatarUrl: string, name: string, quoteOld: string, grayScale: boolean): Promise<Blob> {
@@ -70,7 +64,8 @@ async function createQuoteImage(avatarUrl: string, name: string, quoteOld: strin
         throw new Error("Cant get 2d rendering context :(");
     }
 
-    switch (setStyle) {
+    switch(setStyle)
+    {
         case ImageStyle.inspirational:
 
             const cardWidth = 1200;
@@ -102,7 +97,8 @@ async function createQuoteImage(avatarUrl: string, name: string, quoteOld: strin
 
             ctx.drawImage(avatar, 0, 0, cardHeight, cardHeight);
 
-            if (grayScale) {
+            if (grayScale)
+            {
                 ctx.globalCompositeOperation = "saturation";
                 ctx.fillStyle = "#fff";
                 ctx.fillRect(0, 0, cardWidth, cardHeight);
@@ -131,7 +127,8 @@ async function createQuoteImage(avatarUrl: string, name: string, quoteOld: strin
     }
 }
 
-function registerStyleChange(style) {
+function registerStyleChange(style)
+{
     setStyle = style;
     GeneratePreview();
 }
@@ -154,14 +151,12 @@ function QuoteModal(props: ModalProps) {
                 <img src={""} id={"quoterPreview"} style={{ borderRadius: "20px", width: "100%" }}></img>
                 <br></br><br></br>
                 <Switch value={gray} onChange={setGray}>Grayscale</Switch>
-                <Select look={1}
-                    options={Object.keys(ImageStyle).filter(key => isNaN(parseInt(key, 10))).map(key => ({
-                        label: key.charAt(0).toUpperCase() + key.slice(1),
-                        value: ImageStyle[key as keyof typeof ImageStyle]
-                    }))}
-                    select={v => registerStyleChange(v)} isSelected={v => v === setStyle}
+                <Select look={1} 
+                    options={Object.keys(ImageStyle).filter(key => isNaN(parseInt(key, 10))).map(key => ({ label: key.charAt(0).toUpperCase() + key.slice(1), 
+                    value: ImageStyle[key as keyof typeof ImageStyle] }))} 
+                    select={v => registerStyleChange(v)} isSelected={v => v == setStyle} 
                     serialize={v => v}></Select>
-                <br />
+                <br/>
                 <Button color={Button.Colors.BRAND_NEW} size={Button.Sizes.SMALL} onClick={() => Export()} style={{ display: "inline-block", marginRight: "5px" }}>Export</Button>
                 <Button color={Button.Colors.BRAND_NEW} size={Button.Sizes.SMALL} onClick={() => SendInChat(props.onClose)} style={{ display: "inline-block" }}>Send</Button>
             </ModalContent>

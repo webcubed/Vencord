@@ -6,12 +6,12 @@
 
 import { addDecoration, removeDecoration } from "@api/MessageDecorations";
 import { Devs, EquicordDevs } from "@utils/constants";
-import { isEquicordPluginDev, isPluginDev, isPlusMt,isPlusPluginDev, isSuncordPluginDev } from "@utils/misc";
+import { isPluginDev, isSuncordPluginDev, isEquicordPluginDev, isPlusPluginDev, isPlusMt } from "@utils/misc";
 import definePlugin from "@utils/types";
 import { findByPropsLazy, findComponentByCodeLazy } from "@webpack";
 import badges from "plugins/_api/badges";
 const roleIconClassName = findByPropsLazy("roleIcon", "separator").roleIcon;
-const RoleIconComponent = findComponentByCodeLazy(".Messages.ROLE_ICON_ALT_TEXT");
+const RoleIconComponent = findComponentByCodeLazy("#{intl::ROLE_ICON_ALT_TEXT}");
 import "./styles.css";
 
 import { User } from "discord-types/general";
@@ -201,7 +201,7 @@ function ChatBadges({ author }: { author: User; }) {
 export default definePlugin({
     name: "ShowBadgesInChat",
     authors: [Devs.Inbestigator, EquicordDevs.KrystalSkull],
-    description: "Show the message author's badges beside their name in the chat",
+    description: "Show a message author's badges beside their name in the chat",
     dependencies: ["MessageDecorationsAPI"],
     settings,
     start: () => {

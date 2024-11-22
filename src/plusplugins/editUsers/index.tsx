@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
 import { addContextMenuPatch, NavContextMenuPatchCallback, removeContextMenuPatch } from "@api/ContextMenu";
 import { DataStore } from "@api/index";
@@ -97,7 +97,7 @@ function editUserPane(user: ClientUser, props: ModalProps) {
 
 export default definePlugin({
     name: "[WIP] EditUsers",
-    description: "Adds a button to edit users.",
+    description: "Adds a button to edit users",
     authors: [Devs.ImLvna],
 
     patches: [

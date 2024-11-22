@@ -17,6 +17,7 @@
 */
 
 import { definePluginSettings } from "@api/Settings";
+import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
 
 import { addSettingsPanelButton, Emitter, removeSettingsPanelButton, ScreenshareSettingsIcon } from "../philsPluginLibrary";
@@ -28,7 +29,7 @@ import { initScreenshareAudioStore, initScreenshareStore } from "./stores";
 
 export default definePlugin({
     name: "BetterScreenshare",
-    description: "This plugin allows you to further customize your screen sharing.",
+    description: "This plugin allows you to further customize your screen sharing",
     authors: [
         {
             name: "philhk",
@@ -48,7 +49,7 @@ export default definePlugin({
     settings: definePluginSettings({
         hideDefaultSettings: {
             type: OptionType.BOOLEAN,
-            description: "Hide Discord screen sharing settings",
+            description: "Hide Discord's screen sharing settings",
             default: true,
         }
     }),

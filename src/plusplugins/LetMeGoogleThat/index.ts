@@ -39,7 +39,7 @@ export default definePlugin({
 
         execute(args) {
             const query = encodeURIComponent(args[0].value);
-            const link = "https://letmegooglethat.com/?q=" + query;
+            let link = "https://letmegooglethat.com/?q=" + query;
             return {
                 content: link
             };

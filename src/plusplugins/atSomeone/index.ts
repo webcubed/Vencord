@@ -17,7 +17,7 @@ export default definePlugin({
     description: "Mention someone randomly",
     patches: [
         {
-            find: ".LAUNCHABLE_APPLICATIONS;",
+            find: "#{intl::LAUNCHABLE_APPLICATIONS}",
             replacement: [
                 {
                     match: /&(\i)\(\)\((\i),\i\(\)\.test\)&&(\i)\.push\(\i\(\)\)/g,
@@ -46,7 +46,7 @@ export default definePlugin({
 
 const randomUser = () => {
     const guildId = SelectedGuildStore.getGuildId();
-    if (guildId == null) {
+    if (guildId === null) {
         const dmUsers = ChannelStore.getChannel(SelectedChannelStore.getChannelId()).recipients;
         return dmUsers[~~(dmUsers.length * Math.random())];
     }

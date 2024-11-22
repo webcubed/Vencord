@@ -2,11 +2,12 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
-import { DataStore, openModal, ReactNode, useEffect, useState } from "../../";
-import { StoreItem } from "../../types";
+import { DataStore, ReactNode, useEffect, useState, openModal } from "../../";
 import { DeleteIcon, DownloadIcon, PalleteIcon } from "../Icons";
+
+import { StoreItem } from "../../types";
 import Selector from "../Selector";
 
 export default function ({
@@ -49,7 +50,7 @@ export default function ({
                 className="colorwayTextBox"
                 placeholder="Search for sources..."
                 value={searchValue}
-                onChange={e => setSearchValue(e.currentTarget.value)}
+                onChange={(e) => setSearchValue(e.currentTarget.value)}
             />
             <button
                 className="colorwaysPillButton"
@@ -89,7 +90,7 @@ export default function ({
         </div>
         <div className="colorwaysSettings-sourceScroller">
             {storeObject.map((item: StoreItem) =>
-                item.name.toLowerCase().includes(searchValue.toLowerCase()) ? <div className={"colorwaysSettings-colorwaySource"} style={{ flexDirection: "column", padding: "16px", alignItems: "start" }}>
+                item.name.toLowerCase().includes(searchValue.toLowerCase()) ? <div className={`colorwaysSettings-colorwaySource`} style={{ flexDirection: "column", padding: "16px", alignItems: "start" }}>
                     <div style={{ gap: ".5rem", display: "flex", marginBottom: "8px", flexDirection: "column" }}>
                         <span className="colorwaysSettings-colorwaySourceLabelHeader">
                             {item.name}
@@ -125,7 +126,7 @@ export default function ({
                         <button
                             className="colorwaysPillButton colorwaysPillButton-onSurface"
                             onClick={async () => {
-                                openModal(props => <div className={`colorwaysModal ${props.transitionState === 2 ? "closing" : ""} ${props.transitionState === 4 ? "hidden" : ""}`} data-theme={theme}>
+                                openModal(props => <div className={`colorwaysModal ${props.transitionState == 2 ? "closing" : ""} ${props.transitionState == 4 ? "hidden" : ""}`} data-theme={theme}>
                                     <h2 className="colorwaysModalHeader">
                                         Previewing colorways for {item.name}
                                     </h2>

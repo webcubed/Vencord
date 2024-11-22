@@ -5,7 +5,7 @@
  */
 
 import { classNameFactory } from "@api/Styles";
-import { getIntlMessage,getUniqueUsername } from "@utils/discord";
+import { getIntlMessage, getUniqueUsername } from "@utils/discord";
 import { classes } from "@utils/misc";
 import { findByPropsLazy, findComponentByCodeLazy } from "@webpack";
 import { Avatar, ChannelStore, ContextMenuApi, Dots, GuildStore, PresenceStore, ReadStateStore, Text, TypingStore, useDrag, useDrop, useRef, UserStore, useStateFromStores } from "@webpack/common";

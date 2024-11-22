@@ -11,7 +11,7 @@ type IconProps = {
     tooltip?: string,
     paths: { fill: string, path: string }[]
     viewBox?: string
-};
+}
 
 function Icon(iconProps: IconProps) {
     return (

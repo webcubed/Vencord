@@ -25,7 +25,7 @@ import { openContributorModal } from "@components/PluginSettings/ContributorModa
 import { Devs } from "@utils/constants";
 import { Logger } from "@utils/Logger";
 import { Margins } from "@utils/margins";
-import { isEquicordPluginDev, isPluginDev, isPlusMt,isPlusPluginDev, isSuncordPluginDev } from "@utils/misc";
+import { isPluginDev, isSuncordPluginDev, isEquicordPluginDev, isPlusPluginDev, isPlusMt } from "@utils/misc";
 import { closeModal, Modals, openModal } from "@utils/modal";
 import definePlugin from "@utils/types";
 import { Forms, Toasts, UserStore } from "@webpack/common";
@@ -34,8 +34,8 @@ import { User } from "discord-types/general";
 const CONTRIBUTOR_BADGE = "https://vencord.dev/assets/favicon.png";
 const SUNCORD_CONTRIBUTOR_BADGE = "https://raw.githubusercontent.com/verticalsync/Suncord/main/src/assets/icon.png";
 const EQUICORD_CONTRIBUTOR_BADGE = "https://i.imgur.com/UpcDwX0.png";
-const PLUS_CONTRIBUTOR_BADGE = "https://vencord.dev/assets/favicon.png"; // Help, I need a custom thingy
-const PLUS_MAINTAINER_BADGE = "https://vencord.dev/assets/favicon.png"; // Will be the same icon as above
+const PLUS_CONTRIBUTOR_BADGE = "https://vencord.dev/assets/favicon.png";  // Help, I need a custom thingy
+const PLUS_MAINTAINER_BADGE = "https://vencord.dev/assets/favicon.png";  // Will be the same icon as above
 
 const ContributorBadge: ProfileBadge = {
     description: "Vencord Contributor",

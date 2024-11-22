@@ -1,9 +1,3 @@
-/*
- * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
 import "./style.css";
 
 import { definePluginSettings } from "@api/Settings";
@@ -101,7 +95,7 @@ export default definePlugin({
             predicate: () => settings.store.onLink,
         },
         {
-            find: "Messages.REPLY_QUOTE_MESSAGE_NOT_LOADED",
+            find: "#{intl::REPLY_QUOTE_MESSAGE_NOT_LOADED}",
             replacement: {
                 // Should match two places
                 match: /(\i\.Clickable),\{/g,
@@ -110,7 +104,7 @@ export default definePlugin({
             predicate: () => settings.store.onReply,
         },
         {
-            find: "Messages.MESSAGE_FORWARDED}",
+            find: "#{intl::MESSAGE_FORWARDED}",
             replacement: {
                 match: /(\i\.Clickable),\{/,
                 replace: "$self.ForwardTooltip,{Component:$1,vcProps:arguments[0],"
@@ -135,7 +129,7 @@ export default definePlugin({
 });
 
 function withTooltip(Component, props, messageId, channelId) {
-    if (!messageId) return <Component {...props} />;
+    if(!messageId) return <Component {...props} />;
     return <Tooltip
         tooltipClassName="c98-message-link-tooltip"
         text={
@@ -156,10 +150,10 @@ function MessagePreview({ channelId, messageId }) {
     const message = useMessage(channelId, messageId);
     const rawCompact = MessageDisplayCompact.useSetting();
 
-    const compact = settings.store.display === "compact" ? true : settings.store.display === "cozy" ? false : rawCompact;
+    const compact = settings.store.display == "compact" ? true : settings.store.display == "cozy" ? false : rawCompact;
 
     // TODO handle load failure
-    if (!message) {
+    if(!message) {
         return <Spinner type={Spinner.Type.PULSING_ELLIPSIS} />;
     }
 
@@ -179,7 +173,7 @@ function useMessage(channelId, messageId) {
     );
     const [message, setMessage] = useState(cachedMessage);
     useEffect(() => {
-        if (message == null)
+        if(message == null)
             (async () => {
                 const res = await RestAPI.get({
                     url: Constants.Endpoints.MESSAGES(channelId),

@@ -2,14 +2,16 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
-import { DataStore, FluxDispatcher, FluxEvents, openModal, PluginProps,useEffect, useState } from "..";
+import { PalleteIcon } from "./Icons";
+
 import { getAutoPresets } from "../css";
 import { ColorwayObject } from "../types";
-import { PalleteIcon } from "./Icons";
-import ListItem from "./ListItem";
 import Selector from "./MainModal";
+import { DataStore, useEffect, useState, FluxDispatcher, FluxEvents, openModal, PluginProps, useRef } from "..";
+import Tooltip from "./Tooltip";
+import ListItem from "./ListItem";
 
 export default function () {
     const [activeColorway, setActiveColorway] = useState<string>("None");
@@ -40,15 +42,15 @@ export default function () {
         {({ onMouseEnter, onMouseLeave, isActive, onClick }) => {
             return <div
                 className="ColorwaySelectorBtn"
-                onMouseEnter={async e => {
+                onMouseEnter={async (e) => {
                     onMouseEnter(e);
                     setActiveColorway((await DataStore.get("activeColorwayObject") as ColorwayObject).id || "None");
                     setAutoPreset(await DataStore.get("activeAutoPreset") as string);
                 }}
-                onMouseLeave={e => {
+                onMouseLeave={(e) => {
                     onMouseLeave(e);
                 }}
-                onClick={e => {
+                onClick={(e) => {
                     onClick(e);
                     isActive(false);
                     openModal((props: any) => <Selector modalProps={props} />);

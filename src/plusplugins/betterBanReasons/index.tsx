@@ -12,7 +12,6 @@ import { getIntlMessage } from "@utils/discord";
 import definePlugin, { OptionType } from "@utils/types";
 import { Button, Forms, TextInput } from "@webpack/common";
 
-
 function ReasonsComponent() {
     const { reasons } = settings.use(["reasons"]);
 
@@ -74,9 +73,9 @@ export default definePlugin({
     authors: [Devs.Inbestigator],
     patches: [
         {
-            find: "Messages.BAN_MULTIPLE_CONFIRM_TITLE",
+            find: "#{intl::BAN_MULTIPLE_CONFIRM_TITLE}",
             replacement: [{
-                match: /\[\{name:\i\.\i\.Messages\.BAN_REASON_OPTION_SPAM_ACCOUNT.+?\}\]/,
+                match: /\[\{name:\i\.\i\.string\(\i\.\i#{intl::BAN_REASON_OPTION_SPAM_ACCOUNT}\).+?\}\]/,
                 replace: "$self.getReasons()"
             },
             {

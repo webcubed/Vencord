@@ -2,13 +2,12 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
-import { MouseEvent } from "react";
-
-import { useEffect, useState } from "..";
-import { SortOptions } from "../types";
 import { SortIcon } from "./Icons";
+import { useState, useEffect } from "..";
+import { SortOptions } from "../types";
+import { MouseEvent } from "react";
 
 export default function ({ sort, onSortChange }: { sort: SortOptions, onSortChange: (newSort: SortOptions) => void; }) {
     const [pos, setPos] = useState({ x: 0, y: 0 });
@@ -51,7 +50,7 @@ export default function ({ sort, onSortChange }: { sort: SortOptions, onSortChan
                     marginLeft: "8px"
                 }}>
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="currentColor" />
-                    {sort === 1 ? <circle className="colorwaysRadioSelected" cx="12" cy="12" r="5" /> : null}
+                    {sort == 1 ? <circle className="colorwaysRadioSelected" cx="12" cy="12" r="5" /> : null}
                 </svg>
             </button>
             <button onClick={() => onSortChange_internal(2)} className="colorwaysContextMenuItm">
@@ -60,7 +59,7 @@ export default function ({ sort, onSortChange }: { sort: SortOptions, onSortChan
                     marginLeft: "8px"
                 }}>
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="currentColor" />
-                    {sort === 2 ? <circle className="colorwaysRadioSelected" cx="12" cy="12" r="5" /> : null}
+                    {sort == 2 ? <circle className="colorwaysRadioSelected" cx="12" cy="12" r="5" /> : null}
                 </svg>
             </button>
             <button onClick={() => onSortChange_internal(3)} className="colorwaysContextMenuItm">
@@ -69,7 +68,7 @@ export default function ({ sort, onSortChange }: { sort: SortOptions, onSortChan
                     marginLeft: "8px"
                 }}>
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="currentColor" />
-                    {sort === 3 ? <circle className="colorwaysRadioSelected" cx="12" cy="12" r="5" /> : null}
+                    {sort == 3 ? <circle className="colorwaysRadioSelected" cx="12" cy="12" r="5" /> : null}
                 </svg>
             </button>
             <button onClick={() => onSortChange_internal(4)} className="colorwaysContextMenuItm">
@@ -78,7 +77,7 @@ export default function ({ sort, onSortChange }: { sort: SortOptions, onSortChan
                     marginLeft: "8px"
                 }}>
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="currentColor" />
-                    {sort === 4 ? <circle className="colorwaysRadioSelected" cx="12" cy="12" r="5" /> : null}
+                    {sort == 4 ? <circle className="colorwaysRadioSelected" cx="12" cy="12" r="5" /> : null}
                 </svg>
             </button>
         </nav> : null}

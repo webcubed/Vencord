@@ -1,9 +1,3 @@
-/*
- * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
 import { definePluginSettings } from "@api/Settings";
 import * as Styles from "@api/Styles";
 import { makeRange } from "@components/PluginSettings/components";
@@ -40,7 +34,7 @@ export default definePlugin({
 
     patches: [
         {
-            find: '.Messages.MESSAGE_EDITED,")"',
+            find: '#{intl::MESSAGE_EDITED},")"',
             replacement: {
                 match: /(?<=isUnsupported\]:(\i)\.isUnsupported\}\),)(?=children:\[)/,
                 replace: 'style:{"--98-message-color":$self.useMessageColor($1)},'

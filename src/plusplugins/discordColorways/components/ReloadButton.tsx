@@ -2,11 +2,10 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
+import { useRef, useState, useEffect } from "..";
 import { MouseEvent } from "react";
-
-import { useEffect,useRef, useState } from "..";
 
 export default function ({ onClick, onForceReload }: { onClick: () => void, onForceReload: () => void; }) {
     const menuProps = useRef(null);

@@ -91,7 +91,7 @@ export const settings = definePluginSettings({
 
 export default definePlugin({
     name: "SteamStatusSync",
-    description: "Sync your status to Steam!",
+    description: "Synchronize your status between Discord and Steam (Set your status on Discord)",
     authors: [Devs.niko],
 
     settings,

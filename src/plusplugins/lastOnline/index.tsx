@@ -1,12 +1,7 @@
-/*
- * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
 import definePlugin from "@utils/types";
+import { moment } from "@webpack/common";
 import { findByProps } from "@webpack";
-import { moment, React } from "@webpack/common";
+import { React } from "@webpack/common";
 import { User } from "discord-types/general";
 
 interface PresenceStatus {

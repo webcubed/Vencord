@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
 import { NavContextMenuPatchCallback } from "@api/ContextMenu";
 import { definePluginSettings } from "@api/Settings";
@@ -44,8 +44,8 @@ interface VoiceState {
 }
 
 const enum AutoMuteReasons {
-    Inactivity = "You have been silent for a while, so your mic has been automatically muted.",
-    NonFriend = "[USER] who isn't your friend has joined your voice channel, so your mic has been automatically muted."
+    Inactivity = "You have been silent for a while, so your mic has automatically been muted.",
+    NonFriend = "[USER] who isn't your friend has joined your voice channel, so your mic has automatically been muted."
 }
 
 let [setAutoMute, cancelAutoMute] = [() => { }, () => { }];
@@ -59,7 +59,7 @@ function updateTimeout(seconds: number) {
 const settings = definePluginSettings({
     isEnabled: {
         type: OptionType.BOOLEAN,
-        description: "Whether the plugin will automatically mute you after being silent for too long or not",
+        description: "Whether or not the plugin will automatically mute you after being silent for too long",
         default: true,
         onChange() {
             updateAutoMute();
@@ -77,7 +77,7 @@ const settings = definePluginSettings({
     },
     nonFriendJoinsChannel: {
         type: OptionType.BOOLEAN,
-        description: "Whether the plugin will automatically mute you when someone who isn't you friend joins your voice channel",
+        description: "Whether or not the plugin will automatically mute you when someone who isn't you friend joins your voice channel",
         default: true
     }
 });
@@ -187,7 +187,7 @@ function trustEveryone() {
 
 export default definePlugin({
     name: "AutoMute",
-    description: "Automatically mute yourself in voice channels if you're not speaking for too long, or if someone who isn't a friend joins.",
+    description: "Automatically mute yourself in voice channels if you're not speaking for too long or if someone who isn't a friend joins",
     authors: [Devs.Sqaaakoi],
     settings,
     flux: {

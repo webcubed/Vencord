@@ -1,9 +1,3 @@
-/*
- * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
 import "./style.css";
 
 import { Devs } from "@utils/constants";
@@ -31,9 +25,9 @@ export default definePlugin({
     render({ content }) {
         const displayMatch = /^\$\$(.*)\$\$$/.exec(content);
         const inlineMatch = /^\$(.*)\$$/.exec(content);
-        if (displayMatch)
+        if(displayMatch)
             return <LazyLatex displayMode formula={displayMatch[1]} delim="$$" />;
-        if (inlineMatch)
+        if(inlineMatch)
             return <LazyLatex formula={inlineMatch[1]} delim="$" />;
     }
 });
@@ -51,7 +45,7 @@ function Latex({ katex, formula, displayMode, delim }) {
         try {
             const html = katex.renderToString(formula, { displayMode });
             return { html };
-        } catch (error) {
+        } catch(error) {
             return { error };
         }
     }, [formula, displayMode]);
@@ -64,8 +58,8 @@ function Latex({ katex, formula, displayMode, delim }) {
 function LatexError({ formula, delim, error }) {
     const { rawMessage, position, length } = error;
     const pre = formula.slice(0, position);
-    const mid = formula.slice(position, position + length);
-    const suf = formula.slice(position + length);
+    const mid = formula.slice(position, position+length);
+    const suf = formula.slice(position+length);
     return (
         <Tooltip text={rawMessage}>
             {({ onMouseLeave, onMouseEnter }) => (

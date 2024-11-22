@@ -1,10 +1,4 @@
-/*
- * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
-export type Metadata = { mtime?: number; };
+export type Metadata = { mtime?: number };
 export default class TarFile {
     buffers: ArrayBuffer[];
 
@@ -40,24 +34,24 @@ export default class TarFile {
         let checksumPos: number = null!;
 
         let pos = 0;
-        for (const [size, val] of fields) {
+        for(const [size, val] of fields) {
             let string: string;
-            if (val == null) {
+            if(val === null) {
                 checksumPos = pos;
                 string = " ".repeat(size);
-            } else if (typeof val === "string") {
+            } else if(typeof val === "string") {
                 string = val;
-            } else if (typeof val === "number") {
-                string = val.toString(8).padStart(size - 1, "0");
+            } else if(typeof val === "number") {
+                string = val.toString(8).padStart(size-1, "0");
             } else {
                 throw new Error("invalid value", val);
             }
-            if (string.length > size) throw new Error(`${string} is longer than ${size} characters`);
-            Array.from(string).forEach((c, i) => checksum += u1[pos + i] = c.charCodeAt(0));
+            if(string.length > size) throw new Error(`${string} is longer than ${size} characters`);
+            Array.from(string).forEach((c, i) => checksum += u1[pos+i] = c.charCodeAt(0));
             pos += size;
         }
-        Array.from("\0".repeat(8)).forEach((c, i) => u1[checksumPos + i] = c.charCodeAt(0));
-        Array.from(checksum.toString(8).padStart(7, "0")).forEach((c, i) => u1[checksumPos + i] = c.charCodeAt(0));
+        Array.from("\0".repeat(8)).forEach((c, i) => u1[checksumPos+i] = c.charCodeAt(0));
+        Array.from(checksum.toString(8).padStart(7, "0")).forEach((c, i) => u1[checksumPos+i] = c.charCodeAt(0));
         return buffer;
     }
 

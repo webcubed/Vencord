@@ -24,7 +24,7 @@ const settings = definePluginSettings({
 
 export default definePlugin({
     name: "YoutubeDescription",
-    description: "Adds descriptions to youtube video embeds",
+    description: "Adds descriptions to YouTube video embeds",
     authors: [Devs.arHSM],
     settings,
     patches: [

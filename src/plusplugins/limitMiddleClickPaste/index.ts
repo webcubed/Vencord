@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
 import { definePluginSettings } from "@api/Settings";
 import { makeRange } from "@components/PluginSettings/components";
@@ -28,7 +28,7 @@ const settings = definePluginSettings({
     },
     reenableDelay: {
         type: OptionType.SLIDER,
-        description: "Milliseconds until re-enabling global paste events after middle click.",
+        description: "The amount of milliseconds until re-enabling global paste events after middle click",
         markers: makeRange(0, 1000, 500),
         default: 500,
     },
@@ -38,7 +38,7 @@ let containerEl;
 
 export default definePlugin({
     name: "LimitMiddleClickPaste",
-    description: "For middle-click autoscroll users, prevents middle-click from making unwanted pastes.",
+    description: "For middle-click autoscroll users, prevents middle-click from making unwanted pastes",
     authors: [EquicordDevs.nobody],
 
     settings: settings,

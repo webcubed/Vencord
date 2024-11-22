@@ -2,14 +2,15 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
-import { DataStore, openModal, PluginProps, Toasts, useEffect, UserStore, useState, useStateFromStores } from "..";
-import { ColorwayCSS } from "../colorwaysAPI";
-import { pureGradientBase } from "../css";
+import { generateCss, pureGradientBase } from "../css";
 import { Colorway, ModalProps } from "../types";
-import { saveFile, stringToHex } from "../utils";
+import { colorToHex, stringToHex, saveFile } from "../utils";
+import SaveColorwayModal from "./SaveColorwayModal";
 import ThemePreview from "./ThemePreview";
+import { ColorwayCSS } from "../colorwaysAPI";
+import { PluginProps, useState, UserStore, useStateFromStores, DataStore, useEffect, openModal, Toasts } from "..";
 
 function RenameColorwayModal({ modalProps, ogName, onFinish, colorwayList }: { modalProps: ModalProps, ogName: string, onFinish: (name: string) => void, colorwayList: Colorway[]; }) {
     const [error, setError] = useState<string>("");
@@ -23,7 +24,7 @@ function RenameColorwayModal({ modalProps, ogName, onFinish, colorwayList }: { m
         load();
     }, []);
 
-    return <div className={`colorwaysModal ${modalProps.transitionState === 2 ? "closing" : ""} ${modalProps.transitionState === 4 ? "hidden" : ""}`} data-theme={theme}>
+    return <div className={`colorwaysModal ${modalProps.transitionState == 2 ? "closing" : ""} ${modalProps.transitionState == 4 ? "hidden" : ""}`} data-theme={theme}>
         <h2 className="colorwaysModalHeader">
             Rename Colorway...
         </h2>
@@ -88,7 +89,7 @@ export default function ({
         load();
     }, []);
 
-    return <div className={`colorwaysModal ${modalProps.transitionState === 2 ? "closing" : ""} ${modalProps.transitionState === 4 ? "hidden" : ""}`} data-theme={theme}>
+    return <div className={`colorwaysModal ${modalProps.transitionState == 2 ? "closing" : ""} ${modalProps.transitionState == 4 ? "hidden" : ""}`} data-theme={theme}>
         <h2 className="colorwaysModalHeader">
             Colorway: {colorway.name}
         </h2>
@@ -206,7 +207,7 @@ export default function ({
                         className="colorwaysPillButton"
                         style={{ width: "100%" }}
                         onClick={() => {
-                            openModal((props: ModalProps) => <div className={`colorwaysPreview-modal ${props.transitionState === 2 ? "closing" : ""} ${props.transitionState === 4 ? "hidden" : ""}`}>
+                            openModal((props: ModalProps) => <div className={`colorwaysPreview-modal ${props.transitionState == 2 ? "closing" : ""} ${props.transitionState == 4 ? "hidden" : ""}`}>
                                 <style>
                                     {colorway.isGradient ? pureGradientBase + `.colorwaysPreview-modal,.colorwaysPreview-wrapper {--gradient-theme-bg: linear-gradient(${colorway.linearGradient})}` : ""}
                                 </style>

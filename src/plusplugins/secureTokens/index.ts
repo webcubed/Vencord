@@ -13,7 +13,7 @@ import { findByPropsLazy } from "@webpack";
 const settings = definePluginSettings({
     encrypted: {
         type: OptionType.BOOLEAN,
-        description: "Whether the token should be encrypted, will require a login every restart (enable storeKey to stop that)",
+        description: "Whether the token should be encrypted. This will require a login every restart (enable storeKey to stop that)",
         restartNeeded: true,
         default: true
     },
@@ -31,7 +31,7 @@ const settings = definePluginSettings({
     token: {
         type: OptionType.STRING,
         hidden: true,
-        description: "Discord token"
+        description: "Account token"
     }
 });
 

@@ -11,7 +11,7 @@ import { Channel } from "discord-types/general";
 export default definePlugin({
     name: "CleanChannelName",
     authors: [Devs.AutumnVN],
-    description: "remove all emoji and decor shit from channel names",
+    description: "Removes all emoji and decor shit from channel names",
     patches: [
         {
             find: "loadAllGuildAndPrivateChannelsFromDisk(){",

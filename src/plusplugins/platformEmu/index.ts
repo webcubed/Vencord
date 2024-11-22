@@ -1,9 +1,3 @@
-/*
- * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
 import { definePluginSettings } from "@api/Settings";
 import definePlugin, { OptionType } from "@utils/types";
 
@@ -26,7 +20,7 @@ const settings = definePluginSettings({
 
 export default definePlugin({
     name: "Platform Emulator",
-    description: "Tricks Discord into thinking you're on e.g. phone.",
+    description: "Tricks Discord into thinking you're online on a different platform",
     authors: [
         {
             id: 526331463709360141n,

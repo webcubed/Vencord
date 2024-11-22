@@ -2,11 +2,11 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
-import type { PropsWithChildren } from "react";
+*/
 
 import { classes } from "../utils";
+
+import type { PropsWithChildren } from "react";
 
 interface BaseIconProps extends IconProps {
     viewBox: string;

@@ -1,20 +1,13 @@
-/*
- * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
 import { addContextMenuPatch, NavContextMenuPatchCallback, removeContextMenuPatch } from "@api/ContextMenu";
-import { Notifications } from "@api/index";
 import { definePluginSettings } from "@api/Settings";
-import { getCurrentChannel, openUserProfile } from "@utils/discord";
 import definePlugin, { OptionType, PluginDef } from "@utils/types";
+import { Menu, Toasts, UserStore, MessageStore, RestAPI, ChannelStore } from "@webpack/common";
 import { findByProps } from "@webpack";
-import { ChannelStore,Menu, MessageStore, RestAPI, Toasts, UserStore } from "@webpack/common";
+import { getCurrentChannel, openUserProfile } from "@utils/discord";
+import { Notifications } from "@api/index";
 import { Message } from "discord-types/general";
-
-import { MessageCreatePayload, MessageDeletePayload, MessageUpdatePayload, ThreadCreatePayload,TypingStartPayload, UserUpdatePayload } from "./types";
-import { addToWhitelist, convertSnakeCaseToCamelCase,isInWhitelist, logger, removeFromWhitelist } from "./utils";
+import { MessageCreatePayload, MessageUpdatePayload, MessageDeletePayload, TypingStartPayload, UserUpdatePayload, ThreadCreatePayload } from "./types";
+import { addToWhitelist, isInWhitelist, logger, removeFromWhitelist, convertSnakeCaseToCamelCase } from "./utils";
 
 async function importLoggedMessages() {
     let module;
@@ -84,14 +77,14 @@ function getMessageBody(settings: any, payload: MessageCreatePayload | MessageUp
         : baseContent;
 }
 
-const oldUsers: {
+let oldUsers: {
     [id: string]: UserUpdatePayload;
 } = {};
 let loggedMessages: Record<string, Message> = {};
 
 const _plugin: PluginDef & Record<string, any> = {
     name: "Stalker",
-    description: "This plugin allows you to stalk users, made for delusional people like myself.",
+    description: "This plugin allows you to stalk users. Made for delusional people, like myself",
     authors: [
         {
             id: 253302259696271360n,
@@ -201,7 +194,7 @@ const _plugin: PluginDef & Record<string, any> = {
             // Determine which properties have changed
             const changedKeys = (() => {
                 const keysToCompare = ["username", "globalName", "avatar", "discriminator", "clan", "flags", "banner", "banner_color", "accent_color", "bio"];
-                const changedKeys: string[] = [];
+                let changedKeys: string[] = [];
 
                 keysToCompare.forEach(key => {
                     const newValue = payload.user[key];
@@ -217,7 +210,7 @@ const _plugin: PluginDef & Record<string, any> = {
 
             // Send a notification showing what has changed
             const notificationTitle = payload.user.globalName || payload.user.username;
-            const changedPropertiesList = changedKeys.join(", ");
+            const changedPropertiesList = changedKeys.join(', ');
             const notificationBody = `Updated properties: ${changedPropertiesList}.`;
             const avatarURL = UserStore.getUser(payload.user.id).getAvatarURL(undefined, undefined, false);
 
@@ -239,7 +232,7 @@ const _plugin: PluginDef & Record<string, any> = {
                 Notifications.showNotification({
                     // @ts-ignore outdated types lib doesnt have .globalName
                     title: `New thread created by ${UserStore.getUser(payload.channel.ownerId).globalName || UserStore.getUser(payload.channel.ownerId).username}`,
-                    body: "Click to view the thread.",
+                    body: `Click to view the thread.`,
                     onClick: () => switchToMsg(payload.channel.guild_id, payload.channel.parent_id),
                     icon: UserStore.getUser(payload.channel.ownerId).getAvatarURL(undefined, undefined, false)
                 });
@@ -247,7 +240,7 @@ const _plugin: PluginDef & Record<string, any> = {
         },
     },
     async start() {
-        if (!Vencord.Plugins.plugins.MessageLoggerEnhanced) {
+        if (!Vencord.Plugins.plugins["MessageLoggerEnhanced"]) {
             Notifications.showNotification({
                 title: "Stalker plugin requires MessageLoggerEnhanced to be enabled",
                 body: "Click to download it.",

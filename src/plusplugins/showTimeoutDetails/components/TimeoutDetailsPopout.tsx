@@ -5,8 +5,7 @@
  */
 
 import { SafetyIcon } from "@components/Icons";
-import { getIntlMessage } from "@utils/discord";
-import { classes, Margins } from "@utils/index";
+import { classes, getIntlMessage, Margins } from "@utils/index";
 import { findByPropsLazy, findComponentByCodeLazy } from "@webpack";
 import { Button, Dialog, GuildMemberStore, GuildStore, Parser, PermissionsBits, PermissionStore, Text, UserStore, useState, useStateFromStores } from "@webpack/common";
 import { Message } from "discord-types/general";

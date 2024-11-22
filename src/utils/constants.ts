@@ -582,6 +582,10 @@ export const Devs = /* #__PURE__*/ Object.freeze({
     SomeAspy: {
         name: "SomeAspy",
         id: 516750892372852754n
+    },
+    jamesbt365: {
+        name: "jamesbt365",
+        id: 158567567487795200n
     }
 } satisfies Record<string, Dev>);
 
@@ -854,15 +858,7 @@ export const PlusMts = /* #__PURE__*/ Object.freeze({
     RobinRMC: {
         name: "RobinRMC",
         id: 304932282475479051n
-    },
-    webcubed: {
-        name: "webcubed",
-        id: 853658523786412063n
-    },
-    jamesbt365: {
-        name: "jamesbt365",
-        id: 158567567487795200n,
-    },
+    }
 } satisfies Record<string, Dev>);
 
 // iife so #__PURE__ works correctly

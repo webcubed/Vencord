@@ -1,7 +1,10 @@
 # Vencord+
 
-A fork of a fork of the Discord client mod called Vencord that adds unapproved plugins.
-This is just [RobinRMC/Vencord](https://github.com/RobinRMC/Vencord) but with more plugins!
+A fork of the Discord client mod called Vencord that adds unapproved plugins.
+
+###### Vencord+ uses code from [Suncord](https://github.com/verticalsync/Suncord) and [Equicord](https://github.com/Equicord/Equicord).
+
+<br>
 
 | ![image](https://github.com/Vendicated/Vencord/assets/45497981/706722b1-32de-4d99-bee9-93993b504334) |
 | :--------------------------------------------------------------------------------------------------: |
@@ -24,6 +27,11 @@ This is just [RobinRMC/Vencord](https://github.com/RobinRMC/Vencord) but with mo
 
 [Click here to see a list of the unapproved plugins Vencord+ makes available to you.](https://github.com/webcubed/Vencord/tree/main/src/plusplugins)
 
+## Additional (unofficial) plugins [Vencord+]
+
+[Click here to see a list of the unapproved plugins Vencord+ makes available to you.](https://github.com/RobinRMC/VencordPlus/tree/main/src/plusplugins)
+
+
 ## Installing / Uninstalling
 
 [![Download and run the installer](https://img.shields.io/github/v/release/RobinRMC/VencordPlusInstaller?label=Download%20Vencord%2B%20Installer&style=for-the-badge)](https://github.com/RobinRMC/VencordPlusInstaller#vencord-installer)
@@ -32,7 +40,7 @@ This is just [RobinRMC/Vencord](https://github.com/RobinRMC/Vencord) but with mo
 
 ## Join the support/community server of Vencord
 
-<https://discord.gg/D9uwnFnqmd>
+## Join the support/community server of Vencord
 
 Note: Do not request support in the Discord server of Vencord for anything regarding Vencord+!
 

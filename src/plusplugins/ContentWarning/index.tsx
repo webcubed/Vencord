@@ -4,23 +4,23 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+import definePlugin, { OptionType } from "@utils/types";
+import { Button, Forms, useState, TextInput } from "@webpack/common";
 import { DataStore } from "@api/index";
 import { definePluginSettings } from "@api/Settings";
-import { Flex } from "@components/Flex";
 import { DeleteIcon } from "@components/Icons";
 import { Devs } from "@utils/constants";
+import { Flex } from "@components/Flex";
 import { useForceUpdater } from "@utils/react";
-import definePlugin, { OptionType } from "@utils/types";
-import { Button, Forms, TextInput, useState } from "@webpack/common";
 
 const WORDS_KEY = "ContentWarning_words";
 
 let triggerWords = [""];
 
 function safeMatchesRegex(s: string, r: string) {
-	if (r === "") return false;
+	if (r == "") return false;
 	try {
-		return s.match(new RegExp(r.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+		return s.match(new RegExp(r.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 	} catch {
 		return false;
 	}
@@ -33,7 +33,7 @@ function TriggerContainer({ child }) {
 		return child;
 	} else {
 		return (<div onClick={() => setVisible(true)}>
-			<div style={{ filter: "blur(4px) brightness(70%)" }}>
+			<div style={{ filter: "blur(4px) brightness(70%)"}}>
 				{child}
 			</div>
 		</div>);
@@ -41,15 +41,15 @@ function TriggerContainer({ child }) {
 }
 
 function FlaggedInput({ index, forceUpdate }) {
-	const [value, setValue] = useState(triggerWords[index]);
+	let [value, setValue] = useState(triggerWords[index]);
 
-	if (value !== triggerWords[index]) {
+	if (value != triggerWords[index]) {
 		setValue(triggerWords[index]);
 	}
 
-	const isLast = index === triggerWords.length - 1;
+	let isLast = index == triggerWords.length - 1;
 
-	const updateValue = v => {
+	const updateValue = (v) => {
 		triggerWords[index] = v;
 		setValue(v);
 
@@ -60,7 +60,7 @@ function FlaggedInput({ index, forceUpdate }) {
 	};
 
 	const removeSelf = () => {
-		if (triggerWords.length === 1) {
+		if (triggerWords.length == 1) {
 			return;
 		}
 		triggerWords = triggerWords.slice(0, index).concat(triggerWords.slice(index + 1));
@@ -78,16 +78,16 @@ function FlaggedInput({ index, forceUpdate }) {
 		</div>
 
 		<Button
-			onClick={removeSelf}
-			look={Button.Looks.BLANK}
-			size={Button.Sizes.ICON}
-			style={{
-				padding: 0,
-				color: "var(--primary-400)",
-				transition: "color 0.2s ease-in-out",
-				opacity: isLast ? "0%" : "100%"
-			}}>
-			<DeleteIcon />
+		    onClick={removeSelf}
+		    look={Button.Looks.BLANK}
+		    size={Button.Sizes.ICON}
+		    style={{
+		    	padding: 0,
+		    	color: "var(--primary-400)",
+		    	transition: "color 0.2s ease-in-out",
+		    	opacity: isLast ? "0%" : "100%"
+		    }}>
+		    <DeleteIcon/>
 		</Button>
 	</Flex>);
 }
@@ -95,14 +95,14 @@ function FlaggedInput({ index, forceUpdate }) {
 function FlaggedWords() {
 	const forceUpdate = useForceUpdater();
 
-	const inputs = triggerWords.map((_, idx) => {
+	let inputs = triggerWords.map((_, idx) => {
 		return (
 			<FlaggedInput
 				index={idx}
 				forceUpdate={forceUpdate}
 			/>
 		);
-	});
+	})
 
 	return (<>
 		<Forms.FormTitle tag="h4">Flagged Words</Forms.FormTitle>
@@ -113,7 +113,7 @@ function FlaggedWords() {
 const settings = definePluginSettings({
 	flagged: {
 		type: OptionType.COMPONENT,
-		component: () => <FlaggedWords />,
+		component: () => <FlaggedWords/>,
 	}
 });
 
@@ -124,7 +124,7 @@ export default definePlugin({
 	settings,
 	patches: [
 		{
-			find: ".VOICE_HANGOUT_INVITE?",
+			find: "#{intl::VOICE_HANGOUT_INVITE}",
 			replacement: {
 				match: /(contentRef:\i}=(\i).+?)\(0,(.+]}\)]}\))/,
 				replace: "$1 $self.modify($2, (0, $3)"
@@ -139,7 +139,7 @@ export default definePlugin({
 
 	modify(e, c) {
 		if (triggerWords.some(w => safeMatchesRegex(e.message.content, w))) {
-			return <TriggerContainer child={c} />;
+			return <TriggerContainer child={c}/>
 		} else {
 			return c;
 		}

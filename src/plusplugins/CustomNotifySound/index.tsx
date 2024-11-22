@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+import definePlugin, { OptionType } from "@utils/types";
 import { DataStore } from "@api/index";
 import { definePluginSettings } from "@api/Settings";
 import { Devs } from "@utils/constants";
-import definePlugin, { OptionType } from "@utils/types";
 import { findByCodeLazy } from "@webpack";
 import { useState } from "@webpack/common";
 
@@ -17,7 +17,7 @@ const FILE_KEY = "CustomNotifySound_file";
 let chosenAudio: File | null = null;
 
 async function serializeFile(file) {
-	const arr = new Uint8Array(await file.arrayBuffer());
+	let arr = new Uint8Array(await file.arrayBuffer());
 	return {
 		name: file.name,
 		type: file.type,
@@ -28,7 +28,7 @@ async function serializeFile(file) {
 }
 
 function deserializeFile(data) {
-	const arr = new Uint8Array(data.content);
+	let arr = new Uint8Array(data.content);
 	return new File([arr], data.name, {
 		type: data.type,
 		lastModified: data.lastModified
@@ -43,7 +43,7 @@ const audioFilter = {
 function AudioUpload() {
 	const [file, setFile] = useState(chosenAudio);
 
-	const onChooseAudio = async f => {
+	const onChooseAudio = async (f) => {
 		setFile(f);
 		chosenAudio = f;
 		await DataStore.set(FILE_KEY, await serializeFile(f));
@@ -61,35 +61,35 @@ function AudioUpload() {
 }
 
 const settings = definePluginSettings({
-	audio: {
-		type: OptionType.COMPONENT,
-		component: () => <AudioUpload />
-	}
+    audio: {
+        type: OptionType.COMPONENT,
+        component: () => <AudioUpload/>
+    }
 });
 
 export default definePlugin({
-	name: "CustomNotifySound",
-	authors: [Devs.camila314],
-	description: "Customize the notification sound",
-	settings,
-	patches: [
-		{
-			find: ",\".mp3\"",
-			replacement: {
-				match: /Audio;(\i)\.src=/,
-				replace: "Audio; let __aud = this.name === \"message1\" ? $self.getAudioURL() : null; $1.src = __aud ? __aud : "
-			}
-		},
-	],
+    name: "CustomNotifySound",
+    authors: [Devs.camila314],
+    description: "Customize the notification sound",
+    settings,
+    patches: [
+    	{
+    	    find: ",\".mp3\"",
+    	    replacement: {
+    	        match: /Audio;(\i)\.src=/,
+    	        replace: "Audio; let __aud = this.name == \"message1\" ? $self.getAudioURL() : null; $1.src = __aud ? __aud : "
+    	    }
+    	},
+    ],
 
-	getAudioURL() {
-		return chosenAudio ? URL.createObjectURL(chosenAudio) : null;
-	},
+    getAudioURL() {
+    	return chosenAudio ? URL.createObjectURL(chosenAudio) : null;
+    },
 
-	async start() {
-		const data = await DataStore.get(FILE_KEY);
-		if (data) {
+    async start() {
+    	const data = await DataStore.get(FILE_KEY);
+    	if (data) {
 			chosenAudio = deserializeFile(data);
-		}
-	}
+    	}
+    }
 });

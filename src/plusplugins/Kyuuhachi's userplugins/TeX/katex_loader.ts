@@ -1,9 +1,3 @@
-/*
- * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
 import { makeLazy } from "@utils/lazy";
 import { useEffect, useState } from "@webpack/common";
 
@@ -22,7 +16,7 @@ export const loadKatex = makeLazy(async () => {
 export function useKatex() {
     const [katex, setKatex] = useState(theKatex);
     useEffect(() => {
-        if (katex === undefined)
+        if(katex === undefined)
             loadKatex().then(setKatex);
     });
     return katex;

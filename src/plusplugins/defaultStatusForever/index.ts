@@ -38,7 +38,7 @@ export default definePlugin({
     ],
 
     patchChoices(choices: Choice[]) {
-        const nullChoice = choices.find(choice => choice.value == null);
+        const nullChoice = choices.find(choice => choice.value === null);
         if (nullChoice) {
             choices.splice(choices.indexOf(nullChoice), 1);
             choices.unshift(nullChoice);

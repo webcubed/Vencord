@@ -39,7 +39,7 @@ export default definePlugin({
     settings,
     patches: [
         {
-            find: ".Messages.GUILD_OWNER,",
+            find: "#{intl::GUILD_OWNER}),",
             replacement:
             {
                 // We add the banner as a property while we can still access the user id
@@ -129,7 +129,7 @@ export default definePlugin({
     getBanner(userId: string): string | undefined {
         if (Vencord.Plugins.isPluginEnabled("USRBG") && (Vencord.Plugins.plugins.USRBG as iUSRBG).userHasBackground(userId)) {
             let banner = (Vencord.Plugins.plugins.USRBG as iUSRBG).getImageUrl(userId);
-            if (banner == null) banner = "";
+            if (banner === null) banner = "";
             return banner;
         }
         const userProfile = UserProfileStore.getUserProfile(userId);

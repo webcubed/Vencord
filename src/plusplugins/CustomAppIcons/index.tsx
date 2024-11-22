@@ -54,7 +54,7 @@ export default definePlugin({
     authors: [Devs.HappyEnderman, Devs.SerStars],
     patches: [
         {
-            find: /\i\.\i\.APP_ICON_UPSELL/,
+            find: /\i\.\i#{intl::APP_ICON_UPSELL}/,
             replacement: [
                 {
                     match: /\w+\.jsx\)\(\w+,{markAsDismissed:\w+,isCoachmark:\w+}\)/,

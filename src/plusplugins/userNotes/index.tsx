@@ -82,9 +82,9 @@ export default definePlugin({
             predicate: () => {
                 return settings.store.replaceRegularNotes;
             },
-            find: ".Messages.NOTE_PLACEHOLDER,",
+            find: "#{intl::NOTE_PLACEHOLDER}",
             replacement: {
-                match: /componentDidMount\(\)\{if.{0,250}\}render\(\)\{.{0,300}\.Messages\.LOADING_NOTE.{0,300}\}constructor/,
+                match: /componentDidMount\(\)\{if.{0,250}\}render\(\)\{.{0,300}#{intl::LOADING_NOTE}.{0,300}\}constructor/,
                 replace: "componentDidMount(){}render(){return $self.notesSectionRender(this.props.userId)}constructor"
             }
         },

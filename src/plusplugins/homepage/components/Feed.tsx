@@ -6,9 +6,8 @@
 
 import "./Feed.css";
 
-import { getIntlMessage } from "@utils/discord";
 import { findByPropsLazy, findComponentByCodeLazy, findStoreLazy } from "@webpack";
-import { Button, ChannelStore, GuildStore, NavigationRouter, useStateFromStores } from "@webpack/common";
+import { Button, ChannelStore, GuildStore, i18n, NavigationRouter, useStateFromStores } from "@webpack/common";
 
 import ActivityFeedCard from "./ActivityFeedCard";
 import { cl } from "./common";
@@ -48,7 +47,7 @@ export default function Feed(props?: any) {
                         }}
                         color={Button.Colors.PRIMARY}
                     >
-                        {getIntlMessage("JUMP")}
+                        {i18n.Messages.JUMP}
                     </Button>
                     <Button
                         onClick={m.delete}

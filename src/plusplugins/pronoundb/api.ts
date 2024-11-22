@@ -49,7 +49,7 @@ async function processQueue() {
 
 function fetchPronouns(id: string): Promise<string | undefined> {
     return new Promise(resolve => {
-        if (pronounCache[id] !== null) {
+        if (pronounCache[id] != null) {
             resolve(extractPronouns(pronounCache[id].sets));
             return;
         }
@@ -59,7 +59,7 @@ function fetchPronouns(id: string): Promise<string | undefined> {
             resolve(pronouns);
         }
 
-        if (requestQueue[id] !== null) {
+        if (requestQueue[id] != null) {
             requestQueue[id].push(handlePronouns);
             return;
         }
@@ -130,7 +130,7 @@ function getDiscordPronouns(id: string, useGlobalProfile: boolean = false): stri
 
 export function useFormattedPronouns(id: string, useGlobalProfile: boolean = false): Pronouns {
     const discordPronouns = getDiscordPronouns(id, useGlobalProfile)?.trim().replace(/\n+/g, "");
-    const hasPendingPronouns = UserSettingsAccountStore.getPendingPronouns() !== null;
+    const hasPendingPronouns = UserSettingsAccountStore.getPendingPronouns() != null;
 
     const [pronouns] = useAwaiter(() => fetchPronouns(id));
 
@@ -138,7 +138,7 @@ export function useFormattedPronouns(id: string, useGlobalProfile: boolean = fal
         return { pronouns: discordPronouns, source: "Discord", hasPendingPronouns };
     }
 
-    if (pronouns !== null && pronouns !== PronounMapping.unspecified) {
+    if (pronouns != null && pronouns !== PronounMapping.unspecified) {
         return { pronouns, source: "PronounDB", hasPendingPronouns };
     }
 

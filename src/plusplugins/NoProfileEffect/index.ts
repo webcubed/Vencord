@@ -1,9 +1,3 @@
-/*
- * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
 
@@ -14,7 +8,7 @@ export default definePlugin({
   patches: [],
 
   start() {
-    const style = document.createElement("style");
+    const style = document.createElement('style');
     style.innerHTML = `
             [class^="profileEffects_"], [class*=" profileEffects_"] { display: none !important; }
         `;

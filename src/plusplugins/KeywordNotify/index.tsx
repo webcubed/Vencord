@@ -33,7 +33,7 @@ const recentMentionsPopoutClass = findByPropsLazy("recentMentionsPopout");
 const tabClass = findByPropsLazy("inboxTitle", "tab");
 const buttonClass = findByPropsLazy("size36");
 const MenuHeader = findByCodeLazy(".getUnseenInviteCount())");
-const Popout = findByCodeLazy(".Messages.UNBLOCK_TO_JUMP_TITLE", "canCloseAllMessages:");
+const Popout = findByCodeLazy("#{intl::UNBLOCK_TO_JUMP_TITLE}", "canCloseAllMessages:");
 const createMessageRecord = findByCodeLazy(".createFromServer(", ".isBlockedForMessage", "messageReference:");
 const KEYWORD_ENTRIES_KEY = "KeywordNotify_keywordEntries";
 const KEYWORD_LOG_KEY = "KeywordNotify_log";
@@ -77,7 +77,7 @@ function highlightKeywords(str: string, entries: Array<KeywordEntry>) {
         return [str];
     }
 
-    const matches = regexes.map(r => str.match(r)).flat().filter(e => e !== null) as Array<string>;
+    const matches = regexes.map(r => str.match(r)).flat().filter(e => e != null) as Array<string>;
     if (matches.length === 0) {
         return [str];
     }
@@ -313,14 +313,14 @@ export default definePlugin({
     settings,
     patches: [
         {
-            find: "Messages.UNREADS_TAB_LABEL}",
+            find: "#{intl::UNREADS_TAB_LABEL}",
             replacement: {
                 match: /\i\?\(0,\i\.jsxs\)\(\i\.TabBar\.Item/,
                 replace: "$self.keywordTabBar(),$&"
             }
         },
         {
-            find: "location:\"RecentsPopout\"})",
+            find: "location:\"RecentsPopout\"});",
             replacement: {
                 match: /:(\i)===\i\.\i\.MENTIONS\?\(0,.+?setTab:(\i),onJump:(\i),badgeState:\i,closePopout:(\i)/,
                 replace: ": $1 === 8 ? $self.tryKeywordMenu($2, $3, $4) $&"
@@ -375,7 +375,7 @@ export default definePlugin({
             let listed = entry.listIds.some(id => id === m.channel_id || id === m.author.id);
             if (!listed) {
                 const channel = ChannelStore.getChannel(m.channel_id);
-                if (channel !== null) {
+                if (channel != null) {
                     listed = entry.listIds.some(id => id === channel.guild_id);
                 }
             }
@@ -401,7 +401,7 @@ export default definePlugin({
                     if (safeMatchesRegex(embed.description, entry.regex, flags) || safeMatchesRegex(embed.title, entry.regex, flags)) {
                         matches = true;
                         break;
-                    } else if (embed.fields !== null) {
+                    } else if (embed.fields != null) {
                         for (const field of embed.fields as Array<{ name: string, value: string; }>) {
                             if (safeMatchesRegex(field.value, entry.regex, flags) || safeMatchesRegex(field.name, entry.regex, flags)) {
                                 matches = true;

@@ -14,7 +14,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ */
 
 import { findOption, RequiredMessageOption } from "@api/Commands";
 import { addPreEditListener, addPreSendListener, MessageObject, removePreEditListener, removePreSendListener } from "@api/MessageEvents";
@@ -112,7 +112,7 @@ function uwuify(message: string): string {
     const words: string[] | null = message.match(rule);
     let answer = "";
 
-    if (words == null) return "";
+    if (words === null) return "";
 
     for (let i = 0; i < words.length; i++) {
         if (isOneCharacterString(words[i]) || words[i].startsWith("https://")) {

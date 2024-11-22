@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
 import { NavContextMenuPatchCallback } from "@api/ContextMenu";
 import definePlugin from "@utils/types";
@@ -54,7 +54,7 @@ async function verify(link) {
 
 export default definePlugin({
     name: "DoubleCounterVerifyBypass",
-    description: "Bypass Double Counter verifications easily.",
+    description: "Bypass Double Counter verifications easily",
     authors: [
         {
             id: 1181610810548686979n,
@@ -76,7 +76,7 @@ export default definePlugin({
             await verify(link).then(() => {
                 Alerts.show({
                     title: "Verified",
-                    body: "You have been verified successfully, please wait a little bit for DoubleCounter to update your roles.",
+                    body: "You have been verified successfully! Please wait a little bit for Double Counter to update your roles.",
                     confirmText: "Okay",
                     onConfirm: () => { }
                 });

@@ -144,7 +144,7 @@ export default definePlugin({
 
         // Member List User
         {
-            find: ".MEMBER_LIST_ITEM_AVATAR_DECORATION_PADDING)",
+            find: "#{intl::MEMBER_LIST_ITEM_AVATAR_DECORATION_PADDING})",
             replacement: {
                 match: /avatar:(\i){1,2}/,
                 replace: "children:[$self.patchUserList(arguments[0], false)],$&",

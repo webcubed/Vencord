@@ -22,7 +22,7 @@ import { PermissionStore } from "@webpack/common";
 
 export default definePlugin({
     name: "GodMode",
-    description: "Get all permissions (client-side).",
+    description: "Get all permissions (client-side)",
     authors: [Devs.Tolgchu],
 
     start: () => {

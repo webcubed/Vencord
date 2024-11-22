@@ -36,7 +36,7 @@ export default definePlugin({
         },
 
         {
-            find: ".Messages.USER_PROFILE_PRONOUNS",
+            find: "#{intl::USER_PROFILE_PRONOUNS}",
             group: true,
             replacement: [
                 {
@@ -44,7 +44,7 @@ export default definePlugin({
                     replace: "$&{pronouns:vcPronoun,source:vcPronounSource,hasPendingPronouns:vcHasPendingPronouns}=$self.useProfilePronouns(arguments[0].user?.id),"
                 },
                 {
-                    match: /text:\i\.\i.Messages.USER_PROFILE_PRONOUNS/,
+                    match: /text:#{intl::USER_PROFILE_PRONOUNS}/,
                     replace: '$&+(vcPronoun==null||vcHasPendingPronouns?"":` (${vcPronounSource})`)'
                 },
                 {

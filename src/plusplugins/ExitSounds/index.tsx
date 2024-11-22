@@ -7,7 +7,7 @@
 import { NavContextMenuPatchCallback } from "@api/ContextMenu";
 import { definePluginSettings } from "@api/Settings";
 import definePlugin, { OptionType } from "@utils/types";
-import { Constants, Menu, RestAPI, SelectedChannelStore } from "@webpack/common";
+import { Constants, FluxDispatcher, Menu, RestAPI, SelectedChannelStore } from "@webpack/common";
 
 const settings = definePluginSettings({
     soundGuildId: {
@@ -63,7 +63,7 @@ export default definePlugin({
 
     handleChannelChange(id: string, callback: (id: string) => void) {
         const voiceID = SelectedChannelStore.getVoiceChannelId();
-        if (voiceID && (SelectedChannelStore.getVoiceChannelId() !== id)) {
+        if (voiceID && (SelectedChannelStore.getVoiceChannelId() != id)) {
             const guildID = settings.store.soundGuildId;
             const soundboardID = settings.store.soundId;
 

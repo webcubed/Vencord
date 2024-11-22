@@ -1,9 +1,3 @@
-/*
- * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
 
@@ -14,10 +8,10 @@ export default definePlugin({
 
     patches: [
         {
-            find: "GUILD_MEMBER_MOD_VIEW_TITLE:\"",
+            find: "#{intl::GUILD_MEMBER_MOD_VIEW_TITLE}:\"",
             replacement: {
-                match: /GUILD_MEMBER_MOD_VIEW_TITLE:"[\w\s]+",/,
-                replace: "GUILD_MEMBER_MOD_VIEW_TITLE:\"Challenge to Duel\","
+                match: /#{intl::GUILD_MEMBER_MOD_VIEW_TITLE}:"[\w\s]+",/,
+                replace: "#{intl::GUILD_MEMBER_MOD_VIEW_TITLE}:\"Challenge to Duel\","
             }
         }
     ]

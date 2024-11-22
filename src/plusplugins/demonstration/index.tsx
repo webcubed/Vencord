@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
 import { definePluginSettings } from "@api/Settings";
 import { classNameFactory } from "@api/Styles";
@@ -73,7 +73,7 @@ function ToggleModal() {
 
 function handleToggle() {
     const style = document.getElementById("DemonstrationStyle");
-    if (style !== null) {
+    if (style != null) {
         style.remove();
         playSound("https://files.catbox.moe/wp5rpz.wav");
     }

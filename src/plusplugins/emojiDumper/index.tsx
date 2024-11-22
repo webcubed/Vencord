@@ -24,7 +24,7 @@ const Patch: NavContextMenuPatchCallback = (children, { guild }: { guild: Guild;
 
 export default definePlugin({
     name: "emojiDumper",
-    description: "Context menu to dump and download a server's emojis.",
+    description: "Adds a context menu option to dump and download a server's emojis",
     authors: [
         SuncordDevs.Cortex,
         Devs.Samwich,

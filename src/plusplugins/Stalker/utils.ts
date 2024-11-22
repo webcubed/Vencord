@@ -1,12 +1,5 @@
-/*
- * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
 // stolen from https://github.com/Syncxv/vc-message-logger-enhanced/blob/master/utils/index.ts
 import { Logger } from "@utils/Logger";
-
 import { settings } from "./index";
 
 
@@ -34,7 +27,7 @@ export function isInWhitelist(id: string) {
 // Convert snake_case to camelCase for all keys in an object, including nested objects
 export function convertSnakeCaseToCamelCase(obj: any): any {
 
-    if (!Array.isArray(obj) && (typeof obj !== "object" || obj == null)) return obj;
+    if (!Array.isArray(obj) && (typeof obj !== "object" || obj === null)) return obj;
 
     if (Array.isArray(obj)) return obj.map(convertSnakeCaseToCamelCase);
 
@@ -43,7 +36,7 @@ export function convertSnakeCaseToCamelCase(obj: any): any {
         const value = convertSnakeCaseToCamelCase(obj[key]);
         return { ...newObj, [camelCaseKey]: value };
     }, {} as any);
-}
+};
 
 const logger = new Logger("Stalker");
 

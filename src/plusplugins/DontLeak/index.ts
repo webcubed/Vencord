@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
 import { definePluginSettings } from "@api/Settings";
 import { Devs } from "@utils/constants";
@@ -44,7 +44,7 @@ export default definePlugin({
     name: "DoNotLeak!",
     tags: ["DontLeak"],
     description:
-        "Hide all message contents and attachments when you're streaming or sharing your screen.",
+        "Hide all message contents and attachments when you're streaming or sharing your screen",
     authors: [Devs.Perny],
     settings,
     start() {

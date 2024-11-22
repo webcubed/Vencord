@@ -14,7 +14,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ */
 
 import { classNameFactory, disableStyle, enableStyle } from "@api/Styles";
 import { Devs } from "@utils/constants";
@@ -135,14 +135,14 @@ function replaceIcon(icon: Function) {
 
 export default definePlugin({
     name: "RunInConsole",
-    description: "Allows you to run code blocks in the console. Press Shift to edit the code before running.",
+    description: "Allows you to run code blocks in the console. Press Shift to edit the code before running it",
     authors: [Devs.Tolgchu],
     patches: [
         {
             find: /\i\(\)\(\i\.scrollbarGhostHairline,"hljs"\)/,
             replacement: [
                 {
-                    // this shit is hot garbage, but it works. :pray:
+                    // This shit is hot garbage, but it works. :pray:
                     match: /(className:\i.codeActions,children:)(\(0,(\i).jsx\)\(\i,{text:(\i).content}\))(}\):null)/,
                     replace: "$1[$2,(0,$3.jsx)($self.RunIcon,{text:$4.content})]$5"
                 }

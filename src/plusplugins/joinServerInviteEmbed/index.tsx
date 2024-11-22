@@ -29,7 +29,7 @@ export default definePlugin({
             find: "#{intl::JOIN_SERVER_INVITE_EXAMPLES_HEADER}",
             replacement: [
                 {
-                    match: /(\[(\i),\i\]=\i\.useState\(""\).{0,2000})\i\.FormItem,{title:\i.{0,10}\.Messages\.JOIN_SERVER_INVITE_EXAMPLES_HEADER.{0,200}?}\),/,
+                    match: /(\[(\i),\i\]=\i\.useState\(""\).{0,2000})\i\.FormItem,{title:\i.{0,10}#{intl::JOIN_SERVER_INVITE_EXAMPLES_HEADER}.{0,200}?}\),/,
                     replace: "$1$self.InviteEmbedWrapper,{code:$2}),"
                 }
             ]

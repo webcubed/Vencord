@@ -2,12 +2,12 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
+import { CloseIcon } from "./Icons";
+import { HexToHSL } from "../utils";
 import { openModal } from "..";
 import { ModalProps } from "../types";
-import { HexToHSL } from "../utils";
-import { CloseIcon } from "./Icons";
 
 export default function ThemePreview({
     accent,
@@ -47,7 +47,7 @@ export default function ThemePreview({
                                 if (isModal) {
                                     modalProps?.onClose();
                                 } else {
-                                    openModal((props: ModalProps) => <div className={`colorwaysPreview-modal ${props.transitionState === 2 ? "closing" : ""} ${props.transitionState === 4 ? "hidden" : ""}`}>
+                                    openModal((props: ModalProps) => <div className={`colorwaysPreview-modal ${props.transitionState == 2 ? "closing" : ""} ${props.transitionState == 4 ? "hidden" : ""}`}>
                                         <style>
                                             {previewCSS}
                                         </style>

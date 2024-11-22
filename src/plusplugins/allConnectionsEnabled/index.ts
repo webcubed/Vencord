@@ -5,8 +5,8 @@
  */
 
 import definePlugin from "@utils/types";
-
 import { Connection } from "./connection-types";
+import { connect } from "http2";
 
 export default definePlugin({
     name: "AllConnectionsEnabled",
@@ -28,7 +28,7 @@ export default definePlugin({
     ],
     changeConnections(connections: Connection[]) {
         connections
-            .filter(connection => connection.enabled === !1)
+            .filter(connection => connection.enabled == !1)
             .forEach(connection => {
                 connection.enabled = true;
                 console.log(`Enabled connection ${connection.name}`);

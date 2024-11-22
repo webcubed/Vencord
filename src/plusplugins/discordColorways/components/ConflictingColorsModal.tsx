@@ -2,12 +2,12 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
-import { DataStore, useEffect, useState } from "..";
 import { knownThemeVars } from "../constants";
-import { ModalProps } from "../types";
 import { getFontOnBg, getHex } from "../utils";
+import { DataStore, useState, useEffect } from "..";
+import { ModalProps } from "../types";
 
 export default function ({
     modalProps,
@@ -45,7 +45,7 @@ export default function ({
         load();
     }, []);
 
-    return <div className={`colorwaysModal ${modalProps.transitionState === 2 ? "closing" : ""} ${modalProps.transitionState === 4 ? "hidden" : ""}`} data-theme={theme}>
+    return <div className={`colorwaysModal ${modalProps.transitionState == 2 ? "closing" : ""} ${modalProps.transitionState == 4 ? "hidden" : ""}`} data-theme={theme}>
         <h2 className="colorwaysModalHeader">
             Conflicting Colors Found
         </h2>

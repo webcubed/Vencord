@@ -1,9 +1,3 @@
-/*
- * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
 import { definePluginSettings } from "@api/Settings";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
@@ -74,7 +68,7 @@ export default definePlugin({
             find: "#{intl::BILLING_SETTINGS}",
             replacement: [
                 {
-                    match: /(?<=#{intl::BILLING_SETTINGS},)/,
+                    match: /(?<=#{intl::BILLING_SETTINGS}[^,]*?,)(?=div)/,
                     replace: "capitalism:true,"
                 },
                 {
@@ -85,7 +79,7 @@ export default definePlugin({
             predicate: () => settings.store.billing,
         },
         { // Gift button
-            find: ".gifts)||void 0===",
+            find: '.gifts)||void 0===',
             replacement: {
                 match: /let\{disabled:\i,channel:\i\}=\i/,
                 replace: "return null;$&",
@@ -93,7 +87,7 @@ export default definePlugin({
             predicate: () => settings.store.gift,
         },
         { // Emoji list
-            find: "Messages.EMOJI_PICKER_CREATE_EMOJI_TITLE,size:",
+            find: "#{intl::EMOJI_PICKER_CREATE_EMOJI_TITLE},size:",
             replacement: {
                 match: /(\i)=\i\|\|!\i&&\i.\i.isEmojiCategoryNitroLocked\(\{[^}]*\}\);/,
                 replace: "$&$1||"
@@ -101,7 +95,7 @@ export default definePlugin({
             predicate: () => settings.store.emojiList,
         },
         { // Emoji category list
-            find: "Messages.EMOJI_CATEGORY_TOP_GUILD_EMOJI.format({",
+            find: "#{intl::EMOJI_CATEGORY_TOP_GUILD_EMOJI}.format({",
             replacement: {
                 match: /(?<=(\i)\.unshift\((\i)\):)(?=\1\.push\(\2\))/,
                 replace: "$2.isNitroLocked||"

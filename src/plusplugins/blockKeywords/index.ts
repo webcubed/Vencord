@@ -9,7 +9,7 @@ import { EquicordDevs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
 import { MessageJSON } from "discord-types/general";
 
-var blockedKeywords: Array<RegExp>;
+let blockedKeywords: Array<RegExp>;
 
 const settings = definePluginSettings({
     blockedWords: {
@@ -26,15 +26,21 @@ const settings = definePluginSettings({
     },
     caseSensitive: {
         type: OptionType.BOOLEAN,
-        description: "Whether to use a case sensitive search or not",
+        description: "Whether or not to use a case sensitive search",
         default: false,
         restartNeeded: true
-    }
+    },
+    ignoreBlockedMessages: {
+        description: "Completely ignore (recent) new messages bar",
+        type: OptionType.BOOLEAN,
+        default: true,
+        restartNeeded: true,
+    },
 });
 
 export default definePlugin({
     name: "BlockKeywords",
-    description: "Blocks messages containing specific user-defined keywords, as if the user sending them was blocked.",
+    description: "Blocks messages containing specific user-defined keywords, as if the user sending them was blocked",
     authors: [EquicordDevs.catcraft],
     patches: [
         {
@@ -44,6 +50,18 @@ export default definePlugin({
                 replace: "$&$1=$self.blockMessagesWithKeywords($1);"
             }
         },
+        ...[
+            '"ReadStateStore"'
+        ].map(find => ({
+            find,
+            predicate: () => Settings.plugins.BlockKeywords.ignoreBlockedMessages && !Settings.plugins.NoBlockedMessages.ignoreBlockedMessages,
+            replacement: [
+                {
+                    match: /(?<=#{intl::MESSAGE_CREATE}:function\((\i)\){)/,
+                    replace: (_, props) => `if($self.containsBlockedKeywords(${props}.message))return;`
+                }
+            ]
+        })),
     ],
 
     settings,
@@ -83,9 +101,9 @@ export default definePlugin({
             for (let wordIndex = 0; wordIndex < blockedKeywords.length; wordIndex++) {
                 // doing this because undefined strings get converted to the string "undefined" in regex tests
                 // @ts-ignore
-                const descriptionHasKeywords = embed.rawDescription !== null && blockedKeywords[wordIndex].test(embed.rawDescription);
+                const descriptionHasKeywords = embed.rawDescription != null && blockedKeywords[wordIndex].test(embed.rawDescription);
                 // @ts-ignore
-                const titleHasKeywords = embed.rawTitle !== null && blockedKeywords[wordIndex].test(embed.rawTitle);
+                const titleHasKeywords = embed.rawTitle != null && blockedKeywords[wordIndex].test(embed.rawTitle);
                 if (descriptionHasKeywords || titleHasKeywords) {
                     return true;
                 }

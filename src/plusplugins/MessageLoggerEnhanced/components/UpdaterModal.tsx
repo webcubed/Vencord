@@ -79,7 +79,7 @@ export function UpdaterModal({ modalProps }: { modalProps: ModalProps; }) {
         <ModalRoot {...modalProps} size={ModalSize.LARGE}>
             <ModalContent className={cl("content")}>
                 <Forms.FormTitle tag="h5">Repo</Forms.FormTitle>
-                {!repoPending && repoInfo !== null && err == null && (
+                {!repoPending && repoInfo != null && err == null && (
                     <>
                         <Forms.FormText className="vc-text-selectable">
                             {repoPending

@@ -1,123 +1,118 @@
-/*
- * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
-import { addPreSendListener, removePreSendListener,SendListener, } from "@api/MessageEvents";
-import { definePluginSettings } from "@api/Settings";
+import { SendListener, addPreSendListener, removePreSendListener, } from "@api/MessageEvents";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
+import { definePluginSettings } from "@api/Settings";
+import { lang } from "moment";
 
 let languages: string[] = [
-    "en", // English
-    "af", // Afrikaans
-    "sq", // Albanian
-    "am", // Amharic
-    "ar", // Arabic
-    "hy", // Armenian
-    "az", // Azerbaijani
-    "eu", // Basque
-    "be", // Belarusian
-    "bn", // Bengali
-    "bs", // Bosnian
-    "bg", // Bulgarian
-    "ca", // Catalan
-    "ceb", // Cebuano
-    "ny", // Chichewa (Chewa, Nyanja)
-    "zh", // Chinese (Simplified and Traditional)
-    "co", // Corsican
-    "hr", // Croatian
-    "cs", // Czech
-    "da", // Danish
-    "nl", // Dutch
-    "eo", // Esperanto
-    "et", // Estonian
-    "tl", // Filipino (Tagalog)
-    "fi", // Finnish
-    "fr", // French
-    "fy", // Frisian
-    "gl", // Galician
-    "ka", // Georgian
-    "de", // German
-    "el", // Greek
-    "gu", // Gujarati
-    "ht", // Haitian Creole
-    "ha", // Hausa
-    "haw", // Hawaiian
-    "iw", // Hebrew
-    "hi", // Hindi
-    "hmn", // Hmong
-    "hu", // Hungarian
-    "is", // Icelandic
-    "ig", // Igbo
-    "id", // Indonesian
-    "ga", // Irish
-    "it", // Italian
-    "ja", // Japanese
-    "jv", // Javanese
-    "kn", // Kannada
-    "kk", // Kazakh
-    "km", // Khmer
-    "rw", // Kinyarwanda
-    "ko", // Korean
-    "ku", // Kurdish
-    "ky", // Kyrgyz
-    "lo", // Lao
-    "la", // Latin
-    "lv", // Latvian
-    "lt", // Lithuanian
-    "lb", // Luxembourgish
-    "mk", // Macedonian
-    "mg", // Malagasy
-    "ms", // Malay
-    "ml", // Malayalam
-    "mt", // Maltese
-    "mi", // Maori
-    "mr", // Marathi
-    "mn", // Mongolian
-    "my", // Burmese
-    "ne", // Nepali
-    "no", // Norwegian
-    "or", // Odia (Oriya)
-    "ps", // Pashto
-    "fa", // Persian
-    "pl", // Polish
-    "pt", // Portuguese
-    "pa", // Punjabi
-    "ro", // Romanian
-    "ru", // Russian
-    "sm", // Samoan
-    "gd", // Scots Gaelic
-    "sr", // Serbian
-    "st", // Sesotho
-    "sn", // Shona
-    "sd", // Sindhi
-    "si", // Sinhala
-    "sk", // Slovak
-    "sl", // Slovenian
-    "so", // Somali
-    "es", // Spanish
-    "su", // Sundanese
-    "sw", // Swahili
-    "sv", // Swedish
-    "tg", // Tajik
-    "ta", // Tamil
-    "tt", // Tatar
-    "te", // Telugu
-    "th", // Thai
-    "tr", // Turkish
-    "tk", // Turkmen
-    "uk", // Ukrainian
-    "ur", // Urdu
-    "ug", // Uyghur
-    "uz", // Uzbek
-    "vi", // Vietnamese
-    "cy", // Welsh
-    "xh", // Xhosa
-    "yi", // Yiddish
-    "yo", // Yoruba
-    "zu" // Zulu
+    "en",   // English
+    "af",   // Afrikaans
+    "sq",   // Albanian
+    "am",   // Amharic
+    "ar",   // Arabic
+    "hy",   // Armenian
+    "az",   // Azerbaijani
+    "eu",   // Basque
+    "be",   // Belarusian
+    "bn",   // Bengali
+    "bs",   // Bosnian
+    "bg",   // Bulgarian
+    "ca",   // Catalan
+    "ceb",  // Cebuano
+    "ny",   // Chichewa (Chewa, Nyanja)
+    "zh",   // Chinese (Simplified and Traditional)
+    "co",   // Corsican
+    "hr",   // Croatian
+    "cs",   // Czech
+    "da",   // Danish
+    "nl",   // Dutch
+    "eo",   // Esperanto
+    "et",   // Estonian
+    "tl",   // Filipino (Tagalog)
+    "fi",   // Finnish
+    "fr",   // French
+    "fy",   // Frisian
+    "gl",   // Galician
+    "ka",   // Georgian
+    "de",   // German
+    "el",   // Greek
+    "gu",   // Gujarati
+    "ht",   // Haitian Creole
+    "ha",   // Hausa
+    "haw",  // Hawaiian
+    "iw",   // Hebrew
+    "hi",   // Hindi
+    "hmn",  // Hmong
+    "hu",   // Hungarian
+    "is",   // Icelandic
+    "ig",   // Igbo
+    "id",   // Indonesian
+    "ga",   // Irish
+    "it",   // Italian
+    "ja",   // Japanese
+    "jv",   // Javanese
+    "kn",   // Kannada
+    "kk",   // Kazakh
+    "km",   // Khmer
+    "rw",   // Kinyarwanda
+    "ko",   // Korean
+    "ku",   // Kurdish
+    "ky",   // Kyrgyz
+    "lo",   // Lao
+    "la",   // Latin
+    "lv",   // Latvian
+    "lt",   // Lithuanian
+    "lb",   // Luxembourgish
+    "mk",   // Macedonian
+    "mg",   // Malagasy
+    "ms",   // Malay
+    "ml",   // Malayalam
+    "mt",   // Maltese
+    "mi",   // Maori
+    "mr",   // Marathi
+    "mn",   // Mongolian
+    "my",   // Burmese
+    "ne",   // Nepali
+    "no",   // Norwegian
+    "or",   // Odia (Oriya)
+    "ps",   // Pashto
+    "fa",   // Persian
+    "pl",   // Polish
+    "pt",   // Portuguese
+    "pa",   // Punjabi
+    "ro",   // Romanian
+    "ru",   // Russian
+    "sm",   // Samoan
+    "gd",   // Scots Gaelic
+    "sr",   // Serbian
+    "st",   // Sesotho
+    "sn",   // Shona
+    "sd",   // Sindhi
+    "si",   // Sinhala
+    "sk",   // Slovak
+    "sl",   // Slovenian
+    "so",   // Somali
+    "es",   // Spanish
+    "su",   // Sundanese
+    "sw",   // Swahili
+    "sv",   // Swedish
+    "tg",   // Tajik
+    "ta",   // Tamil
+    "tt",   // Tatar
+    "te",   // Telugu
+    "th",   // Thai
+    "tr",   // Turkish
+    "tk",   // Turkmen
+    "uk",   // Ukrainian
+    "ur",   // Urdu
+    "ug",   // Uyghur
+    "uz",   // Uzbek
+    "vi",   // Vietnamese
+    "cy",   // Welsh
+    "xh",   // Xhosa
+    "yi",   // Yiddish
+    "yo",   // Yoruba
+    "zu"    // Zulu
 ];
 
 const settings = definePluginSettings({
@@ -141,11 +136,11 @@ export async function comedicChineseWhispers(inputText: string, language : strin
     {
         languages = languages.map(value => ({ value, sort: Math.random() }))
         .sort((a, b) => a.sort - b.sort)
-        .map(({ value }) => value);
+        .map(({ value }) => value)
     }
 
     language = language.concat("en");
-
+    
     for (let i = 0; i < language.length; i++) {
         const sourceLang = i === 0 ? "auto" : language[i - 1];
         const targetLang = language[i];
@@ -159,7 +154,7 @@ export async function comedicChineseWhispers(inputText: string, language : strin
 }
 
 async function translateText(sourceLang: string, targetLang: string, text: string): Promise<string> {
-
+    
     const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&dj=1&q=${encodeURIComponent(text)}`;
     const response = await fetch(url);
     if (!response.ok) {
@@ -172,10 +167,10 @@ async function translateText(sourceLang: string, targetLang: string, text: strin
     return translatedText;
 }
 
-const presendObject : SendListener = async (channelId, msg) =>
+let presendObject : SendListener = async (channelId, msg) =>
 {
     msg.content = await comedicChineseWhispers(msg.content, languages.slice(0, settings.store.intensity));
-};
+}
 
 export default definePlugin({
     name: "ChineseWhispers",

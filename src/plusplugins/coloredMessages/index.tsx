@@ -1,6 +1,5 @@
 /*
- * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2024 Knocklive Development
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -218,7 +217,7 @@ const ChatBarIcon: ChatBarButton = ({ isMainChat }) => {
 
 export default definePlugin({
     name: "ColoredMessages",
-    description: "Adds a new button to the message bar that allows you to insert colored code blocks into your messages!",
+    description: "Adds a new button to the message bar that allows you to insert colored code blocks into your messages",
     authors: [Devs.Knocklive],
     dependencies: ["ChatInputButtonAPI"],
 

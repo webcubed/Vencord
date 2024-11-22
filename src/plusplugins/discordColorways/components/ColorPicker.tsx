@@ -2,14 +2,15 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
-import { DataStore, Toasts, useEffect, useState } from "..";
+import { CopyIcon } from "./Icons";
+
 import { mainColors } from "../constants";
 import { colorVariables } from "../css";
-import { ModalProps } from "../types";
 import { getHex } from "../utils";
-import { CopyIcon } from "./Icons";
+import { useState, useEffect, DataStore, Toasts } from "..";
+import { ModalProps } from "../types";
 
 export default function ({ modalProps }: { modalProps: ModalProps; }) {
     const [ColorVars, setColorVars] = useState<string[]>(colorVariables);
@@ -34,7 +35,7 @@ export default function ({ modalProps }: { modalProps: ModalProps; }) {
         setColorVars(results);
     }
 
-    return <div className={`colorwaysModal ${modalProps.transitionState === 2 ? "closing" : ""} ${modalProps.transitionState === 4 ? "hidden" : ""}`} data-theme={theme}>
+    return <div className={`colorwaysModal ${modalProps.transitionState == 2 ? "closing" : ""} ${modalProps.transitionState == 4 ? "hidden" : ""}`} data-theme={theme}>
         <div style={{ gap: "8px", marginBottom: "8px", display: "flex" }}>
             <input
                 type="text"

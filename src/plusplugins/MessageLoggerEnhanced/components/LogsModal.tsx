@@ -118,14 +118,14 @@ export function LogsModal({ modalProps, initalQuery }: Props) {
                     <ModalContent
                         className={cl("content")}
                     >
-                        {messages !== null && total === 0 && (
+                        {messages != null && total === 0 && (
                             <EmptyLogs
                                 hasQuery={queryEh.length !== 0}
                                 reset={reset}
                             />
                         )}
 
-                        {!pending && messages !== null && (
+                        {!pending && messages != null && (
                             <LogsContentMemo
                                 visibleMessages={messages}
                                 canLoadMore={messages.length < statusTotal && messages.length >= settings.store.messagesToDisplayAtOnceInLogs}
@@ -365,7 +365,7 @@ function LMessage({ log, isGroupStart, reset, }: LMessageProps) {
                         />
 
                         {
-                            log.message.guildId !== null
+                            log.message.guildId != null
                             && (
                                 <Menu.MenuItem
                                     key="copy-server-id"

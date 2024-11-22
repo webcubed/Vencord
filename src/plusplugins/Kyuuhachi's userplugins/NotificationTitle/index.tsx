@@ -1,12 +1,6 @@
-/*
- * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
 import { Devs } from "@utils/constants";
-import { getIntlMessage } from "@utils/discord";
 import definePlugin from "@utils/types";
+import { getIntlMessage } from "@utils/discord";
 import { findByCodeLazy, findByPropsLazy } from "@webpack";
 import { ChannelStore, GuildStore, RelationshipStore, UserStore } from "@webpack/common";
 
@@ -37,10 +31,10 @@ export default definePlugin({
         const username = getName(channel.guild_id, channel.id, user);
 
         let title = username;
-        if (message.type === MessageTypes.REPLY && message.referenced_message?.author) {
+        if(message.type == MessageTypes.REPLY && message.referenced_message?.author) {
             const replyUser = UserStore.getUser(message.referenced_message.author.id);
             const replyUsername = getName(channel.guild_id, channel.id, replyUser);
-            title = getIntlMessage("CHANNEL_MESSAGE_REPLY_A11Y_LABEL").format({
+            title = getIntlMessage("CHANNEL_MESSAGE_REPLY_A11Y_LABEL", {
                 author: username,
                 repliedAuthor: replyUsername,
             });
@@ -49,11 +43,11 @@ export default definePlugin({
         const guild = GuildStore.getGuild(channel.guild_id);
         const parent = ChannelStore.getChannel(channel.parent_id);
 
-        if (channel.type !== ChannelTypes.DM) {
+        if(channel.type != ChannelTypes.DM) {
             let where = ChannelTypesSets.THREADS.has(channel.type)
                 ? `${channelName(channel)} in ${channelName(parent, true)}`
                 : `${channelName(channel, true)}`;
-            if (guild !== null)
+            if(guild != null)
                 where += `, ${guild.name}`;
             title += `\n(${where})`;
         }

@@ -122,7 +122,7 @@ const settings = definePluginSettings({
     },
     streamLink: {
         type: OptionType.STRING,
-        description: "Twitch.tv or Youtube.com link (only for Streaming activity type)",
+        description: "Twitch.tv or YouTube.com link (only for Streaming activity type)",
         onChange: onChange,
         disabled: isStreamLinkDisabled,
         isValid: isStreamLinkValid
@@ -432,7 +432,7 @@ async function setRpc(disable?: boolean) {
 
 export default definePlugin({
     name: "VencordRPC",
-    description: "how to expose yourself",
+    description: "How to expose yourself",
     authors: [Devs.AutumnVN],
     start: setRpc,
     stop: () => setRpc(true),

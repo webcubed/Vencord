@@ -20,6 +20,7 @@ import "./style.css";
 
 import { sendBotMessage } from "@api/Commands";
 import { definePluginSettings } from "@api/Settings";
+import { Devs } from "@utils/constants";
 import { Logger } from "@utils/Logger";
 import definePlugin, { OptionType } from "@utils/types";
 import { Embed, Message } from "discord-types/general";

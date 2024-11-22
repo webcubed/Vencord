@@ -2,9 +2,9 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*/
 
-import { useEffect, useRef, useState } from "..";
+import { useRef, useState, useEffect } from "..";
 
 export default function ({
     children,
@@ -53,9 +53,9 @@ export default function ({
     }
 
     function onWindowUnfocused(e) {
-        e = e || window.event;
+        e = e ? e : window.event;
         var from = e.relatedTarget || e.toElement;
-        if (!from || from.nodeName === "HTML") {
+        if (!from || from.nodeName == "HTML") {
             setVisible(false);
         }
     }
@@ -69,7 +69,7 @@ export default function ({
 
     return <>
         {children({
-            onMouseEnter: e => showTooltip(e),
+            onMouseEnter: (e) => showTooltip(e),
             onMouseLeave: () => setVisible(false),
             onClick: () => setVisible(false)
         })}

@@ -16,13 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import { Settings } from "@api/Settings";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
-import { Forms } from "@webpack/common";
+import { Forms, Text  } from "@webpack/common";
 
 export default definePlugin({
     name: "StagingBuild",
-    description: "Allows you to switch to staging build!",
+    description: "Allows you to switch to staging build",
     authors: [Devs.HappyEnderman],
 
     patches: [],
@@ -42,7 +43,7 @@ export default definePlugin({
     },
 
     start() {
-        window.GLOBAL_ENV.RELEASE_CHANNEL = "staging";
+        window.GLOBAL_ENV.RELEASE_CHANNEL = "staging"
     },
 
     stop() {

@@ -1,9 +1,3 @@
-/*
- * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
 import Plugins, { PluginMeta } from "~plugins";
 
 const PLUGINS = [
@@ -16,6 +10,7 @@ const PLUGINS = [
     require("./MoreThemes").default,
     require("./Shiggy").default,
     require("./NotificationTitle").default,
+    require("./Onward").default,
     require("./TeX").default,
     require("./Title").default,
     require("./ViewRaw2").default,

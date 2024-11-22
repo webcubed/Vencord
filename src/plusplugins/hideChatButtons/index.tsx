@@ -23,15 +23,12 @@ const settings = definePluginSettings({
         description: "opened by default",
         default: false,
         onChange: (store: { open: boolean; }) => {
-            console.log("changing open", store.open);
             hidechatbuttonsopen = store.open;
         }
     },
 });
 
-// id={"menu-button-" + (props.open ? "close" : "open")}
 function HideToggleButton(props: { open: boolean | undefined, onClick: MouseEventHandler<HTMLButtonElement>; }) {
-    console.log(props.open);
     return (<ChatBarButton
         onClick={props.onClick}
         tooltip={props.open ? "Close" : "Open"}
@@ -64,7 +61,6 @@ function buttonsInner(buttons: ButtonReactNode[]) {
     const [open, setOpen] = useState(hidechatbuttonsopen);
 
     useMemo(() => {
-        console.log("useMemo: changing open", open);
         hidechatbuttonsopen = open;
     }, [open]);
 
@@ -84,7 +80,7 @@ function buttonsInner(buttons: ButtonReactNode[]) {
 
 
 export default definePlugin({
-    name: "hideChatButtons",
+    name: "HideChatButtons",
     description: "able to hide the chat buttons",
     settings: settings,
     authors: [

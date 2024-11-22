@@ -15,7 +15,7 @@ export default definePlugin({
     patches: [
         // When focused on voice channel or group chat voice call
         {
-            find: /\i\?\i.\i.SELF_VIDEO/,
+            find: /\i\?#{intl::SELF_VIDEO}/,
             replacement: {
                 match: /mirror:\i/,
                 replace: "mirror:!1"

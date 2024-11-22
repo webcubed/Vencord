@@ -1,13 +1,7 @@
-/*
- * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
 import { definePluginSettings } from "@api/Settings";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
-import { findByCodeLazy } from "@webpack";
+import { findByCodeLazy, findByPropsLazy } from "@webpack";
 
 const flashPageTitle = findByCodeLazy("=>({flashQueue:[...");
 const rootTitle = { base: null as string | null };
@@ -28,7 +22,7 @@ function setTitle(v: string) {
 
 export default definePlugin({
     name: "Title",
-    description: "Replaces the window title prefix",
+    description: "Replace the window title prefix",
     authors: [Devs.Kyuuhachi],
     settings,
 

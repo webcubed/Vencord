@@ -18,7 +18,7 @@ export default definePlugin({
     description: "The amount of plus before :emoji: is the message to add it to",
     patches: [
         {
-            find: ".SLASH_COMMAND_USED,",
+            find: "#{intl::SLASH_COMMAND_USED}",
             replacement: [
                 {
                     match: /\\\+/,

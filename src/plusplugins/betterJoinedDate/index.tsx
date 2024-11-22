@@ -13,7 +13,7 @@ export default definePlugin({
     authors: [Devs.AutumnVN],
     description: "Add a tooltip to the joined date showing the exact time and how many days ago it was",
     patches: [{
-        find: ".USER_PROFILE_MEMBER_SINCE",
+        find: "#{intl::USER_PROFILE_MEMBER_SINCE}",
         replacement: [{
             match: /\(0,\i.\i\)\((\i\.\i\.extractTimestamp\(\i\)),\i\)/,
             replace: "$self.addTooltip($&, $1)"

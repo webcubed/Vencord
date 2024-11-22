@@ -28,7 +28,7 @@ export default definePlugin({
     },
     patches: [
         {
-            find: ".DISCODO_DISABLED",
+            find: "#{intl::DISCODO_DISABLED}",
             replacement: {
                 match: /.NavItem,{/,
                 replace: "$&onContextMenu:() => $self.onContextMenu(\"guild\"),"
@@ -38,7 +38,7 @@ export default definePlugin({
             find: "friends_tab_no_track",
             replacement:
             {
-                match: /text:\i.\i.#{intl::FRIENDS},onClick:/,
+                match: /text:#{intl::FRIENDS},onClick:/,
                 replace: "onContextMenu:() => $self.onContextMenu(\"friend\"), $&"
             }
         }

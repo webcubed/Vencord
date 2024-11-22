@@ -2,8 +2,8 @@
     "name": "vencord",
     "private": "true",
     "version": "1.10.7",
-    "description": "this is a fork of Vencord+, which is a fork of Vencord that adds unapproved plugins.",
-    "homepage": "https://github.com/webcubed/VencordPlus#readme",
+    "description": "Vencord+ is a fork of Vencord that adds unapproved plugins.",
+    "homepage": "https://github.com/RobinRMC/VencordPlus#readme",
     "bugs": {
         "url": "https://github.com/RobinRMC/VencordPlus/issues"
     },

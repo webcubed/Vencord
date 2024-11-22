@@ -5,6 +5,24 @@
  */
 
 // Plugin Imports
+import ColorwaysButton from "./components/ColorwaysButton";
+import CreatorModal from "./components/CreatorModal";
+import Selector from "./components/Selector";
+import SettingsPage from "./components/SettingsTabs/SettingsPage";
+import SourceManager from "./components/SettingsTabs/SourceManager";
+import Store from "./components/SettingsTabs/Store";
+import Spinner from "./components/Spinner";
+import { defaultColorwaySource } from "./constants";
+import style from "./style.css?managed";
+import discordTheme from "./theme.discord.css?managed";
+import { ColorPickerProps, ColorwayObject } from "./types";
+
+// Mod-specific imports
+
+import {
+    ReactNode as $ReactNode,
+    CSSProperties as $CSSProperties
+} from "react";
 import * as $DataStore from "@api/DataStore";
 import { addAccessory, removeAccessory } from "@api/MessageAccessories";
 import { addServerListElement, removeServerListElement, ServerListRenderPosition } from "@api/ServerList";
@@ -16,53 +34,36 @@ import {
     i18n,
     SettingsRouter
 } from "@webpack/common";
-import { FluxEvents as $FluxEvents } from "@webpack/types";
-// Mod-specific imports
-import {
-    CSSProperties as $CSSProperties,
-    ReactNode as $ReactNode
-} from "react";
-
-import { ColorwayCSS } from "./colorwaysAPI";
 import ColorwayID from "./components/ColorwayID";
-import ColorwaysButton from "./components/ColorwaysButton";
-import CreatorModal from "./components/CreatorModal";
-import PCSMigrationModal from "./components/PCSMigrationModal";
-import Selector from "./components/Selector";
-import SettingsPage from "./components/SettingsTabs/SettingsPage";
-import SourceManager from "./components/SettingsTabs/SourceManager";
-import Store from "./components/SettingsTabs/Store";
-import Spinner from "./components/Spinner";
-import { defaultColorwaySource } from "./constants";
-import { generateCss, getPreset, gradientBase, gradientPresetIds } from "./css";
-import defaultsLoader from "./defaultsLoader";
-import style from "./style.css?managed";
-import discordTheme from "./theme.discord.css?managed";
-import { ColorPickerProps, ColorwayObject } from "./types";
-import { colorToHex } from "./utils";
 import { closeWS, connect } from "./wsClient";
+import { ColorwayCSS } from "./colorwaysAPI";
+import { FluxEvents as $FluxEvents } from "@webpack/types";
+import PCSMigrationModal from "./components/PCSMigrationModal";
+import defaultsLoader from "./defaultsLoader";
+import { generateCss, getPreset, gradientBase, gradientPresetIds } from "./css";
+import { colorToHex } from "./utils";
 
 export const DataStore = $DataStore;
 export type ReactNode = $ReactNode;
 export type CSSProperties = $CSSProperties;
 export type FluxEvents = $FluxEvents;
-export { closeModal, openModal } from "@utils/modal";
 export {
-    Clipboard,
-    FluxDispatcher,
-    i18n,
-    ReactDOM,
-    SettingsRouter,
-    Slider,
-    Toasts,
-    useCallback,
+    useState,
     useEffect,
     useReducer,
+    useStateFromStores,
+    useCallback,
     useRef,
     UserStore,
-    useState,
-    useStateFromStores
+    Clipboard,
+    i18n,
+    SettingsRouter,
+    Toasts,
+    FluxDispatcher,
+    ReactDOM,
+    Slider
 } from "@webpack/common";
+export { openModal, closeModal } from "@utils/modal";
 
 export let ColorPicker: React.FunctionComponent<ColorPickerProps> = () => {
     return <Spinner className="colorways-creator-module-warning" />;
@@ -75,7 +76,7 @@ export const PluginProps = {
     CSSVersion: "1.20"
 };
 
-const mainDev = Devs.DaBluLite || {
+const mainDev = Devs["DaBluLite"] || {
     name: "DaBluLite",
     id: 582170007505731594n
 };
@@ -103,7 +104,7 @@ export default definePlugin({
 
         },
         {
-            find: "Messages.USER_SETTINGS_WITH_BUILD_OVERRIDE.format",
+            find: "#{intl::USER_SETTINGS_WITH_BUILD_OVERRIDE}",
             replacement: {
                 match: /(?<=(\i)\(this,"handleOpenSettingsContextMenu",.{0,100}?openContextMenuLazy.{0,100}?(await Promise\.all[^};]*?\)\)).*?,)(?=\1\(this)/,
                 replace: "(async ()=>$2)(),"
@@ -118,21 +119,21 @@ export default definePlugin({
             },
         },
         {
-            find: "Messages.ACTIVITY_SETTINGS",
+            find: "#{intl::ACTIVITY_SETTINGS}",
             replacement: {
-                match: /\{section:(\i\.\i)\.HEADER,\s*label:(\i)\.\i\.Messages\.APP_SETTINGS/,
+                match: /\{section:(\i\.\i)\.HEADER,\s*label:(\i)#{intl::APP_SETTINGS}/,
                 replace: "...$self.makeSettingsCategories($1),$&"
             }
         },
         {
-            find: "Messages.ACTIVITY_SETTINGS",
+            find: "#{intl::ACTIVITY_SETTINGS}",
             replacement: {
                 match: /(?<=section:(.{0,50})\.DIVIDER\}\))([,;])(?=.{0,200}(\i)\.push.{0,100}label:(\i)\.header)/,
                 replace: (_, sectionTypes, commaOrSemi, elements, element) => `${commaOrSemi} $self.addSettings(${elements}, ${element}, ${sectionTypes}) ${commaOrSemi}`
             }
         },
         {
-            find: "Messages.USER_SETTINGS_ACTIONS_MENU_LABEL",
+            find: "#{intl::USER_SETTINGS_ACTIONS_MENU_LABEL}",
             replacement: {
                 match: /(?<=function\((\i),\i\)\{)(?=let \i=Object.values\(\i.UserSettingsSections\).*?(\i)\.default\.open\()/,
                 replace: "$2.default.open($1);return;"
@@ -238,7 +239,7 @@ export default definePlugin({
         const active: ColorwayObject = activeColorwayObject;
 
         if (active.id) {
-            if (colorwaysPreset === "default") {
+            if (colorwaysPreset == "default") {
                 ColorwayCSS.set(generateCss(
                     active.colors,
                     true,

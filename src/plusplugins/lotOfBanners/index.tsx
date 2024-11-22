@@ -4,13 +4,12 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import "./index.css";
-
-import { Devs } from "@utils/constants";
+import { UserProfileStore, UserStore } from "@webpack/common";;
 import definePlugin from "@utils/types";
-import { UserProfileStore, UserStore } from "@webpack/common";
-
 import { settings } from "./settings";
+
+import "./index.css";
+import { Devs } from "@utils/constants";
 
 export default definePlugin({
     name: "LotsOfBanners",
@@ -20,7 +19,7 @@ export default definePlugin({
     patches: [
         {
             // Add banner to member list
-            find: ".Messages.GUILD_OWNER,",
+            find: '#{intl::GUILD_OWNER}',
             predicate: () => settings.store.memberList,
             replacement: [
                 {
@@ -31,7 +30,7 @@ export default definePlugin({
         },
         {
             // Add banner to dm list
-            find: ".Messages.SYSTEM_DM_ACTIVITY_TEXT",
+            find: '#{intl::SYSTEM_DM_ACTIVITY_TEXT}',
             predicate: () => settings.store.dmList,
             replacement: [
                 {
