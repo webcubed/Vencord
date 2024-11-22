@@ -31,7 +31,6 @@ import { Devs } from "@utils/constants";
 import { openModal } from "@utils/modal";
 import definePlugin from "@utils/types";
 import {
-    i18n,
     SettingsRouter
 } from "@webpack/common";
 import ColorwayID from "./components/ColorwayID";
@@ -42,6 +41,7 @@ import PCSMigrationModal from "./components/PCSMigrationModal";
 import defaultsLoader from "./defaultsLoader";
 import { generateCss, getPreset, gradientBase, gradientPresetIds } from "./css";
 import { colorToHex } from "./utils";
+import { getIntlMessage } from "@utils/discord";
 
 export const DataStore = $DataStore;
 export type ReactNode = $ReactNode;
@@ -155,10 +155,10 @@ export default definePlugin({
         if (!header) return;
 
         const names = {
-            top: i18n.Messages.USER_SETTINGS,
-            aboveNitro: i18n.Messages.BILLING_SETTINGS,
-            belowNitro: i18n.Messages.APP_SETTINGS,
-            aboveActivity: i18n.Messages.ACTIVITY_SETTINGS
+            top: getIntlMessage("USER_SETTINGS"),
+            aboveNitro: getIntlMessage("BILLING_SETTINGS"),
+            belowNitro: getIntlMessage("APP_SETTINGS"),
+            aboveActivity: getIntlMessage("ACTIVITY_SETTINGS")
         };
         return header === names[settingsLocation];
     },

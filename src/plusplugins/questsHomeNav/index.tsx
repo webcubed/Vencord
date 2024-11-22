@@ -1,7 +1,7 @@
 import ErrorBoundary from "@components/ErrorBoundary";
 import definePlugin from "@utils/types";
 import { findByPropsLazy, findComponentByCodeLazy, findStoreLazy } from "@webpack";
-import { i18n } from "@webpack/common";
+import { getIntlMessage } from "@utils/discord";
 
 const Icons = findByPropsLazy('QuestsIcon');
 const Routes = findByPropsLazy('GUILD_MEMBER_VERIFICATION_FOR_HUB', 'QUEST_HOME');
@@ -24,7 +24,7 @@ const QuestsButton = () => {
     return (
         <ErrorBoundary noop>
             <LinkButton
-                text={i18n.Messages.QUESTS}
+                text={getIntlMessage("QUESTS")}
                 icon={Icons.QuestsIcon}
                 route={Routes.QUEST_HOME}
             >
