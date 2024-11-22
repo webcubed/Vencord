@@ -6,7 +6,8 @@
 
 import { LogIcon } from "@components/Icons";
 import { findByPropsLazy, findComponentByCodeLazy } from "@webpack";
-import { i18n, NavigationRouter } from "@webpack/common";
+import { NavigationRouter } from "@webpack/common";
+import { getIntlMessage } from "@utils/discord";
 import { Guild } from "discord-types/general";
 
 const ChannelRow = findComponentByCodeLazy(".basicChannelRowLink,");
@@ -16,7 +17,7 @@ export default function AuditLogChannelRow(props: { guild: Guild, selected: bool
     return <ChannelRow
         id={`audit-log-${props.guild.id}`}
         renderIcon={(className: string) => <LogIcon className={className} />}
-        text={i18n.Messages.AUDIT_LOG}
+        text={getIntlMessage("AUDIT_LOG")}
         selected={props.selected}
         showUnread={false}
         onClick={() => {
