@@ -4,23 +4,16 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+import "styles.css?managed";
+
 import { DataStore } from "@api/index";
 import { addPreSendListener, removePreSendListener } from "@api/MessageEvents";
-import { ExpandableHeader } from "@components/ExpandableHeader";
 import { Heart } from "@components/Heart";
 import { Devs } from "@utils/constants";
 import { openUserProfile } from "@utils/discord";
 import * as Modal from "@utils/modal";
 import definePlugin from "@utils/types";
-import {
-    Avatar, Button, ChannelStore,
-    Clickable, Flex, GuildMemberStore,
-    GuildStore,
-    MessageStore,
-    React,
-    Text, TextArea, TextInput, Tooltip,
-    UserStore
-} from "@webpack/common";
+import { Avatar, Button, ChannelStore, Clickable, Flex, GuildMemberStore, GuildStore, MessageStore, React, Text, TextArea, TextInput, Tooltip, UserStore, } from "@webpack/common";
 import { Guild, User } from "discord-types/general";
 
 interface IUserExtra {
@@ -41,19 +34,6 @@ interface GroupData {
     users: { [key: string]: IStorageUser; };
     name: string;
 }
-
-const constants = {
-    pluginLabel: "IRememberYou",
-    pluginId: "irememberyou",
-
-    DM: "dm",
-    DataUIDescription:
-        "Provides a list of users you have mentioned or replied to, or those who own the servers you belong to (owner*), or are members of your guild",
-    marks: {
-        Owner: "owner"
-    }
-};
-
 
 class Data {
     declare usersCollection: Record<string, GroupData>;
@@ -111,9 +91,9 @@ class Data {
                 continue;
             }
 
-            const groupKey = source?.id ?? constants.DM;
+            const groupKey = source?.id ?? "dm";
             const group = (target[groupKey] ||= {
-                name: source?.name || constants.DM,
+                name: source?.name || "dm",
                 id: source?.id || user.id,
                 users: {}
             });
@@ -210,7 +190,7 @@ class DataUI {
     }
 
     renderSectionDescription() {
-        return <Text>{constants.DataUIDescription}</Text>;
+        return <Text>{"Provides a list of users you have mentioned or replied to, or those who own the servers you belong to (owner*), or are members of your guild"}</Text>;
     }
 
     renderUsersCollectionAsRows(usersCollection: Data["usersCollection"]) {
@@ -232,12 +212,14 @@ class DataUI {
 
 
         return <aside key={key} >
-            <ExpandableHeader defaultState={true} headerText={key.toUpperCase()}>
-                <Flex style={{ gap: "calc(0.5em + 0.5vw) 0.2em", flexDirection: "column" }}>
-                    {usersElements}
-                </Flex>
-            </ExpandableHeader>
-
+            <div className={"vc-i-remember-you-user-header-container"}>
+                <Text>{key.toUpperCase()}</Text>
+                <div className={"vc-i-remember-you-user-header-btns"}>
+                    <Flex style={{ gap: "calc(0.5em + 0.5vw) 0.2em", flexDirection: "column" }}>
+                        {usersElements}
+                    </Flex>
+                </div>
+            </div>
         </aside>;
     }
 
@@ -263,7 +245,7 @@ class DataUI {
                     {this.renderUserAvatar(user)}
                     <Tooltip text={this.userTooltipText(user)}>
                         {props =>
-                            <Text {...props} selectable>{user.tag} {allowExtra.owner && user.extra?.isOwner && `(${constants.marks.Owner})`}</Text>
+                            <Text {...props} selectable>{user.tag} {allowExtra.owner && user.extra?.isOwner && "(owner)"}</Text>
                         }
                     </Tooltip>
                 </Flex>
@@ -349,7 +331,7 @@ class DataUI {
           */
             <main style={{ color: "#ffffff", paddingBottom: "4em" }}>
                 <Text tag="h1" variant="heading-lg/bold">
-                    {constants.pluginLabel}{" "}
+                    {"IRememberYou"}{" "}
                     <Heart />
                 </Text>
 
@@ -372,6 +354,7 @@ export default definePlugin({
     description: "Locally saves everyone you've been communicating with (including servers)",
     authors: [Devs.zoodogood],
     dependencies: ["MessageEventsAPI"],
+
     patches: [],
 
     async start() {
@@ -386,10 +369,15 @@ export default definePlugin({
         );
         data.storageAutoSaveProtocol();
 
-        // @ts-ignore
-        Vencord.Plugins.plugins.Settings.customSections.push(ID => ({
-            section: `${constants.pluginId}.display-data`,
-            label: constants.pluginLabel,
+        const customSettingsSections = (
+            Vencord.Plugins.plugins.Settings as any as {
+                customSections: ((ID: Record<string, unknown>) => any)[];
+            }
+        ).customSections;
+
+        customSettingsSections.push(_ => ({
+            section: "iremeberyou.display-data",
+            label: "IRememberYou",
             element: () => ui.toElement(data.usersCollection),
         }));
     },

@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2023 Vendicated and contributors
+ * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -16,16 +16,16 @@ let data = {
 
 const settings = definePluginSettings({
     preferNitro: {
-        description: "Which avatar to use if both default animated (Nitro) pfp and UserPFP avatars are present",
+        description: "Which profile picture to show if both a default animated (Nitro) profile picture and UserPFP profile picture are present",
         type: OptionType.SELECT,
         options: [
-            { label: "UserPFP", value: false },
-            { label: "Nitro", value: true, default: true },
+            { label: "UserPFP", value: true, default: true },
+            { label: "Nitro", value: false },
         ],
     },
     urlForDB: {
         type: OptionType.STRING,
-        description: "Which Database url to use to load avatars, KNOW WHAT YOUR DOING",
+        description: "The source to use to load profile pictures from",
         default: "https://userpfp.github.io/UserPFP/source/data.json",
         placeholder: "Default value: https://userpfp.github.io/UserPFP/source/data.json"
     }
@@ -34,13 +34,13 @@ const settings = definePluginSettings({
 export default definePlugin({
     data,
     name: "UserPFP",
-    description: "Allows you to use an animated avatar without Nitro",
+    description: "Allows you to use an animated profile picture without having Nitro",
     authors: [SuncordDevs.nexpid, SuncordDevs.thororen],
     settings,
     settingsAboutComponent: () => (
         <>
             <Link href="https://userpfp.github.io/UserPFP/#how-to-request-a-profile-picture-pfp">
-                <b>Submit your own PFP here!</b>
+                <b>Submit your own profile picture here!</b>
             </Link>
             <br></br>
             <Link href="https://ko-fi.com/coolesding">
