@@ -925,6 +925,7 @@ export const EquicordDevs = Object.freeze({
         name: "Oggetto",
         id: 619203349954166804n
     }
+} satisfies Record<string, Dev>);
 
 export const PlusDevs = /* #__PURE__*/ Object.freeze({
     mantikafasi: {
