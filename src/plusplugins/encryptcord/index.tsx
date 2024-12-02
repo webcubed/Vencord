@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { addChatBarButton, ChatBarButton } from "@api/ChatButtons";
+import { addChatBarButton, ChatBarButton, removeChatBarButton } from "@api/ChatButtons";
 import {
     ApplicationCommandInputType,
     ApplicationCommandOptionType,
@@ -12,7 +12,6 @@ import {
 } from "@api/Commands";
 import * as DataStore from "@api/DataStore";
 import { addPreSendListener, removePreSendListener, SendListener } from "@api/MessageEvents";
-import { removeButton } from "@api/MessagePopover";
 import { Devs } from "@utils/constants";
 import { sleep } from "@utils/misc";
 import definePlugin from "@utils/types";
@@ -140,11 +139,11 @@ const ChatBarIcon: ChatBarButton = ({ isMainChat }) => {
 
 export default definePlugin({
     name: "Encryptcord",
-    description: "End-to-end encryption in Discord!",
+    description: "End-to-end encryption in Discord",
     authors: [Devs.Inbestigator],
     patches: [
         {
-            find: "#{intl::INTERACTION_APPLICATION_COMMAND_INVALID_VERSION}",
+            find: "INTERACTION_APPLICATION_COMMAND_INVALID_VERSION",
             replacement: {
                 match: /await\s.{1,2}\..{1,2}\.post\(\{url:.{1,2}\.ANM\.INTERACTIONS,body:(.),/g,
                 replace: "await $self.interactionHandler($1);$&"
@@ -273,7 +272,7 @@ export default definePlugin({
         await DataStore.set("encryptcordGroupMembers", {});
     },
     async stop() {
-        removeButton("Encryptcord");
+        removeChatBarButton("Encryptcord");
         if (await DataStore.get("encryptcordGroup") === true) {
             await leave("", { channel: { id: await DataStore.get("encryptcordChannelId") } });
         }
