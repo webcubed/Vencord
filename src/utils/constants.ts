@@ -840,6 +840,90 @@ export const EquicordDevs = Object.freeze({
     llytz: {
         name: "llytz",
         id: 1271128098301022240n
+    },
+    newwares: {
+        name: "newwares",
+        id: 421405303951851520n
+    },
+    Nickyux: {
+        name: "Nickyux",
+        id: 427146305651998721n
+    },
+    Ethan: {
+        name: "Ethan",
+        id: 721717126523781240n
+    },
+    castdrian: {
+        name: "castdrian",
+        id: 224617799434108928n
+    },
+    echo: {
+        name: "ECHO",
+        id: 712639419785412668n
+    },
+    RyanCaoDev: {
+        name: "RyanCaoDev",
+        id: 952235800110694471n
+    },
+    Grzesiek11: {
+        name: "Grzesiek11",
+        id: 368475654662127616n
+    },
+    ProffDea: {
+        name: "ProffDea",
+        id: 609329952180928513n
+    },
+    HappyEnderman: {
+        name: "Happy enderman",
+        id: 1083437693347827764n
+    },
+    Nyako: {
+        name: "nyako",
+        id: 118437263754395652n
+    },
+    ant0n: {
+        name: "ant0n",
+        id: 145224646868860928n
+    },
+    MaiKokain: {
+        name: "Mai",
+        id: 722647978577363026n
+    },
+    Korbo: {
+        name: "Korbo",
+        id: 455856406420258827n
+    },
+    Moxxie: {
+        name: "Moxxie",
+        id: 712653921692155965n
+    },
+    arHSM: {
+        name: "arHSM",
+        id: 841509053422632990n
+    },
+    creations: {
+        name: "Creation's",
+        id: 209830981060788225n
+    },
+    Leko: {
+        name: "Leko",
+        id: 108153734541942784n
+    },
+    SomeAspy: {
+        name: "SomeAspy",
+        id: 516750892372852754n
+    },
+    nvhhr: {
+        name: "nvhhr",
+        id: 165098921071345666n
+    },
+    Z1xus: {
+        name: "Z1xus",
+        id: 377450600797044746n
+    },
+    Oggetto: {
+        name: "Oggetto",
+        id: 619203349954166804n
     }
 } satisfies Record<string, Dev>);
 
