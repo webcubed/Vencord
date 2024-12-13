@@ -8,7 +8,7 @@ import "./style.css";
 
 import { findGroupChildrenByChildId, NavContextMenuPatchCallback } from "@api/ContextMenu";
 import ErrorBoundary from "@components/ErrorBoundary";
-import { Devs } from "@utils/constants";
+import { Devs, EquicordDevs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { ChannelStore, Menu } from "@webpack/common";
 import { Channel, Message } from "discord-types/general";
@@ -50,7 +50,7 @@ export default definePlugin({
         {
             find: ".COLLECTIBLES_SHOP_FULLSCREEN))",
             replacement: {
-                match: /(\?void 0:(\i)\.channelId.{0,200})\i\.Fragment,{/,
+                match: /(\?void 0:(\i)\.channelId.{0,250})\i\.Fragment,{/,
                 replace: "$1$self.render,{currentChannel:$2,"
             }
         },
@@ -85,14 +85,6 @@ export default definePlugin({
                 match: /\i&&\((\i).maxHeight.{0,5}\)/,
                 replace: "$&;$1.maxHeight-=$self.containerHeight"
             }
-        },
-        // workaround for app directory killing our component, see comments in ChannelTabContainer.tsx
-        {
-            find: ".ApplicationDirectoryEntrypointNames.EXTERNAL",
-            replacement: {
-                match: /(\.guildSettingsSection\).{0,30})},\[/,
-                replace: "$1;$self.onAppDirectoryClose()},["
-            }
         }
     ],
 
@@ -121,11 +113,6 @@ export default definePlugin({
             compact: false
         };
         createTab(tab, false, message.id);
-    },
-
-    onAppDirectoryClose() {
-        this.appDirectoryClosed = true;
-        setTimeout(() => this.appDirectoryClosed = false, 0);
     },
 
     util: ChannelTabsUtils,
