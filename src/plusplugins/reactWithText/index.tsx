@@ -150,7 +150,7 @@ function OpenWindow(props: ModalProps & { message: any; onClose: () => void }) {
         <ModalRoot {...modalProps} size={ModalSize.MEDIUM}>
             <ModalHeader separator={false}>
                 <Text color="header-primary" variant="heading-lg/semibold" tag="h1" style={{ flexGrow: 1 }}>
-                    Input text to react with.
+                    Input text to react with
                     </Text>
                     {/* <br></br>
                     <Text color="red" variant="heading-lg/semibold" tag="p" style={{ flexGrow: 1 }}>
@@ -185,7 +185,7 @@ function OpenWindow(props: ModalProps & { message: any; onClose: () => void }) {
 export default definePlugin({
     name: "React with Text",
     description: "Lets you react with text",
-    authors: [{ name: "chaos_the_chaotic", id: 799267390827003916n }],
+    authors: [PlusDevs.Chaos],
     dependencies: ["MessagePopoverAPI"],
 
     async start() {

@@ -6,7 +6,7 @@ import { ApplicationCommandInputType } from "@api/Commands";
 export default definePlugin({
     name: "Auto Toggle QuickCSS",
     description: "Enables/disables QuickCSS based on if your Discord window is focused. Disabling QuickCSS can decrease resource usage",
-    authors: [{ name: "chaos_the_chaotic", id: 799267390827003916n }],
+    authors: [PlusDevs.Chaos],
     commands: [
         {
             name: "cssenable",

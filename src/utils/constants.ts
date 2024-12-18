@@ -931,6 +931,10 @@ export const PlusDevs = /* #__PURE__*/ Object.freeze({
     mantikafasi: {
         name: "mantikafasi",
         id: 287555395151593473n
+    },
+    Chaos: {
+        name: "chaos_the_chaotic",
+        id: 799267390827003916n
     }
 } satisfies Record<string, Dev>);
 
