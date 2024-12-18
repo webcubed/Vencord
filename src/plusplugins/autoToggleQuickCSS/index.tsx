@@ -1,6 +1,6 @@
 import definePlugin from "@utils/types";
 import { Settings, useSettings } from "@api/Settings";
-import { Devs } from "@utils/constants";
+import { PlusDevs } from "@utils/constants";
 import { ApplicationCommandInputType } from "@api/Commands";
 
 export default definePlugin({
