@@ -1,26 +1,14 @@
 /*
- * Vencord, a modification for Discord's desktop app
- * Copyright (c) 2023 Vendicated and contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Vencord, a Discord client mod
+ * Copyright (c) 2024 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 
 import { Flex } from "@components/Flex";
 import { React } from "@webpack/common";
 import { Settings } from "Vencord";
 
-import { findChildren, SettingsModalCard, SettingsModalCardItem } from "../../philsPluginLibrary";
+import { SettingsModalCard, SettingsModalCardItem } from "../../philsPluginLibrary";
 import Plugin from "..";
 import { AudioSourceSelect, OpenScreenshareSettingsButton } from "../components";
 import { PluginInfo } from "../constants";
@@ -69,18 +57,22 @@ export function replacedScreenshareModalSettingsContentType(oldType: (...args: a
     return oldTypeResult;
 }
 
+export function getQuality() {
+    const { framerate, height } = Settings.plugins[PluginInfo.PLUGIN_NAME].stores.ScreenshareStore.currentProfile;
+    return { framerate, height };
+}
+
 export function replacedScreenshareModalComponent(oldComponent: (...args: any[]) => any, thisContext: any, functionArguments: any) {
     const oldComponentResult = Reflect.apply(oldComponent, thisContext, functionArguments);
 
-    const { children, parent } = findChildren(oldComponentResult, c => c.props.selectedFPS);
-    const oldContentType = children.type;
+    const content = oldComponentResult.props.children.props.children[2].props.children[1].props.children[3].props.children.props.children;
+    const oldContentType = content.type;
 
-    children.type = function () {
+    content.type = function () {
         return replacedScreenshareModalSettingsContentType(oldContentType, this, arguments);
     };
 
-    const { children: buttonsChildren } = findChildren(oldComponentResult, c => c.props.justify && c.props.children.length === 3);
-    const [submitBtn] = buttonsChildren.props.children;
+    const [submitBtn, cancelBtn] = oldComponentResult.props.children.props.children[2].props.children[2].props.children;
 
     submitBtn.props.onClick = () => {
         const { screensharePatcher, screenshareAudioPatcher } = Plugin;
@@ -94,6 +86,5 @@ export function replacedScreenshareModalComponent(oldComponent: (...args: any[])
         if (screenshareAudioPatcher)
             screenshareAudioPatcher.forceUpdateTransportationOptions();
     };
-
     return oldComponentResult;
 }

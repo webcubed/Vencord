@@ -1,58 +1,91 @@
 /*
- * Vencord, a modification for Discord's desktop app
- * Copyright (c) 2023 Vendicated and contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Vencord, a Discord client mod
+ * Copyright (c) 2024 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 
 import { definePluginSettings } from "@api/Settings";
-import { Devs } from "@utils/constants";
-import definePlugin, { OptionType } from "@utils/types";
+import { DefinedSettings, OptionType, Patch, PluginAuthor, PluginDef, SettingsDefinition } from "@utils/types";
 
 import { addSettingsPanelButton, Emitter, removeSettingsPanelButton, ScreenshareSettingsIcon } from "../philsPluginLibrary";
 import { PluginInfo } from "./constants";
 import { openScreenshareModal } from "./modals";
 import { ScreenshareAudioPatcher, ScreensharePatcher } from "./patchers";
-import { replacedScreenshareModalComponent } from "./patches";
+import { getQuality, replacedScreenshareModalComponent } from "./patches";
 import { initScreenshareAudioStore, initScreenshareStore } from "./stores";
 
-export default definePlugin({
-    name: "BetterScreenshare",
-    description: "This plugin allows you to further customize your screen sharing",
-    authors: [
-        {
-            name: "philhk",
-            id: 305288513941667851n
-        }
-    ],
-    dependencies: ["PhilsPluginLibrary"],
-    patches: [
-        {
-            find: "#{intl::SCREENSHARE_RELAUNCH}",
-            replacement: {
-                match: /((?:.*)(?<=function) .{0,8}?(?={).)(.{0,10000}Z.getVoiceChannelId\(\).{0,10000}]}\)}\))(})/,
-                replace: "$1return $self.replacedScreenshareModalComponent(function(){$2}, this, arguments)$3"
+export default new class Plugin implements PluginDef {
+    readonly name: string;
+    readonly description: string;
+    readonly authors: PluginAuthor[];
+    readonly patches: Omit<Patch, "plugin">[];
+    readonly settings: DefinedSettings<SettingsDefinition, {}>;
+    readonly dependencies: string[];
+
+    private readonly replacedScreenshareModalComponent: typeof replacedScreenshareModalComponent;
+    private readonly getQuality: typeof getQuality;
+    public screensharePatcher?: ScreensharePatcher;
+    public screenshareAudioPatcher?: ScreenshareAudioPatcher;
+
+    constructor() {
+        this.name = PluginInfo.PLUGIN_NAME;
+        this.description = PluginInfo.DESCRIPTION;
+        this.authors = [PluginInfo.AUTHOR, ...Object.values(PluginInfo.CONTRIBUTORS)] as PluginAuthor[];
+        this.patches = [
+            {
+                find: "#{intl::SCREENSHARE_RELAUNCH",
+                replacement: {
+                    match: /(function .{1,2}\(.{1,2}\){)(.{1,40}(?=selectGuild).+?(?:]}\)}\)))(})/,
+                    replace: "$1return $self.replacedScreenshareModalComponent(function(){$2}, this, arguments)$3"
+                }
+            },
+            {
+                find: "setGoLiveSource(e,t){if(null==e)",
+                replacement: {
+                    match: /setGoLiveSource\(e,t\)\{(if\(null==e\))/,
+                    replace: "setGoLiveSource(e,t){if(e!=null){e.quality.frameRate=$self.getQuality().framerate;e.quality.resolution=$self.getQuality().height}$1"
+                }
+            },
+            {
+                find: "\"remoteSinkWantsPixelCount\",\"remoteSinkWantsMaxFramerate\"",
+                replacement: {
+                    match: /(\i)=15e3/, // disable discord idle fps reduction
+                    replace: (_, g1) => `${g1}=15e8`
+                }
+            },
+            {
+                find: "updateRemoteWantsFramerate(){",
+                replacement: {
+                    match: /updateRemoteWantsFramerate\(\)\{/, // disable discord mute fps reduction
+                    replace: match => `${match}return $self.getQuality().framerate;`
+                }
+            },
+            {
+                find: "Unknown resolution:",
+                replacement: [
+                    {
+                        match: /throw Error\("Unknown resolution: ".concat\((\i)\)\)/,
+                        replace: "return $1;"
+                    },
+                    {
+                        match: /throw Error\("Unknown frame rate: ".concat\((\i)\)\)/,
+                        replace: "return $1;"
+                    }
+                ]
+            },
+        ];
+        this.settings = definePluginSettings({
+            hideDefaultSettings: {
+                type: OptionType.BOOLEAN,
+                description: "Hide Discord's screen sharing settings",
+                default: true,
             }
-        }
-    ],
-    settings: definePluginSettings({
-        hideDefaultSettings: {
-            type: OptionType.BOOLEAN,
-            description: "Hide Discord's screen sharing settings",
-            default: true,
-        }
-    }),
+        });
+        this.dependencies = ["PhilsPluginLibrary"];
+        this.replacedScreenshareModalComponent = replacedScreenshareModalComponent;
+        this.getQuality = getQuality;
+    }
+
     start(): void {
         initScreenshareStore();
         initScreenshareAudioStore();
@@ -65,13 +98,13 @@ export default definePlugin({
             tooltipText: "Screenshare Settings",
             onClick: openScreenshareModal
         });
-    },
+    }
+
     stop(): void {
         this.screensharePatcher?.unpatch();
         this.screenshareAudioPatcher?.unpatch();
         Emitter.removeAllListeners(PluginInfo.PLUGIN_NAME);
 
         removeSettingsPanelButton(PluginInfo.PLUGIN_NAME);
-    },
-    replacedScreenshareModalComponent
-});
+    }
+};
