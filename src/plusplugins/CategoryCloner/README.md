@@ -1,0 +1,1 @@
+Simple utility plugin that adds "Clone category" context menu option which is missing natively.

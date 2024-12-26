@@ -1,20 +1,8 @@
 /*
- * Vencord, a modification for Discord's desktop app
- * Copyright (c) 2023 Vendicated and contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Vencord, a Discord client mod
+ * Copyright (c) 2024 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 
 import { definePluginSettings } from "@api/Settings";
 import { Devs } from "@utils/constants";
@@ -29,19 +17,14 @@ import { initScreenshareAudioStore, initScreenshareStore } from "./stores";
 
 export default definePlugin({
     name: "BetterScreenshare",
-    description: "This plugin allows you to further customize your screen sharing",
-    authors: [
-        {
-            name: "philhk",
-            id: 305288513941667851n
-        }
-    ],
+    description: "This plugin allows you to further customize your screen sharing.",
+    authors: [Devs.philhk],
     dependencies: ["PhilsPluginLibrary"],
     patches: [
         {
-            find: "#{intl::SCREENSHARE_RELAUNCH}",
+            find: "Messages.SCREENSHARE_RELAUNCH",
             replacement: {
-                match: /((?:.*)(?<=function) .{0,8}?(?={).)(.{0,10000}Z.getVoiceChannelId\(\).{0,10000}]}\)}\))(})/,
+                match: /(function .{1,2}\(.{1,2}\){)(.{1,40}(?=selectGuild).+?(?:]}\)}\)))(})/,
                 replace: "$1return $self.replacedScreenshareModalComponent(function(){$2}, this, arguments)$3"
             }
         }
@@ -49,7 +32,7 @@ export default definePlugin({
     settings: definePluginSettings({
         hideDefaultSettings: {
             type: OptionType.BOOLEAN,
-            description: "Hide Discord's screen sharing settings",
+            description: "Hide Discord screen sharing settings",
             default: true,
         }
     }),
