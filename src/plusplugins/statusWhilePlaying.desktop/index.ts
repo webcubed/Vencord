@@ -5,13 +5,13 @@
  */
 
 import { definePluginSettings } from "@api/Settings";
+import { getUserSettingLazy } from "@api/UserSettings";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
-import { findByCodeLazy } from "@webpack";
 import { PresenceStore, UserStore } from "@webpack/common";
 
 let savedStatus = "";
-const updateAsync = findByCodeLazy("updateAsync", "status");
+const statusSettings = getUserSettingLazy("status", "status");
 const settings = definePluginSettings({
     statusToSet: {
         type: OptionType.SELECT,
@@ -40,7 +40,7 @@ const settings = definePluginSettings({
 
 export default definePlugin({
     name: "StatusWhilePlaying",
-    description: "Automatically updates your status when playing games",
+    description: "Automatically updates your status when playing a game",
     authors: [Devs.thororen],
     settings,
     flux: {
@@ -49,11 +49,11 @@ export default definePlugin({
             if (event.games.length > 0) {
                 if (status !== settings.store.statusToSet) {
                     savedStatus = status;
-                    updateAsync(settings.store.statusToSet);
+                    statusSettings?.updateSetting(settings.store.statusToSet);
                 }
             } else {
                 if (savedStatus !== "" && savedStatus !== settings.store.statusToSet)
-                    updateAsync(savedStatus);
+                    statusSettings?.updateSetting(savedStatus);
             }
         },
     }

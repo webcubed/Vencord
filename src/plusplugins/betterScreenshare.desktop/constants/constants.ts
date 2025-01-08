@@ -12,7 +12,7 @@ export const PluginInfo = {
     PLUGIN_NAME: "BetterScreenshare",
     DESCRIPTION: "Allows you to further customize your screen sharing",
     AUTHOR: {
-        ...Devs.philhk,
+        ...Devs.phil,
         github: "https://github.com/philhk"
     },
     CONTRIBUTORS: {
