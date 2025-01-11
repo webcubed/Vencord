@@ -10,7 +10,7 @@ import definePlugin from "@utils/types";
 
 export default definePlugin({
     name: "Multistickers",
-    description: "Lets you send up to 3 stickers and shift click stickers",
+    description: "Lets you send up to 3 stickers and shift-click stickers",
     authors: [
         {
             id: 579731384868798464n,
@@ -20,13 +20,14 @@ export default definePlugin({
     patches: [{
         find: "StickerMessagePreviewStore",
         replacement: [{
-            match: /ADD_STICKER_PREVIEW:function\((\w+).+?===(\w+\.\w+)\.FirstThreadMessage\?(\S+?):(\w+).+?\}/,
-            replace: "ADD_STICKER_PREVIEW: function($1) { $self.storeAddStickerPreview($1,$2,$3,$4) }",
+            match: /function (\w+)\(\w+\){.+?(\w+\.\w+\.FirstThreadMessage)\?(\w+):(\w+).+?}/,
+            replace: "function $1(e) { $self.storeAddStickerPreview(e, $2, $3, $4) }",
         },
         {
-            match: /CLEAR_STICKER_PREVIEW:function\((\w+).+?(\w+\.\w+).FirstThreadMessage\?(\S+?):(\w+).+?\}/,
-            replace: "CLEAR_STICKER_PREVIEW: function($1) { $self.storeClearStickerPreview($1,$2,$3,$4) }",
-        }],
+            match: /function (\w+)\(\w+\){let{channelId:\w+,draftType.+?(\w+\.\w+\.FirstThreadMessage)\?(\w+):(\w+).+?delete.+?}/,
+            replace: "function $1(e) { $self.storeClearStickerPreview(e, $2, $3, $4) }",
+        }
+        ],
     },
     {
         find: ".stickerPreviewContainer",
@@ -47,13 +48,10 @@ export default definePlugin({
         }
     },
     {
-        find: ".stickerInspected]",
+        find: "__invalid_stickerPickerPreviewDimensions),",
         replacement: {
-            match: /(?<=\.stickerInspected\])(.+?),onClick:(\w+)=>\{/,
-            replace: (_, stuff, event) => {
-                return `${stuff},onClick:${event}=>{` +
-                    `if (${event}.shiftKey) $self.shiftEvent.set();`;
-            }
+            match: /\w+=(\w+)=>{.+?altKey;/,
+            replace: (match, event) => match + `if (${event}.shiftKey) $self.shiftEvent.set();`,
         }
     },
     {
@@ -71,21 +69,21 @@ export default definePlugin({
         }
     }],
 
-    storeAddStickerPreview: function (event, constants, threadStore, store) {
+    storeAddStickerPreview: function (event, firstThreadMessage, threadStore, store) {
         const { channelId, draftType } = event;
-        const storeToUse = draftType === constants.FirstThreadMessage ? threadStore : store;
+        const storeToUse = draftType === firstThreadMessage ? threadStore : store;
 
         storeToUse[channelId] = storeToUse[channelId]?.filter(x => x.id !== event.sticker.id);
         if (storeToUse[channelId]?.length === 3) storeToUse[channelId].shift();
         storeToUse[channelId] = [...storeToUse[channelId] ?? [], event.sticker];
     },
 
-    storeClearStickerPreview: function (event, constants, threadStore, store) {
+    storeClearStickerPreview: function (event, firstThreadMessage, threadStore, store) {
         const { channelId, draftType, stickerId } = event;
-        const storeToUse = draftType === constants.FirstThreadMessage ? threadStore : store;
+        const storeToUse = draftType === firstThreadMessage ? threadStore : store;
 
         if (stickerId) return void (storeToUse[channelId] = storeToUse[channelId]?.filter(x => x.id !== stickerId));
-        if (storeToUse[channelId] !== null) delete storeToUse[channelId];
+        if (storeToUse[channelId] != null) delete storeToUse[channelId];
     },
 
     shiftEvent: {
