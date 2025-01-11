@@ -1,5 +1,5 @@
 # ExtraConnectionLinks
-Allows you to open more connections in browser!
+Allows you to open more connections.
 
 ### Before
 ![Shows the Roblox connection in the Discord client without the open profile button (the default).](https://github.com/Vendicated/Vencord/assets/73203995/734efd94-c61a-4f90-987d-3a4bbcc9311f)

@@ -17,21 +17,21 @@ enum connectionTypes {
 }
 
 /**
- * The URI to use.
+ * The uri to use.
  * There are also two variables that you can use, name and id.
  * The "name" is what shows up when viewing a connection on a discord profile.
  * The "id" is the identifier of the account connected, the type depends on the service connected.
  * @example [connectionTypes.Xbox]: "https://www.xbox.com/play/user/${name}",
  * @example [connectionTypes.Roblox]: "https://www.roblox.com/users/${id}/profile",
  */
-const uris = { // name (what shows up on connection on UI), id (an identifier thing)
+const uris = { // name (what shows up on connection on ui), id (an identifier thing)
     [connectionTypes.Roblox]: "https://www.roblox.com/users/${id}/profile",
     [connectionTypes.Xbox]: "https://www.xbox.com/play/user/${name}",
     [connectionTypes.Epic]: "https://store.epicgames.com/u/${id}",
 };
 
 /**
- * What Discord has the service named as.
+ * What discord has the service named as.
  * @example [connectionTypes.Epic]: "Epic Games",
  */
 const serviceNames = {
@@ -56,7 +56,7 @@ export default definePlugin({
             return {
                 find: "getPlatformUserUrl:",
                 replacement: {
-                    match: new RegExp("(r"),
+                    match: new RegExp(`(?<=${serviceNames[connectionTypeSelected]}",.*},.+)(?=},)`),
                     replace: `, getPlatformUserUrl:e=>{let {name, id} = e; return \`${uris[connectionTypeSelected]}\`;}`
                 }
             };
