@@ -7,8 +7,8 @@
 import { ChatBarButton } from "@api/ChatButtons";
 import { definePluginSettings } from "@api/Settings";
 import definePlugin, { OptionType, StartAt } from "@utils/types";
-import { useMemo, useState } from "@webpack/common";
-import { MouseEventHandler } from "react";
+import { React, useMemo, useState } from "@webpack/common";
+import type { MouseEventHandler, ReactNode } from "react";
 
 let hidechatbuttonsopen: boolean | undefined;
 
@@ -48,14 +48,9 @@ function HideToggleButton(props: { open: boolean | undefined, onClick: MouseEven
         </svg>
     </ChatBarButton>);
 }
-interface ButtonReactNode {
-    props?: {
-        disabled?: boolean;
-    };
-}
 
-function buttonsInner(buttons: ButtonReactNode[]) {
-    if (buttons.every(x => x.props?.disabled === true)) {
+function buttonsInner(buttons: ReactNode[]) {
+    if (buttons.every(x => (x as any)?.props?.disabled === true)) {
         return null;
     }
     const [open, setOpen] = useState(hidechatbuttonsopen);
@@ -65,23 +60,22 @@ function buttonsInner(buttons: ButtonReactNode[]) {
     }, [open]);
 
     const buttonList = (
-        <div id="chat-bar-buttons-menu" style={{
+        <div key={"chat-bar-buttons-menu"} id="chat-bar-buttons-menu" style={{
             display: "flex",
             flexWrap: "nowrap",
             overflowX: "auto"
         }}>
-            {open ? buttons.map(b => <>{b}</>) : null}
+            {open ? buttons.map((b, i) => <React.Fragment key={i}>{b}</React.Fragment>) : null}
             <HideToggleButton onClick={() => setOpen(!open)} open={open}></HideToggleButton>
         </div>
     );
-    buttons = [buttonList];
-    return buttons;
+    return [buttonList];
 }
 
 
 export default definePlugin({
     name: "HideChatButtons",
-    description: "able to hide the chat buttons",
+    description: "Be able to easily hide chat buttons",
     settings: settings,
     authors: [
         {
