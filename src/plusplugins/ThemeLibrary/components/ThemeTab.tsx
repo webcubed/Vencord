@@ -4,68 +4,41 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-/* eslint-disable indent */
 import "./styles.css";
 
-import { generateId } from "@api/Commands";
+import * as DataStore from "@api/DataStore";
 import { Settings } from "@api/Settings";
-import { classNameFactory } from "@api/Styles";
-import { CodeBlock } from "@components/CodeBlock";
 import { ErrorCard } from "@components/ErrorCard";
 import { OpenExternalIcon } from "@components/Icons";
 import { SettingsTab, wrapTab } from "@components/VencordSettings/shared";
-import { proxyLazy } from "@utils/lazy";
 import { Logger } from "@utils/Logger";
 import { Margins } from "@utils/margins";
 import { classes } from "@utils/misc";
-import { openModal } from "@utils/modal";
-import { findByPropsLazy, findLazy } from "@webpack";
-import { Button, Card, FluxDispatcher, Forms, React, Select, showToast, TabBar, TextArea, TextInput, Toasts, useEffect, UserStore, UserUtils, useState } from "@webpack/common";
-import { User } from "discord-types/general";
-import { Constructor } from "type-fest";
+import { findByPropsLazy } from "@webpack";
+import { Button, Forms, React, SearchableSelect, TabBar, TextInput, useEffect, useState } from "@webpack/common";
 
 import { SearchStatus, TabItem, Theme, ThemeLikeProps } from "../types";
-import { LikesComponent } from "./LikesComponent";
-import { ThemeInfoModal } from "./ThemeInfoModal";
+import { ThemeCard } from "./ThemeCard";
 
-const cl = classNameFactory("vc-plugins-");
-const InputStyles = findByPropsLazy("inputDefault", "inputWrapper");
-const UserRecord: Constructor<Partial<User>> = proxyLazy(() => UserStore.getCurrentUser().constructor) as any;
-const TextAreaProps = findLazy(m => typeof m.textarea === "string");
+const InputStyles = findByPropsLazy("inputDefault", "inputWrapper", "error");
 
-const API_URL = "https://discord-themes.com/api";
+export const apiUrl = "https://discord-themes.com/api";
+export const logger = new Logger("ThemeLibrary", "#e5c890");
 
-const logger = new Logger("ThemeLibrary", "#e5c890");
-
-async function fetchThemes(url: string): Promise<Theme[]> {
-    const response = await fetch(url);
+export async function fetchAllThemes(): Promise<Theme[]> {
+    const response = await themeRequest("/themes");
     const data = await response.json();
     const themes: Theme[] = Object.values(data);
     themes.forEach(theme => {
         if (!theme.source) {
-            theme.source = `${API_URL}/${theme.name}`;
-        } else {
-            theme.source = theme.source.replace("?raw=true", "") + "?raw=true";
+            theme.source = `${apiUrl}/${theme.id}`;
         }
     });
     return themes.sort((a, b) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime());
 }
 
-function API_TYPE(theme: Theme | Object, returnAll?: boolean) {
-    if (!theme) return;
-    const settings = Settings.plugins.ThemeLibrary.domain ?? false;
-
-    if (returnAll) {
-        const url = settings ? "https://raw.githubusercontent.com/Faf4a/plugins/main/assets/meta.json" : `${API_URL}/themes`;
-        return fetchThemes(url);
-    } else {
-        // @ts-ignore
-        return settings ? theme.source : `${API_URL}/${theme.name}`;
-    }
-}
-
 export async function themeRequest(path: string, options: RequestInit = {}) {
-    return fetch(API_URL + path, {
+    return fetch(apiUrl + path, {
         ...options,
         headers: {
             ...options.headers,
@@ -73,33 +46,13 @@ export async function themeRequest(path: string, options: RequestInit = {}) {
     });
 }
 
-function makeDummyUser(user: { username: string; id?: string; avatar?: string; }) {
-    const newUser = new UserRecord({
-        username: user.username,
-        id: user.id ?? generateId(),
-        avatar: user.avatar,
-        bot: true,
-    });
-    FluxDispatcher.dispatch({
-        type: "USER_UPDATE",
-        user: newUser,
-    });
-    return newUser;
-}
-
-const themeTemplate = `/**
-* @name [Theme name]
-* @author [Your name]
-* @description [Your Theme Description]
-* @version [Your Theme Version]
-* @donate [Optionally, your Donation Link]
-* @tags [Optionally, tags that apply to your theme]
-* @invite [Optionally, your Support Server Invite]
-* @source [Optionally, your source code link]
-*/
-
-/* Your CSS goes here */
-`;
+const SearchTags = {
+    [SearchStatus.THEME]: "THEME",
+    [SearchStatus.SNIPPET]: "SNIPPET",
+    [SearchStatus.LIKED]: "LIKED",
+    [SearchStatus.DARK]: "DARK",
+    [SearchStatus.LIGHT]: "LIGHT",
+};
 
 function ThemeTab() {
     const [themes, setThemes] = useState<Theme[]>([]);
@@ -110,32 +63,40 @@ function ThemeTab() {
     const [hideWarningCard, setHideWarningCard] = useState(Settings.plugins.ThemeLibrary.hideWarningCard);
     const [loading, setLoading] = useState(true);
 
-    const getUser = (id: string, username: string) => UserUtils.getUser(id) ?? makeDummyUser({ username, id });
     const onSearch = (query: string) => setSearchValue(prev => ({ ...prev, value: query }));
     const onStatusChange = (status: SearchStatus) => setSearchValue(prev => ({ ...prev, status }));
 
     const themeFilter = (theme: Theme) => {
-        const enabled = themeLinks.includes(API_TYPE(theme));
-        if (enabled && searchValue.status === SearchStatus.DISABLED) return false;
-        if (!theme.tags.includes("theme") && searchValue.status === SearchStatus.THEME) return false;
-        if (!theme.tags.includes("snippet") && searchValue.status === SearchStatus.SNIPPET) return false;
-        if (!theme.tags.includes("dark") && searchValue.status === SearchStatus.DARK) return false;
-        if (!theme.tags.includes("light") && searchValue.status === SearchStatus.LIGHT) return false;
+        const enabled = themeLinks.includes(`${apiUrl}/${theme.name}`);
+
+        const tags = new Set(theme.tags.map(tag => tag?.toLowerCase()));
+
         if (!enabled && searchValue.status === SearchStatus.ENABLED) return false;
+
+        const anyTags = SearchTags[searchValue.status];
+        if (anyTags && !tags.has(anyTags?.toLowerCase())) return false;
+
+        if ((enabled && searchValue.status === SearchStatus.DISABLED) || (!enabled && searchValue.status === SearchStatus.ENABLED)) return false;
+
         if (!searchValue.value.length) return true;
 
-        const v = searchValue.value.toLowerCase();
+        const v = searchValue.value?.toLowerCase();
         return (
-            theme.name.toLowerCase().includes(v) ||
-            theme.description.toLowerCase().includes(v) ||
-            theme.author.discord_name.toLowerCase().includes(v) ||
-            theme.tags?.some(t => t.toLowerCase().includes(v))
+            theme.name?.toLowerCase().includes(v) ||
+            theme.description?.toLowerCase().includes(v) ||
+            (Array.isArray(theme.author) ? theme.author.some(author => author.discord_name?.toLowerCase()?.includes(v)) : theme.author.discord_name?.toLowerCase()?.includes(v)) ||
+            tags.has(v)
         );
     };
 
     const fetchLikes = async () => {
         try {
-            const response = await themeRequest("/likes/get");
+            const token = await DataStore.get("ThemeLibrary_uniqueToken");
+            const response = await themeRequest("/likes/get", {
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+            });
             const data = await response.json();
             return data;
         } catch (err) {
@@ -144,12 +105,10 @@ function ThemeTab() {
     };
 
     useEffect(() => {
-        const fetchThemes = async () => {
+        const fetchData = async () => {
             try {
-                const themes = await API_TYPE({}, true);
-                // fetch likes
+                const [themes, likes] = await Promise.all([fetchAllThemes(), fetchLikes()]);
                 setThemes(themes);
-                const likes = await fetchLikes();
                 setLikedThemes(likes);
                 setFilteredThemes(themes);
             } catch (err) {
@@ -158,7 +117,7 @@ function ThemeTab() {
                 setLoading(false);
             }
         };
-        fetchThemes();
+        fetchData();
     }, []);
 
     useEffect(() => {
@@ -166,28 +125,44 @@ function ThemeTab() {
     }, [Vencord.Settings.themeLinks]);
 
     useEffect(() => {
-        const filteredThemes = themes.filter(themeFilter);
-        setFilteredThemes(filteredThemes);
-    }, [searchValue]);
+        // likes only update after 12_000 due to cache
+        if (searchValue.status === SearchStatus.LIKED) {
+            const likedThemes = themes.sort((a, b) => b.likes - a.likes);
+            // replacement of themeFilter which wont work with SearchStatus.LIKED
+            const filteredLikedThemes = likedThemes.filter(x => x.name.includes(searchValue.value));
+            setFilteredThemes(filteredLikedThemes);
+        } else {
+            const sortedThemes = themes.sort((a, b) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime());
+            const filteredThemes = sortedThemes.filter(themeFilter);
+            setFilteredThemes(filteredThemes);
+        }
+    }, [searchValue, themes]);
 
     return (
         <div>
             <>
                 {loading ? (
                     <div
-                        className={Margins.top20}
                         style={{
                             display: "flex",
+                            flexDirection: "column",
                             justifyContent: "center",
                             alignItems: "center",
-                            height: "100%",
+                            height: "70vh",
                             fontSize: "1.5em",
+                            color: "var(--text-normal)"
+                        }}>
+                        <p> Getting the latest themes... </p>
+                        <p style={{
+                            fontSize: ".75em",
                             color: "var(--text-muted)"
-                        }}>Loading themes...</div>
+                        }}> This won't take long! </p>
+
+                    </div>
                 ) : (
                     <>
                         {hideWarningCard ? null : (
-                            <ErrorCard id="vc-themetab-warning">
+                            <ErrorCard>
                                 <Forms.FormTitle tag="h4">Want your theme removed?</Forms.FormTitle>
                                 <Forms.FormText className={Margins.top8}>
                                     If you want your theme(s) permanently removed, please open an issue on <a href="https://github.com/Faf4a/plugins/issues/new?labels=removal&projects=&template=request_removal.yml&title=Theme+Removal">GitHub <OpenExternalIcon height={16} width={16} /></a>
@@ -200,116 +175,28 @@ function ThemeTab() {
                                     size={Button.Sizes.SMALL}
                                     color={Button.Colors.RED}
                                     look={Button.Looks.FILLED}
-                                    className={Margins.top8}
+                                    className={classes(Margins.top16, "vce-warning-button")}
                                 >Hide</Button>
-                            </ErrorCard >
+                            </ErrorCard>
                         )}
-                        <div className={`${Margins.bottom8} ${Margins.top16}`}>
+                        <div className={classes(Margins.bottom8, Margins.top16)}>
                             <Forms.FormTitle tag="h2"
                                 style={{
                                     overflowWrap: "break-word",
                                     marginTop: 8,
                                 }}>
-                                Newest Additions
+                                {searchValue.status === SearchStatus.LIKED ? "Most Liked" : "Newest Additions"}
                             </Forms.FormTitle>
 
                             {themes.slice(0, 2).map((theme: Theme) => (
-                                <Card style={{
-                                    padding: ".5rem",
-                                    marginBottom: ".5em",
-                                    marginTop: ".5em",
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    backgroundColor: "var(--background-secondary-alt)"
-                                }} key={theme.id}>
-                                    <Forms.FormTitle tag="h2" style={{
-                                        overflowWrap: "break-word",
-                                        marginTop: 8,
-                                    }}
-                                        className="vce-theme-text">
-                                        {theme.name}
-                                    </Forms.FormTitle>
-                                    <Forms.FormText className="vce-theme-text">
-                                        {theme.description}
-                                    </Forms.FormText>
-                                    <div className="vce-theme-info">
-                                        <div style={{
-                                            justifyContent: "flex-start",
-                                            flexDirection: "column"
-                                        }}>
-                                            {theme.tags && (
-                                                <Forms.FormText>
-                                                    {theme.tags.map(tag => (
-                                                        <span className="vce-theme-info-tag">
-                                                            {tag}
-                                                        </span>
-                                                    ))}
-                                                </Forms.FormText>
-                                            )}
-                                            <div style={{ marginTop: "8px", display: "flex", flexDirection: "row" }}>
-                                                {themeLinks.includes(API_TYPE(theme)) ? (
-                                                    <Button
-                                                        onClick={() => {
-                                                            const onlineThemeLinks = themeLinks.filter(x => x !== API_TYPE(theme));
-                                                            setThemeLinks(onlineThemeLinks);
-                                                            Vencord.Settings.themeLinks = onlineThemeLinks;
-                                                        }}
-                                                        size={Button.Sizes.MEDIUM}
-                                                        color={Button.Colors.RED}
-                                                        look={Button.Looks.FILLED}
-                                                        className={Margins.right8}
-                                                    >
-                                                        Remove Theme
-                                                    </Button>
-                                                ) : (
-                                                    <Button
-                                                        onClick={() => {
-                                                            const onlineThemeLinks = [...themeLinks, API_TYPE(theme)];
-                                                            setThemeLinks(onlineThemeLinks);
-                                                            Vencord.Settings.themeLinks = onlineThemeLinks;
-                                                        }}
-                                                        size={Button.Sizes.MEDIUM}
-                                                        color={Button.Colors.GREEN}
-                                                        look={Button.Looks.FILLED}
-                                                        className={Margins.right8}
-                                                    >
-                                                        Add Theme
-                                                    </Button>
-                                                )}
-                                                <Button
-                                                    onClick={async () => {
-                                                        const author = await getUser(theme.author.discord_snowflake, theme.author.discord_name);
-                                                        openModal(props => <ThemeInfoModal {...props} author={author} theme={theme} />);
-                                                    }}
-                                                    size={Button.Sizes.MEDIUM}
-                                                    color={Button.Colors.BRAND}
-                                                    look={Button.Looks.FILLED}
-                                                >
-                                                    Theme Info
-                                                </Button>
-                                                <Button
-                                                    onClick={() => {
-                                                        const content = atob(theme.content);
-                                                        const metadata = content.match(/\/\*\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\//g)?.[0] || "";
-                                                        const source = metadata.match(/@source\s+(.+)/)?.[1] || "";
-
-                                                        if (source) {
-                                                            VencordNative.native.openExternal(source);
-                                                        } else {
-                                                            VencordNative.native.openExternal(API_TYPE(theme).replace("?raw=true", ""));
-                                                        }
-                                                    }}
-                                                    size={Button.Sizes.MEDIUM}
-                                                    color={Button.Colors.LINK}
-                                                    look={Button.Looks.LINK}
-                                                    style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
-                                                >
-                                                    View Source <OpenExternalIcon height={16} width={16} />
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Card>
+                                <ThemeCard
+                                    key={theme.id}
+                                    theme={theme}
+                                    themeLinks={themeLinks}
+                                    likedThemes={likedThemes}
+                                    setThemeLinks={setThemeLinks}
+                                    removePreview={true}
+                                />
                             ))}
                         </div>
                         <Forms.FormTitle tag="h2" style={{
@@ -318,243 +205,85 @@ function ThemeTab() {
                         }}>
                             Themes
                         </Forms.FormTitle>
-                        <div className={cl("filter-controls")}>
+                        <div className={classes(Margins.bottom20, "vce-search-grid")}>
                             <TextInput value={searchValue.value} placeholder="Search for a theme..." onChange={onSearch} />
                             <div className={InputStyles.inputWrapper}>
-                                <Select
+                                <SearchableSelect
                                     options={[
                                         { label: "Show All", value: SearchStatus.ALL, default: true },
                                         { label: "Show Themes", value: SearchStatus.THEME },
                                         { label: "Show Snippets", value: SearchStatus.SNIPPET },
-                                        // TODO: filter for most liked themes
-                                        // { label: "Show Most Liked", value: SearchStatus.LIKED },
+                                        { label: "Show Most Liked", value: SearchStatus.LIKED },
                                         { label: "Show Dark", value: SearchStatus.DARK },
                                         { label: "Show Light", value: SearchStatus.LIGHT },
                                         { label: "Show Enabled", value: SearchStatus.ENABLED },
                                         { label: "Show Disabled", value: SearchStatus.DISABLED },
                                     ]}
-                                    serialize={String}
-                                    select={onStatusChange}
-                                    isSelected={v => v === searchValue.status}
+                                    // @ts-ignore
+                                    value={searchValue.status}
+                                    clearable={false}
+                                    onChange={v => onStatusChange(v as SearchStatus)}
                                     closeOnSelect={true}
+                                    className={InputStyles.inputDefault}
                                 />
                             </div>
                         </div>
                         <div>
-                            {filteredThemes.map((theme: Theme) => (
-                                <Card style={{
-                                    padding: ".5rem",
-                                    marginBottom: ".5em",
-                                    marginTop: ".5em",
+                            {filteredThemes.length ? filteredThemes.map((theme: Theme) => (
+                                <ThemeCard
+                                    key={theme.id}
+                                    theme={theme}
+                                    themeLinks={themeLinks}
+                                    likedThemes={likedThemes}
+                                    setThemeLinks={setThemeLinks}
+                                />
+                            )) : <div
+                                style={{
                                     display: "flex",
                                     flexDirection: "column",
-                                    backgroundColor: "var(--background-secondary-alt)"
-                                }} key={theme.id}>
-                                    <Forms.FormTitle tag="h2" style={{
-                                        overflowWrap: "break-word",
-                                        marginTop: 8,
-                                    }}
-                                        className="vce-theme-text">
-                                        {theme.name}
-                                    </Forms.FormTitle>
-                                    <Forms.FormText className="vce-theme-text">
-                                        {theme.description}
-                                    </Forms.FormText>
-                                    <img
-                                        role="presentation"
-                                        src={theme.thumbnail_url}
-                                        loading="lazy"
-                                        alt={theme.name}
-                                        className="vce-theme-info-preview"
-                                    />
-                                    <div className="vce-theme-info">
-                                        <div style={{
-                                            justifyContent: "flex-start",
-                                            flexDirection: "column"
-                                        }}>
-                                            {theme.tags && (
-                                                <Forms.FormText>
-                                                    {theme.tags.map(tag => (
-                                                        <span className="vce-theme-info-tag">
-                                                            {tag}
-                                                        </span>
-                                                    ))}
-                                                </Forms.FormText>
-                                            )}
-                                            <div style={{ marginTop: "8px", display: "flex", flexDirection: "row" }}>
-                                                {themeLinks.includes(API_TYPE(theme)) ? (
-                                                    <Button
-                                                        onClick={() => {
-                                                            const onlineThemeLinks = themeLinks.filter(x => x !== API_TYPE(theme));
-                                                            setThemeLinks(onlineThemeLinks);
-                                                            Vencord.Settings.themeLinks = onlineThemeLinks;
-                                                        }}
-                                                        size={Button.Sizes.MEDIUM}
-                                                        color={Button.Colors.RED}
-                                                        look={Button.Looks.FILLED}
-                                                        className={Margins.right8}
-                                                    >
-                                                        Remove Theme
-                                                    </Button>
-                                                ) : (
-                                                    <Button
-                                                        onClick={() => {
-                                                            const onlineThemeLinks = [...themeLinks, API_TYPE(theme)];
-                                                            setThemeLinks(onlineThemeLinks);
-                                                            Vencord.Settings.themeLinks = onlineThemeLinks;
-                                                        }}
-                                                        size={Button.Sizes.MEDIUM}
-                                                        color={Button.Colors.GREEN}
-                                                        look={Button.Looks.FILLED}
-                                                        className={Margins.right8}
-                                                    >
-                                                        Add Theme
-                                                    </Button>
-                                                )}
-                                                <Button
-                                                    onClick={async () => {
-                                                        const author = await getUser(theme.author.discord_snowflake, theme.author.discord_name);
-                                                        openModal(props => <ThemeInfoModal {...props} author={author} theme={theme} />);
-                                                    }}
-                                                    size={Button.Sizes.MEDIUM}
-                                                    color={Button.Colors.BRAND}
-                                                    look={Button.Looks.FILLED}
-                                                >
-                                                    Theme Info
-                                                </Button>
-                                                <LikesComponent themeId={theme.id} likedThemes={likedThemes} />
-                                                <Button
-                                                    onClick={() => {
-                                                        const content = atob(theme.content);
-                                                        const metadata = content.match(/\/\*\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\//g)?.[0] || "";
-                                                        const source = metadata.match(/@source\s+(.+)/)?.[1] || "";
-
-                                                        if (source) {
-                                                            VencordNative.native.openExternal(source);
-                                                        } else {
-                                                            VencordNative.native.openExternal(API_TYPE(theme).replace("?raw=true", ""));
-                                                        }
-                                                    }}
-                                                    size={Button.Sizes.MEDIUM}
-                                                    color={Button.Colors.LINK}
-                                                    look={Button.Looks.LINK}
-                                                    style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
-                                                >
-                                                    View Source <OpenExternalIcon height={16} width={16} />
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Card>
-                            ))}
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                }}>
+                                <p style={{
+                                    fontSize: "1em",
+                                    color: "var(--text-normal)"
+                                }}> No theme found. </p>
+                                <p style={{
+                                    fontSize: ".75em",
+                                    color: "var(--text-muted)"
+                                }}> Try narrowing your search down. </p>
+                            </div>
+                            }
                         </div>
                     </>)}
             </>
-        </div >
-    );
-}
-
-function SubmitThemes() {
-    const currentUser = UserStore.getCurrentUser();
-    const [themeContent, setContent] = useState("");
-
-    const handleChange = (v: string) => setContent(v);
-
-    return (
-        <div className={`${Margins.bottom8} ${Margins.top16}`}>
-            <Forms.FormTitle tag="h2" style={{
-                overflowWrap: "break-word",
-                marginTop: 8,
-            }}>
-                Theme Guidelines
-            </Forms.FormTitle>
-            <Forms.FormText>
-                Follow the formatting for your CSS to get credit for your theme. You can find the template below.
-            </Forms.FormText>
-            <Forms.FormText>
-                (your theme will be reviewed and can take up to 24 hours to be approved)
-            </Forms.FormText>
-            <Forms.FormText className={`${Margins.bottom16} ${Margins.top8}`}>
-                <CodeBlock lang="css" content={themeTemplate} />
-            </Forms.FormText>
-            <Forms.FormTitle tag="h2" style={{
-                overflowWrap: "break-word",
-                marginTop: 8,
-            }}>
-                Submit Themes
-            </Forms.FormTitle>
-            <Forms.FormText>
-                If you plan on updating your theme / snippet frequently, consider using an <code>@import</code> instead!
-            </Forms.FormText>
-            <Forms.FormText>
-                <TextArea
-                    content={themeTemplate}
-                    onChange={handleChange}
-                    className={classes(TextAreaProps.textarea, "vce-text-input")}
-                    placeholder="Theme CSS goes here..."
-                    spellCheck={false}
-                    rows={35}
-                />
-                <div style={{ display: "flex", alignItems: "center" }}>
-                    <Button
-                        onClick={() => {
-                            if (themeContent.length < 50) return showToast("Theme content is too short, must be above 50", Toasts.Type.FAILURE);
-
-                            themeRequest("/submit/theme", {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                },
-                                body: JSON.stringify({
-                                    userId: `${currentUser.id}`,
-                                    content: btoa(themeContent),
-                                }),
-                            }).then(response => {
-                                if (!response.ok) {
-                                    Toasts.show({
-                                        message: "Failed to submit theme, try again later. Probably ratelimit, wait 2 minutes.",
-                                        id: Toasts.genId(),
-                                        type: Toasts.Type.FAILURE,
-                                        options: {
-                                            duration: 5e3,
-                                            position: Toasts.Position.BOTTOM
-                                        }
-                                    });
-                                } else {
-                                    Toasts.show({
-                                        message: "Submitted your theme! Review can take up to 24 hours.",
-                                        type: Toasts.Type.SUCCESS,
-                                        id: Toasts.genId(),
-                                        options: {
-                                            duration: 5e3,
-                                            position: Toasts.Position.BOTTOM
-                                        }
-                                    });
-                                }
-                            }).catch(() => {
-                                showToast("Failed to submit theme, try later", Toasts.Type.FAILURE);
-                            });
-                        }}
-                        size={Button.Sizes.MEDIUM}
-                        color={Button.Colors.GREEN}
-                        look={Button.Looks.FILLED}
-                        className={Margins.top16}
-                    >
-                        Submit
-                    </Button>
-                    <p style={{
-                        color: "var(--text-muted)",
-                        fontSize: "12px",
-                        marginTop: "8px",
-                        marginLeft: "8px",
-                    }}>
-                        By submitting your theme, you agree to your Discord User ID being processed.
-                    </p>
-                </div>
-            </Forms.FormText>
         </div>
     );
 }
+
+// rework this!
+function SubmitThemes() {
+    return (
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "70vh",
+                fontSize: "1.5em",
+                color: "var(--text-normal)"
+            }}>
+            <p> This tab was replaced in favour of the new website: </p>
+            <p><a href="https://discord-themes.com">discord-themes.com</a></p>
+            <p style={{
+                fontSize: ".75em",
+                color: "var(--text-muted)"
+            }}> Thank you for your understanding!</p>
+        </div>
+    );
+}
+
 
 function ThemeLibrary() {
     const [currentTab, setCurrentTab] = useState(TabItem.THEMES);
