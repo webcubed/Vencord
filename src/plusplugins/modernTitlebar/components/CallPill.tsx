@@ -7,42 +7,36 @@
 import "./CallPill.css";
 
 import { classes, getIntlMessage } from "@utils/index";
-import { findByPropsLazy } from "@webpack";
-import { ChannelStore, ContextMenuApi, Icons, Menu, NavigationRouter, SelectedChannelStore } from "@webpack/common";
+import { findByCodeLazy, findByPropsLazy } from "@webpack";
+import { ChannelStore, ContextMenuApi, GuildStore, Icons, Menu, NavigationRouter, RelationshipStore, SelectedChannelStore, UserStore } from "@webpack/common";
+import { Channel, User } from "discord-types/general";
 
 import { useCallTimer } from "../utils/callTimer";
 import Pill from "./Pill";
 import { cl } from "./TitleBar";
 
+const formatChannelName = findByCodeLazy("#{intl::GROUP_DM_ALONE}");
 const VoiceChannelActions = findByPropsLazy("selectVoiceChannel", "disconnect");
 
+// Adapted from CallTimer
 function formatDuration(ms: number) {
-    // here be dragons (moment fucking sucks)
-    const human = false;
+    const format = (n: number) => ("" + n).padStart(2, "0");
 
-    const format = (n: number) => human ? n : n.toString().padStart(2, "0");
-    const unit = (s: string) => human ? s : "";
-    const delim = human ? " " : ":";
-
-    // thx copilot
     const d = Math.floor(ms / 86400000);
     const h = Math.floor((ms % 86400000) / 3600000);
     const m = Math.floor(((ms % 86400000) % 3600000) / 60000);
     const s = Math.floor((((ms % 86400000) % 3600000) % 60000) / 1000);
 
-    let res = "";
-    if (d) res += `${d}d `;
-    if (h || res) res += `${format(h)}${unit("h")}${delim}`;
-    if (m || res || !human) res += `${format(m)}${unit("m")}${delim}`;
-    res += `${format(s)}${unit("s")}`;
+    const list = [h, m, s];
+    if (d === 0 && h === 0) list.shift();
 
-    return res;
+    return (d > 0 ? `${d}d ` : "") + list.map(format).join(":");
 }
 
-export default function CallPill(props: { userId: string; }) {
+export default function CallPill(props: { user: User | undefined; }) {
     const time = useCallTimer();
 
-    if (time === null || !props.userId) return null;
+    if (time === null || !props.user) return null;
     return <Pill
         action={() => {
             const channelId = SelectedChannelStore.getVoiceChannelId();
@@ -53,7 +47,8 @@ export default function CallPill(props: { userId: string; }) {
         className={cl("call-pill")}
         pillProps={{
             onContextMenu(e) {
-                ContextMenuApi.openContextMenu(e, () => <CallPillContextMenu />);
+                const channel = ChannelStore.getChannel(SelectedChannelStore.getVoiceChannelId()!);
+                ContextMenuApi.openContextMenu(e, () => <CallPillContextMenu channel={channel} />);
             }
         }}
     >
@@ -62,18 +57,29 @@ export default function CallPill(props: { userId: string; }) {
     </Pill>;
 }
 
-export function CallPillContextMenu() {
+export function CallPillContextMenu({ channel }: { channel: Channel; }) {
+    const guild = GuildStore.getGuild(channel.getGuildId());
     return <Menu.Menu
         navId="vc-modernTitlebar-call-pill-menu"
         onClose={ContextMenuApi.closeContextMenu}
     >
-        <Menu.MenuItem
-            id="disconnect"
-            color="danger"
-            label={getIntlMessage("DISCONNECT_SELF")}
-            action={() => {
-                VoiceChannelActions.disconnect();
-            }}
-        />
+        <Menu.MenuGroup label="Current Call">
+            <Menu.MenuItem
+                id="current-channel"
+                label={formatChannelName(channel, UserStore, RelationshipStore)}
+                subtext={guild?.name}
+                action={() => NavigationRouter.transitionToGuild(channel.getGuildId(), channel.id)}
+            />
+        </Menu.MenuGroup>
+        <Menu.MenuGroup>
+            <Menu.MenuItem
+                id="disconnect"
+                color="danger"
+                label={getIntlMessage("DISCONNECT_SELF")}
+                action={() => {
+                    VoiceChannelActions.disconnect();
+                }}
+            />
+        </Menu.MenuGroup>
     </Menu.Menu>;
 }

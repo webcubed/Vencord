@@ -9,24 +9,28 @@ import "./TitleBarGroupLeft.css";
 import { classes } from "@utils/misc";
 import { findByPropsLazy, findStoreLazy } from "@webpack";
 import { NavigationRouter } from "@webpack/common";
+import { User } from "discord-types/general";
 
-import SidebarButton from "./SidebarButton";
+import { settings } from "../settings";
+import SidebarButton from "./buttons/SidebarButton";
 import StatCounters from "./StatCounters";
 import { cl } from "./TitleBar";
 import TitleBarButton from "./TitleBarButton";
+import TotalMentionsBadge from "./TotalMentionsBadge";
 
 const { ClydeIcon } = findByPropsLazy("ClydeIcon");
 const DefaultRouteStore = findStoreLazy("DefaultRouteStore");
 
-export default function TitleBarGroupLeft({ userId }: { userId: string; }) {
+export default function TitleBarGroupLeft({ user }: { user: User | undefined; }) {
+    const { homeButton, sidebarButton, mentionsBadge } = settings.use(["homeButton", "sidebarButton", "mentionsBadge"]);
     return <div className={classes(cl("titlebar-group"), cl("titlebar-group-left"))}>
-        <TitleBarButton
+        {homeButton && <TitleBarButton
             action={() => NavigationRouter.transitionTo(DefaultRouteStore.defaultRoute)}
             className={cl("button-home")}
             icon={ClydeIcon}
-        />
-        <SidebarButton />
-        {/* {userId && <TotalMentionsBadge />} */}
-        {userId && <StatCounters />}
-    </div >;
+        />}
+        {sidebarButton && <SidebarButton />}
+        {user && <StatCounters />}
+        {mentionsBadge && user && <TotalMentionsBadge />}
+    </div>;
 }

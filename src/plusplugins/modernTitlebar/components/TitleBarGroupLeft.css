@@ -1,12 +1,13 @@
-.vc-modernTitlebar-titlebar-group-left {
-    margin-left: var(--vc-moderntitlebar-spacing);
+.vc-modernTitlebar-titlebar-group-left > :first-child {
+    width: calc(32px + var(--vc-moderntitlebar-spacing) + var(--vc-moderntitlebar-spacing-half));
+    padding-left: var(--vc-moderntitlebar-spacing);
 }
 
-.vc-modernTitlebar-button-home {
+.vc-modernTitlebar-button.vc-modernTitlebar-button-home {
     color: var(--interactive-hover);
 }
 
-.vc-modernTitlebar-button-home:is(:hover, :active) {
+.vc-modernTitlebar-button.vc-modernTitlebar-button-home:is(:hover, :active) {
     color: var(--white-500);
 }
 

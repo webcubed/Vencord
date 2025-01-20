@@ -8,6 +8,16 @@ import { definePluginSettings } from "@api/Settings";
 import { OptionType } from "@utils/types";
 
 export const settings = definePluginSettings({
+    homeButton: {
+        type: OptionType.BOOLEAN,
+        description: "Show a home button",
+        default: true
+    },
+    sidebarButton: {
+        type: OptionType.BOOLEAN,
+        description: "Show a toggle sidebar button",
+        default: true
+    },
     serverCount: {
         type: OptionType.BOOLEAN,
         description: "Show the amount of servers you are in",
@@ -17,5 +27,25 @@ export const settings = definePluginSettings({
         type: OptionType.BOOLEAN,
         description: "Show the amount of servers you are in",
         default: false
+    },
+    mentionsBadge: {
+        type: OptionType.BOOLEAN,
+        description: "Show a mention counter",
+        default: true
+    },
+    callPill: {
+        type: OptionType.BOOLEAN,
+        description: "Show a current call timer pill",
+        default: true
+    },
+    actionButtons: {
+        type: OptionType.BOOLEAN,
+        description: "Show the mute/deafen buttons",
+        default: true
+    },
+    quickSwitcherButton: {
+        type: OptionType.BOOLEAN,
+        description: "Show a quick switcher button",
+        default: true
     },
 });

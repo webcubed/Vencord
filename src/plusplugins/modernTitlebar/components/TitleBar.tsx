@@ -8,7 +8,7 @@ import "./TitleBar.css";
 
 import { classes } from "@utils/misc";
 import { findStoreLazy } from "@webpack";
-import { useRef, useStateFromStores } from "@webpack/common";
+import { useStateFromStores } from "@webpack/common";
 
 import OverrideCSS from "./OverrideCSS";
 import TitleBarGroupLeft from "./TitleBarGroupLeft";
@@ -20,24 +20,21 @@ export const cl = (name: string) => `vc-modernTitlebar-${name}`;
 
 export default function TitleBar(props: {
     focused: boolean;
-    windowKey: any;
+    windowKey?: any;
     type: string;
-    macOSFrame: boolean;
-    themeOverride: any;
+    macOSFrame?: boolean;
+    themeOverride?: any;
 }) {
-    const userId = useStateFromStores([UserStore], () => UserStore.getCurrentUser()?.id, []);
-    const ref = useRef<HTMLDivElement>(null);
+    const user = useStateFromStores([UserStore], () => UserStore.getCurrentUser()?.id, []);
 
-    return <div
-        className={cl("container")}
-        ref={ref}
-    // onContextMenu={e => ContextMenuApi.openContextMenu(e, () => <BasicContextMenu />)}
-    >
+    if (props?.macOSFrame) return null;
+
+    return <div className={cl("container")}>
         <OverrideCSS className={cl("styles")} />
         <div className={cl("titlebar")}>
-            <TitleBarGroupLeft userId={userId} />
+            <TitleBarGroupLeft user={user} />
             <div className={classes(cl("spacer"))} />
-            <TitleBarGroupRight userId={userId} windowKey={props?.windowKey} />
-        </div >
+            <TitleBarGroupRight user={user} windowKey={props?.windowKey} />
+        </div>
     </div>;
 }
