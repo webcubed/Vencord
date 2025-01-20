@@ -47,7 +47,8 @@ export default definePlugin({
         if (settings.store.currentVC && SelectedChannelStore.getVoiceChannelId() === channelId) return true;
         const threshold = Date.now() - (settings.store[ChannelStore.getChannel(channelId).isPrivate() ? "thresholdInDms" : "threshold"] * 1000);
         // discord-types and the MessageStore types are so wrong and cursed
-        if ((MessageStore as any).getLastEditableMessage(channelId).timestamp > threshold) return true;
+        const lastMessage = (MessageStore as any).getLastEditableMessage(channelId);
+        if (lastMessage && lastMessage?.timestamp > threshold) return true;
 
         return false;
     }

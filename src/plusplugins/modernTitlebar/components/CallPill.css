@@ -1,0 +1,9 @@
+.vc-modernTitlebar-call-pill .vc-modernTitlebar-pill-inner {
+    background-color: var(--status-speaking);
+}
+
+.vc-modernTitlebar-pill-content.vc-modernTitlebar-call-pill-content {
+    font-family: var(--font-display);
+    font-variant-numeric: tabular-nums;
+    text-transform: none;
+}

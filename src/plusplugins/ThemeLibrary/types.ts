@@ -1,43 +1,42 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 import { ModalProps } from "@utils/modal";
 import { User } from "discord-types/general";
 
+type Author = {
+    github_name?: string;
+    discord_name: string;
+    discord_snowflake: string;
+};
+
 export interface Theme {
     id: string;
     name: string;
-    file_name: string;
     content: string;
     type: string | "theme" | "snippet";
     description: string;
-    external_url?: string;
-    download_url: string;
-    version?: string;
-    author: {
-        github_name?: string;
-        discord_name: string;
-        discord_snowflake: string;
-    };
-    likes?: number;
-    downloads?: number;
+    version: string;
+    author: Author | Author[];
+    likes: number;
     tags: string[];
     thumbnail_url: string;
-    release_date: string;
+    release_date: Date;
+    last_updated?: Date;
     guild?: {
         name: string;
         snowflake: string;
         invite_link: string;
-        avatar_hash: string;
     };
     source?: string;
+    requiresThemeAttributes?: boolean;
 }
 
 export interface ThemeInfoModalProps extends ModalProps {
-    author: User;
+    author: User | User[];
     theme: Theme;
 }
 
@@ -65,8 +64,15 @@ export const enum SearchStatus {
 export type ThemeLikeProps = {
     status: number;
     likes: [{
-        _id?: string;
         themeId: number;
-        userIds: User["id"][];
+        likes: number;
+        hasLiked?: boolean;
     }];
 };
+
+export interface Contributor {
+    username: User["username"];
+    github_username: string;
+    id: User["id"];
+    avatar: string;
+}

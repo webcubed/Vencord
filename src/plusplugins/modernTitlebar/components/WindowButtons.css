@@ -1,0 +1,7 @@
+.vc-modernTitlebar-window-button-close:is(:hover, :active) {
+    color: var(--white-500);
+}
+
+.vc-modernTitlebar-button.vc-modernTitlebar-window-button-close:is(:hover, :active) .vc-modernTitlebar-button-inner {
+    background-color: var(--status-danger);
+}

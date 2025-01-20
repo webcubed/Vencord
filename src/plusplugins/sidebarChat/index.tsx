@@ -89,7 +89,7 @@ function MakeContextCallback(name: "user" | "channel"): NavContextMenuPatchCallb
 export default definePlugin({
     name: "SidebarChat",
     authors: [Devs.Joona],
-    description: "Open another channel or DM in a sidebar",
+    description: "Open another channel or DM in a sidebar or popout",
     patches: [
         {
             find: 'case"pendingFriends":',
@@ -159,8 +159,6 @@ export default definePlugin({
                                 icon={Icons.WindowLaunchIcon}
                                 tooltip="Popout Chat"
                                 onClick={async () => {
-                                    // I know it seems silly to have this but
-                                    // its required since if user clicks on a thread or a dm
                                     await requireChannelContextMenu();
                                     PopoutActions.open(
                                         `DISCORD_VC_SC-${channel.id}`,
@@ -202,7 +200,6 @@ export default definePlugin({
 
 const renderPopout = ErrorBoundary.wrap((channel: Channel) => {
     // Copy from an unexported function of the one they use in the experiment
-    // right click a channel and search withTitleBar:!0,windowKey
     const { Provider } = React.createContext<string | undefined>(undefined);
     const selectedChannel = ChannelStore.getChannel(channel.id);
     return (

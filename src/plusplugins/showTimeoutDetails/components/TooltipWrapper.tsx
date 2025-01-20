@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -16,14 +16,15 @@ import TimeoutDetailsPopout from "./TimeoutDetailsPopout";
 
 const clickableClasses = findByPropsLazy("clickable", "avatar", "username");
 
-export default function TooltipWrapper({ message, children, text }: { message: Message; children: FunctionComponent<any>; text: ReactNode; }) {
+export default function TooltipWrapper({ message, children: Child, text }: { message: Message; children: FunctionComponent<any>; text: ReactNode; }) {
     const guildId = ChannelStore.getChannel(message.channel_id)?.guild_id;
     const timeoutReason = useTimeoutReason(guildId, message.author.id);
 
     if (settings.store.displayStyle === DisplayStyle.Tooltip) return <Tooltip
         tooltipClassName="vc-std-tooltip"
         text={renderTimeout(message, false)}
-        children={(props: any) => (
+    >
+        {(props: any) => (
             <Popout
                 position="top"
                 align="left"
@@ -34,11 +35,11 @@ export default function TooltipWrapper({ message, children, text }: { message: M
                     className={classes("vc-std-icon", clickableClasses.clickable, timeoutReason.automod && "vc-std-automod")}
                     onClick={e => { e.stopPropagation(); popoutProps.onClick(e); }} // stop double click to reply/edit
                 >
-                    {children(props)}
+                    <Child {...props} />
                 </span>}
             </Popout>
         )}
-    />;
+    </Tooltip>;
     return (
         <Popout
             position="top"
@@ -50,7 +51,7 @@ export default function TooltipWrapper({ message, children, text }: { message: M
                 className={classes("vc-std-wrapper", clickableClasses.clickable, timeoutReason.automod && "vc-std-automod")}
                 onClick={e => { e.stopPropagation(); popoutProps.onClick(e); }} // stop double click to reply/edit
             >
-                <Tooltip text={text} children={children} />
+                <Tooltip text={text}>{Child}</Tooltip>
                 <span className={Margins.right8} />
                 <Text variant="text-md/normal" className="vc-std-wrapper-text">
                     {renderTimeout(message, true)} timeout remaining

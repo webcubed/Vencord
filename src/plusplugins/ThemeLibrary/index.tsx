@@ -1,31 +1,17 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { definePluginSettings } from "@api/Settings";
-import definePlugin, { OptionType } from "@utils/types";
+import definePlugin from "@utils/types";
 import { SettingsRouter } from "@webpack/common";
 
-const settings = definePluginSettings({
-    hideWarningCard: {
-        type: OptionType.BOOLEAN,
-        default: false,
-        description: "Hide the warning card displayed at the top of the theme library tab",
-        restartNeeded: false,
-    },
-    domain: {
-        type: OptionType.BOOLEAN,
-        default: false,
-        description: "Use Github instead of the default domain for themes",
-        restartNeeded: false,
-    },
-});
+import { settings } from "./utils/settings";
 
 export default definePlugin({
     name: "ThemeLibrary",
-    description: "A library of themes for Vencord.",
+    description: "A library of themes for Vencord",
     authors: [
         {
             name: "Fafa",
@@ -49,6 +35,7 @@ export default definePlugin({
         const ThemeSection = () => ({
             section: "ThemeLibrary",
             label: "Theme Library",
+            searchableTitles: ["Theme Library"],
             element: require("./components/ThemeTab").default,
             id: "ThemeSection",
         });

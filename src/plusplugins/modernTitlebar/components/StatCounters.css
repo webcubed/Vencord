@@ -1,0 +1,17 @@
+.vc-modernTitlebar-stat-counters {
+    display: flex;
+    gap: 4px;
+    flex-direction: column;
+    margin: auto var(--vc-moderntitlebar-spacing-half);
+    overflow: hidden;
+}
+
+.vc-modernTitlebar-stat-counter {
+    display: inline-flex;
+    width: 100%;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--header-secondary);
+    text-transform: uppercase;
+    text-wrap: nowrap;
+}
