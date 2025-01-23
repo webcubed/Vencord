@@ -4,15 +4,15 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { addChatBarButton, ChatBarButton, removeChatBarButton } from "@api/ChatButtons";
-import { addMessagePreSendListener, removeMessagePreSendListener, SendListener } from "@api/MessageEvents";
+import { addChatBarButton, ChatBarButton, ChatBarButtonFactory, removeChatBarButton } from "@api/ChatButtons";
+import { addMessagePreSendListener, MessageSendListener, removeMessagePreSendListener } from "@api/MessageEvents";
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { React, useEffect, useState } from "@webpack/common";
 
 let lastState = false;
 
-const ReverseMessageToggle: ChatBarButton = ({ isMainChat }) => {
+const ReverseMessageToggle: ChatBarButtonFactory = ({ isMainChat }) => {
     const [enabled, setEnabled] = useState(lastState);
 
     function setEnabledValue(value: boolean) {
@@ -22,7 +22,7 @@ const ReverseMessageToggle: ChatBarButton = ({ isMainChat }) => {
     }
 
     useEffect(() => {
-        const listener: SendListener = async (_, message) => {
+        const listener: MessageSendListener = async (_, message) => {
             if (enabled && message.content) message.content = message.content.split("").reverse().join("");
         };
 
