@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { classes } from "@utils/misc";
 import { ModalProps } from "@utils/modal";
@@ -165,6 +165,7 @@ const NoteContextMenu = (
                         if (key !== notebook) {
                             return (
                                 <Menu.MenuItem
+                                    key={key}
                                     label={`Move to ${key}`}
                                     id={key}
                                     action={() => {

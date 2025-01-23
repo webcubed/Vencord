@@ -1,10 +1,10 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { addDecoration, removeDecoration } from "@api/MessageDecorations";
+import { addMessageDecoration, removeMessageDecoration } from "@api/MessageDecorations";
 import { Devs, EquicordDevs } from "@utils/constants";
 import { isPluginDev, isSuncordPluginDev, isEquicordPluginDev, isPlusPluginDev, isPlusMt } from "@utils/misc";
 import definePlugin from "@utils/types";
@@ -205,9 +205,9 @@ export default definePlugin({
     dependencies: ["MessageDecorationsAPI"],
     settings,
     start: () => {
-        addDecoration("vc-show-badges-in-chat", props => props.message?.author ? <ChatBadges author={props.message.author} /> : null);
+        addMessageDecoration("vc-show-badges-in-chat", props => props.message?.author ? <ChatBadges author={props.message.author} /> : null);
     },
     stop: () => {
-        removeDecoration("vc-show-badges-in-chat");
+        removeMessageDecoration("vc-show-badges-in-chat");
     }
 });

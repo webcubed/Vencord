@@ -1,14 +1,14 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import "./style.css";
 
 import { NavContextMenuPatchCallback } from "@api/ContextMenu";
 import { DataStore } from "@api/index";
-import { addButton, removeButton } from "@api/MessagePopover";
+import { addMessagePopoverButton, removeMessagePopoverButton } from "@api/MessagePopover";
 import ErrorBoundary from "@components/ErrorBoundary";
 import { classes } from "@utils/misc";
 import { openModal } from "@utils/modal";
@@ -29,6 +29,7 @@ const messageContextMenuPatch: NavContextMenuPatchCallback = async (children, { 
         <Menu.MenuItem label="Add Message To" id="add-message-to-note">
             {Object.keys(noteHandler.getAllNotes()).map((notebook: string, index: number) => (
                 <Menu.MenuItem
+                    key={notebook}
                     label={notebook}
                     id={notebook}
                     action={() => noteHandler.addNote(message, notebook)}
@@ -90,7 +91,7 @@ export default definePlugin({
             );
 
         e.toolbar = [
-            <ErrorBoundary noop={true}>
+            <ErrorBoundary noop={true} key={"HolyNotes"}>
                 <ToolBarHeader />
             </ErrorBoundary>,
             e.toolbar,
@@ -100,7 +101,7 @@ export default definePlugin({
         if (await DataStore.keys(HolyNoteStore).then(keys => !keys.includes("Main"))) return noteHandler.newNoteBook("Main");
         if (!noteHandlerCache.has("Main")) await DataStoreToCache();
 
-        addButton("HolyNotes", message => {
+        addMessagePopoverButton("HolyNotes", message => {
             return {
                 label: "Save Note",
                 icon: NoteButtonPopover,
@@ -113,6 +114,6 @@ export default definePlugin({
     },
 
     async stop() {
-        removeButton("HolyNotes");
+        removeMessagePopoverButton("HolyNotes");
     }
 });

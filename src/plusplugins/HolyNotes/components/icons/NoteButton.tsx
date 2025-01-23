@@ -2,7 +2,9 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
+
+import { JSX } from "react";
 
 const component = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
     <svg viewBox="6 3.7 16 16" width={24} height={24} {...(props as React.SVGProps<SVGSVGElement>)}>
