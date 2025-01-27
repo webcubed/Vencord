@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
 */
 
-import { addMessagePopoverButton, removeMessagePopoverButton } from "@api/MessagePopover";
+import { addButton, removeButton } from "@api/MessagePopover";
 import { disableStyle, enableStyle } from "@api/Styles";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
@@ -60,7 +60,7 @@ export default definePlugin({
     authors: [Devs.newwares],
     start() {
         enableStyle(styles);
-        addMessagePopoverButton("vc-findreply", message => {
+        addButton("vc-findreply", message => {
             if (!message.id) return null;
             const replies = findReplies(message);
             if (Vencord.Settings.plugins.FindReply.hideButtonIfNoReply && !replies.length) return null;
@@ -105,7 +105,7 @@ export default definePlugin({
         });
     },
     stop() {
-        removeMessagePopoverButton("vc-findreply");
+        removeButton("vc-findreply");
         root && root.unmount();
         element?.remove();
         disableStyle(styles);

@@ -7,8 +7,8 @@
 import "./style.css";
 
 import { findGroupChildrenByChildId, NavContextMenuPatchCallback } from "@api/ContextMenu";
-import { addMessageAccessory, removeMessageAccessory } from "@api/MessageAccessories";
-import { addMessagePopoverButton, removeMessagePopoverButton } from "@api/MessagePopover";
+import { addAccessory, removeAccessory } from "@api/MessageAccessories";
+import { addButton, removeButton } from "@api/MessagePopover";
 import { Devs, EquicordDevs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { ChannelStore, Menu } from "@webpack/common";
@@ -44,9 +44,9 @@ export default definePlugin({
     },
 
     start() {
-        addMessageAccessory("ec-translation", props => <Accessory message={props.message} />);
+        addAccessory("ec-translation", props => <Accessory message={props.message} />);
 
-        addMessagePopoverButton("ec-translate", message => {
+        addButton("ec-translate", message => {
             if (!message.content) return null;
 
             return {
@@ -59,7 +59,7 @@ export default definePlugin({
         });
     },
     stop() {
-        removeMessagePopoverButton("ec-translate");
-        removeMessageAccessory("ec-translation");
+        removeButton("ec-translate");
+        removeAccessory("ec-translation");
     }
 });

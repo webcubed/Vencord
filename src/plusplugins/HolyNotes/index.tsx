@@ -8,7 +8,7 @@ import "./style.css";
 
 import { NavContextMenuPatchCallback } from "@api/ContextMenu";
 import { DataStore } from "@api/index";
-import { addMessagePopoverButton, removeMessagePopoverButton } from "@api/MessagePopover";
+import { addButton, removeButton } from "@api/MessagePopover";
 import ErrorBoundary from "@components/ErrorBoundary";
 import { classes } from "@utils/misc";
 import { openModal } from "@utils/modal";
@@ -101,7 +101,7 @@ export default definePlugin({
         if (await DataStore.keys(HolyNoteStore).then(keys => !keys.includes("Main"))) return noteHandler.newNoteBook("Main");
         if (!noteHandlerCache.has("Main")) await DataStoreToCache();
 
-        addMessagePopoverButton("HolyNotes", message => {
+        addButton("HolyNotes", message => {
             return {
                 label: "Save Note",
                 icon: NoteButtonPopover,
@@ -114,6 +114,6 @@ export default definePlugin({
     },
 
     async stop() {
-        removeMessagePopoverButton("HolyNotes");
+        removeButton("HolyNotes");
     }
 });

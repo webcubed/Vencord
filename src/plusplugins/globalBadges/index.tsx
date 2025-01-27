@@ -2,9 +2,9 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
-import { addProfileBadge, BadgePosition, ProfileBadge, removeProfileBadge } from "@api/Badges";
+import { addBadge, BadgePosition, ProfileBadge, removeBadge } from "@api/Badges";
 import { classNameFactory } from "@api/Styles";
 import ErrorBoundary from "@components/ErrorBoundary";
 import { Devs, EquicordDevs } from "@utils/constants";
@@ -125,8 +125,8 @@ export default definePlugin({
     description: "Adds global badges from other client mods",
     authors: [Devs.HypedDomi, EquicordDevs.Wolfie],
 
-    start: () => addProfileBadge(Badge),
-    stop: () => removeProfileBadge(Badge),
+    start: () => addBadge(Badge),
+    stop: () => removeBadge(Badge),
 
     options: {
         showPrefix: {

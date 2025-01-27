@@ -11,7 +11,7 @@ import {
     sendBotMessage,
 } from "@api/Commands";
 import * as DataStore from "@api/DataStore";
-import { addMessagePreSendListener, MessageSendListener, removeMessagePreSendListener } from "@api/MessageEvents";
+import { addPreSendListener, MessageSendListener, removePreSendListener } from "@api/MessageEvents";
 import { Devs } from "@utils/constants";
 import { sleep } from "@utils/misc";
 import definePlugin from "@utils/types";
@@ -72,8 +72,8 @@ const ChatBarIcon: ChatBarButtonFactory = ({ isMainChat }) => {
             }
         };
 
-        addMessagePreSendListener(listener);
-        return () => void removeMessagePreSendListener(listener);
+        addPreSendListener(listener);
+        return () => void removePreSendListener(listener);
     }, [enabled]);
 
     if (!isMainChat) return null;
