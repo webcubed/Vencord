@@ -1,13 +1,12 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 import { classNameFactory } from "@api/Styles";
 import { useForceUpdater } from "@utils/react";
-import { findByPropsLazy } from "@webpack";
-import { Button, ContextMenuApi, Flex, FluxDispatcher, Forms, useCallback, useEffect, useRef, UserStore, useState } from "@webpack/common";
+import { Button, ContextMenuApi, Flex, FluxDispatcher, Forms, Icons, useCallback, useEffect, useRef, UserStore, useState } from "@webpack/common";
 
 import { BasicChannelTabsProps, ChannelTabsProps, createTab, handleChannelSwitch, openedTabs, openStartupTabs, saveTabs, settings, setUpdaterFunction, useGhostTabs } from "../util";
 import BookmarkContainer from "./BookmarkContainer";
@@ -16,7 +15,7 @@ import { BasicContextMenu } from "./ContextMenus";
 
 type TabSet = Record<string, ChannelTabsProps[]>;
 
-const { PlusSmallIcon } = findByPropsLazy("PlusSmallIcon");
+const { PlusSmallIcon } = Icons;
 const cl = classNameFactory("vc-channeltabs-");
 
 export default function ChannelsTabsContainer(props: BasicChannelTabsProps) {
@@ -68,7 +67,7 @@ export default function ChannelsTabsContainer(props: BasicChannelTabsProps) {
         >
             <div className={cl("tab-container")}>
                 {openedTabs.map((tab, i) =>
-                    <ChannelTab {...tab} index={i} />
+                    <ChannelTab {...tab} index={i} key={i} />
                 )}
 
                 <button
