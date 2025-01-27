@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -24,7 +24,7 @@ import {
     CSSProperties as $CSSProperties
 } from "react";
 import * as $DataStore from "@api/DataStore";
-import { addAccessory, removeAccessory } from "@api/MessageAccessories";
+import { addMessageAccessory, removeMessageAccessory } from "@api/MessageAccessories";
 import { addServerListElement, removeServerListElement, ServerListRenderPosition } from "@api/ServerList";
 import { disableStyle, enableStyle } from "@api/Styles";
 import { Devs } from "@utils/constants";
@@ -259,7 +259,7 @@ export default definePlugin({
             }
         }
 
-        addAccessory("colorways-btn", props => <ColorwayID props={props} />);
+        addMessageAccessory("colorways-btn", props => <ColorwayID props={props} />);
 
         if ((colorwaySourceFiles as { name: string, url: string; }[]).map(i => i.url).includes("https://raw.githubusercontent.com/DaBluLite/ProjectColorway/master/index.json") || (!(colorwaySourceFiles as { name: string, url: string; }[]).map(i => i.url).includes("https://raw.githubusercontent.com/DaBluLite/ProjectColorway/master/index.json") && !(colorwaySourceFiles as { name: string, url: string; }[]).map(i => i.url).includes("https://raw.githubusercontent.com/ProjectColorway/ProjectColorway/master/index.json"))) {
             DataStore.set("colorwaySourceFiles", [{ name: "Project Colorway", url: defaultColorwaySource }, ...(colorwaySourceFiles as { name: string, url: string; }[]).filter(i => i.name !== "Project Colorway")]);
@@ -272,6 +272,6 @@ export default definePlugin({
         disableStyle(discordTheme);
         ColorwayCSS.remove();
         closeWS();
-        removeAccessory("colorways-btn");
+        removeMessageAccessory("colorways-btn");
     },
 });

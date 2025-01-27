@@ -1,7 +1,7 @@
 import { PlusDevs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { Button, Menu, Switch, Text, UploadHandler, useEffect, useState } from "@webpack/common";
-import { addButton, removeButton } from "@api/MessagePopover";
+import { addMessagePopoverButton, removeMessagePopoverButton } from "@api/MessagePopover";
 import { ChannelStore } from "@webpack/common";
 import { PropsWithChildren } from "react";
 import { classes } from "@utils/misc";
@@ -190,7 +190,7 @@ export default definePlugin({
     dependencies: ["MessagePopoverAPI"],
 
     async start() {
-        addButton("Husk", msg => {
+        addMessagePopoverButton("Husk", msg => {
             return {
                 label: "Text React",
                 icon: Husk,
@@ -202,6 +202,6 @@ export default definePlugin({
     },
 
     stop() {
-        removeButton("Husk");
+        removeMessagePopoverButton("Husk");
     },
 });
