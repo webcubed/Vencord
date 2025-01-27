@@ -1,13 +1,13 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 import "./style.css";
 
-import { addAccessory } from "@api/MessageAccessories";
-import { addButton } from "@api/MessagePopover";
+import { addMessageAccessory } from "@api/MessageAccessories";
+import { addMessagePopoverButton } from "@api/MessagePopover";
 import { definePluginSettings } from "@api/Settings";
 import definePlugin, { OptionType } from "@utils/types";
 import { ChannelStore } from "@webpack/common";
@@ -49,8 +49,8 @@ export default definePlugin({
         }
     ],
     start() {
-        addAccessory("vc-converter", props => <ConverterAccessory message={props.message} />);
-        addButton("vc-converter", message => {
+        addMessageAccessory("vc-converter", props => <ConverterAccessory message={props.message} />);
+        addMessagePopoverButton("vc-converter", message => {
             if (!message.content) return null;
             return {
                 label: "Convert Units",

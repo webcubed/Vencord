@@ -1,6 +1,6 @@
 /*
  * Vencord, a modification for Discord's desktop app
- * Copyright (c) 2024 nin0dev
+ * Copyright (c) 2025 nin0dev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import { addPreSendListener, removePreSendListener } from "@api/MessageEvents";
+import { addMessagePreSendListener, removeMessagePreSendListener } from "@api/MessageEvents";
 import { definePluginSettings } from "@api/Settings";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
@@ -33,6 +33,8 @@ const badRegexesSlurs = ["\\bn{1,}(i|!|1){1,}(b|g){2,}(a|@|e|3){1,}?"];
 /** * GENERAL ***/
 const badVerbsGeneral = ["kill", "destroy"];
 const badNounsGeneral = ["shit", "bullshit", "bitch", "bastard", "die", "brainless"];
+/** * FUN ***/
+const badNounsFun = ["kotlin", "avast", "fres"];
 /** * REPLACEMENTS ***/
 const badVerbsReplacements = ["love", "eat", "deconstruct", "marry", "fart", "teach", "display", "plug", "explode", "undress", "finish", "freeze", "beat", "free", "brush", "allocate", "date", "melt", "breed", "educate", "injure", "change"];
 const badNounsReplacements = ["pasta", "kebab", "cake", "potato", "woman", "computer", "java", "hamburger", "monster truck", "osu!", "Ukrainian ball in search of gas game", "Anime", "Anime girl", "good", "keyboard", "NVIDIA RTX 3090 Graphics Card", "storm", "queen", "single", "umbrella", "mosque", "physics", "bath", "virus", "bathroom", "mom", "owner", "airport", "Avast Antivirus Free"];
@@ -75,13 +77,13 @@ export default definePlugin({
         }
     }),
     async start() {
-        this.preSend = addPreSendListener((_channelId, msg) => {
+        this.preSend = addMessagePreSendListener((_channelId, msg) => {
             const newContent = this.replaceBadVerbs(this.replaceBadNouns(msg.content));
             msg.content = newContent;
         });
     },
     stop() {
-        removePreSendListener(this.preSend);
+        removeMessagePreSendListener(this.preSend);
     },
     getEnabledBadNouns() {
         const thingToReturn: string[] = [];

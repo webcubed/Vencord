@@ -2,9 +2,10 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { classes } from "@utils/misc";
+import { JSX } from "react";
 
 export default ({ className }: { className?: string; }): JSX.Element => (
     <svg

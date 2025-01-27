@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import ErrorBoundary from "@components/ErrorBoundary";
 import { classes } from "@utils/misc";
@@ -32,6 +32,7 @@ const renderNotebook = ({
 }) => {
     const messageArray = Object.values(notes).map(note => (
         <RenderMessage
+            key={notebook}
             note={note}
             notebook={notebook}
             updateParent={updateParent}

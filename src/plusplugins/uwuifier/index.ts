@@ -1,6 +1,6 @@
 /*
  * Vencord, a modification for Discord's desktop app
- * Copyright (c) 2022 exhq
+ * Copyright (c) 2025 exhq
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,10 +14,10 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+*/
 
 import { findOption, RequiredMessageOption } from "@api/Commands";
-import { addPreEditListener, addPreSendListener, MessageObject, removePreEditListener, removePreSendListener } from "@api/MessageEvents";
+import { addMessagePreEditListener, addMessagePreSendListener, MessageObject, removeMessagePreEditListener, removeMessagePreSendListener } from "@api/MessageEvents";
 import { definePluginSettings } from "@api/Settings";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
@@ -199,14 +199,14 @@ export default definePlugin({
     },
 
     start() {
-        this.preSend = addPreSendListener((_, msg) => this.onSend(msg));
-        this.preEdit = addPreEditListener((_cid, _mid, msg) =>
+        this.preSend = addMessagePreSendListener((_, msg) => this.onSend(msg));
+        this.preEdit = addMessagePreEditListener((_cid, _mid, msg) =>
             this.onSend(msg)
         );
     },
 
     stop() {
-        removePreSendListener(this.preSend);
-        removePreEditListener(this.preEdit);
+        removeMessagePreSendListener(this.preSend);
+        removeMessagePreEditListener(this.preEdit);
     },
 });

@@ -1,10 +1,10 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { addPreSendListener } from "@api/MessageEvents";
+import { addMessagePreSendListener } from "@api/MessageEvents";
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { Alerts, ChannelStore, Forms } from "@webpack/common";
@@ -41,7 +41,7 @@ export default definePlugin({
     authors: [Devs.Samwich],
     dependencies: ["MessageEventsAPI"],
     start() {
-        this.preSend = addPreSendListener(async (channelId, messageObj, extra) => {
+        this.preSend = addMessagePreSendListener(async (channelId, messageObj, extra) => {
 
             if (ChannelStore.getChannel(channelId.toString()).isDM()) return { cancel: false };
 

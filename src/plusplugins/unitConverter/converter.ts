@@ -36,7 +36,7 @@ const regexes: regexes = {
         //     convert(...groups) {
         //     },
         // },
-        // Leaving this one in because it is commonly used for something like 5'9'' for a persons height
+        // Leaving this one in, because it is commonly used for something like 5'9'' for a persons height
         feetInchesMark: {
             regex: /(\d+)(') ?(\d+(?:\.\d+)?)("|'')?/g,
             convert(...groups) {

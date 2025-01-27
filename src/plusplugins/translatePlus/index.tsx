@@ -1,14 +1,14 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 import "./style.css";
 
 import { findGroupChildrenByChildId, NavContextMenuPatchCallback } from "@api/ContextMenu";
-import { addAccessory, removeAccessory } from "@api/MessageAccessories";
-import { addButton, removeButton } from "@api/MessagePopover";
+import { addMessageAccessory, removeMessageAccessory } from "@api/MessageAccessories";
+import { addMessagePopoverButton, removeMessagePopoverButton } from "@api/MessagePopover";
 import { Devs, EquicordDevs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { ChannelStore, Menu } from "@webpack/common";
@@ -44,9 +44,9 @@ export default definePlugin({
     },
 
     start() {
-        addAccessory("ec-translation", props => <Accessory message={props.message} />);
+        addMessageAccessory("ec-translation", props => <Accessory message={props.message} />);
 
-        addButton("ec-translate", message => {
+        addMessagePopoverButton("ec-translate", message => {
             if (!message.content) return null;
 
             return {
@@ -59,7 +59,7 @@ export default definePlugin({
         });
     },
     stop() {
-        removeButton("ec-translate");
-        removeAccessory("ec-translation");
+        removeMessagePopoverButton("ec-translate");
+        removeMessageAccessory("ec-translation");
     }
 });
