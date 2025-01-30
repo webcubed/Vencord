@@ -1,10 +1,10 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { SendListener, addPreSendListener, removePreSendListener, } from "@api/MessageEvents";
+import { MessageSendListener, addMessagePreSendListener, removeMessagePreSendListener, } from "@api/MessageEvents";
 import { Settings } from "@api/Settings";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
@@ -52,7 +52,7 @@ const settings = definePluginSettings({
     }
 });
 
-const messagePatch : SendListener = async (channelId, msg) => {
+const messagePatch : MessageSendListener = async (channelId, msg) => {
     msg.content = await textProcessing(msg.content);
 }
 
@@ -65,11 +65,11 @@ export default definePlugin({
     dependencies: ["MessageEventsAPI"],
     start()
     {
-        this.preSend = addPreSendListener(messagePatch);
+        this.preSend = addMessagePreSendListener(messagePatch);
     },
     stop()
     {
-        this.preSend = removePreSendListener(messagePatch);
+        this.preSend = removeMessagePreSendListener(messagePatch);
     },
     settings
 });

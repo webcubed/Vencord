@@ -1,13 +1,13 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 import {
-    addPreSendListener,
-    removePreSendListener,
-    SendListener,
+    addMessagePreSendListener,
+    removeMessagePreSendListener,
+    MessageSendListener,
 } from "@api/MessageEvents";
 import { definePluginSettings } from "@api/Settings";
 import { EquicordDevs } from "@utils/constants";
@@ -29,7 +29,7 @@ const settings = definePluginSettings({
 });
 
 const getPresend = dictionary => {
-    const presendObject: SendListener = (_, msg) => {
+    const presendObject: MessageSendListener = (_, msg) => {
         msg.content = msg.content.trim();
         if (!msg.content.includes("```") && /\w/.test(msg.content.charAt(0))) {
             if (settings.store.autoWordReplacement) {
@@ -90,9 +90,9 @@ export default definePlugin({
         );
         dictionary = await dictionary.json();
 
-        addPreSendListener(getPresend(dictionary));
+        addMessagePreSendListener(getPresend(dictionary));
     },
     stop() {
-        removePreSendListener(getPresend({}));
+        removeMessagePreSendListener(getPresend({}));
     },
 });

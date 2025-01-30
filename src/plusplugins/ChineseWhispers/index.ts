@@ -1,4 +1,4 @@
-import { SendListener, addPreSendListener, removePreSendListener, } from "@api/MessageEvents";
+import { MessageSendListener, addMessagePreSendListener, removeMessagePreSendListener, } from "@api/MessageEvents";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
 import { definePluginSettings } from "@api/Settings";
@@ -167,7 +167,7 @@ async function translateText(sourceLang: string, targetLang: string, text: strin
     return translatedText;
 }
 
-let presendObject : SendListener = async (channelId, msg) =>
+let presendObject : MessageSendListener = async (channelId, msg) =>
 {
     msg.content = await comedicChineseWhispers(msg.content, languages.slice(0, settings.store.intensity));
 }
@@ -181,11 +181,11 @@ export default definePlugin({
     dependencies: ["MessageEventsAPI"],
     start()
     {
-        addPreSendListener(presendObject);
+        addMessagePreSendListener(presendObject);
     },
     stop()
     {
-        removePreSendListener(presendObject);
+        removeMessagePreSendListener(presendObject);
     },
     settings
 });

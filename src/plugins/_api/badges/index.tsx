@@ -149,8 +149,9 @@ export default definePlugin({
         }
     },
 
+    userProfileBadge: ContributorBadge,
+
     async start() {
-        Vencord.Api.Badges.addBadge(ContributorBadge);
         Vencord.Api.Badges.addBadge(SuncordContributorBadge);
         Vencord.Api.Badges.addBadge(EquicordContributorBadge);
         Vencord.Api.Badges.addBadge(PlusContributorBadge);
