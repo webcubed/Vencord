@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
 */
 
-import { addButton, removeButton } from "@api/MessagePopover";
+import { addMessagePopoverButton, removeMessagePopoverButton } from "@api/MessagePopover";
 import { definePluginSettings } from "@api/Settings";
 import { CodeBlock } from "@components/CodeBlock";
 import ErrorBoundary from "@components/ErrorBoundary";
@@ -104,7 +104,7 @@ export default definePlugin({
     },
 
     start() {
-        addButton("DecodeBase64", msg => {
+        addMessagePopoverButton("DecodeBase64", msg => {
             const handleClick = () => {
                 const base64Strings = findBase64Strings(msg.content);
                 const decodedContent = decodeBase64Strings(base64Strings);
@@ -145,6 +145,6 @@ export default definePlugin({
     },
 
     stop() {
-        removeButton("DecodeBase64");
+        removeMessagePopoverButton("DecodeBase64");
     }
 });

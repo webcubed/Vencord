@@ -7,7 +7,8 @@
 import { Devs } from "@utils/constants";
 import { copyWithToast } from "@utils/misc";
 import definePlugin from "@utils/types";
-import { Icons, Menu } from "@webpack/common";
+import { findByPropsLazy } from "@webpack";
+import { Menu } from "@webpack/common";
 
 export default definePlugin({
     name: "CopyFolderId",
@@ -21,7 +22,7 @@ export default definePlugin({
             arr.push((<Menu.MenuItem
                 id="vc-copyFolderId"
                 label="Copy Folder ID"
-                icon={Icons.IdIcon}
+                icon={findByPropsLazy("CopyIcon")}
                 action={() => {
                     copyWithToast(`${folderId}`);
                 }}

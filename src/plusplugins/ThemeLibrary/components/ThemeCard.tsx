@@ -25,7 +25,7 @@ interface ThemeCardProps {
     likedThemes?: ThemeLikeProps;
     setThemeLinks: (links: string[]) => void;
     removePreview?: boolean;
-    removeButtons?: boolean;
+    removeMessagePopoverButtons?: boolean;
 }
 
 const UserRecord: Constructor<Partial<User>> = proxyLazy(() => UserStore.getCurrentUser().constructor) as any;
@@ -44,7 +44,7 @@ function makeDummyUser(user: { username: string; id?: string; avatar?: string; }
     return newUser;
 }
 
-export const ThemeCard: React.FC<ThemeCardProps> = ({ theme, themeLinks, likedThemes, setThemeLinks, removeButtons, removePreview }) => {
+export const ThemeCard: React.FC<ThemeCardProps> = ({ theme, themeLinks, likedThemes, setThemeLinks, removeMessagePopoverButtons, removePreview }) => {
 
     const getUser = (id: string, username: string) => UserUtils.getUser(id) ?? makeDummyUser({ username, id });
 
@@ -134,7 +134,7 @@ export const ThemeCard: React.FC<ThemeCardProps> = ({ theme, themeLinks, likedTh
                             ))}
                         </Forms.FormText>
                     )}
-                    {!removeButtons && (
+                    {!removeMessagePopoverButtons && (
                         <div style={{ marginTop: "8px", display: "flex", flexDirection: "row" }}>
                             <Button
                                 onClick={handleThemeAttributesCheck}

@@ -59,7 +59,7 @@ export default definePlugin({
                 {
                     match: /\w+\.jsx\)\(\w+,{markAsDismissed:\w+,isCoachmark:\w+}\)/,
                     replace(str) {
-                        return str + ",$self.addButtons()";
+                        return str + ",$self.addMessagePopoverButtons()";
                     }
                 }
             ]
@@ -78,7 +78,7 @@ export default definePlugin({
     stop() {
 
     },
-    addButtons() {
+    addMessagePopoverButtons() {
 
         const { editorFooter } = findByProps("editorFooter");
         return (

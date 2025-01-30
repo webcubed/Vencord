@@ -17,7 +17,7 @@ import { isEnabled, returnChannelBadge, settings } from "./settings";
 let observer: MutationObserver | null = null;
 let currentGuild: Guild | undefined | null = null;
 
-function addBadgesToChannel(element: HTMLElement, channelId: string) {
+function addProfileBadgesToChannel(element: HTMLElement, channelId: string) {
     const parentContainer: HTMLElement | null = element.querySelector('[class*="linkTop"]');
     if (!parentContainer) return;
 
@@ -42,13 +42,13 @@ function addBadgesToChannel(element: HTMLElement, channelId: string) {
     ];
 
     badgeConditions.forEach(({ id, condition, title }) => {
-        if (condition && isEnabled(id)) addBadge(badgeContainer!, id, title);
+        if (condition && isEnabled(id)) addProfileBadge(badgeContainer!, id, title);
     });
 
-    addBadge(badgeContainer!, type, returnChannelBadge(type).label);
+    addProfileBadge(badgeContainer!, type, returnChannelBadge(type).label);
 }
 
-function addBadge(container: HTMLElement, id: number, title: string) {
+function addProfileBadge(container: HTMLElement, id: number, title: string) {
     const { css, label, color } = returnChannelBadge(id);
     const badge = document.createElement("div");
     badge.classList.add("channel-badge", `channel-badge-${css}`);
@@ -74,7 +74,7 @@ export function reloadBadges() {
     document.querySelectorAll('[data-list-item-id^="channels___"]').forEach(element => {
         const channelId = element.getAttribute("data-list-item-id")?.split("___")[1];
         if (channelId && /^\d+$/.test(channelId)) {
-            addBadgesToChannel(element as HTMLElement, channelId);
+            addProfileBadgesToChannel(element as HTMLElement, channelId);
             element.setAttribute("data-scanned", "true");
         }
     });
@@ -99,7 +99,7 @@ function observeDomChanges() {
         addedElements.forEach(element => {
             const channelId = element.getAttribute("data-list-item-id")?.split("___")[1];
             if (channelId && /^\d+$/.test(channelId)) {
-                addBadgesToChannel(element as HTMLElement, channelId);
+                addProfileBadgesToChannel(element as HTMLElement, channelId);
                 element.setAttribute("data-scanned", "true");
             }
         });

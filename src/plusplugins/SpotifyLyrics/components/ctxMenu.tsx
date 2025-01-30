@@ -5,7 +5,8 @@
  */
 
 import { copyWithToast } from "@utils/misc";
-import { FluxDispatcher, Icons, Menu } from "@webpack/common";
+import { findByPropsLazy } from "@webpack";
+import { FluxDispatcher, Menu } from "@webpack/common";
 
 import { Provider } from "../providers/types";
 import { useLyrics } from "./util";
@@ -53,7 +54,7 @@ export function LyricsContextMenu() {
                     action={() => {
                         copyWithToast(currentLyrics![currLrcIndex].text!, "Lyric copied!");
                     }}
-                    icon={Icons.CopyIcon}
+                    icon={findByPropsLazy("CopyIcon")}
                 />
             )}
             <Menu.MenuItem

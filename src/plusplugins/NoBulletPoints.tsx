@@ -4,26 +4,24 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { addPreSendListener, removePreSendListener } from "@api/MessageEvents";
+import { addMessagePreSendListener, removeMessagePreSendListener } from "@api/MessageEvents";
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
 export default definePlugin({
     name: "NoBulletPoints",
     description: "Stops you from typing markdown bullet points (stinky)",
     authors:
-    [
-        Devs.Samwich
-    ],
+        [
+            Devs.Samwich
+        ],
     dependencies: ["MessageEventsAPI"],
-    start()
-    {
-        this.preSend = addPreSendListener((channelId, msg) => {
+    start() {
+        this.preSend = addMessagePreSendListener((channelId, msg) => {
             msg.content = textProcessing(msg.content);
         });
     },
-    stop()
-    {
-        this.preSend = removePreSendListener((channelId, msg) => {
+    stop() {
+        this.preSend = removeMessagePreSendListener((channelId, msg) => {
             msg.content = textProcessing(msg.content);
         });
     },

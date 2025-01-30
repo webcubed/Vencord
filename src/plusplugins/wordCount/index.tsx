@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { addAccessory } from "@api/MessageAccessories";
+import { addMessageAccessory } from "@api/MessageAccessories";
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { Text } from "@webpack/common";
@@ -32,7 +32,7 @@ export default definePlugin({
     authors: [Devs.Lumap],
     dependencies: ["MessageAccessoriesAPI"],
     async start() {
-        addAccessory("word-count", (props: Record<string, any>) => (
+        addMessageAccessory("word-count", (props: Record<string, any>) => (
             <WordCount messageContent={props.message.content} />
         ), 2);
     }

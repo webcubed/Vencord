@@ -46,7 +46,7 @@ function addShowEmbedButton(children, props) {
 
     const { message } = props;
 
-    addButton(group, message, props.itemHref);
+    addMessagePopoverButton(group, message, props.itemHref);
 }
 
 function addShowAttachmentEmbedButton(children, props) {
@@ -55,10 +55,10 @@ function addShowAttachmentEmbedButton(children, props) {
     const message = MessageStore.getMessage(props?.channelId, props?.messageId);
     if (!message) return;
 
-    addButton(children, message, props.attachmentUrl);
+    addMessagePopoverButton(children, message, props.attachmentUrl);
 }
 
-function addButton(menu, message, url) {
+function addMessagePopoverButton(menu, message, url) {
     url = normaliseUrl(url);
 
     if (!isEmbedInMessage(message, url)) {
@@ -68,7 +68,7 @@ function addButton(menu, message, url) {
                 label="Show Embed"
                 action={_ => unfurlEmbed(url, message)}
                 icon={ImageVisible}
-                key="unfurl-url"/>);
+                key="unfurl-url" />);
     }
 }
 

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { addPreSendListener, MessageExtra, removePreSendListener } from "@api/MessageEvents";
+import { addMessagePreSendListener, MessageExtra, removeMessagePreSendListener } from "@api/MessageEvents";
 import { definePluginSettings } from "@api/Settings";
 import { Flex } from "@components/Flex";
 import { Devs } from "@utils/constants";
@@ -265,10 +265,10 @@ export default definePlugin({
         return <AllowedMentionsBar {...props} />;
     },
     start() {
-        this.preSend = addPreSendListener((channelId, _, extra) => this.patchSendAllowedMentions(channelId, extra));
+        this.preSend = addMessagePreSendListener((channelId, _, extra) => this.patchSendAllowedMentions(channelId, extra));
     },
     stop() {
-        removePreSendListener(this.preSend);
+        removeMessagePreSendListener(this.preSend);
         store.clear();
     },
 });

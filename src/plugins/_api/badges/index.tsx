@@ -19,19 +19,19 @@
 import "./fixDiscordBadgePadding.css";
 
 import { _getBadges, BadgePosition, BadgeUserArgs, ProfileBadge } from "@api/Badges";
-import { closeModal, ModalContent, ModalFooter, ModalHeader, ModalRoot, openModal } from "@utils/modal";
-import { Devs } from "@utils/constants";
-import { Flex } from "@components/Flex";
-import { Forms, Toasts, UserStore } from "@webpack/common";
-import { Heart } from "@components/Heart";
-import { isPluginDev, isSuncordPluginDev, isEquicordPluginDev, isPlusPluginDev, isPlusMt } from "@utils/misc";
-import { Logger } from "@utils/Logger";
-import { Margins } from "@utils/margins";
-import { openContributorModal } from "@components/PluginSettings/ContributorModal";
-import { User } from "discord-types/general";
-import definePlugin from "@utils/types";
 import DonateButton from "@components/DonateButton";
 import ErrorBoundary from "@components/ErrorBoundary";
+import { Flex } from "@components/Flex";
+import { Heart } from "@components/Heart";
+import { openContributorModal } from "@components/PluginSettings/ContributorModal";
+import { Devs } from "@utils/constants";
+import { Logger } from "@utils/Logger";
+import { Margins } from "@utils/margins";
+import { isEquicordPluginDev, isPluginDev, isPlusMt, isPlusPluginDev, isSuncordPluginDev } from "@utils/misc";
+import { closeModal, ModalContent, ModalFooter, ModalHeader, ModalRoot, openModal } from "@utils/modal";
+import definePlugin from "@utils/types";
+import { Forms, Toasts, UserStore } from "@webpack/common";
+import { User } from "discord-types/general";
 
 const CONTRIBUTOR_BADGE = "https://vencord.dev/assets/favicon.png";
 const SUNCORD_CONTRIBUTOR_BADGE = "https://raw.githubusercontent.com/verticalsync/Suncord/main/src/assets/icon.png";
@@ -152,10 +152,10 @@ export default definePlugin({
     userProfileBadge: ContributorBadge,
 
     async start() {
-        Vencord.Api.Badges.addBadge(SuncordContributorBadge);
-        Vencord.Api.Badges.addBadge(EquicordContributorBadge);
-        Vencord.Api.Badges.addBadge(PlusContributorBadge);
-        Vencord.Api.Badges.addBadge(PlusMaintainerBadge);
+        Vencord.Api.Badges.addProfileBadge(SuncordContributorBadge);
+        Vencord.Api.Badges.addProfileBadge(EquicordContributorBadge);
+        Vencord.Api.Badges.addProfileBadge(PlusContributorBadge);
+        Vencord.Api.Badges.addProfileBadge(PlusMaintainerBadge);
         await loadAllBadges();
     },
 
