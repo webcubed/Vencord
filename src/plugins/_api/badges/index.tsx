@@ -19,25 +19,25 @@
 import "./fixDiscordBadgePadding.css";
 
 import { _getBadges, BadgePosition, BadgeUserArgs, ProfileBadge } from "@api/Badges";
-import DonateButton from "@components/DonateButton";
-import ErrorBoundary from "@components/ErrorBoundary";
-import { Flex } from "@components/Flex";
-import { Heart } from "@components/Heart";
-import { openContributorModal } from "@components/PluginSettings/ContributorModal";
+import { closeModal, ModalContent, ModalFooter, ModalHeader, ModalRoot, openModal } from "@utils/modal";
 import { Devs } from "@utils/constants";
+import { Flex } from "@components/Flex";
+import { Forms, Toasts, UserStore } from "@webpack/common";
+import { Heart } from "@components/Heart";
+import { isPluginDev, isSuncordPluginDev, isEquicordPluginDev, isPlusPluginDev, isPlusMt } from "@utils/misc";
 import { Logger } from "@utils/Logger";
 import { Margins } from "@utils/margins";
-import { isPluginDev, isSuncordPluginDev, isEquicordPluginDev, isPlusPluginDev, isPlusMt } from "@utils/misc";
-import { closeModal, Modals, openModal } from "@utils/modal";
-import definePlugin from "@utils/types";
-import { Forms, Toasts, UserStore } from "@webpack/common";
+import { openContributorModal } from "@components/PluginSettings/ContributorModal";
 import { User } from "discord-types/general";
+import definePlugin from "@utils/types";
+import DonateButton from "@components/DonateButton";
+import ErrorBoundary from "@components/ErrorBoundary";
 
 const CONTRIBUTOR_BADGE = "https://vencord.dev/assets/favicon.png";
 const SUNCORD_CONTRIBUTOR_BADGE = "https://raw.githubusercontent.com/verticalsync/Suncord/main/src/assets/icon.png";
 const EQUICORD_CONTRIBUTOR_BADGE = "https://i.imgur.com/UpcDwX0.png";
-const PLUS_CONTRIBUTOR_BADGE = "https://vencord.dev/assets/favicon.png";  // Help, I need a custom thingy
-const PLUS_MAINTAINER_BADGE = "https://vencord.dev/assets/favicon.png";  // Will be the same icon as above
+const PLUS_CONTRIBUTOR_BADGE = "https://vencord.dev/assets/favicon.png"; // Help, I need a custom thingy
+const PLUS_MAINTAINER_BADGE = "https://vencord.dev/assets/favicon.png"; // Will be the same icon as above
 
 const ContributorBadge: ProfileBadge = {
     description: "Vencord Contributor",
@@ -195,8 +195,8 @@ export default definePlugin({
                         closeModal(modalKey);
                         VencordNative.native.openExternal("https://github.com/sponsors/Vendicated");
                     }}>
-                        <Modals.ModalRoot {...props}>
-                            <Modals.ModalHeader>
+                        <ModalRoot {...props}>
+                            <ModalHeader>
                                 <Flex style={{ width: "100%", justifyContent: "center" }}>
                                     <Forms.FormTitle
                                         tag="h2"
@@ -210,8 +210,8 @@ export default definePlugin({
                                         Vencord Donor
                                     </Forms.FormTitle>
                                 </Flex>
-                            </Modals.ModalHeader>
-                            <Modals.ModalContent>
+                            </ModalHeader>
+                            <ModalContent>
                                 <Flex>
                                     <img
                                         role="presentation"
@@ -234,13 +234,13 @@ export default definePlugin({
                                         Please consider supporting the development of Vencord by becoming a donor. It would mean a lot!
                                     </Forms.FormText>
                                 </div>
-                            </Modals.ModalContent>
-                            <Modals.ModalFooter>
+                            </ModalContent>
+                            <ModalFooter>
                                 <Flex style={{ width: "100%", justifyContent: "center" }}>
                                     <DonateButton />
                                 </Flex>
-                            </Modals.ModalFooter>
-                        </Modals.ModalRoot>
+                            </ModalFooter>
+                        </ModalRoot>
                     </ErrorBoundary>
                 ));
             },
@@ -264,8 +264,8 @@ export default definePlugin({
                         closeModal(modalKey);
                         VencordNative.native.openExternal("https://github.com/sponsors/verticalsync");
                     }}>
-                        <Modals.ModalRoot {...props}>
-                            <Modals.ModalHeader>
+                        <ModalRoot {...props}>
+                            <ModalHeader>
                                 <Flex style={{ width: "100%", justifyContent: "center" }}>
                                     <Forms.FormTitle
                                         tag="h2"
@@ -279,8 +279,8 @@ export default definePlugin({
                                         Suncord Donor
                                     </Forms.FormTitle>
                                 </Flex>
-                            </Modals.ModalHeader>
-                            <Modals.ModalContent>
+                            </ModalHeader>
+                            <ModalContent>
                                 <Flex>
                                     <img
                                         role="presentation"
@@ -303,13 +303,13 @@ export default definePlugin({
                                         Please consider supporting the development of Suncord by becoming a donor. It would mean a lot!
                                     </Forms.FormText>
                                 </div>
-                            </Modals.ModalContent>
-                            <Modals.ModalFooter>
+                            </ModalContent>
+                            <ModalFooter>
                                 <Flex style={{ width: "100%", justifyContent: "center" }}>
                                     <DonateButton />
                                 </Flex>
-                            </Modals.ModalFooter>
-                        </Modals.ModalRoot>
+                            </ModalFooter>
+                        </ModalRoot>
                     </ErrorBoundary>
                 ));
             },
@@ -334,8 +334,8 @@ export default definePlugin({
                         // Will get its own in the future
                         VencordNative.native.openExternal("https://github.com/sponsors/Vendicated");
                     }}>
-                        <Modals.ModalRoot {...props}>
-                            <Modals.ModalHeader>
+                        <ModalRoot {...props}>
+                            <ModalHeader>
                                 <Flex style={{ width: "100%", justifyContent: "center" }}>
                                     <Forms.FormTitle
                                         tag="h2"
@@ -349,8 +349,8 @@ export default definePlugin({
                                         Equicord Donor
                                     </Forms.FormTitle>
                                 </Flex>
-                            </Modals.ModalHeader>
-                            <Modals.ModalContent>
+                            </ModalHeader>
+                            <ModalContent>
                                 <Flex>
                                     <img
                                         role="presentation"
@@ -367,19 +367,19 @@ export default definePlugin({
                                 </Flex>
                                 <div style={{ padding: "1em" }}>
                                     <Forms.FormText>
-                                        This badge is a special perk for Equicord Donors
+                                        This Badge is a special perk for Vencord Donors
                                     </Forms.FormText>
                                     <Forms.FormText className={Margins.top20}>
                                         Please consider supporting the development of Equicord by becoming a donor. It would mean a lot!
                                     </Forms.FormText>
                                 </div>
-                            </Modals.ModalContent>
-                            <Modals.ModalFooter>
+                            </ModalContent>
+                            <ModalFooter>
                                 <Flex style={{ width: "100%", justifyContent: "center" }}>
                                     <DonateButton />
                                 </Flex>
-                            </Modals.ModalFooter>
-                        </Modals.ModalRoot>
+                            </ModalFooter>
+                        </ModalRoot>
                     </ErrorBoundary>
                 ));
             },
@@ -403,8 +403,8 @@ export default definePlugin({
                         closeModal(modalKey);
                         VencordNative.native.openExternal("https://github.com/RobinRMC/VencordPlus");
                     }}>
-                        <Modals.ModalRoot {...props}>
-                            <Modals.ModalHeader>
+                        <ModalRoot {...props}>
+                            <ModalHeader>
                                 <Flex style={{ width: "100%", justifyContent: "center" }}>
                                     <Forms.FormTitle
                                         tag="h2"
@@ -418,8 +418,8 @@ export default definePlugin({
                                         Vencord+ Custom Badge
                                     </Forms.FormTitle>
                                 </Flex>
-                            </Modals.ModalHeader>
-                            <Modals.ModalContent>
+                            </ModalHeader>
+                            <ModalContent>
                                 <div style={{ padding: "1em" }}>
                                     <Forms.FormText>
                                         This badge is a special perk exclusively given by RobinRMC
@@ -428,8 +428,8 @@ export default definePlugin({
                                         I don't know what else I should put here.
                                     </Forms.FormText>
                                 </div>
-                            </Modals.ModalContent>
-                        </Modals.ModalRoot>
+                            </ModalContent>
+                        </ModalRoot>
                     </ErrorBoundary>
                 ));
             },
