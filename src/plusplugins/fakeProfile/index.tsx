@@ -318,7 +318,7 @@ const BadgeMain = ({ user, wantMargin = true, wantTopMargin = false }: { user: U
 export default definePlugin({
     name: "fakeProfile",
     description: "Unlock Discord's and custom profile effects, profile themes, avatar decorations and badges without the need for Nitro",
-    authors: 
+    authors: [
     { name: "Sampath", id: 984015688807100419n },
     Devs.Alyxia,
     Devs.Remty,
