@@ -1,12 +1,12 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 import { Flex } from "@components/Flex";
 import { Button, Tooltip } from "@webpack/common";
-import React from "react";
+import React, { JSX } from "react";
 
 
 export interface IconTooltipButtonProps {
@@ -14,7 +14,7 @@ export interface IconTooltipButtonProps {
     icon?: JSX.Element;
 }
 
-export const IconTooltipButton = (props: typeof Button["defaultProps"] & IconTooltipButtonProps) => {
+export const IconTooltipButton = (props: React.ComponentProps<typeof Button> & IconTooltipButtonProps) => {
     return (
         <Tooltip text={props.tooltipText}>
             {tooltipProps => <Button

@@ -98,7 +98,7 @@ export default definePlugin({
             find: "#{intl::REPLY_QUOTE_MESSAGE_NOT_LOADED}",
             replacement: {
                 // Should match two places
-                match: /(\i\.Clickable),\{/g,
+                match: /(\i\.clickable),\{/g,
                 replace: "$self.ReplyTooltip,{Component:$1,vcProps:arguments[0],"
             },
             predicate: () => settings.store.onReply,
@@ -106,8 +106,8 @@ export default definePlugin({
         {
             find: "#{intl::MESSAGE_FORWARDED}",
             replacement: {
-                match: /(\i\.Clickable),\{/,
-                replace: "$self.ForwardTooltip,{Component:$1,vcProps:arguments[0],"
+                match: /(null:.{0,20})(\i\.\i\i),\{/,
+                replace: "$1$self.ForwardTooltip,{Component:$2,vcProps:arguments[0],"
             },
             predicate: () => settings.store.onForward,
         },
@@ -129,7 +129,7 @@ export default definePlugin({
 });
 
 function withTooltip(Component, props, messageId, channelId) {
-    if(!messageId) return <Component {...props} />;
+    if (!messageId) return <Component {...props} />;
     return <Tooltip
         tooltipClassName="c98-message-link-tooltip"
         text={
@@ -139,10 +139,11 @@ function withTooltip(Component, props, messageId, channelId) {
                     messageId={messageId}
                 />
             </ErrorBoundary>
-        }
-        children={({ onMouseEnter, onMouseLeave }) =>
-            <Component {...props} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} />}
-    />;
+        }>
+        {({ onMouseEnter, onMouseLeave }) => (
+            <Component {...props} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} />
+        )}
+    </Tooltip>;
 }
 
 function MessagePreview({ channelId, messageId }) {
@@ -150,10 +151,10 @@ function MessagePreview({ channelId, messageId }) {
     const message = useMessage(channelId, messageId);
     const rawCompact = MessageDisplayCompact.useSetting();
 
-    const compact = settings.store.display == "compact" ? true : settings.store.display == "cozy" ? false : rawCompact;
+    const compact = settings.store.display === "compact" ? true : settings.store.display === "cozy" ? false : rawCompact;
 
     // TODO handle load failure
-    if(!message) {
+    if (!message) {
         return <Spinner type={Spinner.Type.PULSING_ELLIPSIS} />;
     }
 
@@ -173,7 +174,7 @@ function useMessage(channelId, messageId) {
     );
     const [message, setMessage] = useState(cachedMessage);
     useEffect(() => {
-        if(message == null)
+        if (message == null)
             (async () => {
                 const res = await RestAPI.get({
                     url: Constants.Endpoints.MESSAGES(channelId),

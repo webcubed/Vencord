@@ -1,12 +1,94 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+import "./style.css";
+
+import { classNameFactory } from "@api/Styles";
 import { Devs } from "@utils/constants";
+import { classes } from "@utils/misc";
+import { useForceUpdater } from "@utils/react";
 import definePlugin from "@utils/types";
-import { React, useRef, useState } from "@webpack/common";
+import { findComponentByCodeLazy } from "@webpack";
+import { React, useDrag, useDrop, useRef } from "@webpack/common";
+
+const AttachmentItem = findComponentByCodeLazy(/channelId:\i,draftType:\i,upload:\i,/);
+const ItemType = "DND_ATTACHMENT";
+const cl = classNameFactory("vc-drag-att-");
+
+const DraggableItem = ({ uploadItem, index, moveItem, children }) => {
+    const [{ isDragging }, drag] = useDrag({
+        type: ItemType,
+        item: { index },
+        collect: monitor => ({ isDragging: monitor.isDragging() })
+    });
+
+    const isComingFromRight = useRef(false);
+    const isComingFromLeft = useRef(false);
+
+    const [{ isOver }, drop] = useDrop({
+        accept: ItemType,
+        collect: monitor => ({
+            isOver: monitor.isOver()
+        }),
+        hover: (draggedItem: any) => {
+            isComingFromRight.current = index < draggedItem.index;
+            isComingFromLeft.current = index > draggedItem.index;
+        },
+        drop: (draggedItem: any) => {
+            moveItem(draggedItem.index, index);
+        }
+    });
+
+    return (
+        <div
+            key={uploadItem.id}
+            ref={node => {
+                drag(drop(node));
+            }}
+            className={
+                classes(
+                    cl("item"),
+                    isDragging && cl("dragging"),
+                    isOver && cl("drop-target"),
+                    isOver && isComingFromRight.current && cl("drop-from-right"),
+                    isOver && isComingFromLeft.current && cl("drop-from-left")
+                )
+            }
+        >
+            {children}
+        </div>
+    );
+};
+
+const DraggableList = ({ attachments, channelId, draftType, keyboardModeEnabled }) => {
+    const forceUpdate = useForceUpdater();
+
+    const moveItem = (from, to) => {
+        const [movedItem] = attachments.splice(from, 1);
+        attachments.splice(to, 0, movedItem);
+        forceUpdate();
+    };
+
+    return attachments.map((uploadItem, index) => (
+        <DraggableItem
+            key={uploadItem.id}
+            uploadItem={uploadItem}
+            index={index}
+            moveItem={moveItem}
+        >
+            <AttachmentItem
+                channelId={channelId}
+                upload={uploadItem}
+                draftType={draftType}
+                keyboardModeEnabled={keyboardModeEnabled}
+                clip={uploadItem.clip}
+            />
+        </DraggableItem>
+    ));
+};
 
 export default definePlugin({
     name: "ReorderAttachments",
@@ -15,109 +97,22 @@ export default definePlugin({
     patches: [
         {
             find: ')("attachments",',
-            group: true,
             replacement: [
                 {
-                    match: /return\(0,\i.jsx\)\("ul",\{(?=.*?:(\i).map\()/,
-                    replace: "let dragAndDropVars = $self.dragAndDropVars($1);$&"
-                },
+                    match: /:(\i).map\(\i=>.*?(channelId:\i),(draftType:.*?),(keyboardModeEnabled:\i),.*?\.id\)\)/,
+                    replace: ":$self.DraggableList({attachments:$1,$2,$3,$4})"
+                }
+            ]
+        },
+        { // make the img in AttachmentItem not draggable so it doesn't try to add it as a new attachment
+            find: '["image/jpeg",',
+            replacement: [
                 {
-                    match: /(:\i.map\()(\i)=>(.*?\.id\))\)/,
-                    replace: "$1($2,index)=>$self.wrapAttachmentItem($2,index,$3,dragAndDropVars))"
+                    match: /"img",{src:\i,/,
+                    replace: "$&draggable:false,"
                 }
             ]
         }
     ],
-
-    dragAndDropVars: items => {
-        const heldItem = useRef<any>(null);
-        const [_, setList] = useState(items);
-
-        const moveHeldItemTo = to => {
-            if (!heldItem.current || heldItem.current.currentIndex === to) return;
-            const item = items.splice(heldItem.current.currentIndex, 1)[0];
-            items.splice(to, 0, item);
-            heldItem.current.currentIndex = to;
-            setList([...items]);
-        };
-
-        const handleMouseMove = (e: MouseEvent) => {
-            if (heldItem.current?.held && e.buttons !== 1) {
-                heldItem.current.outsideDropArea = true;
-                handleDrop();
-            }
-        };
-
-        const handleDragStart = (e, index) => {
-            e.dataTransfer.setData("text/plain", ""); // some data is required for drag and drop to work
-
-            items.forEach(item => {
-                item.held = false;
-                item.outsideDropArea = false;
-                item.preDragIndex = undefined;
-            });
-
-            const held = items[index];
-            held.held = true;
-            held.preDragIndex = index;
-            held.currentIndex = index;
-            heldItem.current = held;
-
-            // was the best way I could find to globally detect if the user dropped the item outside the drop area
-            window.addEventListener("mousemove", handleMouseMove);
-        };
-
-        const handleDragOver = (e, index) => {
-            e.stopPropagation();
-            e.preventDefault();
-
-            if (heldItem.current) {
-                heldItem.current.outsideDropArea = false;
-                moveHeldItemTo(index);
-            }
-        };
-
-        const handleDrop = () => {
-            // we've already been changing the index on drag over, so we just need to reset the held state
-            if (heldItem.current) {
-                if (heldItem.current?.outsideDropArea) {
-                    moveHeldItemTo(heldItem.current.preDragIndex);
-                }
-
-                heldItem.current.held = false;
-                heldItem.current.outsideDropArea = false;
-                heldItem.current.preDragIndex = undefined;
-            }
-
-            setList([...items]);
-            heldItem.current = null;
-
-            window.removeEventListener("mousemove", handleMouseMove);
-        };
-
-        return { handleDragStart, handleDragOver, handleDrop };
-    },
-
-    wrapAttachmentItem: (uploadItem, index, original, dragAndDropVars) => {
-        const { handleDragStart, handleDragOver, handleDrop } = dragAndDropVars;
-        return (
-            <div
-                style={{
-                    display: "inline-flex",
-                    cursor: "grab",
-                    ...(uploadItem?.held ? {
-                        opacity: "50%",
-                        outline: "2px solid #7289da",
-                        borderRadius: "5px"
-                    } : {})
-                }}
-                onDragStart={e => handleDragStart(e, index)}
-                onDragOver={e => handleDragOver(e, index)}
-                onDrop={handleDrop}
-                onDragEnd={handleDrop}
-                draggable={true}>
-                {original}
-            </div>
-        );
-    }
+    DraggableList
 });

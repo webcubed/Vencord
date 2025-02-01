@@ -26,7 +26,7 @@ export default definePlugin({
         Devs.echo,
         SuncordDevs.thororen
     ],
-    description: "Log all soundboard sounds that are played in a voice chat and allow you to download them",
+    description: "Logs soundboard sounds that are played in voice channels and allows you to download them",
     dependencies: ["ChatInputButtonAPI"],
     patches: [
         {
@@ -48,7 +48,7 @@ export default definePlugin({
             );
 
         e.toolbar = [
-            <ErrorBoundary noop={true}>
+            <ErrorBoundary noop={true} key={"SoundBoardLogger"} >
                 <OpenSBLogsButton />
             </ErrorBoundary>,
             e.toolbar,

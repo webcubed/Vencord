@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -8,16 +8,16 @@ import { classNameFactory } from "@api/Styles";
 import { getIntlMessage, getUniqueUsername } from "@utils/discord";
 import { classes } from "@utils/misc";
 import { findByPropsLazy, findComponentByCodeLazy } from "@webpack";
-import { Avatar, ChannelStore, ContextMenuApi, Dots, GuildStore, PresenceStore, ReadStateStore, Text, TypingStore, useDrag, useDrop, useRef, UserStore, useStateFromStores } from "@webpack/common";
+import { Avatar, ChannelStore, ContextMenuApi, GuildStore, PresenceStore, ReadStateStore, Text, TypingStore, useDrag, useDrop, useRef, UserStore, useStateFromStores } from "@webpack/common";
 import { Channel, Guild, User } from "discord-types/general";
 
 import { ChannelTabsProps, CircleQuestionIcon, closeTab, isTabSelected, moveDraggedTabs, moveToTab, openedTabs, settings } from "../util";
 import { TabContextMenu } from "./ContextMenus";
 
-const { getBadgeWidthForValue } = findByPropsLazy("getBadgeWidthForValue");
+const ThreeDots = findComponentByCodeLazy(".dots,", "dotRadius:");
 const dotStyles = findByPropsLazy("numberBadge", "textBadge");
 
-const { FriendsIcon } = findByPropsLazy("FriendsIcon");
+const FriendsIcon = findComponentByCodeLazy("12h1a8");
 const ChannelTypeIcon = findComponentByCodeLazy(".iconContainerWithGuildIcon,");
 
 const cl = classNameFactory("vc-channeltabs-");
@@ -52,7 +52,7 @@ const ChannelIcon = ({ channel }: { channel: Channel; }) =>
 
 function TypingIndicator({ isTyping }: { isTyping: boolean; }) {
     return isTyping
-        ? <Dots dotRadius={3} themed={true} className={cl("typing-indicator")} />
+        ? <ThreeDots dotRadius={3} themed={true} className={cl("typing-indicator")} />
         : null;
 }
 
@@ -70,7 +70,7 @@ export const NotificationDot = ({ channelIds }: { channelIds: string[]; }) => {
             data-has-mention={!!mentionCount}
             className={classes(dotStyles.numberBadge, dotStyles.baseShapeRound)}
             style={{
-                width: getBadgeWidthForValue(mentionCount || unreadCount)
+                width: "16px"
             }}
             ref={node => node?.style.setProperty("background-color",
                 mentionCount ? "var(--red-400)" : "var(--brand-500)", "important"

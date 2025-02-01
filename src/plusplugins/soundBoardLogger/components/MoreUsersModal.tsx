@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -9,7 +9,7 @@ import { Flex } from "@components/Flex";
 import { closeModal, ModalContent, ModalRoot, openModal } from "@utils/modal";
 import { Clickable, Forms } from "@webpack/common";
 
-import { cl, getEmojiUrl,SoundLogEntry, User } from "../utils";
+import { cl, getEmojiUrl, SoundLogEntry, User } from "../utils";
 
 export function openMoreUsersModal(item: SoundLogEntry, users: User[], onClickUser: Function) {
     const key = openModal(props => (
@@ -20,7 +20,6 @@ export function openMoreUsersModal(item: SoundLogEntry, users: User[], onClickUs
         </ErrorBoundary>
     ));
 }
-
 
 export default function MoreUsersModal({ item, users, onClickUser, closeModal }: { item: SoundLogEntry, users: User[], onClickUser: Function, closeModal: Function; }) {
     return (
@@ -40,7 +39,7 @@ export default function MoreUsersModal({ item, users, onClickUser, closeModal }:
                         <Clickable onClick={() => {
                             closeModal();
                             onClickUser(item, user);
-                        }}>
+                        }} key={user.id}>
                             <div className={cl("more-user")} style={{ cursor: "pointer" }}>
                                 <Flex flexDirection="row" className={cl("more-user-profile")}>
                                     <img

@@ -2,9 +2,6 @@
 
 Know who is in a role, without having full permissions
 
-> [!WARNING]
-> DO NOT GO CRY IN VENCORD SUPPORT IF YOU CAN'T INSTALL THIS. Can't do it? Womp womp, use an official build :trolley:
-
 ## Usage
 
 - Use the `/inrole` command in chat

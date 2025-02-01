@@ -17,7 +17,7 @@ import openQrModal from "./ui/modals/QrModal";
 const qrModalOpen = false;
 export default definePlugin({
     name: "LoginWithQR",
-    description: "Allows you to login to another device by scanning a login QR code, just like on mobile",
+    description: "Allows you to scan a QR code to login on another device, just like on mobile",
     authors: [
         {
             name: "Nexpid",
@@ -65,7 +65,7 @@ export default definePlugin({
                 replace: ",$self.insertScanQrButton($1)",
             },
         },
-        // Insert a Scan QR Code MenuItem in the Swith Accounts popout
+        // Insert a Scan QR Code MenuItem in the Switch Accounts popout
         {
             find: 'id:"manage-accounts"',
             replacement: {

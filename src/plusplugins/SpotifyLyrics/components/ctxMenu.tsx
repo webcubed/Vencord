@@ -1,14 +1,17 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 import { copyWithToast } from "@utils/misc";
-import { FluxDispatcher, Icons, Menu } from "@webpack/common";
+import { findComponentByCodeLazy } from "@webpack";
+import { FluxDispatcher, Menu } from "@webpack/common";
 
 import { Provider } from "../providers/types";
 import { useLyrics } from "./util";
+
+const CopyIcon = findComponentByCodeLazy(" 1-.5.5H10a6");
 
 const lyricsActualProviders = [Provider.Lrclib, Provider.Spotify];
 const lyricsAlternative = [Provider.Translated, Provider.Romanized];
@@ -53,7 +56,7 @@ export function LyricsContextMenu() {
                     action={() => {
                         copyWithToast(currentLyrics![currLrcIndex].text!, "Lyric copied!");
                     }}
-                    icon={Icons.CopyIcon}
+                    icon={CopyIcon}
                 />
             )}
             <Menu.MenuItem

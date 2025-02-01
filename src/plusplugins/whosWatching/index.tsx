@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -16,6 +16,7 @@ import definePlugin, { OptionType } from "@utils/types";
 import { findByPropsLazy, findComponentByCodeLazy, findStoreLazy } from "@webpack";
 import { Clickable, Forms, RelationshipStore, Tooltip, UserStore, useStateFromStores } from "@webpack/common";
 import { User } from "discord-types/general";
+import { JSX } from "react";
 
 interface WatchingProps {
     userIds: string[];
@@ -49,7 +50,7 @@ function Watching({ userIds, guildId }: WatchingProps): JSX.Element {
                     <Forms.FormTitle>{getIntlMessage("SPECTATORS", { numViewers: userIds.length })}</Forms.FormTitle>
                     <Flex flexDirection="column" style={{ gap: 6 }} >
                         {users.map(user => (
-                            <Flex flexDirection="row" style={{ gap: 6, alignContent: "center" }} className={cl("user")} >
+                            <Flex key={user.id} flexDirection="row" style={{ gap: 6, alignContent: "center" }} className={cl("user")} >
                                 <img src={user.getAvatarURL(guildId)} style={{ borderRadius: 8, width: 16, height: 16 }} />
                                 {getUsername(user)}
                             </Flex>
@@ -120,7 +121,7 @@ export default definePlugin({
                 <div className={classes(cl("spectators_panel"), Margins.top8)}>
                     {users.length ?
                         <>
-                            <Forms.FormTitle tag="h3" style={{ marginTop: 8, marginBottom: 0, textTransform: "uppercase" }}>
+                            <Forms.FormTitle tag="h3" style={{ marginTop: 8, marginBottom: 0, marginLeft: 8, textTransform: "uppercase" }}>
                                 {getIntlMessage("SPECTATORS", { numViewers: userIds.length })}
                             </Forms.FormTitle>
                             <UserSummaryItem
@@ -145,7 +146,7 @@ export default definePlugin({
                                 )}
                             />
                         </>
-                        : <Forms.FormText>No spectators</Forms.FormText>
+                        : <Forms.FormText style={{ marginLeft: 8 }}>No spectators</Forms.FormText>
                     }
                 </div>
             </>

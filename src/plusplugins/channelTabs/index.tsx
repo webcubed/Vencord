@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -12,6 +12,7 @@ import { Devs, EquicordDevs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { ChannelStore, Menu } from "@webpack/common";
 import { Channel, Message } from "discord-types/general";
+import { JSX } from "react";
 
 import ChannelsTabsContainer from "./components/ChannelTabsContainer";
 import { BasicChannelTabsProps, createTab, settings } from "./util";
