@@ -484,7 +484,6 @@ export default definePlugin({
             <Forms.FormText>
                 Enable Profile Themes to use fake profile themes. <br />
                 To set your own colors:
-                <ul>
                     Enable profile themes to use fake profile themes.<br />
                     To set your own colors:
                     <ul>
