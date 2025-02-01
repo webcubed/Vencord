@@ -5,7 +5,7 @@
  */
 
 import { DataStore } from "@api/index";
-import { definePluginSettings } from "@api/Settings";
+import { definePluginSettings, migratePluginSettings, migrateSettingFromPlugin } from "@api/Settings";
 import { Devs } from "@utils/constants";
 import { useForceUpdater } from "@utils/react";
 import definePlugin, { OptionType } from "@utils/types";
@@ -101,9 +101,11 @@ const settings = definePluginSettings({
     },
 });
 
+migrateSettingFromPlugin("RPCEditor", "replacedAppIds", "ReplaceActivityTypes", "replacedAppIds");
+migratePluginSettings("RPCEditor", "ReplaceActivityTypes");
 export default definePlugin({
-    name: "ReplaceActivityTypes",
-    description: "Replace the activity type (Playing) of any application's rich presence",
+    name: "RPCEditor",
+    description: "Edit the type and content of any rich presence",
     authors: [Devs.Nyako, Devs.nin0dev],
     patches: [
         {
