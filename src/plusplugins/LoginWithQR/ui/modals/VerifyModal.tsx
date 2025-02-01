@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2025 Vendicated and contributors
+ * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -50,7 +50,7 @@ function VerifyModal({
     useEffect(() => () => void (state !== VerifyState.LoggedIn && onAbort()), []);
 
     const [inProgress, setInProgress] = useState(false);
-    const buttonRef = useRef<HTMLButtonElement>(null);
+    const buttonRef = useRef<HTMLButtonElement>();
     const controllerRef = useRef(new Controller({ progress: "0%" })).current;
 
     const holdDuration = 1000;
@@ -193,6 +193,7 @@ function VerifyModal({
                             }}
                             onPointerDown={startInput}
                             onPointerUp={endInput}
+                            // @ts-expect-error stop whining about refs
                             buttonRef={buttonRef}
                             disabled={inProgress}
                         >
