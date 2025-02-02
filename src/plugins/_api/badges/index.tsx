@@ -152,10 +152,10 @@ export default definePlugin({
     userProfileBadge: ContributorBadge,
 
     async start() {
-        Vencord.Api.Badges.addBadge(SuncordContributorBadge);
-        Vencord.Api.Badges.addBadge(EquicordContributorBadge);
-        Vencord.Api.Badges.addBadge(PlusContributorBadge);
-        Vencord.Api.Badges.addBadge(PlusMaintainerBadge);
+        Vencord.Api.Badges.addProfileBadge(SuncordContributorBadge);
+        Vencord.Api.Badges.addProfileBadge(EquicordContributorBadge);
+        Vencord.Api.Badges.addProfileBadge(PlusContributorBadge);
+        Vencord.Api.Badges.addProfileBadge(PlusMaintainerBadge);
         await loadAllBadges();
     },
 
