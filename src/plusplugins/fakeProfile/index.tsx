@@ -210,7 +210,7 @@ function fakeProfileSection({ hideTitle = false, hideDivider = false, noMargin =
                 }}
                 size={Button.Sizes.SMALL}
             >
-                Refetch fakeProfile
+                Refetch fakeProfile's data
             </Button>
         </Flex>
     </CustomizationSection>;
@@ -626,7 +626,7 @@ export default definePlugin({
     },
     fakeProfileSection: ErrorBoundary.wrap(fakeProfileSection),
     toolboxActions: {
-        async "Refetch fakeProfile"() {
+        async "Refetch fakeProfile's data"() {
             await loadCustomEffects(true);
             await loadfakeProfile(true);
             updateBadgesForAllUsers();
