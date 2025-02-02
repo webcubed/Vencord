@@ -9,7 +9,7 @@ import "./style.css";
 import { definePluginSettings } from "@api/Settings";
 import definePlugin, { OptionType } from "@utils/types";
 import { wreq } from "@webpack";
-import { Button, ButtonLooks, MessageStore,useState } from "@webpack/common";
+import { Button, MessageStore, useState } from "@webpack/common";
 
 const settings = definePluginSettings({
     whitelistChannels: {
@@ -57,7 +57,7 @@ function AppendButton(props: { code: CodeBlock; context: Context; }) {
     const [appended, setAppended] = useState(false);
 
     return <Button
-        look={ButtonLooks.INVERTED}
+        look={Button.Looks.INVERTED}
         onClick={() => {
             let trimedMessage = "";
             if (context.channelId && context.messageId) {
