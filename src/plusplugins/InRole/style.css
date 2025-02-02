@@ -1,29 +1,139 @@
-.vc-inrole-member-list {
-    max-height: 400px;
-    margin-top: 10px;
-    margin-bottom: 13px;
-    overflow-x: hidden;
+.vc-inrole-modal-content {
+    padding: 16px 4px 16px 16px;
 }
 
-.vc-inrole-member-list::-webkit-scrollbar {
-    background-color: #fff1;
-    border-radius: 100px;
-    width: 10px;
+.vc-inrole-modal-title {
+    flex-grow: 1;
 }
 
-.vc-inrole-member-list::-webkit-scrollbar-thumb {
-    background-color: #fff3;
-    border-radius: 100px;
+.vc-inrole-modal-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap: 8px;
 }
 
-.vc-inrole-modal-member {
-    margin: 11px 0;
+.vc-inrole-modal-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-right: 8px;
+    max-width: 300px;
+    min-width: 300px;
 }
 
-.vc-inrole-header {
-    padding-top: "15px";
+.vc-inrole-modal-list-item-btn {
+    cursor: pointer;
 }
 
-.vc-inrole-close {
+.vc-inrole-modal-list-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.vc-inrole-modal-list-item:hover {
+    background-color: var(--background-modifier-hover);
+}
+
+.vc-inrole-modal-list-item-active {
+    background-color: var(--background-modifier-selected);
+}
+
+.vc-inrole-modal-list-item > div {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.vc-inrole-modal-role-circle {
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+}
+
+.vc-inrole-modal-role-image {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.vc-inrole-modal-divider {
+    width: 2px;
+    background-color: var(--background-modifier-active);
+}
+
+.vc-inrole-role-button {
+    border-radius: var(--radius-xs);
+    background: var(--bg-mod-faint);
+    color: var(--interactive-normal);
+    border: 1px solid var(--border-faint);
+    /* stylelint-disable-next-line value-no-vendor-prefix */
+    width: -moz-fit-content;
+    width: fit-content;
+    height: 24px;
+    padding: 4px
+}
+
+.custom-profile-theme .vc-inrole-role-button {
+    background: rgb(var(--bg-overlay-color)/var(--bg-overlay-opacity-6));
+    border-color: var(--profile-body-border-color)
+}
+
+.vc-inrole-user-div{
+    display: flex;
+    align-items: center;
+    gap: 0.2em;
+}
+
+.vc-inrole-modal-members {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+
+.vc-inrole-user-avatar {
+    border-radius: 50%;
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+}
+
+.vc-inrole-member-list-header {
+    background-color: var(--background-secondary);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.vc-inrole-member-list-header-text {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.vc-inrole-member-list-header-text .vc-info-icon {
+    color: var(--interactive-muted);
     margin-left: auto;
+    cursor: pointer;
+    transition: color ease-in 0.1s;
+}
+
+.vc-inrole-member-list-header-text .vc-info-icon:hover {
+    color: var(--interactive-active);
+}
+
+.vc-inrole-member-list-footer {
+    padding: 5px;
+    text-align: center;
+    font-style: italic;
+}
+
+.vc-inrole-divider {
+    height: 2px;
+    width: 100%;
+    background-color: var(--background-modifier-active);
 }

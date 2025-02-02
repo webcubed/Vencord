@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -31,5 +31,8 @@ export default definePlugin({
         Emitter.removeAllListeners(PluginInfo.PLUGIN_NAME);
 
         removeSettingsPanelButton(PluginInfo.PLUGIN_NAME);
-    }
+    },
+    toolboxActions: {
+        "Open Microphone Settings": openMicrophoneSettingsModal
+    },
 });

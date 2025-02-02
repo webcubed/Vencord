@@ -3,21 +3,21 @@ import { Settings } from "Vencord";
 
 const packs = {
     "OperaGX": {
-        click1: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/OperaGX/click1.wav"),
-        click2: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/OperaGX/click2.wav"),
-        click3: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/OperaGX/click3.wav"),
-        backspace: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/OperaGX/backspace.wav"),
+        click1: new Audio("https://github.com/RobinRMC/VencordPlus/raw/main//src/plusplugins/keyboardSounds/sounds/OperaGX/click1.wav"),
+        click2: new Audio("https://github.com/RobinRMC/VencordPlus/raw/main//src/plusplugins/keyboardSounds/sounds/OperaGX/click2.wav"),
+        click3: new Audio("https://github.com/RobinRMC/VencordPlus/raw/main//src/plusplugins/keyboardSounds/sounds/OperaGX/click3.wav"),
+        backspace: new Audio("https://github.com/RobinRMC/VencordPlus/raw/main//src/plusplugins/keyboardSounds/sounds/OperaGX/backspace.wav"),
         allowedKeys: []
     },
     "osu": {
-        caps: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/osu/key-caps.mp3"),
-        enter: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/osu/key-confirm.mp3"),
-        backspace: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/osu/key-delete.mp3"),
-        arrow: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/osu/key-movement.mp3"),
-        click1: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/osu/key-press-1.mp3"),
-        click2: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/osu/key-press-2.mp3"),
-        click3: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/osu/key-press-3.mp3"),
-        click4: new Audio("https://github.com/Domis-Vencord-Plugins/KeyboardSounds/raw/main/sounds/osu/key-press-4.mp3"),
+        caps: new Audio("https://github.com/RobinRMC/VencordPlus/raw/main//src/plusplugins/keyboardSounds/sounds/osu/key-caps.mp3"),
+        enter: new Audio("https://github.com/RobinRMC/VencordPlus/raw/main//src/plusplugins/keyboardSounds/sounds/osu/key-confirm.mp3"),
+        backspace: new Audio("https://github.com/RobinRMC/VencordPlus/raw/main//src/plusplugins/keyboardSounds/sounds/osu/key-delete.mp3"),
+        arrow: new Audio("https://github.com/RobinRMC/VencordPlus/raw/main//src/plusplugins/keyboardSounds/sounds/osu/key-movement.mp3"),
+        click1: new Audio("https://github.com/RobinRMC/VencordPlus/raw/main//src/plusplugins/keyboardSounds/sounds/osu/key-press-1.mp3"),
+        click2: new Audio("https://github.com/RobinRMC/VencordPlus/raw/main//src/plusplugins/keyboardSounds/sounds/osu/key-press-2.mp3"),
+        click3: new Audio("https://github.com/RobinRMC/VencordPlus/raw/main//src/plusplugins/keyboardSounds/sounds/osu/key-press-3.mp3"),
+        click4: new Audio("https://github.com/RobinRMC/VencordPlus/raw/main//src/plusplugins/keyboardSounds/sounds/osu/key-press-4.mp3"),
         allowedKeys: [
             "CapsLock",
             "ArrowUp",

@@ -1,23 +1,22 @@
 import { Devs } from "@utils/constants";
-import { proxyLazy } from "@utils/lazy";
 import definePlugin from "@utils/types";
-import { findByPropsLazy } from "@webpack";
-import { Forms, useEffect, useRef } from "@webpack/common";
+import { filters, findByPropsLazy, mapMangledModuleLazy } from "@webpack";
+import { useEffect, useRef } from "@webpack/common";
 import type { StoreApi, UseBoundStore } from "zustand";
 
 type Modal = {
     Layer?: any,
     instant?: boolean,
-    backdropStyle?: "SUBTLE" | "DARK" | "BLUR", "IMMERSIVE",
+    backdropStyle?: "SUBTLE" | "DARK" | "BLUR",
 };
 
-const { useModalContext, useModalsStore } = proxyLazy(() => Forms as any as {
-    useModalContext(): "default" | "popout";
-    useModalsStore: UseBoundStore<StoreApi<{
-        default: Modal[];
-        popout: Modal[];
-    }>>,
-});
+const { useModalContext } = mapMangledModuleLazy("ENTERED:this.state.transitionState;return", {
+    useModalContext: filters.byCode(")())}")
+}) as { useModalContext(): "default" | "popout" };
+
+const { useModalsStore } = mapMangledModuleLazy("?arguments[1]:{},{contextKey:", {
+    useModalsStore: filters.byCode(/^(\i)=>\i\(\i,\1\)$/),
+}) as { useModalsStore: UseBoundStore<StoreApi<{ default: Modal[]; popout: Modal[]; }>> };
 
 const { animated, useSpring, useTransition } = findByPropsLazy("a", "animated", "useTransition");
 
@@ -30,14 +29,14 @@ const ANIMS = {
         off: { opacity: 1 },
         on: { opacity: 0.7 },
     },
+    IMMERSIVE: {
+        off: { opacity: 1 },
+        on: { opacity: 0.7 },
+    },
     BLUR: {
         off: { opacity: 1, filter: "blur(0px)" },
         on: { opacity: 0.7, filter: "blur(8px)" },
     },
-    IMMERSIVE: {
-        off: { opacity: 1 },
-        on: { opacity: 0.7 }
-    }
 };
 
 export default definePlugin({
@@ -56,10 +55,10 @@ export default definePlugin({
         {
             find: ".SUBTLE=\"SUBTLE\"",
             replacement: {
-                match: /\(0,\i\.useTransition\)*/,
+                match: /\(0,\i.\i\)(?=\(\i,\{keys:\i=>\i\?"backdrop":"empty",)/,
                 replace: "$self.nullTransition"
             }
-        }
+        },
     ],
 
     nullTransition(value: any, args: object) {
@@ -75,7 +74,7 @@ export default definePlugin({
         const context = useModalContext();
         const modals = useModalsStore(modals => modals[context] ?? []);
         const modal = modals.findLast(modal => modal.Layer == null); // || modal.Layer === AppLayer
-        const anim = ANIMS[modal?.backdropStyle ?? "DARK"];
+        const anim = ANIMS[modal?.backdropStyle ?? "DARK"] ?? ANIMS.DARK;
         const isInstant = modal?.instant;
         const prevIsInstant = usePrevious(isInstant);
         const style = useSpring({

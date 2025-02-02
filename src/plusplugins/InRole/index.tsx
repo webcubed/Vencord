@@ -1,39 +1,35 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 nin0dev
+ * Copyright (c) 2025 nin0dev
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 import "./style.css";
 
 import { ApplicationCommandInputType, ApplicationCommandOptionType, sendBotMessage } from "@api/Commands";
+import { findGroupChildrenByChildId } from "@api/ContextMenu";
 import { getUserSettingLazy } from "@api/UserSettings";
-import { InfoIcon } from "@components/Icons";
 import { Devs } from "@utils/constants";
 import { getCurrentChannel, getCurrentGuild } from "@utils/discord";
 import definePlugin from "@utils/types";
 import { Forms, GuildMemberStore, GuildStore, Menu, Parser } from "@webpack/common";
-import { GuildMember } from "discord-types/general";
+import { Guild, GuildMember } from "discord-types/general";
 
+import { MemberIcon } from "./icons";
 import { showInRoleModal } from "./RoleMembersModal";
 
 const DeveloperMode = getUserSettingLazy("appearance", "developerMode")!;
 
-function getMembersInRole(roleId: string, guildId: string) {
-    const members = GuildMemberStore.getMembers(guildId);
-    const membersInRole: GuildMember[] = [];
-    members.forEach(member => {
-        if (member.roles.includes(roleId)) {
-            membersInRole.push(member);
-        }
-    });
-    return membersInRole;
-}
-
 export default definePlugin({
     name: "InRole",
     description: "Know who has a role with the role context menu or /inrole command (read plugin info!)",
-    authors: [Devs.nin0dev],
+    authors: [
+        Devs.nin0dev,
+        {
+            name: "Ryfter",
+            id: 898619112350183445n,
+        },
+    ],
     dependencies: ["UserSettingsAPI"],
     start() {
         // DeveloperMode needs to be enabled for the context menu to be shown
@@ -45,7 +41,7 @@ export default definePlugin({
                 <Forms.FormText style={{ fontSize: "1.2rem", marginTop: "15px", fontWeight: "bold" }}>{Parser.parse(":warning:")} Limitations</Forms.FormText>
                 <Forms.FormText style={{ marginTop: "10px", fontWeight: "500" }} >If you don't have moderator permissions in the server and the server is large (over 100 members), the plugin will be limited in the following ways:</Forms.FormText>
                 <Forms.FormText>• Offline members won't be listed, except for friends</Forms.FormText>
-                <Forms.FormText>• Up to 100 members will be listed by default. To get more, scroll down in the member list.</Forms.FormText>
+                <Forms.FormText>• Up to 100 members will be listed by default (for each role). To get more, scroll down in the member list.</Forms.FormText>
             </>
         );
     },
@@ -69,7 +65,7 @@ export default definePlugin({
                     return sendBotMessage(ctx.channel.id, { content: "Make sure that you are in a server." });
                 }
                 const role = args[0].value;
-                showInRoleModal(getMembersInRole(role, ctx.guild.id), role, ctx.channel.id);
+                showInRoleModal(ctx.guild.id, role);
             }
         }
     ],
@@ -89,9 +85,21 @@ export default definePlugin({
                     id="vc-view-inrole"
                     label="View Members in Role"
                     action={() => {
-                        showInRoleModal(getMembersInRole(role.id, guild.id), role.id, channel.id);
+                        showInRoleModal(guild.id, role.id);
                     }}
-                    icon={InfoIcon}
+                    icon={MemberIcon}
+                />
+            );
+        },
+        "guild-header-popout"(children, { guild }: { guild: Guild, onClose(): void; }) {
+            if (!guild) return;
+            const group = findGroupChildrenByChildId("privacy", children);
+            group?.push(
+                <Menu.MenuItem
+                    label="View Members in Role"
+                    id="inrole-menuitem"
+                    icon={MemberIcon}
+                    action={() => showInRoleModal(guild.id, "0")}
                 />
             );
         }

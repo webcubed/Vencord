@@ -1,16 +1,15 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 import { Button } from "@webpack/common";
-import * as types from "@webpack/types";
 import React from "react";
 
 import { IconTooltipButton } from ".";
 
-export const DeleteButton = (props: types.Button["defaultProps"]) => {
+export const DeleteButton = (props: React.ComponentProps<typeof Button>) => {
     return (
         <IconTooltipButton
             color={Button.Colors.RED}

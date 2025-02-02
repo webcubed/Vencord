@@ -7,31 +7,26 @@
 import "./TitleBarGroupRight.css";
 
 import { classes } from "@utils/misc";
-import { FluxDispatcher, Icons } from "@webpack/common";
 import { User } from "discord-types/general";
 
 import { settings } from "../settings";
 import ActionButtons from "./ActionButtons";
+import ProfileButton from "./buttons/ProfileButton";
+import QuickSwitcherButton from "./buttons/QuickSwitcherButton";
+import SettingsButton from "./buttons/SettingsButton";
 import CallPill from "./CallPill";
 import { cl } from "./TitleBar";
-import TitleBarButton from "./TitleBarButton";
 import WindowButtons from "./WindowButtons";
 
 export default function TitleBarGroupRight({ user, windowKey }: { user: User | undefined; windowKey: any; }) {
-    const { quickSwitcherButton, callPill, actionButtons } = settings.use(["quickSwitcherButton", "callPill", "actionButtons"]);
+    const { quickSwitcherButton, callPill, profileButton, actionButtons, settingsButton } = settings.use(["quickSwitcherButton", "callPill", "profileButton", "actionButtons", "settingsButton"]);
     return <div className={classes(cl("titlebar-group"), cl("titlebar-group-right"))}>
         {callPill && <CallPill user={user} />}
         {/* <AccountPanel /> */}
+        {profileButton && user && <ProfileButton user={user} />}
         {actionButtons && user && <ActionButtons user={user} />}
-        {quickSwitcherButton && user && <TitleBarButton
-            action={() => FluxDispatcher.dispatch({
-                type: "QUICKSWITCHER_SHOW",
-                query: "",
-                queryMode: null
-            })}
-            className={cl("quick-switcher")}
-            icon={Icons.CompassIcon}
-        />}
+        {settingsButton && user && <SettingsButton user={user} />}
+        {quickSwitcherButton && user && <QuickSwitcherButton />}
         <WindowButtons windowKey={windowKey} />
     </div>;
 }

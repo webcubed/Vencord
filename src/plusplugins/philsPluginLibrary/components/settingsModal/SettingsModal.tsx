@@ -1,13 +1,13 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 import { Flex } from "@components/Flex";
 import { ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalRoot } from "@utils/modal";
 import { Button, Text } from "@webpack/common";
-import React from "react";
+import React, { JSX } from "react";
 
 import { Author, Contributor } from "../../types";
 import { ContributorAuthorSummary } from "../ContributorAuthorSummary";

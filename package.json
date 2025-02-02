@@ -2,8 +2,8 @@
     "name": "vencord",
     "private": "true",
     "version": "1.11.3",
-    "description": "The cutest Discord client mod",
-    "homepage": "https://github.com/Vendicated/Vencord#readme",
+    "description": "Vencord+ is a fork of Vencord that adds unapproved plugins.",
+    "homepage": "https://github.com/RobinRMC/VencordPlus#readme",
     "bugs": {
         "url": "https://github.com/RobinRMC/VencordPlus/issues"
     },

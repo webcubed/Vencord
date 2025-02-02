@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -9,7 +9,7 @@ import React from "react";
 
 import { IconTooltipButton } from ".";
 
-export const CopyButton = (props: typeof Button["defaultProps"]) => {
+export const CopyButton = (props: React.ComponentProps<typeof Button>) => {
     return (
         <IconTooltipButton
             color={Button.Colors.PRIMARY}

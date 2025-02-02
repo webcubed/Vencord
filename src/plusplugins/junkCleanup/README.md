@@ -33,6 +33,7 @@ Does not inject styles, uses Vencord patches.
 - Quests
   - Quest promotions in the sidebar
 - Support link in top toolbar (disabled by default)
+- DM Sidebar Quick Switcher button (disabled by default)
 
 ## Coming soon
 

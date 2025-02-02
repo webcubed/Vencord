@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -11,19 +11,20 @@ import { classNameFactory } from "@api/Styles";
 import { PluginCard } from "@components/PluginSettings";
 import { ChangeList } from "@utils/ChangeList";
 import { classes, Margins } from "@utils/index";
-import { ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalProps, ModalRoot, ModalSize, openModal } from "@utils/modal";
+import { closeModal, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalProps, ModalRoot, ModalSize, openModal } from "@utils/modal";
 import { useForceUpdater } from "@utils/react";
-import { findByPropsLazy } from "@webpack";
+import { findByPropsLazy, findComponentByCodeLazy } from "@webpack";
 import { Button, Flex, Forms, React, Text, Tooltip, useMemo } from "@webpack/common";
 import { JSX } from "react";
 
 import Plugins from "~plugins";
 
 import { getNewPlugins, getNewSettings, KnownPluginSettingsMap, writeKnownSettings } from "./knownSettings";
+import ErrorBoundary from "@components/ErrorBoundary";
 
 const cl = classNameFactory("vc-plugins-");
 
-const { Checkbox } = findByPropsLazy("FormItem", "Button");
+const Checkbox = findComponentByCodeLazy(".checkboxWrapperDisabled:");
 
 let hasSeen = false;
 
@@ -135,7 +136,7 @@ export function NewPluginsModal({ modalProps, newPlugins, newSettings }: { modal
             <Flex direction={Flex.Direction.HORIZONTAL}>
                 <div className="vc-newPluginsManager-disable-wrapper">
                     <Checkbox
-                        type={Checkbox.Types.INVERTED}
+                        type="inverted"
                         value={!settings?.plugins?.NewPluginsManager?.enabled}
                         onChange={() => {
                             Settings.plugins.NewPluginsManager.enabled = !settings?.plugins?.NewPluginsManager?.enabled;
@@ -193,12 +194,12 @@ export async function openNewPluginsModal() {
     const newSettings = await getNewSettings();
     if ((newPlugins.size || newSettings.size) && !hasSeen) {
         hasSeen = true;
-        openModal(modalProps => (
+        const modalKey = openModal(modalProps => <ErrorBoundary noop onError={() => { closeModal(modalKey); }}>
             <NewPluginsModal
                 modalProps={modalProps}
                 newPlugins={newPlugins}
                 newSettings={newSettings}
             />
-        ));
+        </ErrorBoundary>);
     }
 }

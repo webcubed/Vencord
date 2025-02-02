@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -14,6 +14,7 @@ import definePlugin, { OptionType } from "@utils/types";
 import { findByPropsLazy, findComponentByCodeLazy, findStoreLazy } from "@webpack";
 import { PresenceStore, React, Tooltip, useEffect, useMemo, UserStore, useState, useStateFromStores } from "@webpack/common";
 import { User } from "discord-types/general";
+import { JSX } from "react";
 
 import { Caret } from "./components/Caret";
 import { SpotifyIcon } from "./components/SpotifyIcon";
@@ -353,7 +354,7 @@ export default definePlugin({
         if (settings.store.allActivitiesStyle === "carousel") {
             return (
                 <div style={{ display: "flex", flexDirection: "column" }}>
-                    {activity && currentActivity?.id === activity.id ? (
+                    {activity && currentActivity?.id === activity?.id ? (
                         <ActivityView
                             activity={currentActivity}
                             user={user}
@@ -464,17 +465,17 @@ export default definePlugin({
     patches: [
         {
             // Patch activity icons
-            find: ".getHangStatusActivity():null!",
+            find: '"activity-status-web"',
             replacement: {
-                match: /null!=(\i)&&\i.some\(\i=>\(0,\i.\i\)\(\i,\i\)\)\?/,
-                replace: "$self.patchActivityList(e),false?"
+                match: /\(null==\i?\?void 0:\i.some\(\i\.\i\)\)/,
+                replace: "$self.patchActivityList(e),false"
             },
             predicate: () => settings.store.memberList,
         },
         {
             // Show all activities in the user popout/sidebar
             // still broken btw
-            find: '"UserActivityContainer"',
+            find: "#{intl::ACTIVITY_REACTION_REPLY_TITLE}",
             replacement: {
                 match: /(?<=\(0,\i\.jsx\)\()(\i\.\i)(?=,{...(\i),activity:\i,user:\i,application:\i)/,
                 replace: "$2.type==='BiteSizePopout'?$self.showAllActivitiesComponent:$1"

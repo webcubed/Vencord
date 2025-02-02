@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -13,7 +13,6 @@ import {
     ChannelRouter,
     ChannelStore,
     FluxDispatcher,
-    Icons,
     Menu,
     MessageActions,
     PermissionsBits,
@@ -27,22 +26,26 @@ import {
     useStateFromStores
 } from "@webpack/common";
 import { Channel, User } from "discord-types/general";
-
 import { SidebarStore } from "./store";
-
 
 const { HeaderBar, HeaderBarIcon } = mapMangledModuleLazy(".themedMobile]:", {
     HeaderBarIcon: filters.byCode('size:"custom",'),
     HeaderBar: filters.byCode(".themedMobile]:"),
 });
 
+const ArrowsLeftRightIcon = () => {
+    return <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="var(--interactive-normal)" d="M2.3 7.7a1 1 0 0 1 0-1.4l4-4a1 1 0 0 1 1.4 1.4L5.42 6H21a1 1 0 1 1 0 2H5.41l2.3 2.3a1 1 0 1 1-1.42 1.4l-4-4ZM17.7 21.7l4-4a1 1 0 0 0 0-1.4l-4-4a1 1 0 0 0-1.4 1.4l2.29 2.3H3a1 1 0 1 0 0 2h15.59l-2.3 2.3a1 1 0 0 0 1.42 1.4Z"></path></svg>;
+};
+
+const WindowLaunchIcon = findComponentByCodeLazy("1-1h6a1 1 0 1 0 0-2H5Z");
+const XSmallIcon = findComponentByCodeLazy("1.4L12 13.42l5.3 5.3Z");
 const Chat = findComponentByCodeLazy("filterAfterTimestamp:", "chatInputType");
 const Resize = findComponentByCodeLazy("sidebarType:", "homeSidebarWidth");
 const ChannelHeader = findComponentByCodeLazy(".forumPostTitle]:", '"channel-".concat');
 const PopoutWindow = findComponentByCodeLazy("Missing guestWindow reference");
 const FullChannelView = findComponentByCodeLazy("showFollowButton:(null");
 
-// love
+// Love
 const ppStyle = findLazy(m => m?.popoutContent && Object.keys(m).length === 1);
 
 const ChatInputTypes = findByPropsLazy("FORM", "NORMAL");
@@ -57,7 +60,6 @@ interface ContextMenuProps {
     guildId?: string;
     user: User;
 }
-
 
 function MakeContextCallback(name: "user" | "channel"): NavContextMenuPatchCallback {
     return (children, { user, channel, guildId }: ContextMenuProps) => {
@@ -97,8 +99,24 @@ export default definePlugin({
                 match: /return(\(0,\i\.jsxs?\)\(\i\.\i,{}\))/,
                 replace: "return [$1,$self.renderSidebar()]"
             }
+        },
+        {
+            // :trolley:
+            find: ".SIDEBAR_CHAT&&null",
+            replacement: {
+                match: /this.props.channelId}\);/,
+                replace: "$&$self.setWidth(this.props.width);"
+            }
         }
     ],
+
+    setWidth: (w: number) => {
+        FluxDispatcher.dispatch({
+            // @ts-ignore
+            type: "SIDEBAR_CHAT_WIDTH",
+            width: w
+        });
+    },
 
     contextMenus: {
         "user-context": MakeContextCallback("user"),
@@ -108,9 +126,9 @@ export default definePlugin({
     },
 
     renderSidebar: ErrorBoundary.wrap(() => {
-        const [guild, channel] = useStateFromStores(
+        const [guild, channel, width] = useStateFromStores(
             [SidebarStore],
-            () => [SidebarStore.guild, SidebarStore.channel]
+            () => [SidebarStore.guild, SidebarStore.channel, SidebarStore.width]
         );
 
         const [channelSidebar, guildSidebar] = useStateFromStores(
@@ -135,13 +153,13 @@ export default definePlugin({
         return (
             <Resize
                 sidebarType={Sidebars.MessageRequestSidebar}
-                maxWidth={1500}
+                maxWidth={width - 690}
             >
                 <HeaderBar
                     toolbar={
                         <>
                             <HeaderBarIcon
-                                icon={Icons.ArrowsLeftRightIcon}
+                                icon={ArrowsLeftRightIcon}
                                 tooltip="Switch channels"
                                 onClick={() => {
                                     const currentChannel = ChannelStore.getChannel(SelectedChannelStore.getChannelId());
@@ -156,9 +174,11 @@ export default definePlugin({
                                 }}
                             />
                             <HeaderBarIcon
-                                icon={Icons.WindowLaunchIcon}
+                                icon={WindowLaunchIcon}
                                 tooltip="Popout Chat"
                                 onClick={async () => {
+                                    // I know it seems silly to have this but
+                                    // it's required since the user clicks on a thread or a DM
                                     await requireChannelContextMenu();
                                     PopoutActions.open(
                                         `DISCORD_VC_SC-${channel.id}`,
@@ -169,7 +189,7 @@ export default definePlugin({
                                 }}
                             />
                             <HeaderBarIcon
-                                icon={Icons.XSmallIcon}
+                                icon={XSmallIcon}
                                 tooltip="Close Sidebar Chat"
                                 onClick={() => {
                                     FluxDispatcher.dispatch({
@@ -200,6 +220,7 @@ export default definePlugin({
 
 const renderPopout = ErrorBoundary.wrap((channel: Channel) => {
     // Copy from an unexported function of the one they use in the experiment
+    // Right-click a channel and search withTitleBar:!0,windowKey
     const { Provider } = React.createContext<string | undefined>(undefined);
     const selectedChannel = ChannelStore.getChannel(channel.id);
     return (

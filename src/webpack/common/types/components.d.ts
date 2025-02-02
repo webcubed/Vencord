@@ -498,8 +498,13 @@ type FocusLock = ComponentType<PropsWithChildren<{
     containerRef: RefObject<HTMLElement>;
 }>>;
 
+export type Dots = ComponentType<PropsWithChildren<{
+    dotRadius: number;
+    themed?: boolean;
+    className?: string;
+}>>;
+
 export type Icon = ComponentType<JSX.IntrinsicElements["svg"] & {
     size?: string;
     colorClass?: string;
 } & Record<string, any>>;
-

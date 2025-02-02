@@ -19,7 +19,7 @@ import definePlugin, { OptionType } from "@utils/types";
 import { findByCodeLazy, findByPropsLazy } from "@webpack";
 import { Button, ChannelStore, FluxDispatcher, Forms, Select, SelectedChannelStore, Switch, TabBar, TextInput, Tooltip, UserStore, useState } from "@webpack/common";
 import { Message, User } from "discord-types/general/index.js";
-import type { PropsWithChildren } from "react";
+import type { JSX, PropsWithChildren } from "react";
 
 type IconProps = JSX.IntrinsicElements["svg"];
 type KeywordEntry = { regex: string, listIds: Array<string>, listType: ListType, ignoreCase: boolean; };
@@ -85,9 +85,9 @@ function highlightKeywords(str: string, entries: Array<KeywordEntry>) {
     const idx = str.indexOf(matches[0]);
 
     return [
-        <span>{str.substring(0, idx)}</span>,
-        <span className="highlight">{matches[0]}</span>,
-        <span>{str.substring(idx + matches[0].length)}</span>
+        <span key={idx}>{str.substring(0, idx)}</span>,
+        <span className="highlight" key={idx}>{matches[0]}</span>,
+        <span key={idx}>{str.substring(idx + matches[0].length)}</span>
     ];
 }
 
@@ -123,7 +123,7 @@ function ListedIds({ listIds, setListIds }) {
 
     const elements = values.map((currentValue: string, index: number) => {
         return (
-            <Flex flexDirection="row" style={{ marginBottom: "5px" }}>
+            <Flex flexDirection="row" style={{ marginBottom: "5px" }} key={index}>
                 <div style={{ flexGrow: 1 }}>
                     <TextInput
                         placeholder="ID"
@@ -313,10 +313,10 @@ export default definePlugin({
     settings,
     patches: [
         {
-            find: "#{intl::UNREADS_TAB_LABEL}",
+            find: "#{intl::UNREADS_TAB_LABEL})}",
             replacement: {
-                match: /\i\?\(0,\i\.jsxs\)\(\i\.TabBar\.Item/,
-                replace: "$self.keywordTabBar(),$&"
+                match: /,(\i\?\(0,\i\.jsxs\)\(\i\.\i\i\.Item)/,
+                replace: ",$self.keywordTabBar()$&"
             }
         },
         {
@@ -328,18 +328,17 @@ export default definePlugin({
         },
         {
             find: ".guildFilter:null",
-            replacement: {
-                match: /function (\i)\(\i\){let{message:\i,gotoMessage/,
-                replace: "$self.renderMsg = $1; $&"
-            }
+            replacement: [
+                {
+                    match: /function (\i)\(\i\){let{message:\i,gotoMessage/,
+                    replace: "$self.renderMsg = $1; $&"
+                },
+                {
+                    match: /onClick:\(\)=>(\i\.\i\.deleteRecentMention\((\i)\.id\))/,
+                    replace: "onClick: () => $2._keyword ? $self.deleteKeyword($2.id) : $1"
+                }
+            ]
         },
-        {
-            find: ".guildFilter:null",
-            replacement: {
-                match: /onClick:\(\)=>(\i\.\i\.deleteRecentMention\((\i)\.id\))/,
-                replace: "onClick: () => $2._keyword ? $self.deleteKeyword($2.id) : $1"
-            }
-        }
     ],
 
     async start() {
@@ -456,22 +455,24 @@ export default definePlugin({
 
     tryKeywordMenu(setTab, onJump, closePopout) {
         const header = (
-            <MenuHeader tab={8} setTab={setTab} closePopout={closePopout} badgeState={{ badgeForYou: false }} children={
-                <Tooltip text="Clear All">
-                    {({ onMouseLeave, onMouseEnter }) => (
-                        <div className={classes(tabClass.controlButton, buttonClass.button, buttonClass.tertiary, buttonClass.size32)}
-                            onMouseLeave={onMouseLeave}
-                            onMouseEnter={onMouseEnter}
-                            onClick={() => {
-                                keywordLog = [];
-                                DataStore.set(KEYWORD_LOG_KEY, []);
-                                this.onUpdate();
-                            }}>
-                            <DoubleCheckmarkIcon />
-                        </div>
-                    )}
-                </Tooltip>
-            } />
+            <><MenuHeader tab={8} setTab={setTab} closePopout={closePopout} badgeState={{ badgeForYou: false }} />
+                <span>
+                    <Tooltip text="Clear All">
+                        {({ onMouseLeave, onMouseEnter }) => (
+                            <div className={classes(tabClass.controlButton, buttonClass.button, buttonClass.tertiary, buttonClass.size32)}
+                                onMouseLeave={onMouseLeave}
+                                onMouseEnter={onMouseEnter}
+                                onClick={() => {
+                                    keywordLog = [];
+                                    DataStore.set(KEYWORD_LOG_KEY, []);
+                                    this.onUpdate();
+                                }}>
+                                <DoubleCheckmarkIcon />
+                            </div>
+                        )}
+                    </Tooltip>
+                </span>
+            </>
         );
 
         const channel = ChannelStore.getChannel(SelectedChannelStore.getChannelId());

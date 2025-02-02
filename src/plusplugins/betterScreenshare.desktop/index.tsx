@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -17,7 +17,7 @@ import { initScreenshareAudioStore, initScreenshareStore } from "./stores";
 
 export default definePlugin({
     name: "BetterScreenshare",
-    description: "This plugin allows you to further customize your screen sharing.",
+    description: "This plugin allows you to further customize your screen sharing",
     authors: [Devs.phil],
     dependencies: ["PhilsPluginLibrary"],
     patches: [
@@ -55,6 +55,9 @@ export default definePlugin({
         Emitter.removeAllListeners(PluginInfo.PLUGIN_NAME);
 
         removeSettingsPanelButton(PluginInfo.PLUGIN_NAME);
+    },
+    toolboxActions: {
+        "Open Screenshare Settings": openScreenshareModal
     },
     replacedScreenshareModalComponent
 });
