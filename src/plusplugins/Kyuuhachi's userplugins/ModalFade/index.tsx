@@ -7,16 +7,16 @@ import type { StoreApi, UseBoundStore } from "zustand";
 type Modal = {
     Layer?: any,
     instant?: boolean,
-    backdropStyle?: "SUBTLE" | "DARK" | "BLUR",
+    backdropStyle?: "SUBTLE" | "DARK" | "IMMERSIVE" | "BLUR",
 };
 
 const { useModalContext } = mapMangledModuleLazy("ENTERED:this.state.transitionState;return", {
     useModalContext: filters.byCode(")())}")
-}) as { useModalContext(): "default" | "popout" };
+}) as { useModalContext(): "default" | "popout"; };
 
 const { useModalsStore } = mapMangledModuleLazy("?arguments[1]:{},{contextKey:", {
     useModalsStore: filters.byCode(/^(\i)=>\i\(\i,\1\)$/),
-}) as { useModalsStore: UseBoundStore<StoreApi<{ default: Modal[]; popout: Modal[]; }>> };
+}) as { useModalsStore: UseBoundStore<StoreApi<{ default: Modal[]; popout: Modal[]; }>>; };
 
 const { animated, useSpring, useTransition } = findByPropsLazy("a", "animated", "useTransition");
 
@@ -86,9 +86,11 @@ export default definePlugin({
 });
 
 function usePrevious<T>(value: T | undefined): T | undefined {
-    const ref = useRef<T>();
+    const ref = useRef<T>(undefined);
     useEffect(() => {
-        ref.current = value;
+        if (ref !== undefined) {
+            ref.current = value;
+        }
     }, [value]);
     return ref.current;
 }

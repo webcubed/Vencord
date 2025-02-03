@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -67,10 +67,10 @@ export default definePlugin({
         },
         // Patches ProfileCustomizationPreview
         {
-            find: "#{intl::EDIT_PROFILE_BANNER}",
+            find: ".EDIT_PROFILE_BANNER})",
             replacement: {
-                match: /:function\(\){return (\i)}.+function \1\((\i)\){/,
-                replace: "$&$self.profilePreviewHook($2);"
+                match: /function \i\((\i)\){/,
+                replace: "$&$self.profilePreviewHook($1);"
             }
         },
         // Adds the FPTE Builder to the User Profile settings page
@@ -96,7 +96,7 @@ export default definePlugin({
             replacement: [
                 // Modal root
                 {
-                    match: /(function (\i)\([^)]*\){(?:.(?!function |}$))*\.ModalRoot,(?:.(?!function |}$))*}).*(?=})/,
+                    match: /(function (\i)\([^)]*\){(?:.(?!function |}$))*className:\i\.modal,(?:.(?!function |}$))*}).*(?=})/,
                     replace: (match, func, funcName) => `${match}(()=>{$self.ProfileEffectModal=${funcName};`
                         + replaceHelper(func, [
                             // Required for the profile preview to show profile effects
@@ -109,7 +109,7 @@ export default definePlugin({
                 },
                 // Modal content
                 {
-                    match: /(function \i\([^)]*\){(?:.(?!function ))*\.ModalContent,(?:.(?!function ))*}).*(?=}\))/,
+                    match: /(function \i\([^)]*\){(?:.(?!function ))*\.modalContent,(?:.(?!function ))*}).*(?=}\))/,
                     replace: (match, func) => match + replaceHelper(func, [
                         // Required to show the apply button
                         [
@@ -144,7 +144,7 @@ export default definePlugin({
         {
             find: ".presetEffectBackground",
             replacement: {
-                match: /function\(\i,(\i),.+[,;}]\1\.\i=([^=].+?})(?=;|}$).*(?=}$)/,
+                match: /function\(\i,\i,.*?=>(\i).+[,;}]\1=([^=].+?})(?=;|}$).*(?=}$)/,
                 replace: (match, _, func) => `${match};$self.ProfileEffectSelection=`
                     + replaceHelper(func, [
                         // Removes the "Exclusive to Nitro" and "Preview The Shop" sections
@@ -158,7 +158,7 @@ export default definePlugin({
         },
         // Patches ProfileEffectPreview
         {
-            find: ".effectDescriptionContainer",
+            find: "#{intl::COLLECTIBLES_GIFT_LABEL}",
             replacement: {
                 // Add back removed "forProfileEffectModal" property
                 match: /(?<=[{,])(?=pendingProfileEffectId:)/,
@@ -202,7 +202,6 @@ export default definePlugin({
     ),
 
     settings,
-    replaceHelper,
     settingsAboutComponent,
     decodeAboutMeFPTEHook,
     profilePreviewHook

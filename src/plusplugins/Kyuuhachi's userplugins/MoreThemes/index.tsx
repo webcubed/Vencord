@@ -11,7 +11,7 @@ export default definePlugin({
             find: '("appearance_settings")',
             replacement: {
                 match: /\("appearance_settings"\)/,
-                replace: '$&||true'
+                replace: "$&||true"
             },
             all: true,
         },

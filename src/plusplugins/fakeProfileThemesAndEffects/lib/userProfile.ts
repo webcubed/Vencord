@@ -1,11 +1,11 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 import { settings } from "..";
-import { decodeColor, decodeColorsLegacy, decodeEffect, extractFPTE } from ".";
+import { decodeColor, decodeColorsLegacy, decodeEffect, extractFPTE } from "./fpte";
 
 export interface UserProfile {
     bio: string;

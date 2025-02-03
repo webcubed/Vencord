@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -28,7 +28,10 @@ const clientVersion = () => {
     return `${name}${version ? ` v${version}` : ''}`;
 };
 
-const lines = `\
+const COLOR_TEST = '[2;40m[2;30m███[0m[2;40m[0m[2;31m[0m[2;30m███[0m[2;31m███[0m[2;32m███[0m[2;33m███[0m[2;34m███[0m[2;35m███[0m[2;36m███[0m[2;37m███[0m';
+
+
+const LOGO_WITH_ANSI = `\
 \n\
 \tVV       VV
 \t VV     VV
@@ -41,7 +44,7 @@ const lines = `\
 \t       [2;35mCC
 \t        [2;35mCCCCCCC[0m\
 `.split("\n");
-const sanitised = `\
+const LOGO_NO_ANSI = `\
 \n\
 \tVV       VV
 \t VV     VV
@@ -137,30 +140,37 @@ export default definePlugin({
 
                     ___: null,
 
-                    __COLOR_TEST__: "[2;40m[2;30m███[0m[2;40m[0m[2;31m[0m[2;30m███[0m[2;31m███[0m[2;32m███[0m[2;33m███[0m[2;34m███[0m[2;35m███[0m[2;36m███[0m[2;37m███[0m"
-
                     // electron web context, want to get total memory usage
                 };
 
                 const computed: [string, string | null][] = Object.entries(info).filter(([key, value]) => value === null || value!.length).map(([key, value]) => [key, value]);
 
                 let str = "";
+                const MAGIC_NUMBER = 25;
 
-                str += `${lines[0]}${" ".repeat(25 - lines[0].length)}[1;2m[4;2m[0m[0m[4;2m[1;2m${username}[0m[0m\n`;
+                str += `${LOGO_WITH_ANSI[0]}${" ".repeat(MAGIC_NUMBER - LOGO_NO_ANSI[0].length)}[1;2m[4;2m[0m[0m[4;2m[1;2m${username}[0m[0m\n`;
 
                 for (let i = 1; i < computed.length + 1; i++) {
+                    const logoLine = LOGO_WITH_ANSI[i];
                     const line = computed[i - 1];
 
-                    if (lines[i]) {
-                        str += `${lines[i]}`;
-
-                        if (line && line[1] !== null && line[0] !== "__COLOR_TEST__") str += `${" ".repeat(22 - sanitised[i].length)}[2;35m[0m[2;35m${t(line[0])}: [0m[0m${line[1]}[0m[2;35m[0m\n`;
-                        else if (line[0] === "__COLOR_TEST__") str += line[0] + "\n"; else str += "\n";
+                    if (logoLine) {
+                        str += logoLine;
+                        str += " ".repeat(MAGIC_NUMBER - 3 - LOGO_NO_ANSI[i].length);
                     } else {
-                        if (line && line[1] !== null && line[0] !== "__COLOR_TEST__") str += `\t${" ".repeat(22)}[2;35m[0m[2;35m${t(line[0])}: [0m[0m${line[1]}[0m[2;35m[0m\n`;
-                        else if (line[0] === "__COLOR_TEST__") str += `${" ".repeat(22)}${line[1]}\n`; else str += "\n";
+                        str += " ".repeat(MAGIC_NUMBER);
                     }
+
+                    const [key, value] = line;
+
+                    if (!key.startsWith("_") && value) {
+                        str += `[2;35m${key[0].toUpperCase()}${key.slice(1)}: [0m${value}`;
+                    }
+
+                    str += '\n';
                 }
+
+                str += `${" ".repeat(MAGIC_NUMBER)}${COLOR_TEST}\n`;
 
                 sendMessage(ctx.channel.id, {
                     content: `\`\`\`ansi\n${str}\n\`\`\``

@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -10,7 +10,7 @@ import type { useToken } from "@webpack/types";
 import type { Guild } from "discord-types/general";
 import type { ComponentType, FunctionComponent, PropsWithChildren, ReactNode } from "react";
 
-import type { ProfileEffectConfig } from "../lib";
+import type { ProfileEffectConfig } from "../lib/profileEffects";
 
 export * from "./Builder";
 export * from "./BuilderButton";
@@ -80,7 +80,7 @@ export function setProfileEffectModal(comp: typeof ProfileEffectModal) {
     ProfileEffectModal = comp;
 }
 
-const requireProfileEffectModal = extractAndLoadChunksLazy(["initialSelectedEffectId:", ".openModalLazy"]);
+const requireProfileEffectModal = extractAndLoadChunksLazy([/guild:\i,initialSelectedEffectId:/, /\i\.\i\i\)/]);
 
 export async function openProfileEffectModal(
     initialEffectId: ProfileEffectModalProps["initialSelectedEffectId"],
