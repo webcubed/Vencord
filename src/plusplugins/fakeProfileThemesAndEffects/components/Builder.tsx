@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -8,7 +8,8 @@ import { copyWithToast } from "@utils/misc";
 import { Button, showToast, Switch, UserStore, useState, useToken } from "@webpack/common";
 import type { Guild } from "discord-types/general";
 
-import { buildFPTE, useAccentColor, usePrimaryColor, useProfileEffect, useShowPreview } from "../lib";
+import { buildFPTE } from "../lib/fpte";
+import { useAccentColor, usePrimaryColor, useProfileEffect, useShowPreview } from "../lib/profilePreview";
 import { BuilderButton, BuilderColorButton, CustomizationSection, openProfileEffectModal, tokens, useAvatarColors } from ".";
 
 export interface BuilderProps {
