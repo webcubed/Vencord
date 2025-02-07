@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { definePluginSettings } from "@api/Settings";
 import ErrorBoundary from "@components/ErrorBoundary";
@@ -77,7 +77,7 @@ const userJoinTimes = new Map<string, userJoinData>();
  * user's join time with a specific guild within the application or platform.
  */
 function addUserJoinTime(userId: string, channelId: string, guildId: string) {
-    // create a random number
+    // Create a random number
     userJoinTimes.set(userId, { channelId, time: Date.now(), guildId });
 }
 
@@ -90,37 +90,26 @@ function removeUserJoinTime(userId: string) {
     userJoinTimes.delete(userId);
 }
 
-// For every user, channelId and oldChannelId will differ when moving channel.
-// Only for the local user, channelId and oldChannelId will be the same when moving channel,
+// For every user, `channelId` and `oldChannelId` will differ when moving channel
+// Only for the local user, `channelId` and `oldChannelId` will be the same when moving channel
 // for some ungodly reason
 let myLastChannelId: string | undefined;
 
-// Allow user updates on discord first load
+// Allow user updates on first load
 let runOneTime = true;
 
 export default definePlugin({
     name: "AllCallTimers",
     description: "Add call timer to all users in a server voice channel.",
     authors: [Devs.Max, Devs.D3SOX],
-
     settings,
-
     patches: [
         {
-            find: "renderPrioritySpeaker",
+            find: ".usernameSpeaking]",
             replacement: [
                 {
-                    match: /(render\(\)\{.+\}\),children:)\[(.+renderName\(\),)/,
-                    replace: "$&,$self.showClockInjection(this),"
-                }
-            ]
-        },
-        {
-            find: "renderPrioritySpeaker",
-            replacement: [
-                {
-                    match: /(renderName\(\)\{.+:"")/,
-                    replace: "$&,$self.showTextInjection(this),"
+                    match: /function\(\)\{.+:""(?=.*?userId:(\i))/,
+                    replace: "$&,$self.renderTimer($1.id),"
                 }
             ]
         }
@@ -135,13 +124,13 @@ export default definePlugin({
                 const isMe = userId === myId;
 
                 if (!guildId) {
-                    // guildId is never undefined here
+                    // `guildId` is never undefined here
                     continue;
                 }
 
-                // check if the state does not actually has a `oldChannelId` property
+                // Check if the state does not actually has a `oldChannelId` property
                 if (!("oldChannelId" in state) && !runOneTime && !settings.store.watchLargeGuilds) {
-                    // batch update triggered. This is ignored because it
+                    // Batch update triggered. This is ignored because it
                     // is caused by opening a previously unopened guild
                     continue;
                 }
@@ -154,10 +143,10 @@ export default definePlugin({
 
                 if (channelId !== oldChannelId) {
                     if (channelId) {
-                        // move or join
+                        // Move or join
                         addUserJoinTime(userId, channelId, guildId);
                     } else if (oldChannelId) {
-                        // leave
+                        // Leave
                         removeUserJoinTime(userId);
                     }
                 }
@@ -171,43 +160,43 @@ export default definePlugin({
 
             const { voiceStates } = passiveUpdate;
             if (!voiceStates) {
-                // if there are no users in a voice call
+                // If there are no users in a voice call
                 return;
             }
 
-            // find all users that have the same guildId and if that user is not in the voiceStates, remove them from the map
+            // Find all users that have the same `guildId` and if that user is not in the `voiceStates`, remove them from the map
             const { guildId } = passiveUpdate;
 
-            // check the guildId in the userJoinTimes map
+            // Check the guildId in the `userJoinTimes` map
             for (const [userId, data] of userJoinTimes) {
                 if (data.guildId === guildId) {
-                    // check if the user is in the voiceStates
+                    // Check if the user is in the `voiceStates`
                     const userInVoiceStates = voiceStates.find(state => state.userId === userId);
                     if (!userInVoiceStates) {
-                        // remove the user from the map
+                        // Remove the user from the map
                         removeUserJoinTime(userId);
                     }
                 }
             }
 
-            // since we were gifted this data let's use it to update our join times
+            // Since we were gifted this data, let's use it to update our join times
             for (const state of voiceStates) {
                 const { userId, channelId } = state;
 
                 if (!channelId) {
-                    // channelId is never undefined here
+                    // `channelId` is never undefined here
                     continue;
                 }
 
-                // check if the user is in the map
+                // Check if the user is in the map
                 if (userJoinTimes.has(userId)) {
-                    // check if the user is in a channel
+                    // Check if the user is in a channel
                     if (channelId !== userJoinTimes.get(userId)?.channelId) {
-                        // update the user's join time
+                        // Update the user's join time
                         addUserJoinTime(userId, channelId, guildId);
                     }
                 } else {
-                    // user wasn't previously tracked, add the user to the map
+                    // The user wasn't previously tracked, add the user to the map
                     addUserJoinTime(userId, channelId, guildId);
                 }
             }
@@ -215,7 +204,7 @@ export default definePlugin({
     },
 
     subscribeToAllGuilds() {
-        // we need to subscribe to all guilds' events because otherwise we would miss updates on large guilds
+        // We need to subscribe to all guilds' events, because otherwise we would miss updates on large guilds
         const guilds = Object.values(GuildStore.getGuilds()).map(guild => guild.id);
         const subscriptions = guilds.reduce((acc, id) => ({ ...acc, [id]: { typing: true } }), {});
         FluxDispatcher.dispatch({ type: "GUILD_SUBSCRIPTIONS_FLUSH", subscriptions });
@@ -227,34 +216,18 @@ export default definePlugin({
         }
     },
 
-    showClockInjection(property: { props: { user: { id: string; }; }; }) {
-        if (settings.store.showWithoutHover) {
-            return "";
-        }
-        return this.showInjection(property);
-    },
-
-    showTextInjection(property: { props: { user: { id: string; }; }; }) {
+    renderTimer(userId: string) {
         if (!settings.store.showWithoutHover) {
             return "";
         }
-        return this.showInjection(property);
-    },
-
-    showInjection(property: { props: { user: { id: string; }; }; }) {
-        const userId = property.props.user.id;
-        return this.renderTimer(userId);
-    },
-
-    renderTimer(userId: string) {
-        // get the user join time from the users object
+        // Get the user's join time from the users object
         const joinTime = userJoinTimes.get(userId);
         if (!joinTime?.time) {
-            // join time is unknown
+            // Join time is unknown
             return;
         }
         if (userId === UserStore.getCurrentUser().id && !settings.store.trackSelf) {
-            // don't show for self
+            // Don't show for self
             return;
         }
 
