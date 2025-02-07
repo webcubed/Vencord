@@ -10,7 +10,7 @@ import { IconUtils, UserStore } from "@webpack/common";
 
 import style from "./style.css?managed";
 export default definePlugin({
-    name: "fullVcPfp",
+    name: "FullVCPFP",
     description: "Makes avatars take up the entire vc tile for a more dynamic and immersive experience 🚀",
     authors: [{ name: "mochie", id: 1043599230247374869n }],
     patches: [{
