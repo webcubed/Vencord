@@ -9,6 +9,7 @@ import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
 
 import { addSettingsPanelButton, DeafenIcon, removeSettingsPanelButton } from "../philsPluginLibrary";
+import { toggle } from "@utils/quickCss";
 
 export let fakeD = false;
 
@@ -83,5 +84,16 @@ export default definePlugin({
     },
     stop() {
         removeSettingsPanelButton("faked");
+    },
+
+    toolboxActions: {
+        "Toggle Fake Deafen": () => {
+            fakeD = !fakeD;
+            deafen();
+            setTimeout(deafen, 250);
+
+            if (settings.store.muteUponFakeDeafen)
+                setTimeout(mute, 300);
+        }
     }
 });
