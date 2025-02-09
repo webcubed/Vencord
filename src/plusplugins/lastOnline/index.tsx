@@ -42,7 +42,7 @@ function formatTime(time: number) {
 
 export default definePlugin({
     name: "LastOnline",
-    description: "Adds a last online indicator under usernames in your DM list and guild and GDM member list.",
+    description: "Adds a last online indicator under usernames in your DM list and guild and GDM member list",
     authors: [
         {
             id: 644298972420374528n,
