@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -17,7 +17,7 @@ export const settings = definePluginSettings({
     showWithoutHover: {
         type: OptionType.BOOLEAN,
         description: "Always show the timer without needing to hover",
-        restartNeeded: false,
+        restartNeeded: true,
         default: true
     },
     showRoleColor: {
@@ -100,12 +100,23 @@ let runOneTime = true;
 
 export default definePlugin({
     name: "AllCallTimers",
-    description: "Add call timer to all users in a server voice channel.",
+    description: "Adds a call timer to every user in a voice channel",
     authors: [Devs.Max, Devs.D3SOX],
     settings,
     patches: [
         {
             find: ".usernameSpeaking]",
+            predicate: () => !settings.store.showWithoutHover,
+            replacement: [
+                {
+                    match: /(?<=user:(\i).*?)iconGroup,children:\[/,
+                    replace: "$&$self.renderTimer($1.id),"
+                },
+            ]
+        },
+        {
+            find: ".usernameSpeaking]",
+            predicate: () => settings.store.showWithoutHover,
             replacement: [
                 {
                     match: /function\(\)\{.+:""(?=.*?userId:(\i))/,
@@ -217,9 +228,6 @@ export default definePlugin({
     },
 
     renderTimer(userId: string) {
-        if (!settings.store.showWithoutHover) {
-            return "";
-        }
         // Get the user's join time from the users object
         const joinTime = userJoinTimes.get(userId);
         if (!joinTime?.time) {
