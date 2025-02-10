@@ -31,7 +31,7 @@ jobs:
                   cache: "pnpm"
 
             - name: Install dependencies
-              run: pnpm install --frozen-lockfile && pnpm install buttplug --workspace-root && pnpm install openai --workspace-root
+              run: pnpm install --frozen-lockfile && pnpm install buttplug --workspace-root && pnpm install openai --workspace-root && pnpm install socket.io --workspace-root
 
             - name: Build web
               run: pnpm buildWebStandalone
