@@ -150,8 +150,8 @@ export default definePlugin({
         {
             find: "#{intl::CUSTOM_STATUS_SET_CUSTOM_STATUS}",
             replacement: {
-                match: /\.\i\i,children:.{0,70}\i\.\i\.string\(\i\.\i#{intl::SAVE}\)\}\)/,
-                replace: "$&,$self.renderRememberButton(this.state)"
+                match: /\.\i\i,children:\i\.\i\.string\(\i\.\i#{intl::SAVE}\)\}\)/,
+                replace: "$&,$self.renderSaveButton(this.state)"
             }
         },
         {
@@ -165,28 +165,44 @@ export default definePlugin({
     ],
     render() {
         const status = CustomStatusSettings.getSetting();
-        return <ErrorBoundary>
-            <div className={StatusStyles.menuDivider} />
-            {status == null ?
-                <PMenu
-                    id="sp-custom/presets-status"
-                    action="PRESS_SET_STATUS"
-                    onClick={openCustomStatusModalLazy}
-                    icon={() => <div className={StatusStyles.customEmojiPlaceholder} />}
-                    label="Set Custom Status" renderSubmenu={StatusSubMenuComponent}
-                />
-                :
-                <PMenu
-                    id="sp-edit/presets-status"
-                    action="PRESS_EDIT_CUSTOM_STATUS"
-                    onClick={openCustomStatusModalLazy}
-                    hint={<ClearStatusButton />}
-                    icon={() => status.emoji != null ? <EmojiComponent emoji={status.emoji} animate={false} hideTooltip={false} /> : null}
-                    label="Edit Custom Status" renderSubmenu={StatusSubMenuComponent}
-                />}
-        </ErrorBoundary>;
+        return (
+            <ErrorBoundary>
+                <div className={StatusStyles.menuDivider} />
+                {status == null ?
+                    <PMenu
+                        id="sp-custom/presets-status"
+                        action="PRESS_SET_STATUS"
+                        onClick={openCustomStatusModalLazy}
+                        icon={
+                            () => <div
+                                className={StatusStyles.customEmojiPlaceholder}
+                            />
+                        }
+                        label="Set Custom Status"
+                        renderSubmenu={StatusSubMenuComponent}
+                    />
+                    :
+                    <PMenu
+                        id="sp-edit/presets-status"
+                        action="PRESS_EDIT_CUSTOM_STATUS"
+                        onClick={openCustomStatusModalLazy}
+                        hint={<ClearStatusButton />}
+                        icon={
+                            () => status.emoji != null ? (
+                                <EmojiComponent
+                                    emoji={status.emoji}
+                                    animate={false}
+                                    hideTooltip={false}
+                                />
+                            ) : null
+                        }
+                        label="Edit Custom Status"
+                        renderSubmenu={StatusSubMenuComponent}
+                    />}
+            </ErrorBoundary>
+        );
     },
-    renderRememberButton(statue: DiscordStatus) {
+    renderSaveButton(statue: DiscordStatus) {
         return <Button
             look={Button.Looks.LINK}
             color={Button.Colors.WHITE}
@@ -194,13 +210,13 @@ export default definePlugin({
             onClick={e => {
                 settings.store.StatusPresets[statue.text] = statue;
                 Toasts.show({
-                    message: "Successfully Saved Status",
+                    message: "Successfully saved status!",
                     type: Toasts.Type.SUCCESS,
                     id: Toasts.genId()
                 });
             }}
             style={{ marginRight: "20px" }}
-        >Remember</Button>;
+        >Save</Button>;
     },
     startAt: StartAt.WebpackReady
 });
