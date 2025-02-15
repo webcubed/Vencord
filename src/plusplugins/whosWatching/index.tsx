@@ -40,7 +40,7 @@ const settings = definePluginSettings({
 
 function Watching({ userIds, guildId }: WatchingProps): JSX.Element {
     // Missing users happen when UserStore.getUser(id) returns null
-    // The client should automatically cache spectators, so this might not be possible, but it's better to be sure just in case
+    // The client should automatically cache spectators, so this might not be possible, but it's better to be sure, just in case
     let missingUsers = 0;
     const users = userIds.map(id => UserStore.getUser(id)).filter(user => Boolean(user) ? true : (missingUsers += 1, false));
     return (
@@ -51,7 +51,7 @@ function Watching({ userIds, guildId }: WatchingProps): JSX.Element {
                     <Flex flexDirection="column" style={{ gap: 6 }} >
                         {users.map(user => (
                             <Flex key={user.id} flexDirection="row" style={{ gap: 6, alignContent: "center" }} className={cl("user")} >
-                                <img src={user.getAvatarURL(guildId)} style={{ borderRadius: 8, width: 16, height: 16 }} />
+                                <img src={user.getAvatarURL(guildId)} style={{ borderRadius: 8, width: 16, height: 16 }} alt="" />
                                 {getUsername(user)}
                             </Flex>
                         ))}
