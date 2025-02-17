@@ -61,9 +61,9 @@ export const useDrag = findByCodeLazy("useDrag::spec.begin was deprecated");
 export const useDrop = findByCodeLazy(".options);return", ".collect,");
 
 export const i18n = mapMangledModuleLazy('defaultLocale:"en-US"', {
+    t: filters.byProps(runtimeHashMessageKey("DISCORD")),
     intl: filters.byProps("string", "format"),
-    t: filters.byProps(runtimeHashMessageKey("DISCORD"))
-});
+}, true);
 
 export let SnowflakeUtils: t.SnowflakeUtils;
 waitFor(["fromTimestamp", "extractTimestamp"], m => SnowflakeUtils = m);
