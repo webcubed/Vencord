@@ -16,7 +16,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import { runtimeHashMessageKey } from "@utils/intlHash";
 import type { Channel } from "discord-types/general";
 
 // eslint-disable-next-line path-alias/no-relative
@@ -61,8 +60,8 @@ export const useDrag = findByCodeLazy("useDrag::spec.begin was deprecated");
 export const useDrop = findByCodeLazy(".options);return", ".collect,");
 
 export const i18n = mapMangledModuleLazy('defaultLocale:"en-US"', {
-    t: filters.byProps(runtimeHashMessageKey("DISCORD")),
-    intl: filters.byProps("string", "format"),
+    t: m => m?.[Symbol.toStringTag] === "IntlMessagesProxy",
+    intl: m => m != null && Object.getPrototypeOf(m)?.withFormatters != null
 }, true);
 
 export let SnowflakeUtils: t.SnowflakeUtils;
