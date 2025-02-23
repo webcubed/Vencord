@@ -31,7 +31,7 @@ jobs:
                   cache: "pnpm"
 
             - name: Install dependencies
-              run: pnpm install --frozen-lockfile && pnpm install buttplug --workspace-root && pnpm install openai --workspace-root
+              run: pnpm install --frozen-lockfile && pnpm install buttplug --workspace-root && pnpm install openai --workspace-root && pnpm install socket.io --workspace-root
 
             - name: Build web
               run: pnpm buildWebStandalone
@@ -44,7 +44,7 @@ jobs:
 
             - name: Clean up obsolete files
               run: |
-                  rm -rf dist/*-unpacked dist/monaco Vencord.user.css vencordDesktopRenderer.css vencordDesktopRenderer.css.map
+                  rm -rf dist/*-unpacked dist/vendor Vencord.user.css vencordDesktopRenderer.css vencordDesktopRenderer.css.map
 
             - name: Get some values needed for the release
               id: release_values

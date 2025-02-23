@@ -12,7 +12,7 @@ export default definePlugin({
             find: '.BADGES=1]="BADGES"',
             replacement: {
                 match: /(\i)=\{className:\i.username,style:.*?onContextMenu:\i,children:.*?\};/,
-                replace: "$&$1.children=$self.wrapMessageAuthor(arguments[0],$1.children);"
+                replace: "$&__dummyvar=($1.children=$self.wrapMessageAuthor(arguments[0],$1.children)),"
             }
         },
         {

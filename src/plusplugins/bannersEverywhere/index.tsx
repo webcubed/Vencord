@@ -42,7 +42,7 @@ export default definePlugin({
             find: "#{intl::GUILD_OWNER}),",
             replacement:
             {
-                // We add the banner as a property while we can still access the user id
+                // We add the banner as a property, while we can still access the user ID
                 match: /verified:(\i).isVerifiedBot.*?name:null.*?(?=avatar:)/,
                 replace: "$&banner:$self.memberListBannerHook($1),",
             },
@@ -51,8 +51,8 @@ export default definePlugin({
             find: "role:\"listitem\",innerRef",
             replacement:
             {
-                // We cant access the user id here, so we take the banner property we set earlier
-                match: /let{avatar:\i.*?focusProps:\i.*?=(\i).*?children:\[/,
+                // We can't access the user ID here, so we take the banner property we set earlier
+                match: /focusProps.\i\}=(\i).*?children:\[/,
                 replace: "$&$1.banner,"
             }
         }

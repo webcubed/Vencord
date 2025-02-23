@@ -29,6 +29,10 @@ export default definePlugin({
             name: "Ryfter",
             id: 898619112350183445n,
         },
+        {
+            name: "okiso",
+            id: 274178934143451137n,
+        }
     ],
     dependencies: ["UserSettingsAPI"],
     start() {
@@ -78,6 +82,32 @@ export default definePlugin({
             if (!channel) return;
 
             const role = GuildStore.getRole(guild.id, id);
+            if (!role) return;
+
+            children.push(
+                <Menu.MenuItem
+                    id="vc-view-inrole"
+                    label="View Members in Role"
+                    action={() => {
+                        showInRoleModal(getMembersInRole(role.id, guild.id), role.id, channel.id);
+                    }}
+                    icon={InfoIcon}
+                />
+            );
+        },
+        "message"(children, { message }: { message: any; }) {
+            const guild = getCurrentGuild();
+            if (!guild) return;
+
+            const roleMentions = message.content.match(/<@&(\d+)>/g);
+            if (!roleMentions?.length) return;
+
+            const channel = getCurrentChannel();
+            if (!channel) return;
+
+            const roleIds = roleMentions.map(mention => mention.match(/<@&(\d+)>/)![1]);
+
+            const role = GuildStore.getRole(guild.id, roleIds);
             if (!role) return;
 
             children.push(

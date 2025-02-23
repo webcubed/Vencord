@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -39,7 +39,7 @@ const settings = definePluginSettings({
 
 export default definePlugin({
     name: "OnePingPerDM",
-    description: "If unread messages are sent by a user in DMs multiple times, you'll only receive one audio ping. Read the messages to reset the limit.",
+    description: "If unread messages are sent by a user in DMs multiple times, you'll only receive one audio ping. Read the messages to reset the limit",
     authors: [Devs.ProffDea],
     settings,
     patches: [{
@@ -49,7 +49,7 @@ export default definePlugin({
             replace: "$&if(!$self.isPrivateChannelRead(arguments[0]?.message))return;else "
         },
         {
-            match: /sound:(\i\?\i:void 0,soundpack:\i,volume:\i,onClick)/,
+            match: /sound:(\i\?\i.{0,30},onClick)/,
             replace: "sound:!$self.isPrivateChannelRead(arguments[0]?.message)?undefined:$1"
         }]
     }],

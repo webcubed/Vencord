@@ -2,16 +2,14 @@ name: Blank Issue
 description: Create a blank issue.
 
 body:
-  - type: markdown
-    attributes:
-      value: |
-        # READ THIS BEFORE OPENING AN ISSUE
+    - type: markdown
+      attributes:
+          value: |
+              ## Do not use this template to request a plugin to get added to Vencord+, report a bug/crash or request a plugin to get updated.
 
-        Do not use this template to request a plugin to be added to Vencord+.
-
-  - type: textarea
-    id: content
-    attributes:
-      label: Content
-    validations:
-      required: true
+    - type: textarea
+      id: content
+      attributes:
+          label: Content
+      validations:
+          required: true

@@ -108,7 +108,7 @@ async function applyFont(fontFamily: string) {
                     --font-primary: '${fontFamily}', sans-serif !important;
                     --font-display: '${fontFamily}', sans-serif !important;
                     --font-headline: '${fontFamily}', sans-serif !important;
-                    --font-code: '${fontFamily}', monospace !important;
+                    ${settings.store.applyOnClodeBlocks ? "--font-code: '${fontFamily}', monospace !important;" : ""}
                 }
             `;
     } catch (err) {
@@ -213,6 +213,11 @@ const settings = definePluginSettings({
                 }}
             />
         )
+    },
+    applyOnClodeBlocks: {
+        type: OptionType.BOOLEAN,
+        description: "Apply the font to code blocks",
+        default: false
     }
 });
 

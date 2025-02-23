@@ -47,7 +47,7 @@ body:
   - type: checkboxes
     id: agreement-check
     attributes:
-      label: Agreement
+      label: Request Agreement
       options:
         - label: I have read the above and made sure my plugin request is clear and concise.
           required: true
