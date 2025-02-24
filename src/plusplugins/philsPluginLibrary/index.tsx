@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -18,8 +18,8 @@ const plugin = definePlugin({
         {
             find: "--custom-app-panels-height",
             replacement: {
-                match: /(\w+\.\w+\(\w+,{\w+:function\(\){)return (\w)+}/,
-                replace: "$1 $self.storedComp = $2; return $self.replacedUserPanelComponent}"
+                match: /{}\)}\),/,
+                replace: "{})}),$self.replacedUserPanelComponent(),"
             }
         },
         {
@@ -37,7 +37,11 @@ const plugin = definePlugin({
         }
     ]
 });
+
+
 plugin.replacedUserPanelComponent = replacedUserPanelComponent.bind(plugin);
+
+
 export default plugin;
 
 export const DeafenIcon = (props: React.ComponentProps<"svg">) => {
