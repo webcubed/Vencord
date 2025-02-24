@@ -51,7 +51,7 @@ export default definePlugin({
         {
             find: ".COLLECTIBLES_SHOP_FULLSCREEN))",
             replacement: {
-                match: /(\?void 0:(\i)\.channelId.{0,300})\i\.Fragment,{/,
+                match: /(\?void 0:(\i)\.channelId.{0,300})"div",{/,
                 replace: "$1$self.render,{currentChannel:$2,"
             }
         },
@@ -102,7 +102,9 @@ export default definePlugin({
                 <ErrorBoundary>
                     <ChannelsTabsContainer {...currentChannel} />
                 </ErrorBoundary>
-                {children}
+                <div style={{ display: "flex" }}>
+                    {children}
+                </div>
             </>
         );
     },
