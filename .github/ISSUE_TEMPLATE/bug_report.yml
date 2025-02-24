@@ -55,7 +55,7 @@ body:
       validations:
           required: false
 
-    - type: checkbox
+    - type: checkboxes
       id: agreement-check
       attributes:
           label: Report Agreement
