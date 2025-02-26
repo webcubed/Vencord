@@ -12,7 +12,6 @@ import TitleBar from "./components/TitleBar";
 import { settings } from "./settings";
 import { startCallTimerSubscription, stopCallTimerSubscription } from "./utils/callTimer";
 import { adjustContextMenu } from "./utils/contextMenu";
-import { disableStyles, enableStyles, injectOverrides } from "./utils/overrideCSS";
 import { keybindHandler } from "./utils/sidebar";
 
 export default definePlugin({
@@ -76,13 +75,10 @@ export default definePlugin({
     adjustContextMenu,
 
     start() {
-        enableStyles();
-        injectOverrides();
         startCallTimerSubscription();
         document.addEventListener("keydown", keybindHandler);
     },
     stop() {
-        disableStyles();
         stopCallTimerSubscription();
         document.removeEventListener("keydown", keybindHandler);
     }
