@@ -10,7 +10,6 @@ import { classes } from "@utils/misc";
 import { findStoreLazy } from "@webpack";
 import { useStateFromStores } from "@webpack/common";
 
-import OverrideCSS from "./OverrideCSS";
 import TitleBarGroupLeft from "./TitleBarGroupLeft";
 import TitleBarGroupRight from "./TitleBarGroupRight";
 
@@ -20,7 +19,7 @@ export const cl = (name: string) => `vc-modernTitlebar-${name}`;
 
 export default function TitleBar(props: {
     focused: boolean;
-    windowKey?: any;
+    windowKey?: string;
     type: string;
     macOSFrame?: boolean;
     themeOverride?: any;
@@ -30,7 +29,6 @@ export default function TitleBar(props: {
     if (props?.windowKey ? (IS_VESKTOP ? !window?.Vesktop?.Settings?.store?.customTitleBar : false) : false) return null;
 
     return <div className={cl("container")}>
-        <OverrideCSS className={cl("styles")} />
         <div className={cl("titlebar")}>
             <TitleBarGroupLeft user={user} windowKey={props?.windowKey} />
             <div className={classes(cl("spacer"))} />
