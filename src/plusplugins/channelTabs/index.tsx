@@ -51,8 +51,8 @@ export default definePlugin({
         {
             find: ".COLLECTIBLES_SHOP_FULLSCREEN))",
             replacement: {
-                match: /(\?void 0:(\i)\.channelId.{0,300})"div",{/,
-                replace: "$1$self.render,{currentChannel:$2,"
+                match: /(\?void 0:(\i)\.channelId.{0,300}return)((.{0,15})"div",{.*?\])(\}\)\}\})/,
+                replace: "$1$4$self.render,{currentChannel:$2,children:$3})$5"
             }
         },
         // ctrl click to open in new tab in inbox unread
@@ -102,9 +102,7 @@ export default definePlugin({
                 <ErrorBoundary>
                     <ChannelsTabsContainer {...currentChannel} />
                 </ErrorBoundary>
-                <div style={{ display: "flex" }}>
-                    {children}
-                </div>
+                {children}
             </>
         );
     },
