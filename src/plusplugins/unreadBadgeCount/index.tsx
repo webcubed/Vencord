@@ -8,7 +8,7 @@ import "./styles.css";
 
 import { definePluginSettings } from "@api/Settings";
 import ErrorBoundary from "@components/ErrorBoundary";
-import { Devs } from "@utils/constants";
+import { Devs, EquicordDevs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
 import { findStoreLazy } from "@webpack";
 import { ReadStateStore, useStateFromStores } from "@webpack/common";
@@ -18,28 +18,16 @@ import { JSX } from "react";
 const UserGuildSettingsStore = findStoreLazy("UserGuildSettingsStore");
 const JoinedThreadsStore = findStoreLazy("JoinedThreadsStore");
 
-function NumberBadge({ color, className, count }) {
-    return <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
+function NumberBadge({ className, count, width, padding }) {
+    // To whoever used SVGs here:
+    // please, SVGs bad and buggy, unless used as an icon.
+    // Also, the CSS values are directly copied from Discord's ping badge
+    return <div
         className={className}
+        style={{ minWidth: width, paddingLeft: padding, paddingRight: padding }}
     >
-        <circle cx="12" cy="12" r="10" fill={color} />
-        <text
-            x="50%"
-            y="50%"
-            textAnchor="middle"
-            fontSize="10"
-            fill="white"
-            fontWeight="bold"
-            dy=".3em"
-        >
-            {count}
-        </text>
-    </svg>;
+        {count}
+    </div>;
 }
 
 const settings = definePluginSettings({
@@ -63,12 +51,12 @@ const settings = definePluginSettings({
 
 export default definePlugin({
     name: "UnreadCountBadge",
-    authors: [Devs.Joona],
+    authors: [Devs.Joona, EquicordDevs.Panniku],
     description: "Shows unread message count badges on channels in the channel list",
     settings,
 
     patches: [
-        // Kanged from typingindicators
+        // Kanged from TypingIndicators
         {
             find: "UNREAD_IMPORTANT:",
             replacement: [
@@ -86,7 +74,7 @@ export default definePlugin({
         },
         // Threads
         {
-            // This is the thread "spine" that shows in the left
+            // This is the thread "spine", that shows at the left
             find: "M11 9H4C2.89543 9 2 8.10457 2 7V1C2 0.447715 1.55228 0 1 0C0.447715 0 0 0.447715 0 1V7C0 9.20914 1.79086 11 4 11H11C11.5523 11 12 10.5523 12 10C12 9.44771 11.5523 9 11 9Z",
             replacement: [
                 {
@@ -109,16 +97,29 @@ export default definePlugin({
 
         if (!settings.store.showOnMutedChannels && (UserGuildSettingsStore.isChannelMuted(channel.guild_id, channel.id) || JoinedThreadsStore.isMuted(channel.id)))
             return null;
+
+        // I'm not sure if the "dot" ever appends, hence why the CSS is almost left unmodified for these classes
         const className = `vc-unreadCountBadge${whiteDot ? "-dot" : ""}${channel.threadMetadata ? "-thread" : ""}`;
+
+        let paddingValue: Number = 0;
+        if (unreadCount >= 100) { paddingValue = 4; } else
+            if (unreadCount >= 10) { paddingValue = 2; } else
+                paddingValue = 0;
+        let widthValue = 16;
+        if (unreadCount >= 100) { widthValue = 30; } else
+            if (unreadCount >= 10) { widthValue = 22; } else
+                widthValue = 16;
+
         return (
             <NumberBadge
-                color="var(--brand-500)"
-                className={className}
+                className={"vc-unreadCountBadge " + className}
                 count={
                     unreadCount > 99 && settings.store.notificationCountLimit
                         ? "+99"
                         : unreadCount
                 }
+                width={widthValue}
+                padding={paddingValue}
             />
         );
     }, { noop: true }),
