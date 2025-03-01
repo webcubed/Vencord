@@ -42,7 +42,8 @@ A fork of the Discord client mod called Vencord that adds unapproved plugins.
 
 ## Join the support/community server of Vencord
 
-Note: Do not request support in the Discord server of Vencord for anything regarding Vencord+!
+> [!CAUTION]
+> Do not request support for anything regarding Vencord+ in the Discord server of Vencord!
 
 ## Sponsors of Vencord
 

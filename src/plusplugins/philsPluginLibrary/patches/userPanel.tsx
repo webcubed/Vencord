@@ -1,10 +1,11 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 import { React } from "@webpack/common";
+import { JSX } from "react";
 
 import { SettingsPanel } from "../components";
 import { IconComponent, SettingsPanelButton } from "../components/settingsPanel/SettingsPanelButton";
@@ -49,10 +50,19 @@ export const ButtonsSettingsPanel = () => {
             const splicedButtons =
                 settingsPanelButtonsClone
                     .splice(0, 3)
-                    .map(({ icon, tooltipText, onClick }) =>
+                    .map(({ icon, tooltipText, onClick }, index) =>
                         tooltipText
-                            ? <SettingsPanelTooltipButton tooltipProps={{ text: tooltipText }} icon={icon} onClick={onClick} />
-                            : <SettingsPanelButton icon={icon} onClick={onClick} />
+                            ? <SettingsPanelTooltipButton
+                                key={`tooltip-button-${index}`} // Add a unique key here
+                                tooltipProps={{ text: tooltipText }}
+                                icon={icon}
+                                onClick={onClick}
+                            />
+                            : <SettingsPanelButton
+                                key={`button-${index}`} // Add a unique key here
+                                icon={icon}
+                                onClick={onClick}
+                            />
                     );
 
             groupedButtons.push(splicedButtons);
@@ -63,24 +73,17 @@ export const ButtonsSettingsPanel = () => {
 
     return rawPanelButtons.length > 0
         ? <SettingsPanel>
-            {...convertRawPanelButtons(rawPanelButtons).map(value => <SettingsPanelRow children={value} />)}
+            {convertRawPanelButtons(rawPanelButtons).map((value, index) => (
+                <SettingsPanelRow key={`panel-row-${index}`}>
+                    {value}
+                </SettingsPanelRow>
+            ))}
         </SettingsPanel>
-        : <>
-        </>;
+        : null;
 };
 
-export function replacedUserPanelComponent() {
-    // @ts-ignore
-    const componentResult: JSX.Element = this.storedComp();
-    if (!componentResult?.props) return componentResult;
-
-    const { children } = componentResult.props;
-
-    children.splice(children.length - 1, 0,
-        <ButtonsSettingsPanel />
-    );
-
-    return componentResult;
+export function replacedUserPanelComponent(oldComponent) {
+    return <ButtonsSettingsPanel />;
 }
 
 export function addSettingsPanelButton(settings: PanelButton) {

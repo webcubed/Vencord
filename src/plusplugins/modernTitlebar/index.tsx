@@ -58,7 +58,7 @@ export default definePlugin({
                 replace: "$&||arguments[0]?.hidden"
             }
         },
-        // Stop context menus from going off the screen
+        // Stop context menus from going off screen
         {
             find: 'if("pageX"in',
             replacement: {
