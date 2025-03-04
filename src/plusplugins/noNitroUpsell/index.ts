@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -37,6 +37,17 @@ export default definePlugin({
     name: "NoNitroUpsell",
     description: "Removes all of Discord's Nitro upsells by tricking the client into thinking you have Nitro",
     authors: [EquicordDevs.thororen],
+    patches: [
+        {
+            find: "#{intl::USER_PROFILE_ENTRY_POINTS_AMP_UP_YOUR_PROFILE}",
+            replacement: [
+                {
+                    match: /}\);return \i\?.*?}\)}}/,
+                    replace: "});return null}}"
+                }
+            ],
+        }
+    ],
     start() {
         user = UserStore.getCurrentUser();
         if (user) ready(user);
