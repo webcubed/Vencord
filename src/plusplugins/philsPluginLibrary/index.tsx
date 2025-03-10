@@ -16,7 +16,7 @@ const plugin = definePlugin({
     authors: [Devs.phil],
     patches: [
         {
-            find: "--custom-app-panels-height",
+            find: '"--custom-app-panels-height",',
             replacement: {
                 match: /{}\)}\),/,
                 replace: "{})}),$self.replacedUserPanelComponent(),"
