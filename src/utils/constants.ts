@@ -648,7 +648,7 @@ export const EquicordDevs = Object.freeze({
     },
     Cortex: {
         name: "Cortex",
-        id: 825069530376044594n
+        id: 913205935319691335n
     },
     KrystalSkull: {
         name: "krystalskullofficial",
@@ -933,6 +933,54 @@ export const EquicordDevs = Object.freeze({
     Oggetto: {
         name: "Oggetto",
         id: 619203349954166804n
+    },
+    zyqunix: {
+        name: "zyqunix",
+        id: 1201415921802170388n
+    },
+    examplegit: {
+        name: "example.user",
+        id: 175411535357673473n
+    },
+    Loukios: {
+        name: "Loukios",
+        id: 211461918127292416n
+    },
+    vappstar: {
+        name: "vappstar",
+        id: 747192967311261748n
+    },
+    ExoDev: {
+        name: "ExoDev",
+        id: 1325655837003223137n
+    },
+    voidbbg: {
+        name: "voidbbg",
+        id: 117126234588184582n
+    },
+    OIRNOIR: {
+        name: "OIRNOIR",
+        id: 720842469024989195n
+    },
+    mochienya: {
+        name: "mochie",
+        id: 1043599230247374869n
+    },
+    okiso: {
+        name: "okiso",
+        id: 274178934143451137n
+    },
+    port22exposed: {
+        name: "port",
+        id: 1318383159645311009n
+    },
+    PhoenixAceVFX: {
+        name: "PhoenixAceVFX",
+        id: 1016895892055396484n
+    },
+    TheArmagan: {
+        name: "TheArmagan",
+        id: 707309693449535599n
     }
 } satisfies Record<string, Dev>);
 
