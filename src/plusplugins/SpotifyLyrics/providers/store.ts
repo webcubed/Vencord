@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -102,20 +102,38 @@ export const SpotifyLrcStore = proxyLazyWebpack(() => {
                 store.emitChange();
                 return;
             }
-
+            // Stops spamming notifications for when there is no lyrics / lyrics cannot be translated x1
             if (provider === Provider.Translated || provider === Provider.Romanized) {
-                if (!currentInfo?.useLyric) {
-                    showNotif("No lyrics", `No lyrics to ${provider === Provider.Translated ? "translate" : "romanize"}`);
-                    return;
+                if (!currentInfo?.useLyric || !currentInfo.lyricsVersions[currentInfo.useLyric]) {
+                    console.log("Failed to Translate");
+                    const now = Date.now();
+                    if (!window.__lastTranslateFailure) {
+                        window.__lastTranslateFailure = now;
+                    } else if (now - window.__lastTranslateFailure < 120000) { // 2 minutes
+                        window.__lastTranslateFailure = null;
+                        return null;
+                    } else {
+                        window.__lastTranslateFailure = now;
+                    }
+                    return null;
                 }
 
                 const fetcher = provider === Provider.Translated ? translateLyrics : romanizeLyrics;
 
                 const fetchResult = await fetcher(currentInfo.lyricsVersions[currentInfo.useLyric]);
-
+                // Stops spamming notifications for when there is no lyrics / lyrics cannot be translated x2
                 if (!fetchResult) {
-                    showNotif("Lyrics fetch failed", `Failed to fetch ${provider === Provider.Translated ? "translation" : "romanization"}`);
-                    return;
+                    console.log("Lyrics fetch failed", `Failed to fetch ${provider === Provider.Translated ? "translation" : "romanization"}`);
+                    const now = Date.now();
+                    if (!window.__lastTranslateFailure) {
+                        window.__lastTranslateFailure = now;
+                    } else if (now - window.__lastTranslateFailure < 120000) { // 2 minutes
+                        window.__lastTranslateFailure = null;
+                        return null;
+                    } else {
+                        window.__lastTranslateFailure = now;
+                    }
+                    return null;
                 }
 
                 store.lyricsInfo = {
@@ -134,9 +152,19 @@ export const SpotifyLrcStore = proxyLazyWebpack(() => {
             }
 
             const newLyricsInfo = await lyricFetchers[e.provider](store.track!);
+            // Stops spamming notifications for when there is no lyrics / lyrics cannot be translated x3
             if (!newLyricsInfo) {
-                showNotif("Lyrics fetch failed", `Failed to fetch ${e.provider} lyrics`);
-                return;
+                console.log("Lyrics fetch failed", `Failed to fetch ${e.provider} lyrics`);
+                const now = Date.now();
+                if (!window.__lastLyricsFetchFailure) {
+                    window.__lastLyricsFetchFailure = now;
+                } else if (now - window.__lastLyricsFetchFailure < 120000) { // 2 minutes
+                    window.__lastLyricsFetchFailure = null;
+                    return null;
+                } else {
+                    window.__lastLyricsFetchFailure = now;
+                }
+                return null;
             }
 
             store.lyricsInfo = newLyricsInfo;
@@ -148,5 +176,3 @@ export const SpotifyLrcStore = proxyLazyWebpack(() => {
     });
     return store;
 });
-
-
