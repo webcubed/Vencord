@@ -8,7 +8,6 @@ import { showNotification } from "@api/Notifications";
 import ErrorBoundary from "@components/ErrorBoundary";
 import { Devs, EquicordDevs } from "@utils/constants";
 import { getTheme, Theme } from "@utils/discord";
-import { classes } from "@utils/misc";
 import definePlugin, { OptionType } from "@utils/types";
 import { findByProps, findComponentByCodeLazy } from "@webpack";
 import { Button, FluxDispatcher, Forms, NavigationRouter, RestAPI, Tooltip, UserStore } from "@webpack/common";
@@ -216,6 +215,7 @@ export default definePlugin({
     name: "QuestCompleter",
     description: "A plugin that allows you to complete quests without the need to have the game installed",
     authors: [Devs.amia, Devs.HappyEnderman, EquicordDevs.SerStars, EquicordDevs.thororen],
+    settings,
     patches: [
         {
             find: "\"invite-button\"",
