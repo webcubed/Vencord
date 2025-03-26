@@ -68,7 +68,7 @@ export default definePlugin({
             find: "#{intl::BILLING_SETTINGS}",
             replacement: [
                 {
-                    match: /(?<=#{intl::BILLING_SETTINGS}[^,]*?,)(?=div)/,
+                    match: /(?<=#{intl::BILLING_SETTINGS}\),)/,
                     replace: "capitalism:true,"
                 },
                 {
@@ -79,18 +79,19 @@ export default definePlugin({
             predicate: () => settings.store.billing,
         },
         { // Gift button
-            find: '.gifts)||void 0===',
+            find: "GIFT_BUTTON)",
             replacement: {
-                match: /let\{disabled:\i,channel:\i\}=\i/,
-                replace: "return null;$&",
+                match: /if\(\i\)return null;/,
+                replace: "return null;",
             },
+            all: true,
             predicate: () => settings.store.gift,
         },
         { // Emoji list
             find: "#{intl::EMOJI_PICKER_CREATE_EMOJI_TITLE}),size:",
             replacement: {
                 match: /(\i)=\i\|\|!\i&&\i.\i.isEmojiCategoryNitroLocked\(\{[^}]*\}\);/,
-                replace: "$&$1||"
+                replace: "$&$1=($1 && $1.isNitroLocked && !$1.isUserAccess);"
             },
             predicate: () => settings.store.emojiList,
         },
@@ -98,7 +99,7 @@ export default definePlugin({
             find: "#{intl::EMOJI_CATEGORY_TOP_GUILD_EMOJI},{guildName:",
             replacement: {
                 match: /(?<=(\i)\.unshift\((\i)\):)(?=\1\.push\(\2\))/,
-                replace: "$2.isNitroLocked||"
+                replace: "$2.isNitroLocked && !$2.isUserAccess ||"
             },
             predicate: () => settings.store.emojiList,
         }

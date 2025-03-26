@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -66,19 +66,21 @@ export default definePlugin({
             </Forms.FormText>
         </>
     ),
-    patches: [{
-        find: "#{intl::MESSAGE_EDITED_TIMESTAMP_A11Y_LABEL}",
-        replacement: [
-            {
-                match: /(?<=\i=\i\?)\(0,\i\.\i\)\((\i),"LT"\):\(0,\i\.\i\)\(\i\)/,
-                replace: '$self.format($1,"compactFormat","[calendar]"):$self.format($1,"cozyFormat","LT")',
-            },
-            {
-                match: /(?<=text:)\(0,\i.\i\)\((\i),"LLLL"\)(?=,)/,
-                replace: '$self.format($1,"tooltipFormat","LLLL")',
-            },
-        ]
-    }],
+    patches: [
+        {
+            find: "#{intl::MESSAGE_EDITED_TIMESTAMP_A11Y_LABEL}",
+            replacement: [
+                {
+                    match: /(?<=\i=\i\?)\(0,\i\.\i\)\((\i),"LT"\):\(0,\i\.\i\)\(\i,!0\)/,
+                    replace: '$self.format($1,"compactFormat","[calendar]"):$self.format($1,"cozyFormat","LT")',
+                },
+                {
+                    match: /(?<=text:)\(0,\i.\i\)\((\i),"LLLL"\)(?=,)/,
+                    replace: '$self.format($1,"tooltipFormat","LLLL")',
+                },
+            ]
+        }
+    ],
 
     format(date: Date, key: string, fallback: string) {
         const t = moment(date);
