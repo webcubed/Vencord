@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2023 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -19,9 +19,24 @@ interface iUSRBG extends Plugin {
     getImageUrl(userId: string): string | null;
 }
 
+interface Nameplate {
+    imgAlt: string;
+    palette: {
+        darkBackground: string;
+        lightBackground: string;
+        name: string;
+    };
+    src: string;
+}
+
 const settings = definePluginSettings({
     animate: {
         description: "Animate banners",
+        type: OptionType.BOOLEAN,
+        default: false
+    },
+    preferNameplate: {
+        description: "Prefer nameplates over banners",
         type: OptionType.BOOLEAN,
         default: false
     },
@@ -34,24 +49,28 @@ const UserProfileStore = findStoreLazy("UserProfileStore");
 
 export default definePlugin({
     name: "BannersEverywhere",
-    description: "Displays banners in the member list ",
+    description: "Display banners in the member list",
     authors: [Devs.ImLvna, Devs.AutumnVN],
     settings,
     patches: [
         {
             find: "#{intl::GUILD_OWNER}),",
-            replacement:
-            {
-                // We add the banner as a property, while we can still access the user ID
-                match: /verified:(\i).isVerifiedBot.*?name:null.*?(?=avatar:)/,
-                replace: "$&banner:$self.memberListBannerHook($1),",
-            },
+            replacement: [
+                {
+                    // We add the banner as a property while we can still access the user's ID
+                    match: /(?<=nameplate:(\i).*?)verified:(\i).isVerifiedBot.*?name:null.*?(?=avatar:)/,
+                    replace: "$&banner:$self.memberListBannerHook($2, $1),",
+                },
+                {
+                    match: /(?<=\),nameplate:)(\i)/,
+                    replace: "$self.nameplate($1)"
+                }
+            ]
         },
         {
             find: "role:\"listitem\",innerRef",
-            replacement:
-            {
-                // We can't access the user ID here, so we take the banner property we set earlier
+            replacement: {
+                // We can't access the user's ID here, so we take the banner property we set earlier
                 match: /focusProps.\i\}=(\i).*?children:\[/,
                 replace: "$&$1.banner,"
             }
@@ -70,13 +89,18 @@ export default definePlugin({
         DataStore.set(DATASTORE_KEY, this.data);
     },
 
-    memberListBannerHook(user: User) {
+    nameplate(nameplate: Nameplate | undefined) {
+        if (settings.store.preferNameplate) return nameplate;
+    },
+
+    memberListBannerHook(user: User, nameplate: Nameplate | undefined) {
         let url = this.getBanner(user.id);
         if (!url) return;
+        if (settings.store.preferNameplate && nameplate) return;
         if (!settings.store.animate) {
-            // Discord Banners
+            // Discord banners
             url = url.replace(".gif", ".png");
-            // Usrbg Banners
+            // USRBG banners
             this.gifToPng(url)
                 .then(pngUrl => {
                     const imgElement = document.getElementById(`vc-banners-everywhere-${user.id}`) as HTMLImageElement;
