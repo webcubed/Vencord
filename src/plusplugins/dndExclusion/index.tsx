@@ -87,7 +87,7 @@ interface ShouldNotifyEvent {
 export default definePlugin({
     name: "DndExclusion",
     description: "Exclude specific channels from your Do Not Disturb status so you still get notifications from them!",
-    authors: [Devs.rosemary],
+    authors: [{ name: "rosemary", id: 889185889660567583n }],
     patches: [{
         // we are replacing:
         //   let N = (0,H.eF)(u, r, !et)
