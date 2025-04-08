@@ -53,7 +53,7 @@ const settings = definePluginSettings({
 
 export default definePlugin({
     name: "BetterBlockedUsers",
-    description: "Allows you to search in the blocked users list and makes names selectable in settings",
+    description: "Allows you to search in the blocked users list and makes users clickable",
     authors: [EquicordDevs.TheArmagan, Devs.Elvyra],
     settings,
     patches: [
