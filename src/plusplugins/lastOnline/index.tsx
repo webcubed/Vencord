@@ -70,13 +70,13 @@ export default definePlugin({
         {
             find: "PrivateChannel.renderAvatar",
             replacement: {
-                match: /("PrivateChannel".{0,100}user:(\i).{0,100}}\):)/,
-                replace: "$1$self.shouldShowRecentlyOffline($2)?$self.buildRecentlyOffline($2):"
+                match: /({id:(\i).id.{0,1000}subText:)/,
+                replace: "$1$self.shouldShowRecentlyOffline($2.recipients.length === 1 ? { id: $2.recipients[0] } : null)?$self.buildRecentlyOffline({ id: $2.recipients[0] }):"
             }
         }
     ],
     shouldShowRecentlyOffline(user: User) {
-        if (!user) return false;
+        if (!user || !user.id) return false;
 
         const presenceStatus = recentlyOnlineList.get(user.id);
         return presenceStatus && presenceStatus.hasBeenOnline && presenceStatus.lastOffline !== null;

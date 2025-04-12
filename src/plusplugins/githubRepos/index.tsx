@@ -12,7 +12,7 @@ import { EquicordDevs } from "@utils/constants";
 import { Logger } from "@utils/Logger";
 import definePlugin, { OptionType } from "@utils/types";
 import { findByCodeLazy } from "@webpack";
-import { React } from "@webpack/common";
+import { React, Text } from "@webpack/common";
 import { User } from "discord-types/general";
 
 import { GitHubReposComponent } from "./components/GitHubReposComponent";
@@ -55,7 +55,8 @@ const ProfilePopoutComponent = ErrorBoundary.wrap(
         noop: true,
         onError: err => {
             logger.error("Error in profile popout component", err);
-            return null;
+            return <Text variant="text-xs/semibold" className="vc-github-repos-error" style={{ color: "var(--text-danger)" }}>
+                An error occurred while rendering profile popout component (GitHubRepos)</Text>;
         }
     }
 );
@@ -63,7 +64,7 @@ const ProfilePopoutComponent = ErrorBoundary.wrap(
 export default definePlugin({
     name: "GitHubRepos",
     description: "Displays a user's public GitHub repositories on their profile",
-    authors: [EquicordDevs.talhakf],
+    authors: [EquicordDevs.talhakf, EquicordDevs.Panniku],
     settings,
 
     patches: [

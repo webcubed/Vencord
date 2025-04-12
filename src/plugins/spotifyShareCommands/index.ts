@@ -16,8 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import { ApplicationCommandInputType, sendBotMessage } from "@api/Commands";
+import { ApplicationCommandInputType, Command, findOption, OptionalMessageOption, sendBotMessage } from "@api/Commands";
 import { Devs } from "@utils/constants";
+import { sendMessage } from "@utils/discord";
 import definePlugin from "@utils/types";
 import { findByPropsLazy } from "@webpack";
 import { FluxDispatcher, MessageActions } from "@webpack/common";
@@ -55,21 +56,36 @@ interface Track {
 const Spotify = findByPropsLazy("getPlayerState");
 const PendingReplyStore = findByPropsLazy("getPendingReply");
 
-function sendMessage(channelId, message) {
-    message = {
-        // The following are required to prevent Discord from throwing an error
-        invalidEmojis: [],
-        tts: false,
-        validNonShortcutEmojis: [],
-        ...message
-    };
-    const reply = PendingReplyStore.getPendingReply(channelId);
-    MessageActions.sendMessage(channelId, message, void 0, MessageActions.getSendMessageOptionsForReply(reply))
-        .then(() => {
-            if (reply) {
-                FluxDispatcher.dispatch({ type: "DELETE_PENDING_REPLY", channelId });
+function makeCommand(name: string, formatUrl: (track: Track) => string): Command {
+    return {
+        name,
+        description: `Share your current Spotify ${name} in chat`,
+        inputType: ApplicationCommandInputType.BUILT_IN,
+        options: [OptionalMessageOption],
+        execute(options, { channel }) {
+            const track: Track | null = Spotify.getTrack();
+            if (!track) {
+                return sendBotMessage(channel.id, {
+                    content: "You're not listening to any music."
+                });
             }
-        });
+
+            const data = formatUrl(track);
+            const message = findOption(options, "message");
+
+            // Note: Due to how Discord handles commands, we need to manually create and send the message
+
+            sendMessage(
+                channel.id,
+                { content: message ? `${message} ${data}` : data },
+                false,
+                MessageActions.getSendMessageOptionsForReply(PendingReplyStore.getPendingReply(channel.id))
+            ).then(() => {
+                FluxDispatcher.dispatch({ type: "DELETE_PENDING_REPLY", channelId: channel.id });
+            });
+
+        }
+    };
 }
 
 export default definePlugin({

@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -49,7 +49,7 @@ export async function getLyricsLrclib(track: Track): Promise<LyricsData | null> 
     if (!data.syncedLyrics) return null;
 
     const lyrics = data.syncedLyrics;
-    const lines = lyrics.split("\n");
+    const lines = lyrics.split("\n").filter(line => line.trim() !== "");
 
     return {
         useLyric: Provider.Lrclib,
