@@ -18,7 +18,8 @@ export default definePlugin({
             replacement: {
                 match: /header,children:\[.*?\{\}\)/,
                 replace: "$&,$self.FriendCodesPanel"
-            }
+            },
+            noWarn: true,
         }
     ],
 
