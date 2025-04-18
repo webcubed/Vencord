@@ -1,14 +1,15 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import "./styles.css";
 
+import { copyToClipboard } from "@utils/clipboard";
 import { Flex } from "@components/Flex";
 import { openModal } from "@utils/modal";
-import { Button, Clipboard, Forms } from "@webpack/common";
+import { Button, Forms } from "@webpack/common";
 
 import { classFactory, settings } from "..";
 import { successToast } from "../util";
@@ -46,7 +47,7 @@ export function SoundTriggerSettings() {
                         disabled={!settingsExist}
                         onClick={() => {
                             const json = JSON.stringify(settings.store.soundTriggers);
-                            Clipboard.copy(json);
+                            copyToClipboard(json);
                             successToast("Sound triggers exported and copied to clipboard.");
                         }}>
                         Export

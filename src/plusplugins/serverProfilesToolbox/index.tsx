@@ -1,17 +1,17 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 import "./styles.css";
 
+import { copyToClipboard } from "@utils/clipboard";
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { findComponentByCodeLazy } from "@webpack";
 import {
     Button,
-    Clipboard,
     FluxDispatcher,
     GuildMemberStore,
     Text,
@@ -146,12 +146,12 @@ export default definePlugin({
             }
         };
 
-        const copyToClipboard = () => {
+        const copyProfileToClipboard = () => {
             copy();
-            Clipboard.copy(JSON.stringify(savedProfile));
+            copyToClipboard(JSON.stringify(savedProfile));
         };
 
-        const pasteFromClipboard = async () => {
+        const pasteProfileFromClipboard = async () => {
             try {
                 const clip = await navigator.clipboard.readText();
                 if (!clip) {
@@ -201,10 +201,10 @@ export default definePlugin({
                     </Button>
                 </div>
                 <div style={{ display: "flex", gap: "5px" }}>
-                    <Button onClick={copyToClipboard}>
+                    <Button onClick={copyProfileToClipboard}>
                         Copy to clipboard
                     </Button>
-                    <Button onClick={pasteFromClipboard}>
+                    <Button onClick={pasteProfileFromClipboard}>
                         Paste from clipboard
                     </Button>
                 </div>
