@@ -1,26 +1,15 @@
 /*
- * Vencord, a modification for Discord's desktop app
- * Copyright (c) 2022 Vendicated and contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Vencord, a Discord client mod
+ * Copyright (c) 2025 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 
 import { addContextMenuPatch, removeContextMenuPatch } from "@api/ContextMenu";
 import { definePluginSettings } from "@api/Settings";
+import { copyToClipboard } from "@utils/clipboard";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
-import { Clipboard, Menu, React } from "@webpack/common";
+import { Menu, React } from "@webpack/common";
 
 interface Emoji {
     type: "emoji",
@@ -31,7 +20,7 @@ interface Emoji {
 const settings = definePluginSettings({
     formattedString: {
         type: OptionType.BOOLEAN,
-        description: "Use formatted string instead of emoji ID.",
+        description: "Use a formatted string instead of the emoji's ID",
         default: false
     }
 });
@@ -55,7 +44,7 @@ export default definePlugin({
                         label={settings.store.formattedString ? "Copy as formatted string" : "Copy Emoji ID"}
                         action={() => {
                             const formatted_emoji_string = settings.store.formattedString ? `${isAnimated ? "<a:" : "<:"}${data.name}:${data.id}>` : `${data.id}`;
-                            Clipboard.copy(formatted_emoji_string);
+                            copyToClipboard(formatted_emoji_string);
                         }}
                     />
                 ));

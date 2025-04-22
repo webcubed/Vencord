@@ -1,13 +1,14 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 import { NavContextMenuPatchCallback } from "@api/ContextMenu";
+import { copyToClipboard } from "@utils/clipboard";
 import { Devs, SuncordDevs } from "@utils/constants";
 import definePlugin from "@utils/types";
-import { Clipboard, Menu } from "@webpack/common";
+import { Menu } from "@webpack/common";
 import type { Channel, User } from "discord-types/general";
 
 const MentionIcon = () => (
@@ -37,7 +38,7 @@ const UserContextMenuPatch: NavContextMenuPatchCallback = (children, { user }: U
         <Menu.MenuItem
             id="vc-copy-user-mention"
             label="Copy User Mention"
-            action={() => Clipboard.copy(`<@${user.id}>`)}
+            action={() => copyToClipboard(`<@${user.id}>`)}
             icon={MentionIcon}
         />
     );

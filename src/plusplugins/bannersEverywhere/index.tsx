@@ -58,7 +58,7 @@ export default definePlugin({
             replacement: [
                 {
                     // We add the banner as a property while we can still access the user's ID
-                    match: /(?<=nameplate:(\i).*?)verified:(\i).isVerifiedBot.*?name:null.*?(?=avatar:)/,
+                    match: /user:(\i).{0,150}nameplate:(\i).*?name:null.*?(?=avatar:)/,
                     replace: "$&banner:$self.memberListBannerHook($2, $1),",
                 },
                 {

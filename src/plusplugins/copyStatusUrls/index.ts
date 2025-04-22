@@ -1,13 +1,14 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+import { copyToClipboard } from "@utils/clipboard";
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { findByCodeLazy } from "@webpack";
-import { Clipboard, Toasts } from "@webpack/common";
+import { Toasts } from "@webpack/common";
 import { User } from "discord-types/general";
 
 interface MakeContextMenuProps {
@@ -16,12 +17,12 @@ interface MakeContextMenuProps {
 }
 
 // This is an API call if the result is not cached
-// i looked for an hour and did not find a better way to do this
+// I looked for an hour and did not find a better way to do this
 const getMetadataFromApi: (activity: any, userId: string) => Promise<any> = findByCodeLazy("null/undefined");
 
 export default definePlugin({
     name: "CopyStatusUrls",
-    description: "Copy the users status url when you right-click it",
+    description: "Copy a user's status' URL when you right-click it",
     authors: [Devs.sadan],
     patches: [
         {
@@ -40,7 +41,7 @@ export default definePlugin({
                 if (!button_urls[index]) {
                     throw new Error("button_urls does not contain index");
                 }
-                Clipboard.copy(button_urls[index]);
+                copyToClipboard(button_urls[index]);
                 Toasts.show({
                     id: Toasts.genId(),
                     message: "Copied URL",

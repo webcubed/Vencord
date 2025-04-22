@@ -9,7 +9,7 @@ import { Devs, EquicordDevs } from "@utils/constants";
 import { getTheme, Theme } from "@utils/discord";
 import definePlugin from "@utils/types";
 import { findByProps, findComponentByCodeLazy } from "@webpack";
-import { Button, ChannelStore, FluxDispatcher, Forms, GuildChannelStore, NavigationRouter, RestAPI, Tooltip, UserStore } from "@webpack/common";
+import { Button, ChannelStore, FluxDispatcher, GuildChannelStore, NavigationRouter, RestAPI, Tooltip, UserStore } from "@webpack/common";
 
 const isApp = typeof DiscordNative !== "undefined";
 

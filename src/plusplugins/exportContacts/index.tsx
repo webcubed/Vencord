@@ -1,6 +1,6 @@
 /*
  * Vencord, a modification for Discord's desktop app
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,9 +19,10 @@
 import "./styles.css";
 
 import ErrorBoundary from "@components/ErrorBoundary";
+import { copyToClipboard } from "@utils/clipboard";
 import { EquicordDevs } from "@utils/constants";
 import definePlugin from "@utils/types";
-import { Clipboard, Toasts } from "@webpack/common";
+import { Toasts } from "@webpack/common";
 
 interface User {
     id: string;
@@ -97,7 +98,7 @@ export default definePlugin({
 
     copyContactToClipboard() {
         if (this.contactList) {
-            Clipboard.copy(JSON.stringify(this.contactList));
+            copyToClipboard(JSON.stringify(this.contactList));
             Toasts.show({
                 message: "Contacts copied to clipboard successfully.",
                 type: Toasts.Type.SUCCESS,
