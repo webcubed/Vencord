@@ -28,6 +28,35 @@ export default definePlugin({
             default: false,
             onChange: v => toggleHoverControls(v)
         },
+        websocketUrl: {
+            description: "The websocket url",
+            type: OptionType.STRING,
+            placeholder: "ws://localhost:26539",
+            default: "ws://localhost:26539",
+            isValid(value) {
+                try {
+                    const url = new URL(value);
+                    return url.protocol !== "" && url.host !== "";
+                } catch (e) {
+                    return false;
+                }
+            },
+        },
+        apiServerUrl: {
+            description: "The api server url",
+            type: OptionType.STRING,
+            placeholder: "http://localhost:26538",
+            default: "http://localhost:26538",
+            isValid(value) {
+                if (value == "") return true;
+                try {
+                    const url = new URL(value);
+                    return url.protocol !== "" && url.host !== "";
+                } catch (e) {
+                    return false;
+                }
+            },
+        }
     },
     patches: [
         {
