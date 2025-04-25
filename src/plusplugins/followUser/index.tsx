@@ -1,6 +1,6 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2024 Vendicated and contributors
+ * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -8,10 +8,9 @@ import { NavContextMenuPatchCallback } from "@api/ContextMenu";
 import { definePluginSettings, useSettings } from "@api/Settings";
 import ErrorBoundary from "@components/ErrorBoundary";
 import { Devs } from "@utils/constants";
-import { LazyComponent } from "@utils/lazyReact";
 import { classes } from "@utils/misc";
 import definePlugin, { OptionType } from "@utils/types";
-import { filters, find, findByPropsLazy, findStoreLazy } from "@webpack";
+import { findByPropsLazy, findComponentByCodeLazy, findStoreLazy } from "@webpack";
 import {
     ChannelStore,
     Menu,
@@ -25,10 +24,7 @@ import {
 import type { Channel, User } from "discord-types/general";
 import type { PropsWithChildren, SVGProps } from "react";
 
-const HeaderBarIcon = LazyComponent(() => {
-    const filter = filters.byCode(".HEADER_BAR_BADGE");
-    return find(m => m.Icon && filter(m.Icon)).Icon;
-});
+const HeaderBarIcon = findComponentByCodeLazy(".HEADER_BAR_BADGE_TOP:", '.iconBadge,"top"');
 
 interface BaseIconProps extends IconProps {
     viewBox: string;
@@ -110,7 +106,7 @@ interface VoiceState {
 export const settings = definePluginSettings({
     executeOnFollow: {
         type: OptionType.BOOLEAN,
-        description: "Make sure to be in the same VC when following a user",
+        description: "Make sure to be in the same voice channel when following a user",
         restartNeeded: false,
         default: true
     },
@@ -128,20 +124,20 @@ export const settings = definePluginSettings({
     },
     autoMoveBack: {
         type: OptionType.BOOLEAN,
-        description: "Automatically move back to the VC of the followed user when you got moved",
+        description: "Automatically move back to the voice channel of the followed user when you got moved",
         restartNeeded: false,
         default: false
     },
     followUserId: {
         type: OptionType.STRING,
-        description: "Followed User ID",
+        description: "Followed user's ID",
         restartNeeded: false,
         hidden: true, // Managed via context menu and indicator
         default: "",
     },
     channelFull: {
         type: OptionType.BOOLEAN,
-        description: "Attempt to move you to the channel when is not full anymore",
+        description: "Attempt to move you to the voice channel when it's no longer full",
         restartNeeded: false,
         default: true,
     }
@@ -216,7 +212,7 @@ function triggerFollow(userChannelId: string | null = getChannelId(settings.stor
                 }
             } else {
                 Toasts.show({
-                    message: "You are already in the same channel",
+                    message: "You are already in the same voice channel",
                     id: Toasts.genId(),
                     type: Toasts.Type.FAILURE
                 });
@@ -232,7 +228,7 @@ function triggerFollow(userChannelId: string | null = getChannelId(settings.stor
                 });
             } else {
                 Toasts.show({
-                    message: "Followed user left, but not following disconnect",
+                    message: "Followed user left, not following disconnect",
                     id: Toasts.genId(),
                     type: Toasts.Type.FAILURE
                 });
@@ -370,7 +366,7 @@ export default definePlugin({
 
     addIconToToolBar(e: { toolbar: React.ReactNode[] | React.ReactNode; }) {
         if (Array.isArray(e.toolbar)) {
-            return e.toolbar.push(
+            return e.toolbar.unshift(
                 <ErrorBoundary noop={true} key="follow-indicator">
                     <this.FollowIndicator/>
                 </ErrorBoundary>
