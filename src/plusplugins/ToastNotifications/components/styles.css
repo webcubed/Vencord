@@ -97,11 +97,21 @@
 
 .toastnotifications-notification-p {
     margin: 0.5rem 0 0;
+    margin-bottom: 3px;
     line-height: 140%;
+    word-break: break-all;
+}
+
+.toastnotifications-notification-footer {
+    margin: 0;
+    margin-top: 4px;
+    line-height: 140%;
+    font-size: 10px;
 }
 
 .toastnotifications-notification-img {
-    width: 100%;
+    width: 75%;
+    border-radius: 3px;
 }
 
 /* Notification Positioning CSS */
@@ -129,6 +139,7 @@
 .toastnotifications-mention-class {
     color: var(--mention-foreground);
     background: var(--mention-background);
+    /* stylelint-disable-next-line value-no-vendor-prefix */
     unicode-bidi: -moz-plaintext;
     unicode-bidi: plaintext;
     font-weight: 500;
