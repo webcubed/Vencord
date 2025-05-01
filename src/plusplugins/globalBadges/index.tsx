@@ -26,8 +26,7 @@ interface BadgeCache {
 
 let badgeImages;
 
-// const API_URL = "https://clientmodbadges-api.herokuapp.com/";
-const API_URL = "https://globalbadges.suncord.rest/";
+const API_URL = "https://globalbadges.equicord.org/";
 
 const cache = new Map<string, BadgeCache>();
 const EXPIRES = 1000 * 60 * 15;
