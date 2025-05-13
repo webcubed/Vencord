@@ -7,7 +7,6 @@
 import { NavContextMenuPatchCallback } from "@api/ContextMenu";
 import { showNotification } from "@api/Notifications";
 import { CopyIcon } from "@components/Icons";
-import { Devs } from "@utils/constants";
 import { getIntlMessage } from "@utils/discord";
 import definePlugin from "@utils/types";
 import { ChannelStore, Constants, Menu, PermissionsBits, PermissionStore, RestAPI } from "@webpack/common";

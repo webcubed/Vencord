@@ -2,7 +2,7 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import "./ytmStyles.css";
 
@@ -182,8 +182,7 @@ function SeekBar() {
                 onChange={(v: number) => {
                     if (isSettingPosition) return;
                     setPosition(v);
-                    seek(v - storePosition);
-                    console.log("seeking to", v - storePosition);
+                    seek(v);
                 }}
                 renderValue={msToHuman}
             />
@@ -219,7 +218,7 @@ function AlbumContextMenu({ track }: { track: PlayerState["song"]; }) {
                 id="view-cover"
                 label="View Album Cover"
                 // trolley
-                action={() => track?.imageSrc && openImageModal(track?.imageSrc)}
+                action={() => track?.imageSrc && openImageModal({ url: track.imageSrc })}
                 icon={ImageIcon}
             />
             <Menu.MenuControlItem
@@ -337,11 +336,7 @@ export function Player() {
         }
     }, [isPlaying]);
 
-    if (!track || shouldHide) return (
-        <div id={cl("player")}>
-            YouTubeMusic is not playing
-        </div>
-    );
+    if (!track || shouldHide) return;
 
     const exportTrackImageStyle = {
         "--vc-ytm-track-image": `url(${track?.imageSrc || ""})`,

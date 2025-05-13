@@ -1,23 +1,11 @@
 /*
- * Vencord, a modification for Discord's desktop app
- * Copyright (c) 2023 Vendicated and contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Vencord, a Discord client mod
+ * Copyright (c) 2025 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 
-import { React, ReactDOM } from "@webpack/common";
-import type { ReactNode } from "react";
+import { createRoot, React } from "@webpack/common";
+import type { JSX, ReactNode } from "react";
 import type { Root } from "react-dom/client";
 
 import { settings as PluginSettings } from "../index";
@@ -37,7 +25,7 @@ function getNotificationContainer() {
         const container = document.createElement("div");
         container.id = "toastnotifications-container";
         document.body.append(container);
-        RootContainer = ReactDOM.createRoot(container);
+        RootContainer = createRoot(container);
     }
 
     return RootContainer;
@@ -51,6 +39,7 @@ export interface NotificationData {
     image?: string; // Large image to display in the notification for attachments.
     permanent?: boolean; // Whether or not the notification should be permanent or timeout.
     dismissOnClick?: boolean; // Whether or not the notification should be dismissed when clicked.
+    attachments: number;
     onClick?(): void;
     onClose?(): void;
 }

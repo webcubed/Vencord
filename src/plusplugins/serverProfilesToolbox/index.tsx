@@ -99,7 +99,7 @@ const IdentityActions = {
 export default definePlugin({
     name: "ServerProfilesToolbox",
     authors: [Devs.D3SOX],
-    description: "Adds a copy/paste/reset button to the server profiles editor",
+    description: "Adds buttons to the server profiles editor to copy, paste and reset",
 
     patchServerProfiles(guild: Guild) {
         const guildId = guild.id;
@@ -214,7 +214,7 @@ export default definePlugin({
 
     patches: [
         {
-            find: "#{intl::PROFILE_CUSTOMIZATION_GUILD_HINT}",
+            find: "PROFILE_CUSTOMIZATION_GUILD_HINT.format",
             replacement: {
                 match: /\(0,\i\.jsx\)\(\i\.\i,\{guildId:(\i)\.id,/,
                 replace: "$self.patchServerProfiles($1),$&"

@@ -1,20 +1,8 @@
 /*
- * Vencord, a modification for Discord's desktop app
- * Copyright (c) 2023 Vendicated and contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Vencord, a Discord client mod
+ * Copyright (c) 2025 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 
 import "./styles.css";
 
@@ -35,10 +23,18 @@ export default ErrorBoundary.wrap(function NotificationComponent({
     dismissOnClick,
     index,
     onClick,
-    onClose
+    onClose,
+    attachments
 }: NotificationData & { index?: number; }) {
     const [isHover, setIsHover] = useState(false);
     const [elapsed, setElapsed] = useState(0);
+
+    let renderBody: boolean = true;
+    let footer: boolean = false;
+
+    if (attachments > 0) footer = true;
+
+    if (body === "") renderBody = false;
 
     // Precompute appearance settings.
     const AppearanceSettings = {
@@ -115,15 +111,21 @@ export default ErrorBoundary.wrap(function NotificationComponent({
                         </button>
                     </div>
                     <div>
-                        {richBody ?? <p className="toastnotifications-notification-p">{body}</p>}
+                        {renderBody && (
+                            <p className="toastnotifications-notification-p">
+                                {(richBody ?? body).toString().slice(0, 500)}
+                                {(richBody ?? body).toString().length > 500 && "..."}
+                            </p>
+                        )}
+                        {PluginSettings.store.renderImages && image && <img className="toastnotifications-notification-img" src={image} alt="ToastNotification Image" />}
+                        {footer && <p className="toastnotifications-notification-footer">{`${attachments} attachment${attachments > 1 ? "s" : ""} ${attachments > 1 ? "were" : "was"} sent.`}</p>}
                     </div>
                 </div>
             </div>
-            {image && <img className="toastnotifications-notification-img" src={image} alt="ToastNotification Image" />}
             {AppearanceSettings.timeout !== 0 && !permanent && (
                 <div
                     className="toastnotifications-notification-progressbar"
-                    style={{ width: `${(1 - timeoutProgress) * 100}%`, backgroundColor: "var(--brand-experiment)" }}
+                    style={{ width: `${(1 - timeoutProgress) * 100}%`, backgroundColor: "var(--toastnotifications-progressbar-color)" }}
                 />
             )}
         </button>

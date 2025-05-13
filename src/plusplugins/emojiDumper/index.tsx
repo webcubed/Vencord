@@ -12,7 +12,7 @@ import type { Guild } from "discord-types/general";
 import { zipSync } from "fflate";
 
 const Patch: NavContextMenuPatchCallback = (children, { guild }: { guild: Guild; }) => {
-    // Assuming "privacy" is the correct ID for the group you want to modify.
+    // Assuming "privacy" is the correct ID for the group you want to modify
     const group = findGroupChildrenByChildId("privacy", children);
 
     if (group) {

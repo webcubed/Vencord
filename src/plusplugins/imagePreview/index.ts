@@ -506,7 +506,7 @@ export default definePlugin({
             observer = createObserver();
             observer.observe(targetNode, { childList: true, subtree: true });
         } else {
-            logger.info("body wasnt found ?????????");
+            logger.info("Body wasn't found!");
         }
     },
 

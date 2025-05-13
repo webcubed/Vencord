@@ -2,11 +2,12 @@
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 
 import { Logger } from "@utils/Logger";
 import { proxyLazyWebpack } from "@webpack";
 import { Flux, FluxDispatcher } from "@webpack/common";
+import { Settings } from "Vencord";
 
 enum MediaType {
     /**
@@ -54,6 +55,16 @@ export interface PlayerState {
 
 export type Repeat = "NONE" | "ONE" | "ALL";
 
+const nextRepeat = (repeat: Repeat) => {
+    switch (repeat) {
+        case 'NONE':
+            return 'ALL' as const;
+        case 'ALL':
+            return 'ONE' as const;
+        case 'ONE':
+            return 'NONE' as const;
+    }
+};
 
 const logger = new Logger("YoutubeMusicControls");
 
@@ -67,11 +78,11 @@ class YoutubemusicSocket {
     private socket: WebSocket | undefined;
 
     constructor(onChange: typeof this.onChange) {
-        this.tryConnect();
+        this.reconnect();
         this.onChange = onChange;
     }
 
-    private tryConnect() {
+    public reconnect() {
         if (this.ready) return;
         try {
             this.initWs();
@@ -80,9 +91,6 @@ class YoutubemusicSocket {
             return;
         }
         this.ready = true;
-        // const connectInterval = setInterval(() => {
-        //     if (this.ready) clearInterval(connectInterval);
-        // }, 5_000);
     }
 
     get routes() {
@@ -95,12 +103,16 @@ class YoutubemusicSocket {
             "shuffle": () => this.socket?.send(JSON.stringify({ type: "ACTION", action: "shuffle" })),
             "setVolume": (percent: number) => this.socket?.send(JSON.stringify({ type: "ACTION", action: "setVolume", data: percent })),
             "getVolume": () => this.socket?.send(JSON.stringify({ type: "ACTION", action: "getVolume" })),
-            "repeat": () => this.socket?.send(JSON.stringify({ type: "ACTION", action: "repeat" })),
+            "repeat": (repeat: Repeat) => this.socket?.send(JSON.stringify({ type: "ACTION", action: "repeat", data: repeat })),
         };
     }
 
     private initWs() {
-        this.socket = new WebSocket(`ws://localhost:${this.PORT}`);
+        const url = Settings.plugins.YouTubeMusicControls.websocketUrl;
+        if (!url) {
+            return;
+        }
+        this.socket = new WebSocket(url);
 
         this.socket.addEventListener("open", () => {
             // logger.info("Connected to YouTube Music WebSocket");
@@ -111,7 +123,7 @@ class YoutubemusicSocket {
 
         this.socket.addEventListener("error", e => {
             // logger.error("YouTube Music Socket Error:", e);
-            if (!this.ready) setTimeout(() => this.tryConnect(), 5_000);
+            if (!this.ready) setTimeout(() => this.reconnect(), 5_000);
             this.onChange({ type: "PLAYER_STATE", song: null, isPlaying: false, position: 0, repeat: "NONE", volume: 0 });
 
         });
@@ -119,7 +131,7 @@ class YoutubemusicSocket {
         this.socket.addEventListener("close", e => {
             // logger.info("YouTube Music Socket Disconnected:", e.code, e.reason);
             this.ready = false;
-            if (!this.ready) setTimeout(() => this.tryConnect(), 10_000);
+            if (!this.ready) setTimeout(() => this.reconnect(), 10_000);
             // this.tryConnect();
 
             this.onChange({ type: "PLAYER_STATE", song: null, isPlaying: false, position: 0, repeat: "NONE", volume: 0 });
@@ -131,19 +143,16 @@ class YoutubemusicSocket {
             try {
                 message = JSON.parse(e.data) as Message;
 
-                logger.info(message);
-
                 switch (message.type) {
                     case "PLAYER_STATE":
                         this.onChange(message);
+                        console.log(message);
                         break;
                 }
             } catch (err) {
                 logger.error("Invalid JSON:", err, `\n${e.data}`);
                 return;
             }
-
-            logger.info("Received Message:", message.type, "\n", message);
         });
     }
 }
@@ -153,71 +162,132 @@ export const YoutubeMusicStore = proxyLazyWebpack(() => {
 
     class YoutubeMusicStore extends Store {
         public mPosition = 0;
-        public isSettingPosition = false;
+        private start = 0;
 
         public song: Song | null = null;
         public isPlaying = false;
         public repeat: Repeat = "NONE";
         public volume = 0;
 
-        public openExternal(path: string) {
-            const url = `https://music.youtube.com${path}`;
+        public isSettingPosition = false;
 
+        public socket = new YoutubemusicSocket((message: Message) => {
+            if (message.song) {
+                store.song = message.song;
+                store.position = message.song.elapsedSeconds ?? 0;
+            };
+            if (message.isPlaying != null) store.isPlaying = message.isPlaying;
+            if (message.position && message.position !== store.position) store.position = message.position ?? 0;
+            if (message.volume) store.volume = message.volume ?? 0;
+            if (message.repeat) store.repeat = message.repeat;
+
+            store.isSettingPosition = false;
+            store.emitChange();
+        });
+
+        public openExternal(path: string) {
+            const videoId = path.match(/watch\?v=([\w-]+)/);
+
+            const url = (Settings.plugins.YouTubeMusicControls.useYoutubeMusicUri || Vencord.Plugins.isPluginEnabled("OpenInApp")) && videoId
+                ? encodeURI("youtubemusic://openVideo " + videoId[1])
+                : "https://music.youtube.com" + path;
+
+            console.log("Open", url);
+
+            // https://music.youtube.com/watch?v=BSHYPb15W-Y
             VencordNative.native.openExternal(url);
         }
 
 
         set position(p: number) {
             this.mPosition = p * 1000;
+            this.start = Date.now();
         }
 
         get position(): number {
-            return this.mPosition;
+            let pos = this.mPosition;
+            if (this.isPlaying) {
+                pos += Date.now() - this.start;
+            }
+            return pos;
         }
 
         prev() {
-            socket.routes.prev();
+            // this.socket.routes.prev();
+            this.req("post", "/api/v1/previous");
         }
         next() {
-            socket.routes.next();
+            // this.socket.routes.next();
+            this.req("post", "/api/v1/next");
         }
         setVolume(percent: number) {
-            socket.routes.setVolume(percent);
+            // this.socket.routes.setVolume(percent);
+            console.log(Math.floor(percent));
+            this.req("post", "/api/v1/volume", {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: {
+                    volume: Math.floor(percent)
+                },
+            });
         }
         setPlaying(playing: boolean) {
             if (playing) {
                 // YoutubemusicAPI.routes.pause.actions.do();
-                socket.routes.play();
+                this.req("post", "/api/v1/play");
+                // this.socket.routes.play();
             } else {
                 // YoutubemusicAPI.routes.play.actions.do();
-                socket.routes.pause();
+                this.req("post", "/api/v1/pause");
+                // this.socket.routes.pause();
             }
         }
         switchRepeat() {
-            socket.routes.repeat();
+            // this.socket.routes.repeat(nextRepeat(this.repeat));
+            this.req("post", "/api/v1/switch-repeat", {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: {
+                    iteration: 1
+                }
+            });
         }
         shuffle() {
-            socket.routes.shuffle();
+            // this.socket.routes.shuffle();
+            this.req("post", "/api/v1/shuffle");
         }
         seek(ms: number) {
-            socket.routes.seek(ms / 1000);
+            // this.socket.routes.seek(ms / 1000);
+            this.req("post", "/api/v1/seek-to", {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: {
+                    seconds: Math.floor(ms / 1000)
+                }
+            });
+        }
+
+        private req(method: "post" | "get" | "put", route: string, data: any = {}) {
+            const apiServerUrl = Settings.plugins.YouTubeMusicControls.apiServerUrl;
+            if (apiServerUrl === "") return;
+            console.log(fetch(apiServerUrl + route, {
+                method,
+                ...data,
+                ...(data.body && { body: JSON.stringify(data.body) })
+            }));
         }
     }
 
     const store = new YoutubeMusicStore(FluxDispatcher);
 
-    const socket = new YoutubemusicSocket((message: Message) => {
-        store.song = message.song;
-        store.isPlaying = message.isPlaying;
-        store.position = message.position ?? 0;
-        store.volume = message.volume ?? 0;
-        store.repeat = message.repeat || "NONE";
-
-        store.isSettingPosition = false;
-        store.emitChange();
-    });
-
     logger.info("Youtube Music Controls initialized");
 
     return store;
 });
+
+function restartSocket() {
+    YoutubeMusicStore.socket.reconnect();
+}
