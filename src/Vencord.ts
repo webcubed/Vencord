@@ -33,7 +33,7 @@ import { openUpdaterModal } from "@components/VencordSettings/UpdaterTab";
 import { StartAt } from "@utils/types";
 
 import { get as dsGet } from "./api/DataStore";
-import { showNotification } from "./api/Notifications";
+import { NotificationData, showNotification } from "./api/Notifications";
 import { PlainSettings, Settings } from "./api/Settings";
 import { patches, PMLogger, startAllPlugins } from "./plugins";
 import { localStorage } from "./utils/localStorage";
@@ -86,6 +86,46 @@ async function syncSettings() {
     }
 }
 
+let notifiedForUpdatesThisSession = false;
+
+async function runUpdateCheck() {
+    const notify = (data: NotificationData) => {
+        if (notifiedForUpdatesThisSession) return;
+        notifiedForUpdatesThisSession = true;
+
+        setTimeout(() => showNotification({
+            permanent: true,
+            noPersist: true,
+            ...data
+        }), 10_000);
+    };
+
+    try {
+        const isOutdated = await checkForUpdates();
+        if (!isOutdated) return;
+
+        if (Settings.autoUpdate) {
+            await update();
+            if (Settings.autoUpdateNotification) {
+                notify({
+                    title: "Vencord+ has been updated!",
+                    body: "Click here to restart your Discord client",
+                    onClick: relaunch
+                });
+            }
+            return;
+        }
+
+        notify({
+            title: "A Vencord+ update is available!",
+            body: "Click here to view the update",
+            onClick: openUpdaterModal!
+        });
+    } catch (err) {
+        UpdateLogger.error("Failed to check for updates", err);
+    }
+}
+
 async function init() {
     await onceReady;
     startAllPlugins(StartAt.WebpackReady);
@@ -102,7 +142,7 @@ async function init() {
                 if (Settings.autoUpdateNotification)
                     setTimeout(() => showNotification({
                         title: "Vencord+ has been updated!",
-                        body: "Click here to restart your client",
+                        body: "Click here to restart your Discord client",
                         permanent: true,
                         noPersist: true,
                         onClick: relaunch
