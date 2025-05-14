@@ -33,7 +33,7 @@ import { openUpdaterModal } from "@components/VencordSettings/UpdaterTab";
 import { StartAt } from "@utils/types";
 
 import { get as dsGet } from "./api/DataStore";
-import { NotificationData, showNotification } from "./api/Notifications";
+import { showNotification } from "./api/Notifications";
 import { PlainSettings, Settings } from "./api/Settings";
 import { patches, PMLogger, startAllPlugins } from "./plugins";
 import { localStorage } from "./utils/localStorage";
@@ -83,46 +83,6 @@ async function syncSettings() {
                 onClick: relaunch
             });
         }
-    }
-}
-
-let notifiedForUpdatesThisSession = false;
-
-async function runUpdateCheck() {
-    const notify = (data: NotificationData) => {
-        if (notifiedForUpdatesThisSession) return;
-        notifiedForUpdatesThisSession = true;
-
-        setTimeout(() => showNotification({
-            permanent: true,
-            noPersist: true,
-            ...data
-        }), 10_000);
-    };
-
-    try {
-        const isOutdated = await checkForUpdates();
-        if (!isOutdated) return;
-
-        if (Settings.autoUpdate) {
-            await update();
-            if (Settings.autoUpdateNotification) {
-                notify({
-                    title: "Vencord+ has been updated!",
-                    body: "Click here to restart your Discord client",
-                    onClick: relaunch
-                });
-            }
-            return;
-        }
-
-        notify({
-            title: "A Vencord+ update is available!",
-            body: "Click here to view the update",
-            onClick: openUpdaterModal!
-        });
-    } catch (err) {
-        UpdateLogger.error("Failed to check for updates", err);
     }
 }
 
