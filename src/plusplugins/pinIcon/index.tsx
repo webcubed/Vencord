@@ -20,9 +20,9 @@ export default definePlugin({
     ],
     patches: [
         {
-            find: "#{intl::MESSAGE_EDITED}),",
+            find: "isUnsupported})",
             replacement: {
-                match: /#{intl::MESSAGE_EDITED}\),(?:[^}]*[}]){3}\)/,
+                match: /WITH_CONTENT\}\)/,
                 replace: "$&,$self.PinnedIcon(arguments[0].message)"
             }
         }
