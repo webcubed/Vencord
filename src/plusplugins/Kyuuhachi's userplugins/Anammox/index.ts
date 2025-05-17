@@ -21,6 +21,12 @@ export const settings = definePluginSettings({
         description: "Remove gift button",
         restartNeeded: true,
     },
+    gif: {
+        type: OptionType.BOOLEAN,
+        default: false,
+        description: "Remove GIF and sticker buttons",
+        restartNeeded: true,
+    },
     emojiList: {
         type: OptionType.BOOLEAN,
         default: true,
@@ -68,7 +74,7 @@ export default definePlugin({
             find: "#{intl::BILLING_SETTINGS}",
             replacement: [
                 {
-                    match: /(?<=#{intl::BILLING_SETTINGS}\),)/,
+                    match: /(?<=#{intl::BILLING_SETTINGS}[^,]*?,)(?=div)/,
                     replace: "capitalism:true,"
                 },
                 {
@@ -79,19 +85,23 @@ export default definePlugin({
             predicate: () => settings.store.billing,
         },
         { // Gift button
-            find: "GIFT_BUTTON)",
-            replacement: {
-                match: /if\(\i\)return null;/,
-                replace: "return null;",
-            },
-            all: true,
+            find: '"ChannelTextAreaButtons"',
+            replacement: { match: /&&\i\.push\(\([^&]*?,"gift"\)\)/, replace: "", },
             predicate: () => settings.store.gift,
+        },
+        { // Gif and sticker buttons
+            find: '"ChannelTextAreaButtons"',
+            replacement: [
+                 { match: /&&\i\.push\([^&]*?,"gif"\)\)/, replace: "", },
+                 { match: /&&\i\.push\([^&]*?,"sticker"\)\)/, replace: "", },
+            ],
+            predicate: () => settings.store.gif,
         },
         { // Emoji list
             find: "#{intl::EMOJI_PICKER_CREATE_EMOJI_TITLE}),size:",
             replacement: {
                 match: /(\i)=\i\|\|!\i&&\i.\i.isEmojiCategoryNitroLocked\(\{[^}]*\}\);/,
-                replace: "$&$1=($1 && $1.isNitroLocked && !$1.isUserAccess);"
+                replace: "$&$1||"
             },
             predicate: () => settings.store.emojiList,
         },
@@ -99,7 +109,7 @@ export default definePlugin({
             find: "#{intl::EMOJI_CATEGORY_TOP_GUILD_EMOJI},{guildName:",
             replacement: {
                 match: /(?<=(\i)\.unshift\((\i)\):)(?=\1\.push\(\2\))/,
-                replace: "$2.isNitroLocked && !$2.isUserAccess ||"
+                replace: "$2.isNitroLocked||"
             },
             predicate: () => settings.store.emojiList,
         }

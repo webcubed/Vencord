@@ -5,7 +5,6 @@ import { closeModal, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, M
 import definePlugin, { OptionType } from "@utils/types";
 import { findByProps, wreq } from "@webpack";
 import { Button, Flex, Forms, Switch, Text, Timestamp, useState } from "@webpack/common";
-import __webpack_require__ from "discord-types/other/WebpackInstance";
 
 import TarFile from "./tar";
 import * as Webpack from "./webpack";
@@ -42,7 +41,7 @@ export const getBuildNumber = makeLazy(() => {
         const metrics = findByProps("_getMetricWithDefaults")._flush.toString();
         const [, builtAt, buildNumber] = metrics.match(/\{built_at:"(\d+)",build_number:"(\d+)"\}/);
         return { buildNumber, builtAt: new Date(Number(builtAt)) };
-    } catch (e) {
+    } catch(e) {
         console.error("failed to get build number:", e);
         return { buildNumber: "unknown", builtAt: new Date() };
     }
@@ -51,14 +50,14 @@ export const getBuildNumber = makeLazy(() => {
 async function saveTar(patched: boolean) {
     const tar = new TarFile();
     const { buildNumber, builtAt } = getBuildNumber();
-    const mtime = (builtAt.getTime() / 1000) | 0;
+    const mtime = (builtAt.getTime() / 1000)|0;
 
-    const root = patched ? `equicord-${buildNumber}` : `discord-${buildNumber}`;
+    const root = patched ? `vencord-${buildNumber}` : `discord-${buildNumber}`;
 
-    for (const [id, module] of Object.entries(wreq.m)) {
+    for(const [id, module] of Object.entries(wreq.m)) {
         const patchedSrc = Function.toString.call(module);
         const originalSrc = module.toString();
-        if (patched && patchedSrc !== originalSrc)
+        if(patched && patchedSrc != originalSrc)
             tar.addTextFile(
                 `${root}/${id}.v.js`,
                 `webpack[${JSON.stringify(id)}] = ${patchedSrc}\n`,
@@ -74,32 +73,32 @@ async function saveTar(patched: boolean) {
 }
 
 function TarModal({ modalProps, close }: { modalProps: ModalProps; close(): void; }) {
-    const webpackRequire = wreq as unknown as __webpack_require__;
     const { buildNumber, builtAt } = getBuildNumber();
     const [, rerender] = useState({});
     const [isLoading, setLoading] = useState(false);
-    const paths = Webpack.getChunkPaths(webpackRequire);
-    const status = Object.entries(Webpack.getLoadedChunks(webpackRequire))
-        .filter(([k]) => webpackRequire.o(paths, k))
+    const paths = Webpack.getChunkPaths(wreq);
+    const status = Object.entries(Webpack.getLoadedChunks(wreq))
+        .filter(([k]) => wreq.o(paths, k))
         .map(([, v]) => v);
     const loading = status.length;
     const loaded = status.filter(v => v === 0 || v === undefined).length;
     const errored = status.filter(v => v === undefined).length;
     const all = Object.keys(paths).length;
     const { patched } = settings.use(["patched"]);
-    const WEBPACK_CHUNK = "webpackChunkdiscord_app";
     return (
         <ModalRoot {...modalProps}>
             <ModalHeader>
-                <Forms.FormTitle tag="h2">
-                    Webpack Tarball
-                </Forms.FormTitle>
-                <Text variant="text-md/normal">
-                    <Timestamp timestamp={new Date(builtAt)} isInline={false}>
-                        {"Build number "}
-                        {buildNumber}
-                    </Timestamp>
-                </Text>
+                <Flex.Child>
+                    <Forms.FormTitle tag="h2">
+                        Webpack Tarball
+                    </Forms.FormTitle>
+                    <Text variant="text-md/normal">
+                        <Timestamp timestamp={new Date(builtAt)} isInline={false}>
+                            {"Build number "}
+                            {buildNumber}
+                        </Timestamp>
+                    </Text>
+                </Flex.Child>
                 <ModalCloseButton onClick={close} />
             </ModalHeader>
 
@@ -120,9 +119,8 @@ function TarModal({ modalProps, close }: { modalProps: ModalProps; close(): void
                             disabled={loading === all || isLoading}
                             onClick={async () => {
                                 setLoading(true);
-                                // @ts-ignore
-                                await Webpack.protectWebpack(window[WEBPACK_CHUNK], async () => {
-                                    await Webpack.forceLoadAll(webpackRequire, rerender);
+                                await Webpack.protectWebpack(async () => {
+                                    await Webpack.forceLoadAll(wreq, rerender);
                                 });
                             }}
                         >
