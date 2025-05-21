@@ -234,7 +234,7 @@ const settings = definePluginSettings({
         type: OptionType.BOOLEAN,
         default: false
     },
-    showCustomBadgesinmessage: {
+    showCustomBadgesInMessages: {
         description: "Show custom badges in messages",
         type: OptionType.BOOLEAN,
         default: false,
@@ -402,7 +402,7 @@ export default definePlugin({
             updateBadgesForAllUsers();
         }
 
-        if (settings.store.showCustomBadgesinmessage) {
+        if (settings.store.showCustomBadgesInMessages) {
             addMessageDecoration("custom-badge", props => (
                 <ErrorBoundary noop>
                     <BadgeMain
@@ -448,7 +448,7 @@ export default definePlugin({
             removeProfileBadge(badge);
         });
 
-        if (settings.store.showCustomBadgesinmessage) {
+        if (settings.store.showCustomBadgesInMessages) {
             removeMessageDecoration("custom-badge");
         }
     },
