@@ -102,7 +102,7 @@ async function init() {
                 if (Settings.autoUpdateNotification)
                     setTimeout(() => showNotification({
                         title: "Vencord+ has been updated!",
-                        body: "Click here to restart your client",
+                        body: "Click here to restart your Discord client",
                         permanent: true,
                         noPersist: true,
                         onClick: relaunch
